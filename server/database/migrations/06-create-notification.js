@@ -10,10 +10,12 @@ module.exports = {
         type: Sequelize.UUID
       },
       notification_template_id: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        allowNull: false
       },
       reservation_id: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        allowNull: false
       },
       is_sent: {
         type: Sequelize.BOOLEAN,

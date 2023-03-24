@@ -11,10 +11,12 @@ module.exports = {
         type: Sequelize.UUID
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       template: {
-        type: Sequelize.JSONB
+        type: Sequelize.JSONB,
+        allowNull: false
       },
       deleted_at: {
         allowNull: true,

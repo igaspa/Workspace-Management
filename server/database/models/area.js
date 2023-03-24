@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false
     },
-    location_id: DataTypes.UUID,
+    locationId: DataTypes.UUID,
     floor: DataTypes.STRING,
     image: DataTypes.STRING
   }, {

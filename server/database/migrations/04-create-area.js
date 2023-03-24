@@ -24,6 +24,10 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING
+      },
+      deleted_at: {
+        type: Sequelize.DATE,
+        allowNull: true
       }
     },
     {

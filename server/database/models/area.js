@@ -33,7 +33,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     sequelize,
-    modelName: 'area'
+    modelName: 'area',
+    paranoid: true
   });
   return area;
 };

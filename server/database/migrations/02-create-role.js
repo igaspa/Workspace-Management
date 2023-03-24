@@ -11,6 +11,7 @@ module.exports = {
         type: Sequelize.UUID
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING
       }
     }, {
@@ -18,6 +19,6 @@ module.exports = {
     });
   },
   async down (queryInterface, _Sequelize) {
-    await queryInterface.sequelize.query(`DROP TABLE ${schemeName}.role;`);
+    await queryInterface.sequelize.query(`DROP TABLE IF EXISTS ${schemeName}.role;`);
   }
 };

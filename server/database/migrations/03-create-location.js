@@ -21,6 +21,10 @@ module.exports = {
       country: {
         allowNull: false,
         type: Sequelize.STRING
+      },
+      deleted_at: {
+        type: Sequelize.DATE,
+        allowNull: true
       }
     },
     {

@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     sequelize,
-    modelName: 'location'
+    modelName: 'location',
+    paranoid: true
   });
   return location;
 };

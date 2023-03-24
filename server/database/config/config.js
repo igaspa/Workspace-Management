@@ -1,3 +1,4 @@
+const { schemeName } = require('../../utils/constants');
 const envArg = process.argv.find(x => x.startsWith('--env'));
 if (envArg) {
   const env = envArg.split('=')[1];
@@ -13,7 +14,7 @@ module.exports =
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'postgres',
-    migrationStorageTableSchema: 'table_management'
+    migrationStorageTableSchema: schemeName
   },
   stage: {
     username: process.env.DB_USERNAME,

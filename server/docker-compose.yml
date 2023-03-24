@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  development:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - '5432:${DB_PORT}'
+    volumes: 
+    - development:/var/lib/postgresql/data
+volumes:
+  development:
+    driver: local

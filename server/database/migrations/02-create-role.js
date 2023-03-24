@@ -1,4 +1,6 @@
 'use strict';
+const { schemeName } = require('../../utils/constants');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -12,10 +14,10 @@ module.exports = {
         type: Sequelize.STRING
       }
     }, {
-      schema: 'table_management'
+      schema: schemeName
     });
   },
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('role');
+  async down (queryInterface, _Sequelize) {
+    await queryInterface.sequelize.query(`DROP TABLE ${schemeName}.role;`);
   }
 };

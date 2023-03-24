@@ -45,6 +45,6 @@ module.exports = {
     });
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.sequelize.query(`DROP TABLE ${schemeName}.user;`);
+    await queryInterface.sequelize.query(`DROP TABLE IF EXISTS ${schemeName}.user;`);
   }
 };

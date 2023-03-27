@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   working_space.init({
     name: DataTypes.STRING,
-    participants: DataTypes.JSONB,
     permanentlyReserved: DataTypes.BOOLEAN,
     typeId: DataTypes.INTEGER,
     areaId: DataTypes.INTEGER

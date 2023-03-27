@@ -14,11 +14,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      participants: {
-        allowNull: true,
-        defaultValue: null,
-        type: Sequelize.JSONB
-      },
       permanently_reserved: {
         allowNull: false,
         type: Sequelize.BOOLEAN

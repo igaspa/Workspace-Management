@@ -25,6 +25,11 @@ module.exports = {
         allowNull: true,
         type: Sequelize.DATE
       },
+      participants: {
+        allowNull: true,
+        defaultValue: null,
+        type: Sequelize.JSONB
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

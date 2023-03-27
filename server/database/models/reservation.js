@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.UUID,
     workingSpaceId: DataTypes.INTEGER,
     reservationStart: DataTypes.DATE,
-    reservationEnd: DataTypes.DATE
+    reservationEnd: DataTypes.DATE,
+    participants: DataTypes.JSONB
   }, {
     sequelize,
     modelName: 'reservation'

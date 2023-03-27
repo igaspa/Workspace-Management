@@ -34,7 +34,11 @@ module.exports = {
         type: Sequelize.DATE
       }
     }, {
-      schema: schemeName
+      uniqueKeys: {
+        Items_unique: {
+          fields: ['working_space_id', 'reservation_start']
+        }
+      }
     });
   },
   async down (queryInterface, _Sequelize) {

@@ -10,7 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      // define association here
+      working_space.belongsTo(models.working_space_type, { foreignKey: 'typeId' });
+      models.working_space_type.hasMany(working_space, { foreignKey: 'typeId' });
+
+      working_space.belongsTo(models.area, { foreignKey: 'areaId' });
+      models.area.hasMany(working_space, { foreignKey: 'areaId' });
     }
   }
   working_space.init({

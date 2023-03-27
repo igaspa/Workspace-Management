@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate (models) {
       notification.belongsTo(models.notification_template, { foreignKey: 'notificationTemplateId' });
       models.notification_template.hasMany(notification, { foreignKey: 'notificationTemplateId' });
+
+      notification.belongsTo(models.reservation, { foreignKey: 'reservationId' });
+      models.reservation.hasMany(notification, { foreignKey: 'reservationId' });
     }
   }
   notification.init({

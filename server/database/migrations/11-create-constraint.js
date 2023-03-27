@@ -7,7 +7,7 @@ module.exports = {
       fields: ['notification_template_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'notification_notification_template',
+      name: 'notification_template',
       type: 'foreign key',
       references: {
         table: 'notification_template',
@@ -97,7 +97,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeConstraint('notification', 'notification_notification_template');
+    await queryInterface.removeConstraint('notification', 'notification_template');
     await queryInterface.removeConstraint('notification', 'notification_reservation');
     await queryInterface.removeConstraint('reservation', 'reservation_user');
     await queryInterface.removeConstraint('reservation', 'reservation_working_space');

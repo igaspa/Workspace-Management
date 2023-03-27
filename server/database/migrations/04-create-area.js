@@ -12,11 +12,7 @@ module.exports = {
       },
       location_id: {
         allowNull: false,
-        type: Sequelize.UUID,
-        references: {
-          model: 'location',
-          key: 'id'
-        }
+        type: Sequelize.UUID
       },
       floor: {
         allowNull: false,

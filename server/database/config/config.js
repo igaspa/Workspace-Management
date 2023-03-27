@@ -14,7 +14,12 @@ module.exports =
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'postgres',
-    migrationStorageTableSchema: schemeName
+    migrationStorageTableSchema: schemeName,
+    schema: schemeName,
+    searchPath: schemeName,
+    dialectOptions: {
+      prependSearchPath: true
+    }
   },
   stage: {
     username: process.env.DB_USERNAME,

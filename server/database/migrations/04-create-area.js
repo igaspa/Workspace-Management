@@ -29,9 +29,6 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true
       }
-    },
-    {
-      schema: schemeName
     });
   },
   async down (queryInterface, _Sequelize) {

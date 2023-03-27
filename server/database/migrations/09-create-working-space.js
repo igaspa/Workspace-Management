@@ -39,8 +39,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }, {
-      schema: schemeName
     });
   },
   async down (queryInterface, _Sequelize) {

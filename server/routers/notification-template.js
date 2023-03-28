@@ -13,6 +13,7 @@ router
 router
   .route('/:id')
   .get(callbackErrorHandler(generalController.getNotificationTemplate))
+  .put(callbackErrorHandler(generalController.updateNotificationTemplate))
   .delete(callbackErrorHandler(generalController.deleteNotificationTemplate));
 
 module.exports = router;

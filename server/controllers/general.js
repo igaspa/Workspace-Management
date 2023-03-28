@@ -1,12 +1,14 @@
 const EXCLUDE_LIST = require('../utils/constants');
 const { findPages, getPagination } = require('../utils/pagination');
+const errors = require('../utils/errors');
+const responseMessage = require('../utils/error-messages');
 
 module.exports.findAllModels = async (Model, customOptions, req, res) => {
   const { page, size } = req.query;
   // Take page number from parameters
   if (page) {
     if (isNaN(page) || page < 1) {
-      // THROW ERROR
+      // TODO THROW ERROR
     }
   }
   const { limit, offset } = getPagination(page, size);
@@ -33,7 +35,8 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
   res.set('X-Total-Pages', pageCount);
 
   const models = await Model.findAll(options);
-  // throw error if(!models)
+  if (!models) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
+
   res.status(200).json(models);
 };
 
@@ -52,7 +55,7 @@ module.exports.findOneModel = async (Model, customOptions, req, res) => {
   }
 
   const model = await Model.findOne(options);
-  // throw error if(!model)
+  if (!model) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
 
   res.status(200).json(model);
 };
@@ -69,7 +72,8 @@ module.exports.updateModel = async (Model, req, res) => {
     where: { id: req.params.id, deleted: false },
     returning: true
   });
-  // throw error if updatedItem[0]
+  if (updatedModel[0] === 0) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
+
   res.status(200).json(updatedModel);
 };
 
@@ -77,6 +81,7 @@ module.exports.deleteModel = async (Model, req, res) => {
   const deletedModel = await Model.destroy({
     where: { id: req.params.id, deleted: false }
   });
-    // throw error if deletedItem[0]
+  if (deletedModel[0] === 0) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
+
   res.status(200).json(deletedModel);
 };

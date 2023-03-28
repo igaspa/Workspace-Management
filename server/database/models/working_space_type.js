@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class working_space_type extends Model {
+  class workingSpaceType extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,13 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  working_space_type.init({
+  workingSpaceType.init({
     name: DataTypes.STRING,
     reservationTime: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'working_space_type',
+    modelName: 'workingSpaceType',
     paranoid: true
   });
-  return working_space_type;
+  return workingSpaceType;
 };

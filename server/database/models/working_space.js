@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class working_space extends Model {
+  class workingSpace extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -17,15 +17,15 @@ module.exports = (sequelize, DataTypes) => {
       models.area.hasMany(working_space, { foreignKey: 'areaId' });
     }
   }
-  working_space.init({
+  workingSpace.init({
     name: DataTypes.STRING,
     permanentlyReserved: DataTypes.BOOLEAN,
     typeId: DataTypes.INTEGER,
     areaId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'working_space',
+    modelName: 'workingSpace',
     paranoid: true
   });
-  return working_space;
+  return workingSpace;
 };

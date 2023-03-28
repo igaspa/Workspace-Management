@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false
       },
-      is_sent: {
+      status: {
         type: Sequelize.BOOLEAN,
         enum: notificationStatus,
         allowNull: false

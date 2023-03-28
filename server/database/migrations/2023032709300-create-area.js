@@ -10,6 +10,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       location_id: {
         allowNull: false,
         type: Sequelize.UUID

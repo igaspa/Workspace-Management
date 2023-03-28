@@ -13,6 +13,8 @@ const responseMessages = {
   MISSING_AUTHORIZATION: 'Missing authorization from headers!',
   INVALID_TOKEN: 'Invalid token, you are not allowed to view this page!',
   LOGIN_AUTHORIZATION_ERROR: 'Invalid email or password!',
+  LOGIN_SUCCESS: 'Successfully logged in!',
+  INVALID_PAGE: 'Invalid page requested'
   LOGIN_SUCCESS: 'Successfully logged in!'
 };
 

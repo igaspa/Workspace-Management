@@ -8,7 +8,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
   // Take page number from parameters
   if (page) {
     if (isNaN(page) || page < 1) {
-      // TODO THROW ERROR
+      throw errors.VALIDATION(responseMessage.INVALID_PAGE);
     }
   }
   const { limit, offset } = getPagination(page, size);

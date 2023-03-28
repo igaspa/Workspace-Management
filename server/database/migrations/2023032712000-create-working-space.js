@@ -11,7 +11,8 @@ module.exports = {
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       permanently_reserved: {
         allowNull: false,
@@ -27,6 +28,10 @@ module.exports = {
       },
       created_at: {
         allowNull: false,
+        type: Sequelize.DATE
+      },
+      deleted_at: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       updated_at: {

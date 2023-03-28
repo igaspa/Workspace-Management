@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     sequelize,
     modelName: 'area',
+    tableName: 'area',
     paranoid: true
   });
   return area;

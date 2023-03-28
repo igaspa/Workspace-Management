@@ -4,8 +4,8 @@ const router = require('./routers/index');
 const { errorMiddleware } = require('./middleware/error-handler');
 
 app.use(express.json());
-app.use(errorMiddleware);
 app.use('/api/v1/', router);
+app.use(errorMiddleware);
 
 // throw error 404 for pages that do not exist
 app.all('*', (_req, res) => {

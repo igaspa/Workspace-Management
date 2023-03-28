@@ -1,11 +1,7 @@
+
 const app = require('./app');
+const PORT = process.env.PORT || 4000;
 
-const port = process.env.PORT || 8080;
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, () => {
-  console.log(`Server listening on the port  ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server listening on the port  ${PORT}`);
 });

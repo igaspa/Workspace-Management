@@ -6,9 +6,8 @@ module.exports = {
     await queryInterface.createTable('working_space_type', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       name: {
         allowNull: false,
@@ -16,7 +15,7 @@ module.exports = {
       },
       reservation_time: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.DATE
       },
       deleted_at: {
         allowNull: true,

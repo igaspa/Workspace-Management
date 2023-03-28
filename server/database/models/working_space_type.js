@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   workingSpaceType.init({
     name: DataTypes.STRING,
-    reservationTime: DataTypes.INTEGER
+    reservationTime: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'workingSpaceType',

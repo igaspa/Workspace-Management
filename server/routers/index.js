@@ -1,7 +1,12 @@
+const workingSpaceRouter = require('./working-space');
+const notificationTemplateRouter = require('./notification-template');
+const notificationRouter = require('./notification');
+
 const express = require('express');
 const router = express.Router();
 
-const workingSpace = require('./working-space');
-router.use('/', workingSpace);
+router.use('/working-space', workingSpaceRouter);
+router.use('/notification-template', notificationTemplateRouter);
+router.use('/notification', notificationRouter);
 
 module.exports = router;

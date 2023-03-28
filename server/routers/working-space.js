@@ -6,6 +6,6 @@ const workingSpaceController = require('../controllers/working-space');
 
 const router = express.Router();
 
-router.post('/working-space', callbackErrorHandler(workingSpaceController.createWorkingSpace));
+router.post('/', callbackErrorHandler(workingSpaceController.createWorkingSpace));
 
 module.exports = router;

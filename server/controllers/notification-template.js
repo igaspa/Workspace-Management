@@ -10,13 +10,13 @@ module.exports.getNotificationTemplate = async (req, res) => {
 };
 
 module.exports.createNotificationTemplate = async (req, res) => {
-  const [model] = await notificationTemplate.upsert(req.body, {
-    where: { id: req.params.id },
-    returning: true
-  });
-  // TODO Add template to cache
-  res.status(200).json(model);
+  await generalController.createModel(notificationTemplate, req, res);
 };
+
+module.exports.updateNotificationTemplate = async (req, res) => {
+  await generalController.updateModel(notificationTemplate, req, res);
+};
+
 module.exports.deleteNotificationTemplate = async (req, res) => {
   await generalController.deleteModel(notificationTemplate, req, res);
 };

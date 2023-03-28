@@ -22,13 +22,17 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.UUID
     },
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      unique: true
+    },
     permanentlyReserved: DataTypes.BOOLEAN,
     typeId: DataTypes.INTEGER,
     areaId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'workingSpace',
+    tableName: 'working_space',
     paranoid: true
   });
   return workingSpace;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const backOfficeRoutes = require('./working-space');
-router.use('/back-office', backOfficeRoutes);
+const workingSpace = require('./working-space');
+router.use('/', workingSpace);
 
 module.exports = router;

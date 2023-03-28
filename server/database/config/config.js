@@ -19,6 +19,10 @@ module.exports =
     searchPath: schemeName,
     dialectOptions: {
       prependSearchPath: true
+    },
+    define: {
+      freezeTableName: true,
+      underscored: true
     }
   },
   stage: {

@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'workingSpaceType',
+    tableName: 'working_space_type',
     paranoid: true
   });
   return workingSpaceType;

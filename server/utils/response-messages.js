@@ -15,7 +15,6 @@ const responseMessages = {
   LOGIN_AUTHORIZATION_ERROR: 'Invalid email or password!',
   LOGIN_SUCCESS: 'Successfully logged in!',
   INVALID_PAGE: 'Invalid page requested'
-  LOGIN_SUCCESS: 'Successfully logged in!'
 };
 
 module.exports = responseMessages;

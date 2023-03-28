@@ -10,18 +10,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      models.user.belongsToMany(models.working_space, {
+      models.user.belongsToMany(models.workingSpace, {
         through: reservation,
         foreignKey: 'userId'
       });
-      models.working_space.belongsToMany(models.user, {
+      models.workingSpace.belongsToMany(models.user, {
         through: reservation,
         foreignKey: 'workingSpaceId'
       });
     }
   }
   reservation.init({
-    id: DataTypes.UUID,
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID
+    },
     userId: DataTypes.UUID,
     workingSpaceId: DataTypes.INTEGER,
     reservationStart: DataTypes.DATE,

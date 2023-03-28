@@ -10,18 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      notification.belongsTo(models.notification_template, { foreignKey: 'notificationTemplateId' });
-      models.notification_template.hasMany(notification, { foreignKey: 'notificationTemplateId' });
+      notification.belongsTo(models.notificationTemplate, { foreignKey: 'notificationTemplateId' });
+      models.notificationTemplate.hasMany(notification, { foreignKey: 'notificationTemplateId' });
 
       notification.belongsTo(models.reservation, { foreignKey: 'reservationId' });
       models.reservation.hasMany(notification, { foreignKey: 'reservationId' });
     }
   }
   notification.init({
-    id: DataTypes.UUID,
     notificationTemplateId: DataTypes.UUID,
     reservationId: DataTypes.UUID,
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'notification',

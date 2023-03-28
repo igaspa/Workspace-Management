@@ -10,14 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      working_space.belongsTo(models.working_space_type, { foreignKey: 'typeId' });
-      models.working_space_type.hasMany(working_space, { foreignKey: 'typeId' });
+      workingSpace.belongsTo(models.workingSpaceType, { foreignKey: 'typeId' });
+      models.workingSpaceType.hasMany(workingSpace, { foreignKey: 'typeId' });
 
-      working_space.belongsTo(models.area, { foreignKey: 'areaId' });
-      models.area.hasMany(working_space, { foreignKey: 'areaId' });
+      workingSpace.belongsTo(models.area, { foreignKey: 'areaId' });
+      models.area.hasMany(workingSpace, { foreignKey: 'areaId' });
     }
   }
   workingSpace.init({
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID
+    },
     name: DataTypes.STRING,
     permanentlyReserved: DataTypes.BOOLEAN,
     typeId: DataTypes.INTEGER,

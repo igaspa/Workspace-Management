@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   workingSpaceType.init({
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID
+    },
     name: DataTypes.STRING,
     reservationTime: DataTypes.DATE
   }, {

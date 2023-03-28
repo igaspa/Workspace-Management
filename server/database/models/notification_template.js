@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'notificationTemplate',
+    tableName: 'notification_template',
     paranoid: true
   });
   return notificationTemplate;

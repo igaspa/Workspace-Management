@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: DataTypes.STRING,
-    reservationTime: DataTypes.DATE
+    reservationTime: DataTypes.TIME
   }, {
     sequelize,
     modelName: 'workingSpaceType',

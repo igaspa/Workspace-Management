@@ -15,7 +15,7 @@ module.exports = {
       },
       working_space_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       reservation_start: {
         allowNull: false,

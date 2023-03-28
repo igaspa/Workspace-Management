@@ -19,7 +19,7 @@ module.exports = {
       },
       type_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       area_id: {
         allowNull: false,

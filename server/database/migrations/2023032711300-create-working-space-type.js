@@ -15,7 +15,7 @@ module.exports = {
       },
       reservation_time: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.TIME
       },
       deleted_at: {
         allowNull: true,

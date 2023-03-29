@@ -8,7 +8,9 @@ module.exports = {
         id: '5419ce7d-c415-480d-a980-cd169559bc85',
         address: 'Poljicka cesta 43',
         city: 'Split',
-        country: 'Croatia'
+        country: 'Croatia',
+        created_at: new Date(),
+        updated_at: new Date()
       }
     ]);
   },

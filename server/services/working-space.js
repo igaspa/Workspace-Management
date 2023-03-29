@@ -3,20 +3,23 @@
 const { workingSpace } = require('../database/models');
 const { v4: uuidv4 } = require('uuid');
 
-exports.createWorkingSpaces = async (workSpaceType, req) => {
-  const { start, end, areaId, typeId, permanentlyReserved } = req.body;
-  let num = start;
+exports.createWorkingSpaces = async (req) => {
+  const { total, areaId, type, permanentlyReserved } = req.body;
+
+  let start = await workingSpace.count() + 1 || 0;
+  const end = start + total;
+  console.log(start, end);
 
   const objectList = [];
-  while (num <= end) {
+  while (start <= end) {
     objectList.push({
       id: uuidv4(),
-      name: `${workSpaceType.name}-${num}`,
+      name: `${type.name} - ${start}`,
       permanentlyReserved,
-      typeId,
+      typeId: type.id,
       areaId
     });
-    num++;
+    start++;
   }
   //   return objectList;
   await workingSpace.bulkCreate(objectList);

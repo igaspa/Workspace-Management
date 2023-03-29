@@ -6,7 +6,7 @@ module.exports.getAllNotificationTemplates = async (req, res) => {
 };
 
 module.exports.getNotificationTemplate = async (req, res) => {
-  await generalController.findModel(notificationTemplate, null, req, res);
+  await generalController.findOneModel(notificationTemplate, null, req, res);
 };
 
 module.exports.createNotificationTemplate = async (req, res) => {

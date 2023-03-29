@@ -1,8 +1,12 @@
 'use strict';
+const withInterval = require('sequelize-interval-postgres');
+
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
+  const AdditDataTypes = withInterval(DataTypes);
+
   class workingSpaceType extends Model {
     /**
      * Helper method for defining associations.
@@ -19,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: DataTypes.STRING,
-    reservationTime: DataTypes.TIME
+    reservationTime: AdditDataTypes.INTERVAL
   }, {
     sequelize,
     modelName: 'workingSpaceType',

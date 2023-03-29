@@ -1,6 +1,6 @@
 const EXCLUDE_LIST = require('../utils/constants');
 const { findPages, getPagination } = require('../utils/pagination');
-const errors = require('../utils/errors');
+const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
 
 module.exports.findAllModels = async (Model, customOptions, req, res) => {
@@ -73,7 +73,7 @@ module.exports.updateModel = async (Model, req, res) => {
     returning: true
   });
 
-  if (!updatedModel[0]) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
+  if (!updatedModel) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
   res.status(200).json(updatedModel);
 };
@@ -82,8 +82,9 @@ module.exports.deleteModel = async (Model, req, res) => {
   const deletedModel = await Model.destroy({
     where: { id: req.params.id }
   });
+  console.log(deletedModel);
 
-  if (!deletedModel[0]) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
+  if (!deletedModel) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
   res.status(200).json(deletedModel);
 };

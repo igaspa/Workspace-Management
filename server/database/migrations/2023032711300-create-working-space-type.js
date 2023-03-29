@@ -1,8 +1,10 @@
 'use strict';
+const withInterval = require('sequelize-interval-postgres');
 const { schemeName } = require('../../utils/constants');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    const SequelizeType = withInterval(Sequelize);
     await queryInterface.createTable('working_space_type', {
       id: {
         allowNull: false,
@@ -15,7 +17,7 @@ module.exports = {
       },
       reservation_time: {
         allowNull: false,
-        type: Sequelize.TIME
+        type: SequelizeType.INTERVAL
       },
       deleted_at: {
         allowNull: true,

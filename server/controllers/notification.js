@@ -6,7 +6,7 @@ module.exports.getAllNotification = async (req, res) => {
 };
 
 module.exports.getNotification = async (req, res) => {
-  await generalController.findModel(notification, null, req, res);
+  await generalController.findOneModel(notification, null, req, res);
 };
 
 module.exports.deleteNotification = async (req, res) => {

@@ -69,7 +69,7 @@ module.exports.createModel = async (Model, req, res) => {
 
 module.exports.updateModel = async (Model, req, res) => {
   const updatedModel = await Model.update(req.body, {
-    where: { id: req.params.id, deleted: false },
+    where: { id: req.params.id },
     returning: true
   });
   if (updatedModel[0] === 0) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
@@ -79,7 +79,7 @@ module.exports.updateModel = async (Model, req, res) => {
 
 module.exports.deleteModel = async (Model, req, res) => {
   const deletedModel = await Model.destroy({
-    where: { id: req.params.id, deleted: false }
+    where: { id: req.params.id }
   });
   if (deletedModel[0] === 0) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
 

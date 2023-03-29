@@ -23,8 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: {
-      type: DataTypes.STRING,
-      unique: true
+      type: DataTypes.STRING
     },
     permanentlyReserved: DataTypes.BOOLEAN,
     typeId: DataTypes.INTEGER,

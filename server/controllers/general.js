@@ -35,7 +35,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
   res.set('X-Total-Pages', pageCount);
 
   const models = await Model.findAll(options);
-  if (!models) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
+  if (!models) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
   res.status(200).json(models);
 };
@@ -55,7 +55,7 @@ module.exports.findOneModel = async (Model, customOptions, req, res) => {
   }
 
   const model = await Model.findOne(options);
-  if (!model) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
+  if (!model) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
   res.status(200).json(model);
 };
@@ -72,7 +72,8 @@ module.exports.updateModel = async (Model, req, res) => {
     where: { id: req.params.id },
     returning: true
   });
-  if (updatedModel[0] === 0) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
+
+  if (!updatedModel[0]) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
   res.status(200).json(updatedModel);
 };
@@ -81,7 +82,8 @@ module.exports.deleteModel = async (Model, req, res) => {
   const deletedModel = await Model.destroy({
     where: { id: req.params.id }
   });
-  if (deletedModel[0] === 0) { throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name)); };
+
+  if (!deletedModel[0]) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
   res.status(200).json(deletedModel);
 };

@@ -20,36 +20,20 @@ exports.working_space_type = joi.object({
 
 // Working Space Entity Schema
 exports.working_space = joi.object({
-  id: joi.string()
-    .guid({ version: 'uuidv4' })
-    .alter({
-      post: (workingSpaceSchema) => workingSpaceSchema.required(),
-      put: (workingSpaceSchema) => workingSpaceSchema.forbidden()
-    }),
-  name: joi.string()
-    .min(4)
-    .max(50)
-    .alter({
-      post: (workingSpaceSchema) => workingSpaceSchema.required(),
-      put: (workingSpaceSchema) => workingSpaceSchema.optional()
-    }),
   permanentlyReserved: joi.boolean()
-    .alter({
-      post: (workingSpaceSchema) => workingSpaceSchema.required(),
-      put: (workingSpaceSchema) => workingSpaceSchema.optional()
-    }),
+    .required(),
   typeId: joi.string()
     .guid({ version: 'uuidv4' })
-    .alter({
-      post: (workingSpaceSchema) => workingSpaceSchema.required(),
-      put: (workingSpaceSchema) => workingSpaceSchema.forbidden()
-    }),
+    .required(),
   areaId: joi.string()
     .guid({ version: 'uuidv4' })
-    .alter({
-      post: (workingSpaceSchema) => workingSpaceSchema.required(),
-      put: (workingSpaceSchema) => workingSpaceSchema.forbidden()
-    })
+    .required(),
+  start: joi.number()
+    .min(1)
+    .alter(),
+  end: joi.number()
+    .max(200)
+    .required()
 }).options({ abortEarly: false });
 
 // Area Entity Schema

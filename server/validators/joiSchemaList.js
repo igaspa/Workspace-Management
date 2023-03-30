@@ -10,14 +10,7 @@ exports.working_space_type = joi.object({
       put: (workingSpaceTypeSchema) => workingSpaceTypeSchema.forbidden()
     }),
   name: joi.string()
-    .min(5)
-    .max(50)
-    .alter({
-      post: (workingSpaceTypeSchema) => workingSpaceTypeSchema.required(),
-      put: (workingSpaceTypeSchema) => workingSpaceTypeSchema.optional()
-    }),
-  reservationTime: joi.string()
-    .min(5)
+    .min(3)
     .max(50)
     .alter({
       post: (workingSpaceTypeSchema) => workingSpaceTypeSchema.required(),
@@ -34,7 +27,7 @@ exports.working_space = joi.object({
       put: (workingSpaceSchema) => workingSpaceSchema.forbidden()
     }),
   name: joi.string()
-    .min(5)
+    .min(4)
     .max(50)
     .alter({
       post: (workingSpaceSchema) => workingSpaceSchema.required(),
@@ -68,7 +61,7 @@ exports.area = joi.object({
       put: (areaSchema) => areaSchema.forbidden()
     }),
   name: joi.string()
-    .min(1)
+    .min(3)
     .max(50)
     .alter({
       post: (areaSchema) => areaSchema.required(),
@@ -88,8 +81,8 @@ exports.area = joi.object({
       put: (areaSchema) => areaSchema.forbidden()
     }),
   image: joi.string()
-    .min(1)
-    .max(50)
+    .min(10)
+    .max(70)
     .alter({
       post: (areaSchema) => areaSchema.required(),
       put: (areaSchema) => areaSchema.optional()
@@ -105,21 +98,21 @@ exports.location = joi.object({
       put: (locationSchema) => locationSchema.forbidden()
     }),
   address: joi.string()
-    .min(1)
+    .min(5)
     .max(50)
     .alter({
       post: (locationSchema) => locationSchema.required(),
       put: (locationSchema) => locationSchema.optional()
     }),
   city: joi.string()
-    .min(1)
+    .min(3)
     .max(50)
     .alter({
       post: (locationSchema) => locationSchema.required(),
       put: (locationSchema) => locationSchema.optional()
     }),
   country: joi.string()
-    .min(1)
+    .min(3)
     .max(50)
     .alter({
       post: (locationSchema) => locationSchema.required(),
@@ -149,11 +142,25 @@ exports.reservation = joi.object({
     }),
   participants: joi.array()
     .items({
-      id: joi.string()
-        .guid({ version: 'uuidv4' })
+      firstName: joi.string()
+        .min(5)
+        .max(50)
         .alter({
-          post: (reservationSchema) => reservationSchema.required(),
-          put: (reservationSchema) => reservationSchema.forbidden()
+          post: (workingSpaceId) => workingSpaceId.required(),
+          put: (workingSpaceId) => workingSpaceId.optional()
+        }),
+      lastName: joi.string()
+        .min(5)
+        .max(50)
+        .alter({
+          post: (workingSpaceId) => workingSpaceId.required(),
+          put: (workingSpaceId) => workingSpaceId.optional()
+        }),
+      email: joi.string()
+        .email({ minDomainSegments: 2 })
+        .alter({
+          post: (workingSpaceId) => workingSpaceId.required(),
+          put: (workingSpaceId) => workingSpaceId.forbidden()
         })
     })
 }).options({ abortEarly: false });
@@ -167,6 +174,6 @@ exports.role = joi.object({
       put: (roleSchema) => roleSchema.forbidden()
     }),
   name: joi.string()
-    .min(5)
+    .min(4)
     .required()
 }).options({ abortEarly: false });

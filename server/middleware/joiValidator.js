@@ -14,7 +14,7 @@ exports.paramValidator = (req, _res, next) => {
   if (req.params) {
     for (const param in req.params) {
       const { error } = joiSchemaList.idSchema.validate(req.params[param], VALIDATION_OPTION);
-      if (error) throw errors.VALIDATION(error.details[0].message);
+      if (error) throw errors.VALIDATION(error.details);
     }
   }
 

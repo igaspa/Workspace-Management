@@ -14,7 +14,7 @@ exports.paramValidator = (req, _res, next) => {
   if (req.params) {
     for (const param in req.params) {
       const { error } = joiSchemaList.idSchema.validate(req.params[param], VALIDATION_OPTION);
-      if (error) throw errors.VALIDATION(error.details);
+      if (error) throw errors.VALIDATION(error.details.map(err => err.message));
     }
   }
 
@@ -29,6 +29,6 @@ exports.bodyValidator = (req, _res, next) => {
   // Accepted body properties depend on whether it is a PUT or POST Request
   schema = joiSchemaList[schemaName].tailor(req.method.toLowerCase());
   const { error } = schema.validate(req.body, VALIDATION_OPTION);
-  if (error) throw errors.VALIDATION(error.details[0].message);
+  if (error) throw errors.VALIDATION(error.details.map(err => err.message));
   next();
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 
 const generalController = require('../controllers/location');
+const { bodyValidator, paramValidator } = require('../middleware/joiValidator');
 const { callbackErrorHandler } = require('../middleware/error-handler');
 
 const router = express.Router();
@@ -8,12 +9,12 @@ const router = express.Router();
 router
   .route('/')
   .get(callbackErrorHandler(generalController.getAllLocations))
-  .post(callbackErrorHandler(generalController.createLocation));
+  .post(bodyValidator, callbackErrorHandler(generalController.createLocation));
 
 router
   .route('/:id')
-  .get(callbackErrorHandler(generalController.getLocation))
-  .put(callbackErrorHandler(generalController.updateLocation))
-  .delete(callbackErrorHandler(generalController.deleteLocation));
+  .get(paramValidator, callbackErrorHandler(generalController.getLocation))
+  .put(paramValidator, bodyValidator, callbackErrorHandler(generalController.updateLocation))
+  .delete(paramValidator, callbackErrorHandler(generalController.deleteLocation));
 
 module.exports = router;

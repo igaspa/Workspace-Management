@@ -32,7 +32,13 @@ module.exports = (sequelize, DataTypes) => {
     participants: DataTypes.JSONB
   }, {
     sequelize,
-    modelName: 'reservation'
+    modelName: 'reservation',
+    indexes: [
+      {
+        unique: true,
+        fields: ['reservationStart', 'workingSpaceId']
+      }
+    ]
   });
   return reservation;
 };

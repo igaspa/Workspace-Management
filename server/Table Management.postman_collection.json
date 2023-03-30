@@ -1,0 +1,654 @@
+{
+	"info": {
+		"_postman_id": "5825fb02-4d07-43cd-918a-35952950e809",
+		"name": "Table Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24878283"
+	},
+	"item": [
+		{
+			"name": "Notification Template",
+			"item": [
+				{
+					"name": "Notification Template",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/notification-template",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"notification-template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification Template",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/notification-template/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"notification-template",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "fc06d6a8-15b9-4134-89f9-49e490947f76"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "Notification",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/notification",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"notification"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Area",
+			"item": [
+				{
+					"name": "Get All Areas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/area",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"area"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Area",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/area/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"area",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "26bae8e2-50fd-41cd-8b29-d1bf2a5becd2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Area",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"cbcf8abe-0077-4b29-84c2-7d8ab39b60e6\",\n    \"name\": \"South Wing\",\n    \"locationId\": \"5419ce7d-c415-480d-a980-cd169559bc85\",\n    \"floor\": \"Second Floor\",\n    \"image\": \"https://drive.google.com/file/d/1Z5CBJ8I0Q6s_nM2Lfax95zj8vQiGgUf6/view?usp=share_link\",\n    \"createdAt\": \"2023-03-29T08:14:49.056Z\",\n    \"updatedAt\": \"2023-03-29T08:14:49.056Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/area",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"area"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Area",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"cbcf8abe-0077-4b29-84c2-7d8ab39b60e6\",\n    \"name\": \"South Wing\",\n    \"locationId\": \"5419ce7d-c415-480d-a980-cd169559bc85\",\n    \"floor\": \"First Floor\",\n    \"image\": \"https://drive.google.com/file/d/1Z5CBJ8I0Q6s_nM2Lfax95zj8vQiGgUf6/view?usp=share_link\",\n    \"createdAt\": \"2023-03-29T08:14:49.056Z\",\n    \"updatedAt\": \"2023-03-29T08:14:49.056Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/area/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"area",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cbcf8abe-0077-4b29-84c2-7d8ab39b60e6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Area",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/area/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"area",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cbcf8abe-0077-4b29-84c2-7d8ab39b60e6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Location",
+			"item": [
+				{
+					"name": "Get All Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/location",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Location",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/location/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"location",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5419ce7d-c415-480d-a980-cd169559bc85"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"aaab02eb-b5b1-4fcf-8c1b-ad5f3ec0e7c3\",\n    \"address\": \"Poljicka cesta 41\",\n    \"city\": \"Split\",\n    \"country\": \"Croatia\",\n    \"createdAt\": \"2023-03-29T08:14:49.041Z\",\n    \"updatedAt\": \"2023-03-29T08:14:49.041Z\",\n    \"deletedAt\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/location",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Location",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"aaab02eb-b5b1-4fcf-8c1b-ad5f3ec0e7c3\",\n    \"address\": \"Poljicka cesta 42\",\n    \"city\": \"Split\",\n    \"country\": \"Croatia\",\n    \"createdAt\": \"2023-03-29T08:14:49.041Z\",\n    \"updatedAt\": \"2023-03-29T08:14:49.041Z\",\n    \"deletedAt\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/location/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"location",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "aaab02eb-b5b1-4fcf-8c1b-ad5f3ec0e7c3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Location",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/location/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"location",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "aaab02eb-b5b1-4fcf-8c1b-ad5f3ec0e7c3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Working Space",
+			"item": [
+				{
+					"name": "Get all working spaces",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get working space",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space/cae42cfe-1c81-42ce-84d3-222881f76519",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space",
+								"cae42cfe-1c81-42ce-84d3-222881f76519"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create working space",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"areaInfo\": {\n        \"id\": \"26bae8e2-50fd-41cd-8b29-d1bf2a5becd2\",\n        \"locationId\": \"5419ce7d-c415-480d-a980-cd169559bc85\"\n    },\n    \"type\": {\n        \"id\": \"e0ae075e-3ac9-43a2-88eb-59864cf141ef\",\n        \"name\": \"Desk\"\n    },\n    \"total\": 20,\n    \"permanentlyReserved\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete working space by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space/cae42cfe-1c81-42ce-84d3-222881f76519",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space",
+								"cae42cfe-1c81-42ce-84d3-222881f76519"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Working Space Type",
+			"item": [
+				{
+					"name": "Get all working space types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space-type",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space-type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get working space type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space-type/1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space-type",
+								"1dcdda55-3a43-4dc7-bc0d-0ccf99350502"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Working Space Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"eb6e1123-f8c4-43d4-9491-fbaa214cb536\",\n    \"name\": \"Conference Room\",\n    \"reservationTime\": \"00:15:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space-type",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space-type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete working space type",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/working-space-type/1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"working-space-type",
+								"1dcdda55-3a43-4dc7-bc0d-0ccf99350502"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

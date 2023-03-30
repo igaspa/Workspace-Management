@@ -1,27 +1,20 @@
 // const responseMessage = require('../utils/response-messages');
 // const { errors } = require('../utils/errors');
-const { workingSpace, area } = require('../database/models');
+const { workingSpace, workingSpaceType } = require('../database/models');
 const { v4: uuidv4 } = require('uuid');
 
 exports.createWorkingSpaces = async (req) => {
-  const { total, areaInfo, type, permanentlyReserved } = req.body;
+  const { start, end, areaId, typeId, permanentlyReserved } = req.body;
 
-  // count all working spaces based on their type and location
-  let count = await workingSpace.count({
+  let count = start;
+
+  const type = await workingSpaceType.findOne({
     where: {
-      type_id: type.id
+      id: typeId
     },
-    include: [
-      {
-        model: area,
-        where: {
-          locationId: areaInfo.locationId
-        }
-      }
-    ]
-  }) + 1 || 1;
-
-  const end = count + total;
+    attributes: ['name']
+  });
+  console.log(type);
 
   // after we count working spaces we know from where to continue
   const objectList = [];
@@ -30,8 +23,8 @@ exports.createWorkingSpaces = async (req) => {
       id: uuidv4(),
       name: `${type.name} - ${count}`,
       permanentlyReserved,
-      typeId: type.id,
-      areaId: areaInfo.id
+      typeId,
+      areaId
     });
     count++;
   }

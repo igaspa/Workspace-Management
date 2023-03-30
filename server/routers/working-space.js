@@ -1,4 +1,5 @@
 const { callbackErrorHandler } = require('../middleware/error-handler');
+const { bodyValidator, paramValidator } = require('../middleware/joiValidator');
 const express = require('express');
 
 const workingSpaceController = require('../controllers/working-space');
@@ -7,13 +8,13 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(callbackErrorHandler(workingSpaceController.createWorkingSpace))
-  .get(callbackErrorHandler(workingSpaceController.getAllWorkingSpaces));
+  .get(callbackErrorHandler(workingSpaceController.getAllWorkingSpaces))
+  .post(bodyValidator, callbackErrorHandler(workingSpaceController.createWorkingSpace));
 
 router
   .route('/:id')
-  .get(callbackErrorHandler(workingSpaceController.getWorkingSpace))
-  .put(callbackErrorHandler(workingSpaceController.updateWorkingSpace))
-  .delete(callbackErrorHandler(workingSpaceController.deleteWorkingSpace));
+  .get(paramValidator, callbackErrorHandler(workingSpaceController.getWorkingSpace))
+  .put(paramValidator, bodyValidator, callbackErrorHandler(workingSpaceController.updateWorkingSpace))
+  .delete(paramValidator, callbackErrorHandler(workingSpaceController.deleteWorkingSpace));
 
 module.exports = router;

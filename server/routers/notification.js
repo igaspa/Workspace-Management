@@ -2,6 +2,7 @@ const express = require('express');
 
 const generalController = require('../controllers/notification');
 const { callbackErrorHandler } = require('../middleware/error-handler');
+const { paramValidator } = require('../middleware/joiValidator');
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router
 
 router
   .route('/:id')
-  .get(callbackErrorHandler(generalController.getNotification))
-  .delete(callbackErrorHandler(generalController.deleteNotification));
+  .get(paramValidator, callbackErrorHandler(generalController.getNotification))
+  .delete(paramValidator, callbackErrorHandler(generalController.deleteNotification));
 
 module.exports = router;

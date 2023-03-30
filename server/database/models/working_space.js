@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
     areaId: DataTypes.INTEGER
   }, {
     sequelize,
+    indexes: [
+      {
+        unique: true,
+        fields: ['name', 'areaId']
+      }
+    ],
     modelName: 'workingSpace',
     tableName: 'working_space',
     paranoid: true

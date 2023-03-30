@@ -5,12 +5,10 @@ const workingSpaceController = require('../controllers/working-space');
 
 const router = express.Router();
 
-router.post('/collection', callbackErrorHandler(workingSpaceController.createMultipleWorkingSpaces));
-
 router
   .route('/')
-  .get(callbackErrorHandler(workingSpaceController.getAllWorkingSpaces))
-  .post(callbackErrorHandler(workingSpaceController.createWorkingSpace));
+  .post(callbackErrorHandler(workingSpaceController.createWorkingSpace))
+  .get(callbackErrorHandler(workingSpaceController.getAllWorkingSpaces));
 
 router
   .route('/:id')

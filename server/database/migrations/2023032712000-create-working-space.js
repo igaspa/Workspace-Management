@@ -37,6 +37,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    },
+    {
+      uniqueKeys: {
+        Items_unique: {
+          fields: ['name', 'area_id']
+        }
+      }
     });
   },
   async down (queryInterface, _Sequelize) {

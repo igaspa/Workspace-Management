@@ -1,4 +1,4 @@
-const EXCLUDE_LIST = require('../utils/constants');
+const { EXCLUDE_LIST } = require('../utils/constants');
 const { findPages, getPagination } = require('../utils/pagination');
 const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
@@ -13,7 +13,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
   }
   const { limit, offset } = getPagination(page, size);
   const options = {
-    exclude: EXCLUDE_LIST,
+    attributes: { exclude: EXCLUDE_LIST },
     where: [],
     order: [],
     limit,
@@ -42,7 +42,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
 
 module.exports.findOneModel = async (Model, customOptions, req, res) => {
   const options = {
-    exclude: EXCLUDE_LIST,
+    attributes: { exclude: EXCLUDE_LIST },
     where: [{ id: req.params.id }],
     order: [],
     include: []

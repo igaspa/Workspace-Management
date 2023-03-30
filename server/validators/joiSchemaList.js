@@ -82,7 +82,7 @@ exports.area = joi.object({
     }),
   image: joi.string()
     .min(10)
-    .max(70)
+    .max(150)
     .alter({
       post: (areaSchema) => areaSchema.required(),
       put: (areaSchema) => areaSchema.optional()

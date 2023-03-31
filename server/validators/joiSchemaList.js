@@ -30,7 +30,7 @@ exports.working_space = joi.object({
     .required(),
   start: joi.number()
     .min(1)
-    .alter(),
+    .required(),
   end: joi.number()
     .max(200)
     .required()

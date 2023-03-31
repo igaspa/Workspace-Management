@@ -2,9 +2,11 @@ const { EXCLUDE_LIST } = require('../utils/constants');
 const { findPages, getPagination } = require('../utils/pagination');
 const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
+const { checkModelAssociations } = require('./helpers/model-associations');
 
 module.exports.findAllModels = async (Model, customOptions, req, res) => {
-  const { page, size } = req.query;
+  const { page, size, include } = req.query;
+
   // Take page number from parameters
   if (page) {
     if (isNaN(page) || page < 1) {
@@ -20,6 +22,13 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
     offset,
     include: []
   };
+
+  // Add included models
+  if (include) {
+    const includeOptions = checkModelAssociations(Model, include);
+    options.include = includeOptions;
+  }
+
   // Add new options if they exist
   if (customOptions) {
     for (const property in customOptions) {
@@ -41,13 +50,23 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
 };
 
 module.exports.findOneModel = async (Model, customOptions, req, res) => {
+  const { id } = req.params;
+  const { include } = req.query;
+
   const options = {
     attributes: { exclude: EXCLUDE_LIST },
-    where: [{ id: req.params.id }],
+    where: [{ id }],
     order: [],
     include: []
   };
-    // Add new options if they exist
+
+  // Add included models
+  if (include) {
+    const includeOptions = checkModelAssociations(Model, include);
+    options.include = includeOptions;
+  }
+
+  // Add new options if they exist
   if (customOptions) {
     for (const property in customOptions) {
       options[property] = options[property].concat(customOptions[property]);

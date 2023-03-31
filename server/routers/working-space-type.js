@@ -1,6 +1,6 @@
 
 const { callbackErrorHandler } = require('../middleware/error-handler');
-const { bodyValidator, paramValidator } = require('../middleware/joiValidator');
+const { bodyValidator, paramValidator } = require('../middleware/joi-validator');
 
 const express = require('express');
 

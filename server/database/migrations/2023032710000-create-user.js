@@ -31,10 +31,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      role_id: {
-        type: Sequelize.UUID,
-        allowNull: false
-      },
       deleted_at: {
         allowNull: true,
         type: Sequelize.DATE

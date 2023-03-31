@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   notificationTemplate.init({
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      allowNull: false
+    },
     name: DataTypes.STRING,
     template: DataTypes.JSONB
   }, {

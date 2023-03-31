@@ -49,18 +49,6 @@ module.exports = {
       }
     });
 
-    await queryInterface.addConstraint('user', {
-      fields: ['role_id'],
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-      name: 'user_role',
-      type: 'foreign key',
-      references: {
-        table: 'role',
-        field: 'id'
-      }
-    });
-
     await queryInterface.addConstraint('working_space', {
       fields: ['type_id'],
       onDelete: 'cascade',
@@ -101,7 +89,6 @@ module.exports = {
     await queryInterface.removeConstraint('notification', 'notification_reservation');
     await queryInterface.removeConstraint('reservation', 'reservation_user');
     await queryInterface.removeConstraint('reservation', 'reservation_working_space');
-    await queryInterface.removeConstraint('user', 'user_role');
     await queryInterface.removeConstraint('working_space', 'working_space_type');
     await queryInterface.removeConstraint('working_space', 'working_space_area');
     await queryInterface.removeConstraint('area', 'area_location');

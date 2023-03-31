@@ -183,3 +183,62 @@ exports.role = joi.object({
     .min(4)
     .required()
 }).options({ abortEarly: false });
+
+// User Entity Schema
+exports.user = joi.object({
+  id: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.forbidden()
+    }),
+  firstName: joi.string()
+    .min(3)
+    .max(50)
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.optional()
+    }),
+  lastName: joi.string()
+    .min(3)
+    .max(50)
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.optional()
+    }),
+  email: joi.string()
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.forbidden()
+    }),
+  password: joi.string()
+    .min(8)
+    .max(80)
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.optional()
+    }),
+  phoneNumber: joi.string()
+    .min(10)
+    .max(15)
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.optional()
+    })
+}).options({ abortEarly: false });
+
+// User-Role Entity Schema
+exports.user_role = joi.object({
+  roleId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (userRoleSchema) => userRoleSchema.required(),
+      put: (userRoleSchema) => userRoleSchema.forbidden()
+    }),
+  userId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (userRoleSchema) => userRoleSchema.required(),
+      put: (userRoleSchema) => userRoleSchema.forbidden()
+    })
+}).options({ abortEarly: false });

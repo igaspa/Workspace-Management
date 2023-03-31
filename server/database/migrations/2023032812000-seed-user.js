@@ -12,7 +12,6 @@ module.exports = {
         email: 'admin@example.com',
         password: 'test123',
         phone_number: '+15055555555',
-        role_id: 'd2477f3b-d4ce-4269-9221-0ad479fd45ad',
         created_at: new Date(),
         updated_at: new Date()
       }

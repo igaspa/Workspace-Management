@@ -19,7 +19,7 @@ exports.working_space_type = joi.object({
 }).options({ abortEarly: false });
 
 // Working Space Entity Schema
-exports.working_space = joi.object({
+exports.working_space_collection = joi.object({
   permanentlyReserved: joi.boolean()
     .required(),
   typeId: joi.string()
@@ -28,11 +28,33 @@ exports.working_space = joi.object({
   areaId: joi.string()
     .guid({ version: 'uuidv4' })
     .required(),
+  prefix: joi.string()
+    .min(2)
+    .max(20)
+    .required(),
   start: joi.number()
     .min(1)
     .required(),
   end: joi.number()
     .max(200)
+    .required()
+}).options({ abortEarly: false });
+
+exports.working_space = joi.object({
+  id: joi.string()
+    .guid({ version: 'uuidv4' })
+    .required(),
+  typeId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .required(),
+  areaId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .required(),
+  name: joi.string()
+    .min(2)
+    .max(20)
+    .required(),
+  permanentlyReserved: joi.boolean()
     .required()
 }).options({ abortEarly: false });
 

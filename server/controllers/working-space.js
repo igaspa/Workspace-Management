@@ -6,7 +6,7 @@ const generalController = require('./general');
 exports.createWorkingSpaces = async (req, res) => {
   await workingSpaceService.createMultipleWorkingSpaces(req);
   return res.status(201).json({
-    message: responseMessage.CREATE_SUCCESS
+    message: responseMessage.CREATE_SUCCESS(workingSpace.name)
   });
 };
 

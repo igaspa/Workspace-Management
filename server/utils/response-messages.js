@@ -4,8 +4,11 @@ const responseMessages = {
   NOT_FOUND_JOIN_TABLE: (modelName) => `Combination is not found in a join table ${modelName}`,
   DELETE_SUCCESS: (modelName) => `${modelName} successfully deleted!`,
   UPDATE_SUCCESS: (modelName) => `${modelName} successfully updated!`,
+  CREATE_SUCCESS: (modelName) => `${modelName} successfully created!`,
+  ASSOCIATION_NOT_FOUND: (association, modelName) => {
+    return `Association with '${association}' does not exist on '${modelName}'`;
+  },
 
-  CREATE_SUCCESS: 'Model successfully created!',
   // Constant messages
   INVALID_ID_TYPE: 'Invalid ID type provided!',
   INVALID_NAME_LENGTH: 'Name must have at least 3 characters!',

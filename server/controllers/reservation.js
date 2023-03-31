@@ -5,7 +5,7 @@ const generalController = require('./general');
 exports.createReservation = async (req, res) => {
 // TO DO
   return res.status(201).json({
-    message: responseMessage.CREATE_SUCCESS
+    message: responseMessage.CREATE_SUCCESS(reservation.name)
   });
 };
 

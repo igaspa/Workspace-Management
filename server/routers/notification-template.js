@@ -2,7 +2,7 @@ const express = require('express');
 
 const generalController = require('../controllers/notification-template');
 const { callbackErrorHandler } = require('../middleware/error-handler');
-const { bodyValidator, paramValidator } = require('../middleware/joiValidator');
+const { bodyValidator, paramValidator } = require('../middleware/joi-validator');
 
 const router = express.Router();
 

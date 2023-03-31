@@ -1,7 +1,7 @@
 const express = require('express');
 
 const generalController = require('../controllers/area');
-const { bodyValidator, paramValidator } = require('../middleware/joiValidator');
+const { bodyValidator, paramValidator } = require('../middleware/joi-validator');
 const { callbackErrorHandler } = require('../middleware/error-handler');
 
 const router = express.Router();

@@ -1,4 +1,4 @@
-const joiSchemaList = require('../validators/joiSchemaList');
+const joiSchemaList = require('../validators/joi-schema-list');
 const { errors } = require('../utils/errors');
 
 // Remove / from error messages
@@ -22,12 +22,24 @@ exports.paramValidator = (req, _res, next) => {
 };
 // Validate sent request body
 exports.bodyValidator = (req, _res, next) => {
-  let schema = null;
-  const schemaName = req.baseUrl.split('/')[3];
+  const schemaName = req.originalUrl.split('/')[3];
   const newSchemaName = schemaName.replace(/-/g, '_');
 
   // Accepted body properties depend on whether it is a PUT or POST Request
-  schema = joiSchemaList[newSchemaName].tailor(req.method.toLowerCase());
+  const schema = joiSchemaList[newSchemaName].tailor(req.method.toLowerCase());
+  const { error } = schema.validate(req.body, VALIDATION_OPTION);
+  if (error) throw errors.VALIDATION(error.details.map(err => err.message));
+  next();
+};
+
+// Validate sent request body
+exports.workingSpaceCollection = (req, _res, next) => {
+  const schemaNameList = req.originalUrl.split('/');
+  const schemaName = schemaNameList[3] + '_' + schemaNameList[4];
+  const newSchemaName = schemaName.replace(/-/g, '_');
+
+  // Accepted body properties depend on whether it is a PUT or POST Request
+  const schema = joiSchemaList[newSchemaName].tailor(req.method.toLowerCase());
   const { error } = schema.validate(req.body, VALIDATION_OPTION);
   if (error) throw errors.VALIDATION(error.details.map(err => err.message));
   next();

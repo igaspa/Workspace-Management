@@ -24,7 +24,7 @@ exports.paramValidator = (req, _res, next) => {
 exports.bodyValidator = (req, _res, next) => {
   let schema = null;
   const schemaName = req.baseUrl.split('/')[3];
-  const newSchemaName = schemaName.replace('-', '_');
+  const newSchemaName = schemaName.replace(/-/g, '_');
 
   // Accepted body properties depend on whether it is a PUT or POST Request
   schema = joiSchemaList[newSchemaName].tailor(req.method.toLowerCase());

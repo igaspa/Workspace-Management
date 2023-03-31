@@ -4,18 +4,15 @@ const { schemeName, notificationStatus } = require('../../utils/constants');
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('notification', {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        type: Sequelize.UUID
-      },
       notification_template_id: {
         type: Sequelize.UUID,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
       },
       reservation_id: {
         type: Sequelize.UUID,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
       },
       status: {
         type: Sequelize.BOOLEAN,

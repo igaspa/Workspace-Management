@@ -11,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      user.belongsTo(models.role, { foreignKey: 'roleId' });
-      models.role.hasMany(user, { foreignKey: 'roleId' });
+
     }
   }
   user.init({
@@ -24,8 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    roleId: DataTypes.UUID
+    phoneNumber: DataTypes.STRING
   }, {
     hooks: {
       beforeCreate: async (model) => {

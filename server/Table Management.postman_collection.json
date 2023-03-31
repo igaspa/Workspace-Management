@@ -179,7 +179,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"cbcf8abe-0077-4b29-84c2-7d8ab39b60e6\",\n    \"name\": \"South Wing\",\n    \"locationId\": \"5419ce7d-c415-480d-a980-cd169559bc85\",\n    \"floor\": \"Second Floor\",\n    \"image\": \"https://drive.google.com/file/d/1Z5CBJ8I0Q6s_nM2Lfax95zj8vQiGgUf6/view?usp=share_link\",\n    \"createdAt\": \"2023-03-29T08:14:49.056Z\",\n    \"updatedAt\": \"2023-03-29T08:14:49.056Z\"\n}",
+							"raw": "{\n    \"id\": \"cbcf8abe-0077-4b29-84c2-7d8ab39b60e6\",\n    \"name\": \"South Wing\",\n    \"locationId\": \"5419ce7d-c415-480d-a980-cd169559bc85\",\n    \"floor\": \"Second Floor\",\n    \"image\": \"https://drive.google.com/file/d/1Z5CBJ8I0Q6s_nM2Lfax95zj8vQiGgUf6/view?usp=share_link\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -338,7 +338,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"aaab02eb-b5b1-4fcf-8c1b-ad5f3ec0e7c3\",\n    \"address\": \"Poljicka cesta 41\",\n    \"city\": \"Split\",\n    \"country\": \"Croatia\",\n    \"createdAt\": \"2023-03-29T08:14:49.041Z\",\n    \"updatedAt\": \"2023-03-29T08:14:49.041Z\",\n    \"deletedAt\": null\n}",
+							"raw": "{\n    \"id\": \"aaab02eb-b5b1-4fcf-8c1b-ad5f3ec0e7c3\",\n    \"address\": \"Poljicka cesta 41\",\n    \"city\": \"Split\",\n    \"country\": \"Croatia\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -435,6 +435,454 @@
 			]
 		},
 		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"07209cb2-7d40-4bb7-87ed-87925907c21a\",\n    \"firstName\": \"Ivana\",\n    \"lastName\": \"Gasparov\",\n    \"email\": \"ig@agilathon.com\",\n    \"password\": \"test1234\",\n    \"phoneNumber\":\"+15055555555\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Ivana\",\n    \"lastName\": \"Gasparov\",\n    \"password\": \"test1234\",\n    \"phoneNumber\":\"+15055555555\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "07209cb2-7d40-4bb7-87ed-87925907c21a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "07209cb2-7d40-4bb7-87ed-87925907c21a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "Get All Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/role",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/role/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"role",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "d2477f3b-d4ce-4269-9221-0ad479fd45ad"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"2c915e67-4944-47e1-b619-50df773651d1\",\n   \"name\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/role",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\": \"Test12\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/role/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"role",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2c915e67-4944-47e1-b619-50df773651d1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/role/:id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"role",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2c915e67-4944-47e1-b619-50df773651d1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Role",
+			"item": [
+				{
+					"name": "Get All User Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user-role",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One User Role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user-role/:firstId/:secondId",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user-role",
+								":firstId",
+								":secondId"
+							],
+							"variable": [
+								{
+									"key": "firstId",
+									"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
+								},
+								{
+									"key": "secondId",
+									"value": "0bdd577d-c8e5-4973-a6e3-6cf806d8a601"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"roleId\": \"0bdd577d-c8e5-4973-a6e3-6cf806d8a601\",\n   \"userId\": \"47f6daa2-a1ed-495a-ba55-c626b4366c5e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user-role",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:4000/api/v1/user-role/:firstId/:secondId",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user-role",
+								":firstId",
+								":secondId"
+							],
+							"variable": [
+								{
+									"key": "firstId",
+									"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
+								},
+								{
+									"key": "secondId",
+									"value": "0bdd577d-c8e5-4973-a6e3-6cf806d8a601"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Working Space",
 			"item": [
 				{
@@ -491,7 +939,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"areaInfo\": {\n        \"id\": \"26bae8e2-50fd-41cd-8b29-d1bf2a5becd2\",\n        \"locationId\": \"5419ce7d-c415-480d-a980-cd169559bc85\"\n    },\n    \"type\": {\n        \"id\": \"e0ae075e-3ac9-43a2-88eb-59864cf141ef\",\n        \"name\": \"Desk\"\n    },\n    \"total\": 20,\n    \"permanentlyReserved\": false\n}",
+							"raw": "{\n    \"areaId\": \"26bae8e2-50fd-41cd-8b29-d1bf2a5becd2\"\n    \"typeId\": \"e0ae075e-3ac9-43a2-88eb-59864cf141ef\",\n    \"start\": 1,\n    \"end\": 20,\n    \"permanentlyReserved\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"

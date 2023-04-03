@@ -4,7 +4,7 @@ const { bodyValidator, paramValidator } = require('../middleware/joi-validator')
 
 const express = require('express');
 
-const workspaceTypeController = require('../controllers/working-space-type');
+const workspaceTypeController = require('../controllers/workspace-type');
 
 const router = express.Router();
 

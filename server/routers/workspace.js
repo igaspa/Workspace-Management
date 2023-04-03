@@ -2,7 +2,7 @@ const { callbackErrorHandler } = require('../middleware/error-handler');
 const { bodyValidator, paramValidator, workspaceCollection } = require('../middleware/joi-validator');
 const express = require('express');
 
-const workspaceController = require('../controllers/working-space');
+const workspaceController = require('../controllers/workspace');
 
 const router = express.Router();
 

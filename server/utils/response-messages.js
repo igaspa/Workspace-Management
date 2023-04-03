@@ -1,12 +1,22 @@
+const formatModelName = (modelName) => {
+  let formattedModelName = modelName.replaceAll('_', ' ');
+  formattedModelName = formattedModelName[0].toUpperCase() + formattedModelName.slice(1);
+
+  // Add space before every capital letter
+  formattedModelName = formattedModelName.charAt(0) + formattedModelName.slice(1).replace(/([A-Z])/g, ' $1');
+
+  return formattedModelName;
+};
+
 const responseMessages = {
   // common functions
-  NOT_FOUND: (modelName) => `${modelName} not found!`,
+  NOT_FOUND: (modelName) => `${formatModelName(modelName)} not found!`,
   NOT_FOUND_JOIN_TABLE: (modelName) => `Combination is not found in a join table ${modelName}`,
-  DELETE_SUCCESS: (modelName) => `${modelName} successfully deleted!`,
-  UPDATE_SUCCESS: (modelName) => `${modelName} successfully updated!`,
-  CREATE_SUCCESS: (modelName) => `${modelName} successfully created!`,
+  DELETE_SUCCESS: (modelName) => `${formatModelName(modelName)} successfully deleted!`,
+  UPDATE_SUCCESS: (modelName) => `${formatModelName(modelName)} successfully updated!`,
+  CREATE_SUCCESS: (modelName) => `${formatModelName(modelName)} successfully created!`,
   ASSOCIATION_NOT_FOUND: (association, modelName) => {
-    return `Association with '${association}' does not exist on '${modelName}'`;
+    return `Association with '${association}' does not exist on '${formatModelName(modelName)}'`;
   },
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 

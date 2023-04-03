@@ -94,16 +94,15 @@ module.exports.updateModel = async (Model, req, res) => {
 
   if (!updatedModel) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
-  res.status(200).json(updatedModel);
+  res.status(200).json({ message: responseMessage.UPDATE_SUCCESS(Model.name) });
 };
 
 module.exports.deleteModel = async (Model, req, res) => {
   const deletedModel = await Model.destroy({
     where: { id: req.params.id }
   });
-  console.log(deletedModel);
 
   if (!deletedModel) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
-  res.status(200).json(deletedModel);
+  res.status(200).json({ message: responseMessage.DELETE_SUCCESS(Model.name) });
 };

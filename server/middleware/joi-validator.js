@@ -33,7 +33,7 @@ exports.bodyValidator = (req, _res, next) => {
 };
 
 // Validate sent request body
-exports.workingSpaceCollection = (req, _res, next) => {
+exports.workspaceCollection = (req, _res, next) => {
   const schemaNameList = req.originalUrl.split('/');
   const schemaName = schemaNameList[3] + '_' + schemaNameList[4];
   const newSchemaName = schemaName.replace(/-/g, '_');

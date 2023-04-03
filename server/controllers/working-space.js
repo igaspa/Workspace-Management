@@ -1,35 +1,35 @@
-const workingSpaceService = require('../services/working-space');
+const workspaceService = require('../services/working-space');
 const responseMessage = require('../utils/response-messages');
-const { workingSpace } = require('../database/models');
+const { workspace } = require('../database/models');
 const generalController = require('./general');
 
-exports.createWorkingSpaces = async (req, res) => {
-  await workingSpaceService.createMultipleWorkingSpaces(req);
+exports.createWorkspaces = async (req, res) => {
+  await workspaceService.createMultipleWorkspaces(req);
   return res.status(201).json({
-    message: responseMessage.CREATE_SUCCESS(workingSpace.name)
+    message: responseMessage.CREATE_SUCCESS(workspace.name)
   });
 };
 
-exports.createOneWorkingSpace = async (req, res) => {
-  await generalController.createModel(workingSpace, req, res);
+exports.createOneWorkspace = async (req, res) => {
+  await generalController.createModel(workspace, req, res);
 };
 
-module.exports.getAllWorkingSpaces = async (req, res) => {
-  await generalController.findAllModels(workingSpace, null, req, res);
+module.exports.getAllWorkspaces = async (req, res) => {
+  await generalController.findAllModels(workspace, null, req, res);
 };
 
-module.exports.getWorkingSpace = async (req, res) => {
-  await generalController.findOneModel(workingSpace, null, req, res);
+module.exports.getWorkspace = async (req, res) => {
+  await generalController.findOneModel(workspace, null, req, res);
 };
 
-module.exports.updateWorkingSpace = async (req, res) => {
-  await generalController.updateModel(workingSpace, req, res);
+module.exports.updateWorkspace = async (req, res) => {
+  await generalController.updateModel(workspace, req, res);
 };
 
-module.exports.deleteWorkingSpace = async (req, res) => {
-  await generalController.deleteModel(workingSpace, req, res);
+module.exports.deleteWorkspace = async (req, res) => {
+  await generalController.deleteModel(workspace, req, res);
 };
 
-module.exports.deleteWorkingSpacesFromArea = async (req, res) => {
+module.exports.deleteWorkspacesFromArea = async (req, res) => {
   // TO DO
 };

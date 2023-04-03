@@ -3,21 +3,21 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class workingSpace extends Model {
+  class workspace extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      workingSpace.belongsTo(models.workingSpaceType, { foreignKey: 'typeId' });
-      models.workingSpaceType.hasMany(workingSpace, { foreignKey: 'typeId' });
+      workspace.belongsTo(models.workspaceType, { foreignKey: 'typeId' });
+      models.workspaceType.hasMany(workspace, { foreignKey: 'typeId' });
 
-      workingSpace.belongsTo(models.area, { foreignKey: 'areaId' });
-      models.area.hasMany(workingSpace, { foreignKey: 'areaId' });
+      workspace.belongsTo(models.area, { foreignKey: 'areaId' });
+      models.area.hasMany(workspace, { foreignKey: 'areaId' });
     }
   }
-  workingSpace.init({
+  workspace.init({
     id: {
       primaryKey: true,
       type: DataTypes.UUID
@@ -36,9 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         fields: ['name', 'areaId']
       }
     ],
-    modelName: 'workingSpace',
-    tableName: 'working_space',
+    modelName: 'workspace',
+    tableName: 'workspace',
     paranoid: true
   });
-  return workingSpace;
+  return workspace;
 };

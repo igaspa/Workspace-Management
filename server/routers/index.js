@@ -1,5 +1,5 @@
-const workingSpaceRouter = require('./working-space');
-const workingSpaceTypeRouter = require('./working-space-type');
+const workspaceRouter = require('./workspace');
+const workspaceTypeRouter = require('./workspace-type');
 const notificationTemplateRouter = require('./notification-template');
 const notificationRouter = require('./notification');
 const areaRouter = require('./area');
@@ -12,8 +12,8 @@ const userRoleRouter = require('./user-role');
 const express = require('express');
 const router = express.Router();
 
-router.use('/working-space', workingSpaceRouter);
-router.use('/working-space-type', workingSpaceTypeRouter);
+router.use('/workspace', workspaceRouter);
+router.use('/workspace-type', workspaceTypeRouter);
 router.use('/notification-template', notificationTemplateRouter);
 router.use('/notification', notificationRouter);
 router.use('/area', areaRouter);

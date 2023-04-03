@@ -38,33 +38,33 @@ module.exports = {
     });
 
     await queryInterface.addConstraint('reservation', {
-      fields: ['working_space_id'],
+      fields: ['workspace_id'],
       type: 'foreign key',
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'reservation_working_space',
+      name: 'reservation_workspace',
       references: {
-        table: 'working_space',
+        table: 'workspace',
         field: 'id'
       }
     });
 
-    await queryInterface.addConstraint('working_space', {
+    await queryInterface.addConstraint('workspace', {
       fields: ['type_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'working_space_type',
+      name: 'workspace_type',
       type: 'foreign key',
       references: {
-        table: 'working_space_type',
+        table: 'workspace_type',
         field: 'id'
       }
     });
-    await queryInterface.addConstraint('working_space', {
+    await queryInterface.addConstraint('workspace', {
       fields: ['area_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'working_space_area',
+      name: 'workspace_area',
       type: 'foreign key',
       references: {
         table: 'area',
@@ -88,9 +88,9 @@ module.exports = {
     await queryInterface.removeConstraint('notification', 'notification_template');
     await queryInterface.removeConstraint('notification', 'notification_reservation');
     await queryInterface.removeConstraint('reservation', 'reservation_user');
-    await queryInterface.removeConstraint('reservation', 'reservation_working_space');
-    await queryInterface.removeConstraint('working_space', 'working_space_type');
-    await queryInterface.removeConstraint('working_space', 'working_space_area');
+    await queryInterface.removeConstraint('reservation', 'reservation_workspace');
+    await queryInterface.removeConstraint('workspace', 'workspace_type');
+    await queryInterface.removeConstraint('workspace', 'workspace_area');
     await queryInterface.removeConstraint('area', 'area_location');
   }
 };

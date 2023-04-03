@@ -2,24 +2,26 @@ const joi = require('joi');
 
 exports.idSchema = joi.string().guid({ version: 'uuidv4' });
 // Working Space Type Entity Schema
-exports.working_space_type = joi.object({
+exports.workspace_type = joi.object({
   id: joi.string()
     .guid({ version: 'uuidv4' })
     .alter({
-      post: (workingSpaceTypeSchema) => workingSpaceTypeSchema.required(),
-      put: (workingSpaceTypeSchema) => workingSpaceTypeSchema.forbidden()
+      post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.forbidden()
     }),
   name: joi.string()
     .min(3)
     .max(50)
     .alter({
-      post: (workingSpaceTypeSchema) => workingSpaceTypeSchema.required(),
-      put: (workingSpaceTypeSchema) => workingSpaceTypeSchema.optional()
-    })
+      post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    }),
+  reservationTime: joi.string()
+    .required()
 }).options({ abortEarly: false });
 
 // Working Space Entity Schema
-exports.working_space_collection = joi.object({
+exports.workspace_collection = joi.object({
   permanentlyReserved: joi.boolean()
     .required(),
   typeId: joi.string()
@@ -40,7 +42,7 @@ exports.working_space_collection = joi.object({
     .required()
 }).options({ abortEarly: false });
 
-exports.working_space = joi.object({
+exports.workspace = joi.object({
   id: joi.string()
     .guid({ version: 'uuidv4' })
     .required(),
@@ -140,7 +142,7 @@ exports.reservation = joi.object({
       post: (reservationSchema) => reservationSchema.required(),
       put: (reservationSchema) => reservationSchema.forbidden()
     }),
-  workingSpaceId: joi.string()
+  workspaceId: joi.string()
     .guid({ version: 'uuidv4' })
     .alter({
       post: (reservationSchema) => reservationSchema.required(),
@@ -152,21 +154,21 @@ exports.reservation = joi.object({
         .min(5)
         .max(50)
         .alter({
-          post: (workingSpaceId) => workingSpaceId.required(),
-          put: (workingSpaceId) => workingSpaceId.optional()
+          post: (workspaceId) => workspaceId.required(),
+          put: (workspaceId) => workspaceId.optional()
         }),
       lastName: joi.string()
         .min(5)
         .max(50)
         .alter({
-          post: (workingSpaceId) => workingSpaceId.required(),
-          put: (workingSpaceId) => workingSpaceId.optional()
+          post: (workspaceId) => workspaceId.required(),
+          put: (workspaceId) => workspaceId.optional()
         }),
       email: joi.string()
         .email({ minDomainSegments: 2 })
         .alter({
-          post: (workingSpaceId) => workingSpaceId.required(),
-          put: (workingSpaceId) => workingSpaceId.forbidden()
+          post: (workspaceId) => workspaceId.required(),
+          put: (workspaceId) => workspaceId.forbidden()
         })
     })
 }).options({ abortEarly: false });

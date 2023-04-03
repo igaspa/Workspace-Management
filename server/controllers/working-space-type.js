@@ -1,22 +1,22 @@
-const { workingSpaceType } = require('../database/models');
+const { workspaceType } = require('../database/models');
 const generalController = require('./general');
 
-module.exports.getAllWorkingSpaceTypes = async (req, res) => {
-  await generalController.findAllModels(workingSpaceType, null, req, res);
+module.exports.getAllWorkspaceTypes = async (req, res) => {
+  await generalController.findAllModels(workspaceType, null, req, res);
 };
 
-module.exports.getWorkingSpaceType = async (req, res) => {
-  await generalController.findOneModel(workingSpaceType, null, req, res);
+module.exports.getWorkspaceType = async (req, res) => {
+  await generalController.findOneModel(workspaceType, null, req, res);
 };
 
-module.exports.createWorkingSpaceType = async (req, res) => {
-  await generalController.createModel(workingSpaceType, req, res);
+module.exports.createWorkspaceType = async (req, res) => {
+  await generalController.createModel(workspaceType, req, res);
 };
 
-module.exports.updateWorkingSpaceType = async (req, res) => {
-  await generalController.updateModel(workingSpaceType, req, res);
+module.exports.updateWorkspaceType = async (req, res) => {
+  await generalController.updateModel(workspaceType, req, res);
 };
 
-module.exports.deleteWorkingSpaceType = async (req, res) => {
-  await generalController.deleteModel(workingSpaceType, req, res);
+module.exports.deleteWorkspaceType = async (req, res) => {
+  await generalController.deleteModel(workspaceType, req, res);
 };

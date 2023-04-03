@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID
       },
-      working_space_id: {
+      workspace_id: {
         allowNull: false,
         type: Sequelize.UUID
       },
@@ -41,7 +41,7 @@ module.exports = {
     }, {
       uniqueKeys: {
         Items_unique: {
-          fields: ['working_space_id', 'reservation_start']
+          fields: ['workspace_id', 'reservation_start']
         }
       }
     });

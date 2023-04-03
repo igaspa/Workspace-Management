@@ -5,7 +5,7 @@ const { schemeName } = require('../../utils/constants');
 module.exports = {
   async up (queryInterface, Sequelize) {
     const SequelizeType = withInterval(Sequelize);
-    await queryInterface.createTable('working_space_type', {
+    await queryInterface.createTable('workspace_type', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -34,6 +34,6 @@ module.exports = {
     });
   },
   async down (queryInterface, _Sequelize) {
-    await queryInterface.sequelize.query(`DROP TABLE IF EXISTS ${schemeName}.working_space_type;`);
+    await queryInterface.sequelize.query(`DROP TABLE IF EXISTS ${schemeName}.workspace_type;`);
   }
 };

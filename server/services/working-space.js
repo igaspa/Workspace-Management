@@ -1,9 +1,9 @@
 // const responseMessage = require('../utils/response-messages');
 // const { errors } = require('../utils/errors');
-const { workingSpace } = require('../database/models');
+const { workspace } = require('../database/models');
 const { v4: uuidv4 } = require('uuid');
 
-exports.createMultipleWorkingSpaces = async (req) => {
+exports.createMultipleWorkspaces = async (req) => {
   const { prefix, start, end, areaId, typeId, permanentlyReserved } = req.body;
 
   let count = start;
@@ -22,5 +22,5 @@ exports.createMultipleWorkingSpaces = async (req) => {
   }
 
   // bulk insert all working spaces in db
-  await workingSpace.bulkCreate(objectList);
+  await workspace.bulkCreate(objectList);
 };

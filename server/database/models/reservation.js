@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      models.user.belongsToMany(models.workingSpace, {
+      models.user.belongsToMany(models.workspace, {
         through: reservation,
         foreignKey: 'userId'
       });
-      models.workingSpace.belongsToMany(models.user, {
+      models.workspace.belongsToMany(models.user, {
         through: reservation,
-        foreignKey: 'workingSpaceId'
+        foreignKey: 'workspaceId'
       });
     }
   }
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     userId: DataTypes.UUID,
-    workingSpaceId: DataTypes.INTEGER,
+    workspaceId: DataTypes.INTEGER,
     reservationStart: DataTypes.DATE,
     reservationEnd: DataTypes.DATE,
     participants: DataTypes.JSONB
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     indexes: [
       {
         unique: true,
-        fields: ['reservationStart', 'workingSpaceId']
+        fields: ['reservationStart', 'workspaceId']
       }
     ]
   });

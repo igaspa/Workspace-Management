@@ -8,6 +8,7 @@ const reservationRouter = require('./reservation');
 const userRouter = require('./user');
 const roleRouter = require('./role');
 const userRoleRouter = require('./user-role');
+const loginRouter = require('./login');
 
 const express = require('express');
 const router = express.Router();
@@ -22,5 +23,6 @@ router.use('/reservation', reservationRouter);
 router.use('/user', userRouter);
 router.use('/user-role', userRoleRouter);
 router.use('/role', roleRouter);
+router.use('/login', loginRouter);
 
 module.exports = router;

@@ -10,7 +10,7 @@ module.exports = {
         first_name: 'Admin',
         last_name: 'User',
         email: 'admin@example.com',
-        password: 'test123',
+        password: '$2b$10$He0zyaPjngh35c.Bgp.nhOn85Et0bnIgr5AUcZ1/40xbnP8V/uvDK',
         phone_number: '+15055555555',
         created_at: new Date(),
         updated_at: new Date()

@@ -30,8 +30,6 @@ const comparePassword = async (enteredPassword, dbPassword) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  // joi validator
-  if (!email || !password) { throw errors.VALIDATION(responseMessages.MISSING_EMAIL_OR_PASSWORD); };
   const currentUser = await user.findOne({ where: { email } });
   if (!currentUser) {
     throw errors.NOT_FOUND(currentUser);

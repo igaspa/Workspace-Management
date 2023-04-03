@@ -244,3 +244,19 @@ exports.user_role = joi.object({
       put: (userRoleSchema) => userRoleSchema.forbidden()
     })
 }).options({ abortEarly: false });
+
+// Login schema
+exports.login = joi.object({
+  email: joi.string()
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.forbidden()
+    }),
+  password: joi.string()
+    .min(8)
+    .max(80)
+    .alter({
+      post: (userSchema) => userSchema.required(),
+      put: (userSchema) => userSchema.optional()
+    })
+}).options({ abortEarly: false });

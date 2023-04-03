@@ -8,7 +8,7 @@ const responseMessages = {
   ASSOCIATION_NOT_FOUND: (association, modelName) => {
     return `Association with '${association}' does not exist on '${modelName}'`;
   },
-  UNIQUE_CONSTRAINT_ERROR: (elements) => `Record with this ${elements} already exits!`,
+  UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 
   // Constant messages
   INVALID_ID_TYPE: 'Invalid ID type provided!',

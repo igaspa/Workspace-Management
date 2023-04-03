@@ -17,7 +17,7 @@
         "max-len": [    
             "error", { 
                 "comments": 250,
-                 "code":120 }],
+                 "code":150 }],
 
         "semi": [
             "error",

@@ -1,20 +1,23 @@
 const express = require('express');
+const router = express.Router();
 
 const generalController = require('../controllers/area');
+const { roles } = require('../utils/roles');
 const { bodyValidator, paramValidator } = require('../middleware/joi-validator');
 const { callbackErrorHandler } = require('../middleware/error-handler');
+const { restrictRoles, authenticateUser } = require('../middleware/authenticate-user');
 
-const router = express.Router();
+router.use(callbackErrorHandler(authenticateUser));
 
 router
   .route('/')
-  .get(callbackErrorHandler(generalController.getAllAreas))
-  .post(bodyValidator, callbackErrorHandler(generalController.createArea));
+  .get(restrictRoles([roles.administrator]), callbackErrorHandler(generalController.getAllAreas))
+  .post(restrictRoles([roles.administrator]), bodyValidator, callbackErrorHandler(generalController.createArea));
 
 router
   .route('/:id')
-  .get(paramValidator, callbackErrorHandler(generalController.getArea))
-  .put(paramValidator, bodyValidator, callbackErrorHandler(generalController.updateArea))
-  .delete(paramValidator, callbackErrorHandler(generalController.deleteArea));
+  .get(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.getArea))
+  .put(restrictRoles([roles.administrator]), paramValidator, bodyValidator, callbackErrorHandler(generalController.updateArea))
+  .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.deleteArea));
 
 module.exports = router;

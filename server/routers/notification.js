@@ -1,18 +1,21 @@
 const express = require('express');
+const router = express.Router();
 
 const generalController = require('../controllers/notification');
+const { roles } = require('../utils/roles');
 const { callbackErrorHandler } = require('../middleware/error-handler');
 const { paramValidator } = require('../middleware/joi-validator');
+const { authenticateUser, restrictRoles } = require('../middleware/authenticate-user');
 
-const router = express.Router();
+router.use(callbackErrorHandler(authenticateUser));
 
 router
   .route('/')
-  .get(callbackErrorHandler(generalController.getAllNotification));
+  .get(restrictRoles([roles.administrator]), callbackErrorHandler(generalController.getAllNotification));
 
 router
   .route('/:id')
-  .get(paramValidator, callbackErrorHandler(generalController.getNotification))
-  .delete(paramValidator, callbackErrorHandler(generalController.deleteNotification));
+  .get(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.getNotification))
+  .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.deleteNotification));
 
 module.exports = router;

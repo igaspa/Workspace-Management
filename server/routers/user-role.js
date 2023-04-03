@@ -1,20 +1,22 @@
 const express = require('express');
+const router = express.Router();
 
 const generalController = require('../controllers/user-role');
+const { roles } = require('../utils/roles');
 const { paramValidator, bodyValidator } = require('../middleware/joi-validator');
-
+const { restrictRoles, authenticateUser } = require('../middleware/authenticate-user');
 const { callbackErrorHandler } = require('../middleware/error-handler');
 
-const router = express.Router();
+router.use(callbackErrorHandler(authenticateUser));
 
 router
   .route('/')
-  .get(callbackErrorHandler(generalController.getAllUserRoles))
-  .post(bodyValidator, callbackErrorHandler(generalController.createUserRole));
+  .get(restrictRoles([roles.administrator]), callbackErrorHandler(generalController.getAllUserRoles))
+  .post(restrictRoles([roles.administrator]), bodyValidator, callbackErrorHandler(generalController.createUserRole));
 
 router
   .route('/:firstId/:secondId')
-  .get(paramValidator, callbackErrorHandler(generalController.getUserRoles))
-  .delete(paramValidator, callbackErrorHandler(generalController.deleteUserRole));
+  .get(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.getUserRoles))
+  .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.deleteUserRole));
 
 module.exports = router;

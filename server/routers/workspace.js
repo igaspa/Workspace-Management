@@ -7,9 +7,12 @@ const workspaceController = require('../controllers/workspace');
 const router = express.Router();
 
 router
-  .route('/')
-  .post(bodyValidator, callbackErrorHandler(workspaceController.createOneWorkspace))
-  .get(callbackErrorHandler(workspaceController.getAllWorkspaces));
+  .route('/area/:id')
+  .delete(paramValidator, callbackErrorHandler(workspaceController.deleteWorkspacesFromArea));
+
+router
+  .route('/location/:id')
+  .delete(paramValidator, callbackErrorHandler(workspaceController.deleteWorkspacesFromLocation));
 
 router
   .route('/:id')
@@ -20,5 +23,10 @@ router
 router
   .route('/collection')
   .post(workspaceCollection, callbackErrorHandler(workspaceController.createWorkspaces));
+
+router
+  .route('/')
+  .post(bodyValidator, callbackErrorHandler(workspaceController.createOneWorkspace))
+  .get(callbackErrorHandler(workspaceController.getAllWorkspaces));
 
 module.exports = router;

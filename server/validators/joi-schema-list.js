@@ -1,7 +1,7 @@
 const joi = require('joi');
 
 exports.idSchema = joi.string().guid({ version: 'uuidv4' });
-// Working Space Type Entity Schema
+// Work Space Type Entity Schema
 exports.workspace_type = joi.object({
   id: joi.string()
     .guid({ version: 'uuidv4' })
@@ -20,7 +20,7 @@ exports.workspace_type = joi.object({
     .required()
 }).options({ abortEarly: false });
 
-// Working Space Entity Schema
+// Work Space Entity Schema
 exports.workspace_collection = joi.object({
   permanentlyReserved: joi.boolean()
     .required(),

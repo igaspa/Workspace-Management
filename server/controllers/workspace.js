@@ -1,7 +1,8 @@
-const workspaceService = require('../services/working-space');
+const workspaceService = require('../services/workspace');
 const responseMessage = require('../utils/response-messages');
 const { workspace } = require('../database/models');
 const generalController = require('./general');
+const { errors } = require('../utils/errors');
 
 exports.createWorkspaces = async (req, res) => {
   await workspaceService.createMultipleWorkspaces(req);
@@ -31,5 +32,19 @@ module.exports.deleteWorkspace = async (req, res) => {
 };
 
 module.exports.deleteWorkspacesFromArea = async (req, res) => {
-  // TO DO
+  const deletedWorkSpaces = await workspaceService.deleteWorkspacesFromArea(req);
+
+  if (!deletedWorkSpaces) throw errors.NOT_FOUND(workspace.name + 's');
+  return res.status(200).json({
+    message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
+  });
+};
+
+module.exports.deleteWorkspacesFromLocation = async (req, res) => {
+  const deletedWorkSpaces = await workspaceService.deleteWorkspacesFromLocation(req);
+
+  if (!deletedWorkSpaces) throw errors.NOT_FOUND(workspace.name + 's');
+  return res.status(200).json({
+    message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
+  });
 };

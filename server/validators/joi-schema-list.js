@@ -209,6 +209,7 @@ exports.user = joi.object({
       put: (userSchema) => userSchema.optional()
     }),
   email: joi.string()
+    .email()
     .alter({
       post: (userSchema) => userSchema.required(),
       put: (userSchema) => userSchema.forbidden()
@@ -248,15 +249,16 @@ exports.user_role = joi.object({
 // Login schema
 exports.login = joi.object({
   email: joi.string()
+    .email()
     .alter({
-      post: (userSchema) => userSchema.required(),
-      put: (userSchema) => userSchema.forbidden()
+      post: (loginSchema) => loginSchema.required(),
+      put: (loginSchema) => loginSchema.forbidden()
     }),
   password: joi.string()
     .min(8)
     .max(80)
     .alter({
-      post: (userSchema) => userSchema.required(),
-      put: (userSchema) => userSchema.optional()
+      post: (loginSchema) => loginSchema.required(),
+      put: (loginSchema) => loginSchema.optional()
     })
 }).options({ abortEarly: false });

@@ -1153,15 +1153,15 @@
 			]
 		},
 		{
-			"name": "Working Space",
+			"name": "Work Space",
 			"item": [
 				{
-					"name": "Get all working spaces",
+					"name": "Get all work spaces",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space",
+							"raw": "127.0.0.1:4000/api/v1/work-space",
 							"host": [
 								"127",
 								"0",
@@ -1172,19 +1172,19 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space"
+								"work-space"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get working space",
+					"name": "Get work space",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space/cae42cfe-1c81-42ce-84d3-222881f76519",
+							"raw": "127.0.0.1:4000/api/v1/work-space/cae42cfe-1c81-42ce-84d3-222881f76519",
 							"host": [
 								"127",
 								"0",
@@ -1195,7 +1195,7 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space",
+								"work-space",
 								"cae42cfe-1c81-42ce-84d3-222881f76519"
 							]
 						}
@@ -1203,7 +1203,7 @@
 					"response": []
 				},
 				{
-					"name": "Create working space",
+					"name": "Create work space",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1217,7 +1217,7 @@
 							}
 						},
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space",
+							"raw": "127.0.0.1:4000/api/v1/work-space",
 							"host": [
 								"127",
 								"0",
@@ -1228,19 +1228,19 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space"
+								"work-space"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete working space by ID",
+					"name": "Delete work space by ID",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space/cae42cfe-1c81-42ce-84d3-222881f76519",
+							"raw": "127.0.0.1:4000/api/v1/work-space/cae42cfe-1c81-42ce-84d3-222881f76519",
 							"host": [
 								"127",
 								"0",
@@ -1251,7 +1251,7 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space",
+								"work-space",
 								"cae42cfe-1c81-42ce-84d3-222881f76519"
 							]
 						}
@@ -1261,15 +1261,15 @@
 			]
 		},
 		{
-			"name": "Working Space Type",
+			"name": "Work Space Type",
 			"item": [
 				{
-					"name": "Get all working space types",
+					"name": "Get all work space types",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space-type",
+							"raw": "127.0.0.1:4000/api/v1/work-space-type",
 							"host": [
 								"127",
 								"0",
@@ -1280,19 +1280,19 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space-type"
+								"work-space-type"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get working space type",
+					"name": "Get work space type",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space-type/1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
+							"raw": "127.0.0.1:4000/api/v1/work-space-type/1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
 							"host": [
 								"127",
 								"0",
@@ -1303,7 +1303,7 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space-type",
+								"work-space-type",
 								"1dcdda55-3a43-4dc7-bc0d-0ccf99350502"
 							]
 						}
@@ -1311,7 +1311,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Working Space Type",
+					"name": "Create Work Space Type",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1325,7 +1325,7 @@
 							}
 						},
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space-type",
+							"raw": "127.0.0.1:4000/api/v1/work-space-type",
 							"host": [
 								"127",
 								"0",
@@ -1336,19 +1336,19 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space-type"
+								"work-space-type"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete working space type",
+					"name": "Delete work space type",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:4000/api/v1/working-space-type/1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
+							"raw": "127.0.0.1:4000/api/v1/work-space-type/1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
 							"host": [
 								"127",
 								"0",
@@ -1359,7 +1359,7 @@
 							"path": [
 								"api",
 								"v1",
-								"working-space-type",
+								"work-space-type",
 								"1dcdda55-3a43-4dc7-bc0d-0ccf99350502"
 							]
 						}

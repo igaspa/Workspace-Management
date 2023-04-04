@@ -20,6 +20,8 @@ const responseMessages = {
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 
   // Constant messages
+  MINIMUM_RESERVATION_TIME_ERROR: 'The reservation time range is invalid.',
+  MINIMUM_RESERVATION_START_ERROR: 'Reservation start time is below the minimum.',
   INVALID_ID_TYPE: 'Invalid ID type provided!',
   INVALID_NAME_LENGTH: 'Name must have at least 3 characters!',
   UNIQUE_USER_ERROR: 'User with this email already exits!',

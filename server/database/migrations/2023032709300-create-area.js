@@ -1,10 +1,10 @@
 'use strict';
-const { schemeName } = require('../../utils/constants');
+const { tableName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('area', {
+    await queryInterface.createTable(tableName.area, {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -41,6 +41,6 @@ module.exports = {
     });
   },
   async down (queryInterface, _Sequelize) {
-    await queryInterface.sequelize.query(`DROP TABLE IF EXISTS ${schemeName}.area;`);
+    await queryInterface.dropTable(tableName.area);
   }
 };

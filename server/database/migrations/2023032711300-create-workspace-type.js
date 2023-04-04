@@ -1,11 +1,11 @@
 'use strict';
 const withInterval = require('sequelize-interval-postgres');
-const { schemeName } = require('../../utils/constants');
+const { tableName } = require('../../utils/constants');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     const SequelizeType = withInterval(Sequelize);
-    await queryInterface.createTable('workspace_type', {
+    await queryInterface.createTable(tableName.workspaceType, {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -34,6 +34,6 @@ module.exports = {
     });
   },
   async down (queryInterface, _Sequelize) {
-    await queryInterface.sequelize.query(`DROP TABLE IF EXISTS ${schemeName}.workspace_type;`);
+    await queryInterface.dropTable(tableName.workspaceType);
   }
 };

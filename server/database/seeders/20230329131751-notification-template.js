@@ -1,9 +1,10 @@
 'use strict';
+const { tableName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('notification_template', [
+    return queryInterface.bulkInsert(tableName.notificationTemplate, [
       {
         id: 'fc06d6a8-15b9-4134-89f9-49e490947f76',
         name: 'reservation_confirmation_template',
@@ -41,6 +42,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('notification_template', null, {});
+    await queryInterface.bulkDelete(tableName.notificationTemplate, null, {});
   }
 };

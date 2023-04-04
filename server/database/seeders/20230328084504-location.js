@@ -1,9 +1,10 @@
 'use strict';
+const { tableName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('location', [
+    return queryInterface.bulkInsert(tableName.location, [
       {
         id: '5419ce7d-c415-480d-a980-cd169559bc85',
         address: 'Poljicka cesta 43',
@@ -16,6 +17,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('location', null, {});
+    await queryInterface.bulkDelete(tableName.location, null, {});
   }
 };

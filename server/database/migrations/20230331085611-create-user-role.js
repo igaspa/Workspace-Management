@@ -1,8 +1,10 @@
 'use strict';
+const { tableName } = require('../../utils/constants');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('user_role', {
+    await queryInterface.createTable(tableName.userRole, {
       role_id: {
         allowNull: false,
         type: Sequelize.UUID,
@@ -16,6 +18,6 @@ module.exports = {
     });
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('user_role');
+    await queryInterface.dropTable(tableName.userRole);
   }
 };

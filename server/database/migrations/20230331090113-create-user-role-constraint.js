@@ -1,13 +1,14 @@
 'use strict';
+const { tableName, constraintName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addConstraint('user_role', {
+    await queryInterface.addConstraint(tableName.userRole, {
       fields: ['user_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'user_userRole',
+      name: constraintName.roleUser,
       type: 'foreign key',
       references: {
         table: 'user',
@@ -15,12 +16,12 @@ module.exports = {
       }
     });
 
-    await queryInterface.addConstraint('user_role', {
+    await queryInterface.addConstraint(tableName.userRole, {
       fields: ['role_id'],
       type: 'foreign key',
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'role_userRole',
+      name: constraintName.userRole,
       references: {
         table: 'role',
         field: 'id'
@@ -29,7 +30,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeConstraint('user_role', 'user_userRole');
-    await queryInterface.removeConstraint('user_role', 'role_userRole');
+    await queryInterface.removeConstraint(tableName.userRole, constraintName.userRole);
+    await queryInterface.removeConstraint(tableName.userRole, constraintName.roleUser);
   }
 };

@@ -1,9 +1,9 @@
 'use strict';
-const { schemeName, notificationStatus } = require('../../utils/constants');
+const { tableName, notificationStatus } = require('../../utils/constants');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('notification', {
+    await queryInterface.createTable(tableName.notification, {
       notification_template_id: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -34,6 +34,6 @@ module.exports = {
     });
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.sequelize.query(`DROP TABLE IF EXISTS ${schemeName}.notification;`);
+    await queryInterface.dropTable(tableName.notification);
   }
 };

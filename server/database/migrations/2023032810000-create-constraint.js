@@ -1,96 +1,97 @@
 'use strict';
+const { tableName, constraintName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addConstraint('notification', {
+    await queryInterface.addConstraint(tableName.notification, {
       fields: ['notification_template_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'notification_template',
+      name: constraintName.notificationTemplate,
       type: 'foreign key',
       references: {
-        table: 'notification_template',
+        table: tableName.notificationTemplate,
         field: 'id'
       }
     });
-    await queryInterface.addConstraint('notification', {
+    await queryInterface.addConstraint(tableName.notification, {
       fields: ['reservation_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'notification_reservation',
+      name: constraintName.notificationReservation,
       type: 'foreign key',
       references: {
-        table: 'reservation',
+        table: tableName.reservation,
         field: 'id'
       }
     });
-    await queryInterface.addConstraint('reservation', {
+    await queryInterface.addConstraint(tableName.reservation, {
       fields: ['user_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'reservation_user',
+      name: constraintName.reservationUser,
       type: 'foreign key',
       references: {
-        table: 'user',
+        table: tableName.user,
         field: 'id'
       }
     });
 
-    await queryInterface.addConstraint('reservation', {
+    await queryInterface.addConstraint(tableName.reservation, {
       fields: ['workspace_id'],
       type: 'foreign key',
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'reservation_workspace',
+      name: constraintName.reservationWorkspace,
       references: {
-        table: 'workspace',
+        table: tableName.workspace,
         field: 'id'
       }
     });
 
-    await queryInterface.addConstraint('workspace', {
+    await queryInterface.addConstraint(tableName.workspace, {
       fields: ['type_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'workspace_type',
+      name: constraintName.workspaceType,
       type: 'foreign key',
       references: {
-        table: 'workspace_type',
+        table: tableName.workspaceType,
         field: 'id'
       }
     });
-    await queryInterface.addConstraint('workspace', {
+    await queryInterface.addConstraint(tableName.workspace, {
       fields: ['area_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'workspace_area',
+      name: constraintName.workspaceArea,
       type: 'foreign key',
       references: {
-        table: 'area',
+        table: tableName.area,
         field: 'id'
       }
     });
-    await queryInterface.addConstraint('area', {
+    await queryInterface.addConstraint(tableName.area, {
       fields: ['location_id'],
       onDelete: 'cascade',
       onUpdate: 'cascade',
-      name: 'area_location',
+      name: constraintName.areaLocation,
       type: 'foreign key',
       references: {
-        table: 'location',
+        table: tableName.location,
         field: 'id'
       }
     });
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeConstraint('notification', 'notification_template');
-    await queryInterface.removeConstraint('notification', 'notification_reservation');
-    await queryInterface.removeConstraint('reservation', 'reservation_user');
-    await queryInterface.removeConstraint('reservation', 'reservation_workspace');
-    await queryInterface.removeConstraint('workspace', 'workspace_type');
-    await queryInterface.removeConstraint('workspace', 'workspace_area');
-    await queryInterface.removeConstraint('area', 'area_location');
+    await queryInterface.removeConstraint(tableName.notification, constraintName.notificationTemplate);
+    await queryInterface.removeConstraint(tableName.notification, constraintName.notificationReservation);
+    await queryInterface.removeConstraint(tableName.reservation, constraintName.reservationUser);
+    await queryInterface.removeConstraint(tableName.reservation, constraintName.reservationWorkspace);
+    await queryInterface.removeConstraint(tableName.workspace, constraintName.workspaceType);
+    await queryInterface.removeConstraint(tableName.workspace, constraintName.workspaceArea);
+    await queryInterface.removeConstraint(tableName.area, constraintName.areaLocation);
   }
 };

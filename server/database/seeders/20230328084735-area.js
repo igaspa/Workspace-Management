@@ -1,9 +1,10 @@
 'use strict';
+const { tableName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('area', [
+    return queryInterface.bulkInsert(tableName.area, [
       {
         id: '26bae8e2-50fd-41cd-8b29-d1bf2a5becd2',
         name: 'East Wing',
@@ -35,6 +36,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('area', null, {});
+    await queryInterface.bulkDelete(tableName.area, null, {});
   }
 };

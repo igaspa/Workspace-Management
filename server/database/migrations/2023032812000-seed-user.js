@@ -1,10 +1,11 @@
 /* eslint-disable quotes */
 'use strict';
+const { tableName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, _Sequelize) {
-    return queryInterface.bulkInsert('user', [
+    return queryInterface.bulkInsert(tableName.user, [
       {
         id: '47f6daa2-a1ed-495a-ba55-c626b4366c5e',
         first_name: 'Admin',
@@ -19,6 +20,6 @@ module.exports = {
   },
 
   async down (queryInterface, _Sequelize) {
-    await queryInterface.bulkDelete('user', null, {});
+    await queryInterface.bulkDelete(tableName.user, null, {});
   }
 };

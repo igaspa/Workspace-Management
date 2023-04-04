@@ -9,13 +9,7 @@ exports.authenticateUser = async (req, _res, next) => {
     throw errors.UNAUTHORIZED(responseMessages.INVALID_TOKEN);
   }
   const decodedToken = jwt.verify(token, process.env.TOKEN);
-  req.user = {
-    id: decodedToken.id,
-    firstName: decodedToken.firstName,
-    lastName: decodedToken.lastName,
-    email: decodedToken.email,
-    roles: decodedToken.roles
-  };
+  req.user = decodedToken;
   next();
 };
 

@@ -1,6 +1,5 @@
 const formatModelName = (modelName) => {
-  let formattedModelName = modelName.replaceAll('_', ' ');
-  formattedModelName = formattedModelName[0].toUpperCase() + formattedModelName.slice(1);
+  let formattedModelName = modelName[0].toUpperCase() + modelName.slice(1);
 
   // Add space before every capital letter
   formattedModelName = formattedModelName.charAt(0) + formattedModelName.slice(1).replace(/([A-Z])/g, ' $1');

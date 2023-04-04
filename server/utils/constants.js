@@ -32,6 +32,6 @@ module.exports.constraintName = {
   workspaceType: 'workspace_type',
   workspaceArea: 'workspace_area',
   areaLocation: 'area_location',
-  userRole: 'role_userRole',
-  roleUser: 'user_userRole'
+  userRole: 'role_user_role',
+  roleUser: 'user_user_role'
 };

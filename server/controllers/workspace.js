@@ -48,3 +48,12 @@ module.exports.deleteWorkspacesFromLocation = async (req, res) => {
     message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
   });
 };
+
+module.exports.deleteMultipleWorkspaces = async (req, res) => {
+  const deletedWorkSpaces = await workspaceService.deleteMultipleWorkspaces(req);
+
+  if (!deletedWorkSpaces) throw errors.NOT_FOUND(workspace.name + 's');
+  return res.status(200).json({
+    message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
+  });
+};

@@ -91,6 +91,11 @@ exports.deleteWorkspacesFromLocation = async (req) => {
   }
 };
 
+exports.deleteMultipleWorkspaces = async (req) => {
+  const idList = req.body.workspaceList.map(el => el.id);
+  deleteWorkspaces(idList, req.body.forceDelete);
+};
+
 const deleteWorkspaces = async (workspaceIdList, forceDelete) => {
   const existingReservations = await checkCurrentReservations(workspaceIdList);
 

@@ -20,6 +20,7 @@ const responseMessages = {
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 
   // Constant messages
+  INVALID_RESERVATION_START_TIME: 'Invalid reservation start time.',
   MINIMUM_RESERVATION_TIME_ERROR: 'The reservation time range is invalid.',
   MINIMUM_RESERVATION_START_ERROR: 'Reservation start time is below the minimum.',
   INVALID_ID_TYPE: 'Invalid ID type provided!',
@@ -30,8 +31,8 @@ const responseMessages = {
   MISSING_EMAIL_OR_PASSWORD: 'Please enter email and password',
   LOGIN_AUTHORIZATION_ERROR: 'Invalid email or password!',
   LOGIN_SUCCESS: 'Successfully logged in!',
-  INVALID_PAGE: 'Invalid page requested',
-  INVALID_ACCESS: 'You do not have access to this page'
+  INVALID_PAGE: 'Invalid page requested.',
+  INVALID_ACCESS: 'You do not have access to this page.'
 };
 
 module.exports = responseMessages;

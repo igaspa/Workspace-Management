@@ -1,13 +1,14 @@
 const { callbackErrorHandler } = require('../middleware/error-handler');
 const express = require('express');
 
+const { bodyValidator } = require('../middleware/joi-validator');
 const reservationController = require('../controllers/reservation');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(callbackErrorHandler(reservationController.createReservation))
+  .post(bodyValidator, callbackErrorHandler(reservationController.createReservation))
   .get(callbackErrorHandler(reservationController.getAllReservations));
 
 router

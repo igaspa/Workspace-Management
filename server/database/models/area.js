@@ -1,5 +1,4 @@
 'use strict';
-const { v4: uuidv4 } = require('uuid');
 
 const {
   Model
@@ -12,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      area.belongsTo(models.location, { foreignKey: 'locationId' });
-      models.location.hasMany(area, { foreignKey: 'locationId' });
+      area.belongsTo(models.location, { foreignKey: 'locationId', hooks: true });
+      models.location.hasMany(area, { foreignKey: 'locationId', hooks: true, onDelete: 'cascade' });
     }
   }
   area.init({
@@ -27,12 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     floor: DataTypes.STRING,
     image: DataTypes.STRING
   }, {
-
-    hooks: {
-      beforeCreate: async (model) => {
-        model.id = uuidv4();
-      }
-    },
     sequelize,
     modelName: 'area',
     tableName: 'area',

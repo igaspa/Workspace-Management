@@ -1,5 +1,4 @@
 'use strict';
-const { v4: uuidv4 } = require('uuid');
 const {
   Model
 } = require('sequelize');
@@ -24,11 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     city: DataTypes.STRING,
     country: DataTypes.STRING
   }, {
-    hooks: {
-      beforeCreate: async (model) => {
-        model.id = uuidv4();
-      }
-    },
     sequelize,
     modelName: 'location',
     paranoid: true

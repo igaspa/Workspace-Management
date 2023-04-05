@@ -1,5 +1,6 @@
 const { area } = require('../database/models');
 const generalController = require('./general');
+const workspaceService = require('../services/workspace');
 
 module.exports.getAllAreas = async (req, res) => {
   await generalController.findAllModels(area, null, req, res);
@@ -18,5 +19,6 @@ module.exports.updateArea = async (req, res) => {
 };
 
 module.exports.deleteArea = async (req, res) => {
+  await workspaceService.deleteWorkspacesFromArea(req);
   await generalController.deleteModel(area, req, res);
 };

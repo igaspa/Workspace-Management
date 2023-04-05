@@ -25,6 +25,10 @@ router
   .post(workspaceCollection, callbackErrorHandler(workspaceController.createWorkspaces));
 
 router
+  .route('/delete-collection')
+  .post(callbackErrorHandler(workspaceController.deleteMultipleWorkspaces));
+
+router
   .route('/')
   .post(bodyValidator, callbackErrorHandler(workspaceController.createOneWorkspace))
   .get(callbackErrorHandler(workspaceController.getAllWorkspaces));

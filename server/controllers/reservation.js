@@ -4,11 +4,8 @@ const reservationService = require('../services/reservation');
 const generalController = require('./general');
 
 exports.createReservation = async (req, res) => {
-// TO DO
   await reservationService.createReservation(req, res);
-  // return res.status(201).json({
-  //   message: responseMessage.CREATE_SUCCESS(reservation.name)
-  // });
+  return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
 };
 
 module.exports.getAllReservations = async (req, res) => {

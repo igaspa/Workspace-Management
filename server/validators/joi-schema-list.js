@@ -145,12 +145,6 @@ exports.location = joi.object({
 
 // Reservation Entity Schema
 exports.reservation = joi.object({
-  id: joi.string()
-    .guid({ version: 'uuidv4' })
-    .alter({
-      post: (reservationSchema) => reservationSchema.required(),
-      put: (reservationSchema) => reservationSchema.forbidden()
-    }),
   userId: joi.string()
     .guid({ version: 'uuidv4' })
     .alter({
@@ -163,29 +157,33 @@ exports.reservation = joi.object({
       post: (reservationSchema) => reservationSchema.required(),
       put: (reservationSchema) => reservationSchema.forbidden()
     }),
+  actionId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (reservationSchema) => reservationSchema.required(),
+      put: (reservationSchema) => reservationSchema.forbidden()
+    }),
+  reservationStart: joi.date()
+    .required(),
+  reservationEnd: joi.date()
+    .greater(joi.ref('reservationStart'))
+    .required(),
   participants: joi.array()
     .items({
       firstName: joi.string()
         .min(5)
         .max(50)
-        .alter({
-          post: (workspaceId) => workspaceId.required(),
-          put: (workspaceId) => workspaceId.optional()
-        }),
+        .required(),
       lastName: joi.string()
         .min(5)
         .max(50)
-        .alter({
-          post: (workspaceId) => workspaceId.required(),
-          put: (workspaceId) => workspaceId.optional()
-        }),
+        .required(),
       email: joi.string()
         .email({ minDomainSegments: 2 })
-        .alter({
-          post: (workspaceId) => workspaceId.required(),
-          put: (workspaceId) => workspaceId.forbidden()
-        })
+        .required()
     })
+    .optional()
+
 }).options({ abortEarly: false });
 
 // Role Entity Schema

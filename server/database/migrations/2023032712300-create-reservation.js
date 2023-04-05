@@ -18,6 +18,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID
       },
+      action_id: {
+        allowNull: false,
+        type: Sequelize.UUID
+      },
       reservation_start: {
         allowNull: false,
         type: Sequelize.DATE

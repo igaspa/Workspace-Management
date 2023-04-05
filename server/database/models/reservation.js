@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     workspaceId: DataTypes.INTEGER,
     reservationStart: DataTypes.DATE,
     reservationEnd: DataTypes.DATE,
-    participants: DataTypes.JSONB
+    participants: DataTypes.JSONB,
+    actionId: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'reservation',

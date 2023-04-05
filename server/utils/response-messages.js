@@ -32,8 +32,9 @@ const responseMessages = {
   MISSING_EMAIL_OR_PASSWORD: 'Please enter email and password',
   LOGIN_AUTHORIZATION_ERROR: 'Invalid email or password!',
   LOGIN_SUCCESS: 'Successfully logged in!',
-  INVALID_PAGE: 'Invalid page requested.',
-  INVALID_ACCESS: 'You do not have access to this page.'
+  INVALID_PAGE: 'Invalid page requested',
+  INVALID_ACCESS: 'You do not have access to this page',
+  RESERVATION_EXISTS: 'There are existing reservations for this workspace. Are you sure you want to delete ?'
 };
 
 module.exports = responseMessages;

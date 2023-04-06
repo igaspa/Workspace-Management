@@ -11,6 +11,8 @@ module.exports.paginationValues = {
   DEFAULT_PAGE: 0
 };
 
+module.exports.conferenceRoomId = '07c0865e-f27c-414e-bd0b-ed5178d9aeb5';
+
 module.exports.tableName = {
   role: 'role',
   location: 'location',

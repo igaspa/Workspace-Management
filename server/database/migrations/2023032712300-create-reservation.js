@@ -4,6 +4,8 @@ const { tableName } = require('../../utils/constants');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    await queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS btree_gist;');
+
     await queryInterface.createTable(tableName.reservation, {
       id: {
         allowNull: false,
@@ -15,10 +17,6 @@ module.exports = {
         type: Sequelize.UUID
       },
       workspace_id: {
-        allowNull: false,
-        type: Sequelize.UUID
-      },
-      action_id: {
         allowNull: false,
         type: Sequelize.UUID
       },
@@ -43,15 +41,16 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }, {
-      uniqueKeys: {
-        Items_unique: {
-          fields: ['workspace_id', 'reservation_start']
-        }
-      }
     });
+
+    await queryInterface.sequelize.query(`
+    ALTER TABLE ${tableName.reservation}
+    ADD CONSTRAINT overlapping_reservation 
+    EXCLUDE USING gist (workspace_id WITH =, tsrange(reservation_start, reservation_end) WITH &&);
+  `);
   },
   async down (queryInterface, _Sequelize) {
+    await queryInterface.removeConstraint(tableName.reservation, 'overlapping_reservation');
     await queryInterface.dropTable(tableName.reservation);
   }
 };

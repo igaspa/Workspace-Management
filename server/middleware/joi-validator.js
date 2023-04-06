@@ -23,7 +23,7 @@ exports.paramValidator = (req, _res, next) => {
 };
 // Validate sent request body
 exports.bodyValidator = (req, _res, next) => {
-  if (!req.body.keys().length) throw errors.VALIDATION(responseMessages.NO_BODY);
+  if (!Object.keys(req.body).length) throw errors.VALIDATION(responseMessages.NO_BODY);
 
   const schemaName = req.originalUrl.split('/')[3];
   const newSchemaName = schemaName.replace(/-/g, '_');
@@ -37,7 +37,7 @@ exports.bodyValidator = (req, _res, next) => {
 
 // Validate sent request body
 exports.workspaceCollection = (req, _res, next) => {
-  if (!req.body.keys().length) throw errors.VALIDATION(responseMessages.NO_BODY);
+  if (!Object.keys(req.body).length) throw errors.VALIDATION(responseMessages.NO_BODY);
 
   const schemaNameList = req.originalUrl.split('/');
   const schemaName = schemaNameList[3] + '_' + schemaNameList[4];

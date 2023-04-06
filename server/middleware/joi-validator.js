@@ -1,5 +1,6 @@
 const joiSchemaList = require('../validators/joi-schema-list');
 const { errors } = require('../utils/errors');
+const responseMessages = require('../utils/response-messages');
 
 // Remove / from error messages
 const VALIDATION_OPTION = {
@@ -22,6 +23,8 @@ exports.paramValidator = (req, _res, next) => {
 };
 // Validate sent request body
 exports.bodyValidator = (req, _res, next) => {
+  if (!req.body.keys().length) throw errors.VALIDATION(responseMessages.NO_BODY);
+
   const schemaName = req.originalUrl.split('/')[3];
   const newSchemaName = schemaName.replace(/-/g, '_');
 
@@ -34,6 +37,8 @@ exports.bodyValidator = (req, _res, next) => {
 
 // Validate sent request body
 exports.workspaceCollection = (req, _res, next) => {
+  if (!req.body.keys().length) throw errors.VALIDATION(responseMessages.NO_BODY);
+
   const schemaNameList = req.originalUrl.split('/');
   const schemaName = schemaNameList[3] + '_' + schemaNameList[4];
   const newSchemaName = schemaName.replace(/-/g, '_');

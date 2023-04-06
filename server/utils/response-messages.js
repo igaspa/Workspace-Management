@@ -20,6 +20,7 @@ const responseMessages = {
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 
   // Constant messages
+  NO_BODY: 'You must not send empty body on this request.',
   INVALID_RESERVATION_START_TIME: 'Invalid reservation start time.',
   MINIMUM_RESERVATION_TIME_ERROR: 'The reservation time range is invalid.',
   MINIMUM_RESERVATION_START_ERROR: 'Reservation start time is below the minimum.',

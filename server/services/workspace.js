@@ -1,5 +1,3 @@
-// const responseMessage = require('../utils/response-messages');
-// const { errors } = require('../utils/errors');
 const { workspace, area, sequelize, reservation, location } = require('../database/models');
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require('sequelize');
@@ -103,7 +101,10 @@ exports.deleteMultipleWorkspaces = async (req) => {
 const deleteWorkspaces = async (workspaceIdList, forceDelete, transaction) => {
   const existingReservations = await checkCurrentReservations(workspaceIdList);
 
-  if (!existingReservations || forceDelete) {
+  if (forceDelete) {
+    await reservation.destroy({ where: { workspaceId: workspaceIdList } }, { transaction });
+    await workspace.destroy({ where: { id: workspaceIdList } }, { transaction });
+  } else if (!existingReservations) {
     await workspace.destroy({ where: { id: workspaceIdList } }, { transaction });
   } else {
     throw errors.VALIDATION(responseMessage.RESERVATION_EXISTS);

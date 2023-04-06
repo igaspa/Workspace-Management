@@ -87,7 +87,12 @@ module.exports.createModel = async (Model, req, res) => {
 };
 
 module.exports.updateModel = async (Model, req, res) => {
-  const updatedModel = await Model.update(req.body, {
+  const model = await Model.findOne({
+    where: { id: req.params.id }
+  });
+  console.log(model);
+
+  const [updatedModel, _updatedData] = await Model.update(req.body, {
     where: { id: req.params.id },
     returning: true
   });

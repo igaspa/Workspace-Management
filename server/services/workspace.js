@@ -1,6 +1,6 @@
 // const responseMessage = require('../utils/response-messages');
 // const { errors } = require('../utils/errors');
-const { workspace, area, sequelize, reservation } = require('../database/models');
+const { workspace, area, sequelize, reservation, location } = require('../database/models');
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require('sequelize');
 const { errors } = require('../utils/errors');
@@ -35,7 +35,7 @@ exports.deleteWorkspacesFromArea = async (req) => {
   const workspaceList = await workspace.findAll({ where: { areaId: id } });
   const workspaceIdList = workspaceList.map(workspace => workspace.id);
   try {
-    deleteWorkspaces(workspaceIdList, req.body.forceDelete);
+    deleteWorkspaces(workspaceIdList, req.body.forceDelete, transaction);
     transaction.commit();
   } catch (error) {
     await transaction.rollback();
@@ -43,7 +43,7 @@ exports.deleteWorkspacesFromArea = async (req) => {
   }
 };
 
-exports.deleteAreasFromLocation = async (req) => {
+exports.deleteLocation = async (req) => {
   const { id } = req.params;
   const transaction = await sequelize.transaction();
 
@@ -54,14 +54,16 @@ exports.deleteAreasFromLocation = async (req) => {
   const areaListId = areaIds.map(area => area.id);
 
   const workspaceList = await workspace.findAll({
-    where: { areaId: areaListId }
+    where: { areaId: areaListId },
+    attributes: ['id']
   });
   const workspaceIdList = workspaceList.map(workspace => workspace.id);
   try {
-    await deleteWorkspaces(workspaceIdList, req.body.forceDelete);
+    await deleteWorkspaces(workspaceIdList, req.body.forceDelete, transaction);
     await area.destroy({
       where: { id: areaIds.map(area => area.id) }
-    });
+    }, { transaction });
+    await location.destroy({ where: { id } }, { transaction });
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
@@ -83,7 +85,7 @@ exports.deleteWorkspacesFromLocation = async (req) => {
   });
   const workspaceIdList = workspaceList.map(workspace => workspace.id);
   try {
-    deleteWorkspaces(workspaceIdList, req.body.forceDelete);
+    deleteWorkspaces(workspaceIdList, req.body.forceDelete, transaction);
     transaction.commit();
   } catch (error) {
     await transaction.rollback();
@@ -93,14 +95,16 @@ exports.deleteWorkspacesFromLocation = async (req) => {
 
 exports.deleteMultipleWorkspaces = async (req) => {
   const idList = req.body.workspaceList.map(el => el.id);
-  deleteWorkspaces(idList, req.body.forceDelete);
+  const transaction = await sequelize.transaction();
+
+  await deleteWorkspaces(idList, req.body.forceDelete, transaction);
 };
 
-const deleteWorkspaces = async (workspaceIdList, forceDelete) => {
+const deleteWorkspaces = async (workspaceIdList, forceDelete, transaction) => {
   const existingReservations = await checkCurrentReservations(workspaceIdList);
 
   if (!existingReservations || forceDelete) {
-    await workspace.destroy({ where: { id: workspaceIdList } });
+    await workspace.destroy({ where: { id: workspaceIdList } }, { transaction });
   } else {
     throw errors.VALIDATION(responseMessage.RESERVATION_EXISTS);
   }

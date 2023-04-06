@@ -25,21 +25,37 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.UUID
     },
-    userId: DataTypes.UUID,
-    workspaceId: DataTypes.INTEGER,
-    reservationStart: DataTypes.DATE,
-    reservationEnd: DataTypes.DATE,
-    participants: DataTypes.JSONB,
-    actionId: DataTypes.UUID
+    userId: {
+      allowNull: false,
+      type: DataTypes.UUID
+    },
+    workspaceId: {
+      allowNull: false,
+      type: DataTypes.UUID
+    },
+    reservation_start: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    reservation_end: {
+      allowNull: true,
+      type: DataTypes.DATE
+    },
+    participants: {
+      allowNull: true,
+      type: DataTypes.JSONB
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
-    modelName: 'reservation',
-    indexes: [
-      {
-        unique: true,
-        fields: ['reservationStart', 'workspaceId']
-      }
-    ]
+    modelName: 'reservation'
   });
   return reservation;
 };

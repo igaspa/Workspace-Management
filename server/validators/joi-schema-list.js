@@ -145,6 +145,12 @@ exports.location = joi.object({
 
 // Reservation Entity Schema
 exports.reservation = joi.object({
+  id: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (reservationSchema) => reservationSchema.required(),
+      put: (reservationSchema) => reservationSchema.forbidden()
+    }),
   userId: joi.string()
     .guid({ version: 'uuidv4' })
     .alter({
@@ -157,16 +163,10 @@ exports.reservation = joi.object({
       post: (reservationSchema) => reservationSchema.required(),
       put: (reservationSchema) => reservationSchema.forbidden()
     }),
-  actionId: joi.string()
-    .guid({ version: 'uuidv4' })
-    .alter({
-      post: (reservationSchema) => reservationSchema.required(),
-      put: (reservationSchema) => reservationSchema.forbidden()
-    }),
-  reservationStart: joi.date()
+  start: joi.date()
     .required(),
-  reservationEnd: joi.date()
-    .greater(joi.ref('reservationStart'))
+  end: joi.date()
+    .greater(joi.ref('start'))
     .required(),
   participants: joi.array()
     .items({

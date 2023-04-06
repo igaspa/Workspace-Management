@@ -23,6 +23,13 @@
             "error",
             "always"
         ],
-        "camelcase": "off"
+        "camelcase": "off",
+        "no-unused-vars": [
+            "warn",
+            {
+                "varsIgnorePattern": "^_",
+                "argsIgnorePattern": "^_"
+            }
+        ]
     }
 }

@@ -19,6 +19,5 @@ module.exports.updateLocation = async (req, res) => {
 };
 
 module.exports.deleteLocation = async (req, res) => {
-  await workspaceService.deleteAreasFromLocation(req);
-  await generalController.deleteModel(location, req, res);
+  await workspaceService.deleteLocation(req);
 };

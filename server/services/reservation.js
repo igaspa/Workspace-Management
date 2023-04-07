@@ -37,7 +37,7 @@ const validateReservationDate = (reservationStart, reservationEnd) => {
   convertToMs(interval);
 
   // check if the current time is a valid start time based on the time interval
-  if (reservationStartInMs % interval !== 0 || reservationEndInMs % interval !== 0) {
+  if (reservationStartInMs % interval || reservationEndInMs % interval) {
     throw errors.VALIDATION(responseMessage.INVALID_RESERVATION_START_TIME);
   }
 
@@ -48,7 +48,7 @@ const validateReservationDate = (reservationStart, reservationEnd) => {
 };
 
 exports.createReservation = async (req) => {
-  const { id, userId, workspaceId, reservationStart, reservationEnd } = req.body;
+  const { id, userId, workspaceId, startAt, endAt } = req.body;
 
   // retrive workspace with workspaceType from db to get information abot reservation interval
   const workspaceInfo = await workspace.findOne({
@@ -64,21 +64,23 @@ exports.createReservation = async (req) => {
   // const intervalInMs = convertToMs(reservationTime);
   // const numIntervals = calculateNumOfIntervals(reservationStart, reservationEnd, intervalInMs);
   // validateReservationDate(reservationStart, intervalInMs, reservationTime);
-  validateReservationDate(reservationStart, reservationEnd);
+  validateReservationDate(startAt, endAt);
 
   // Create the reservations
   // const reservations = [];
-  const start = new Date(reservationStart);
-  const end = new Date(reservationEnd);
+  const start = new Date(startAt);
+  const end = new Date(endAt);
 
   await reservation.create({
     id,
     userId,
     workspaceId,
-    start,
-    end,
+    startAt: start,
+    endAt: end,
     participants: participants || null
   });
+
+  // Previous logic for creating reservation
   // for (let i = 0; i < numIntervals; i++) {
   //   const reservationStartPlusInterval = new Date(start.getTime() + i * intervalInMs);
   //   const reservationEndPlusInterval = new Date(reservationStartPlusInterval.getTime() + intervalInMs);
@@ -102,24 +104,22 @@ exports.createReservation = async (req) => {
 };
 
 exports.updateReservation = async (req, res) => {
-  const { reservationStart, reservationEnd, actionId } = req.body;
+  // const { startAt, endAt } = req.body;
+  const { id } = req.params;
 
   // retrive workspace with workspaceType from db to get information abot reservation interval
-  const reservations = await reservation.findAll({
-    where: { actionId },
-    order: [['reservationStart', 'ASC']]
+  const currentReservaiton = await reservation.findOne({
+    where: { id }
   });
-  if (!reservations) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
+  if (!currentReservaiton) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
   // sort reservations by reservationStart
   // reservations.sort((a, b) => new Date(a.reservationStart) - new Date(b.reservationStart));
-
-  console.log(reservations);
 
   // TO DO
   // const participants = workspaceInfo.workspaceType.id === conferenceRoomId ? req.body.participants : null;
 
   return res.status(200).json({
-    message: reservations
+    message: currentReservaiton
   });
 };

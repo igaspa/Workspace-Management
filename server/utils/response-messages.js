@@ -20,6 +20,7 @@ const responseMessages = {
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 
   // Constant messages
+  RESERVATION_UNIQUE_CONSTRAINT_ERROR: 'Another reservation for this workspace exists within the given range.',
   NO_BODY: 'You must not send empty body on this request.',
   INVALID_RESERVATION_START_TIME: 'Invalid reservation start time.',
   MINIMUM_RESERVATION_TIME_ERROR: 'The reservation time range is invalid.',

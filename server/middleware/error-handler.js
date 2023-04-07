@@ -51,9 +51,13 @@ module.exports.errorMiddleware = async (error, _req, res, _next) => {
     return res.status(422).json({ message: responseMessage.UNIQUE_CONSTRAINT_ERROR(messageObj) });
   }
 
-  if (error.original.constraint === 'overlapping_reservation') {
+  if (error.original?.constraint === 'overlapping_reservation') {
     return res.status(422).json({ message: responseMessage.RESERVATION_UNIQUE_CONSTRAINT_ERROR });
   }
 
-  return res.status(500).json({ message: 'Internal server error' });
+  if (error.name === 'SequelizeForeignKeyConstraintError') {
+    return res.status(422).json({ message: error.parent.detail });
+  }
+
+  return res.status(500).json({ message: error });
 };

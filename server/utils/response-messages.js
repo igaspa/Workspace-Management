@@ -20,11 +20,12 @@ const responseMessages = {
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 
   // Constant messages
+  DAILY_LIMIT_EXCEDEED: 'You exceeded daily limit of reservations for this workspace type.',
+  OVERALL_LIMIT_EXCEDEED: 'You exceeded overall limit of reservations for this workspace type.',
   RESERVATION_UNIQUE_CONSTRAINT_ERROR: 'Another reservation for this workspace exists within the given range.',
   NO_BODY: 'You must not send empty body on this request.',
-  INVALID_RESERVATION_START_TIME: 'Invalid reservation start time.',
-  MINIMUM_RESERVATION_TIME_ERROR: 'The reservation time range is invalid.',
-  MINIMUM_RESERVATION_START_ERROR: 'Reservation start time is below the minimum.',
+  INVALID_RESERVATION_INTERVAL: 'Invalid reservation start time.',
+  RESERVATION_MAX_TIME_EXCEEDED: 'Reservation time range is larger than maximum.',
   INVALID_ID_TYPE: 'Invalid ID type provided!',
   INVALID_NAME_LENGTH: 'Name must have at least 3 characters!',
   UNIQUE_USER_ERROR: 'User with this email already exits!',

@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: DataTypes.STRING,
-    reservationTime: AdditDataTypes.INTERVAL
+    maxReservationTimeDaily: AdditDataTypes.INTERVAL,
+    maxReservationTimeOverall: AdditDataTypes.INTERVAL
   }, {
     sequelize,
     modelName: 'workspaceType',

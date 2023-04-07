@@ -15,7 +15,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      reservation_time: {
+      max_reservation_time_daily: {
+        allowNull: true,
+        type: SequelizeType.INTERVAL
+      },
+      max_reservation_time_overall: {
         allowNull: false,
         type: SequelizeType.INTERVAL
       },

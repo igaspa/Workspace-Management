@@ -16,7 +16,9 @@ exports.workspace_type = joi.object({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
-  reservationTime: joi.string()
+  maxReservationTimeDaily: joi.string().regex(/^[0-9]{2}:[0-9]{2}$/)
+    .required(),
+  maxReservationTimeOverall: joi.string().regex(/^[0-9]{2}:[0-9]{2}$/)
     .required()
 }).options({ abortEarly: false });
 
@@ -164,6 +166,7 @@ exports.reservation = joi.object({
       put: (reservationSchema) => reservationSchema.forbidden()
     }),
   startAt: joi.date()
+    .greater(new Date())
     .required(),
   endAt: joi.date()
     .greater(joi.ref('startAt'))

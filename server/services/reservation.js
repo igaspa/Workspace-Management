@@ -1,50 +1,100 @@
 const responseMessage = require('../utils/response-messages');
 const { errors } = require('../utils/errors');
-const { reservation, workspace, workspaceType, sequelize } = require('../database/models');
-const { v4: uuidv4 } = require('uuid');
-const { convertToMs, calculateNumOfIntervals } = require('../utils/date-calculation');
+const { reservation, workspace, workspaceType } = require('../database/models');
+const { convertToMs } = require('../utils/date-calculation');
 const { conferenceRoomId } = require('../utils/constants');
+const { Op } = require('sequelize');
 
-const validateReservationDate = (reservationStart, reservationEnd) => {
-  // Validate reservationStart falls within the specified range
-  // if (new Date(reservationStart).getTime() + intervalInMs <= new Date().getTime()) {
-  //   throw errors.VALIDATION(responseMessage.MINIMUM_RESERVATION_START_ERROR);
-  // }
+const validateDailyMaxLimit = (startInMs, endInMs, maxReservationTimeDailyInMs, userDailyReservationCountInMs) => {
+  if ((endInMs - startInMs + userDailyReservationCountInMs) > maxReservationTimeDailyInMs) {
+    throw errors.VALIDATION(responseMessage.DAILY_LIMIT_EXCEDEED);
+  }
+};
 
-  if (new Date(reservationStart).getTime() <= new Date().getTime()) {
-    throw errors.VALIDATION(responseMessage.MINIMUM_RESERVATION_START_ERROR);
+const validateOverallMaxLimit = (startInMs, endInMs, maxReservationTimeOverallInMs, userOverallReservationCountInMs) => {
+  if ((endInMs - startInMs + userOverallReservationCountInMs) > maxReservationTimeOverallInMs) {
+    throw errors.VALIDATION(responseMessage.OVERALL_LIMIT_EXCEDEED);
+  }
+};
+
+function calculateUserOverallReservationsInMs (reservations) {
+  const currentTimeInMs = new Date().getTime();
+  const totalDurationMs = reservations
+    .reduce((totalMs, reservation) => {
+      const startMs = reservation.startAt.getTime() < currentTimeInMs ? currentTimeInMs : reservation.startAt.getTime();
+      const durationMs = reservation.endAt.getTime() - startMs;
+      return totalMs + durationMs;
+    }, 0);
+  return totalDurationMs || 0;
+}
+
+function calculateUserDailyReservationsInMs (reservations, start) {
+  const midnight = start.setHours(0, 0, 0, 0);
+  const midnightOfTomorrow = midnight + (24 * 60 * 60 * 1000);
+  const totalDurationMs = reservations
+    .filter(reservation => reservation.endAt.getTime() > midnight)
+    .reduce((totalMs, reservation) => {
+      let durationInMs;
+      if (reservation.startAt.getTime() > midnightOfTomorrow) {
+        durationInMs = 0;
+      } else {
+        const startMs = reservation.startAt.getTime() < midnight ? midnight : reservation.startAt.getTime();
+        const endMs = reservation.endAt.getTime() > midnightOfTomorrow ? midnightOfTomorrow : reservation.startAt.getTime();
+        durationInMs = endMs - startMs;
+      }
+      return totalMs + durationInMs;
+    }, 0);
+  return totalDurationMs || 0;
+}
+
+const validateReservationTime = (reservations, data) => {
+  const { start, end, maxReservationTimeDaily, maxReservationTimeOverall } = data;
+
+  const maxReservationTimeDailyInMs = convertToMs(maxReservationTimeDaily);
+  const maxReservationTimeOverallInMs = convertToMs(maxReservationTimeOverall);
+
+  const userDailyReservationCountInMs = calculateUserDailyReservationsInMs(reservations, start);
+  const userOverallReservationCountInMs = calculateUserOverallReservationsInMs(reservations);
+
+  // validate user did not exceed daily limit of reservations
+  if (
+    end.getFullYear() > start.getFullYear() ||
+    end.getMonth() > start.getMonth() ||
+    end.getDate() > start.getDate()
+  ) {
+    const dayAfter = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+    const midnight = dayAfter.setHours(0, 0, 0, 0);
+    validateDailyMaxLimit(start.getTime(), midnight, maxReservationTimeDailyInMs, userDailyReservationCountInMs);
+  } else {
+    validateDailyMaxLimit(start.getTime(), end.getTime(), maxReservationTimeDailyInMs, userDailyReservationCountInMs);
   }
 
-  // calculate the time interval in ms
-  // const timeIntervalInMs = convertToMs(reservationTime);
+  // validate user did not exceed overall limit of reservations
+  validateOverallMaxLimit(start.getTime(), end.getTime(), maxReservationTimeOverallInMs, userOverallReservationCountInMs);
 
-  // get reservation start time in ms
-  const startDate = {
-    hours: new Date(reservationStart).getHours(),
-    minutes: new Date(reservationStart).getMinutes()
-  };
-  const endDate = {
-    hours: new Date(reservationEnd).getHours(),
-    minutes: new Date(reservationEnd).getMinutes()
-  };
-  const reservationStartInMs = convertToMs(startDate);
-  const reservationEndInMs = convertToMs(endDate);
+  const startDateInterval = createIntervalOfDate(start);
+  const endDateInterval = createIntervalOfDate(end);
+  // convert intervals in ms
+  const reservationStartInMs = convertToMs(startDateInterval);
+  const reservationEndInMs = convertToMs(endDateInterval);
 
-  const interval = {
-    hours: 0,
+  const minIntervalObj = {
     minutes: 5
   };
-  convertToMs(interval);
+  const miniInterval = convertToMs(minIntervalObj);
 
-  // check if the current time is a valid start time based on the time interval
-  if (reservationStartInMs % interval || reservationEndInMs % interval) {
-    throw errors.VALIDATION(responseMessage.INVALID_RESERVATION_START_TIME);
+  // check if start and end are valid times based on the interval
+  if (reservationStartInMs % miniInterval || reservationEndInMs % miniInterval) {
+    throw errors.VALIDATION(responseMessage.INVALID_RESERVATION_INTERVAL);
   }
+};
 
-  // check if the current time is a valid start time based on the time interval
-  // if (reservationStartInMs % timeIntervalInMs !== 0) {
-  //   throw errors.VALIDATION(responseMessage.INVALID_RESERVATION_START_TIME);
-  // }
+const createIntervalOfDate = (date) => {
+  const interval = {
+    hours: date.getHours(),
+    minutes: date.getMinutes()
+  };
+  return interval;
 };
 
 exports.createReservation = async (req) => {
@@ -53,24 +103,43 @@ exports.createReservation = async (req) => {
   // retrive workspace with workspaceType from db to get information abot reservation interval
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
-    include: [{ model: workspaceType }]
+    attributes: ['permanentlyReserved'],
+    include: [{ model: workspaceType, attributes: ['id', 'maxReservationTimeDaily', 'maxReservationTimeOverall'] }]
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  // TO DO
-  const participants = workspaceInfo.workspaceType.id === conferenceRoomId ? req.body.participants : null;
+  const { maxReservationTimeDaily, maxReservationTimeOverall, id: workspaceTypeId } = workspaceInfo.workspaceType;
+  console.log(maxReservationTimeDaily, maxReservationTimeOverall, workspaceTypeId);
 
-  // const { reservationTime } = workspaceInfo.workspaceType;
-  // const intervalInMs = convertToMs(reservationTime);
-  // const numIntervals = calculateNumOfIntervals(reservationStart, reservationEnd, intervalInMs);
-  // validateReservationDate(reservationStart, intervalInMs, reservationTime);
-  validateReservationDate(startAt, endAt);
+  const reservations = await reservation.findAll({
+    where: {
+      userId,
+      endAt: { [Op.gt]: new Date() }
+    },
+    attributes: ['startAt', 'endAt'],
+    include: [{
+      model: workspace,
+      where: { typeId: workspaceTypeId },
+      attributes: [],
+      include: [{
+        model: workspaceType
+      }]
+    }]
+  });
 
-  // Create the reservations
-  // const reservations = [];
+  // for each reservation, if resrvation.start < current date, uzmi start, inace current date
+
+  // Create date objects corresponding to the dates that were sent
   const start = new Date(startAt);
   const end = new Date(endAt);
 
+  const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
+  validateReservationTime(reservations, data);
+
+  // return 1;
+
+  // Create the reservation
+  const participants = workspaceInfo.workspaceType.id === conferenceRoomId ? req.body.participants : null;
   await reservation.create({
     id,
     userId,
@@ -79,31 +148,10 @@ exports.createReservation = async (req) => {
     endAt: end,
     participants: participants || null
   });
-
-  // Previous logic for creating reservation
-  // for (let i = 0; i < numIntervals; i++) {
-  //   const reservationStartPlusInterval = new Date(start.getTime() + i * intervalInMs);
-  //   const reservationEndPlusInterval = new Date(reservationStartPlusInterval.getTime() + intervalInMs);
-  //   reservations.push({
-  //     id,
-  //     userId,
-  //     workspaceId,
-  //     reservationStart: reservationStartPlusInterval,
-  //     reservationEnd: reservationEndPlusInterval,
-  //     participants: participants || null
-  //   });
-  // }
-  // const transaction = await sequelize.transaction();
-  // try {
-  //   await reservation.bulkCreate(reservations, { transaction });
-  //   await transaction.commit();
-  // } catch (error) {
-  //   await transaction.rollback();
-  //   throw error;
-  // }
 };
 
 exports.updateReservation = async (req, res) => {
+  // TO DO
   // const { startAt, endAt } = req.body;
   const { id } = req.params;
 
@@ -112,12 +160,6 @@ exports.updateReservation = async (req, res) => {
     where: { id }
   });
   if (!currentReservaiton) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
-
-  // sort reservations by reservationStart
-  // reservations.sort((a, b) => new Date(a.reservationStart) - new Date(b.reservationStart));
-
-  // TO DO
-  // const participants = workspaceInfo.workspaceType.id === conferenceRoomId ? req.body.participants : null;
 
   return res.status(200).json({
     message: currentReservaiton

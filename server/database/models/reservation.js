@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         through: reservation,
         foreignKey: 'workspaceId'
       });
+
+      models.user.hasMany(reservation);
+      reservation.belongsTo(models.user);
+      models.workspace.hasMany(reservation);
+      reservation.belongsTo(models.workspace);
     }
   }
   reservation.init({

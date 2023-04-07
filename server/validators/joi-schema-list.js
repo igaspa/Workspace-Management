@@ -163,10 +163,10 @@ exports.reservation = joi.object({
       post: (reservationSchema) => reservationSchema.required(),
       put: (reservationSchema) => reservationSchema.forbidden()
     }),
-  start: joi.date()
+  startAt: joi.date()
     .required(),
-  end: joi.date()
-    .greater(joi.ref('start'))
+  endAt: joi.date()
+    .greater(joi.ref('startAt'))
     .required(),
   participants: joi.array()
     .items({

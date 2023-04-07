@@ -33,11 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.UUID
     },
-    reservation_start: {
+    startAt: {
       allowNull: false,
       type: DataTypes.DATE
     },
-    reservation_end: {
+    endAt: {
       allowNull: true,
       type: DataTypes.DATE
     },

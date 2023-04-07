@@ -20,11 +20,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID
       },
-      reservation_start: {
+      start_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      reservation_end: {
+      end_at: {
         allowNull: true,
         type: Sequelize.DATE
       },
@@ -46,7 +46,7 @@ module.exports = {
     await queryInterface.sequelize.query(`
     ALTER TABLE ${tableName.reservation}
     ADD CONSTRAINT overlapping_reservation 
-    EXCLUDE USING gist (workspace_id WITH =, tsrange(reservation_start, reservation_end) WITH &&);
+    EXCLUDE USING gist (workspace_id WITH =, tstzrange(start_at, end_at) WITH &&);
   `);
   },
   async down (queryInterface, _Sequelize) {

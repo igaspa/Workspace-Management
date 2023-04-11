@@ -101,7 +101,7 @@ exports.area = joi.object({
     .guid({ version: 'uuidv4' })
     .alter({
       post: (areaSchema) => areaSchema.required(),
-      put: (areaSchema) => areaSchema.forbidden()
+      put: (areaSchema) => areaSchema.optional()
     }),
   image: joi.string()
     .min(10)

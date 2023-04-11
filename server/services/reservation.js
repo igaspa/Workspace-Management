@@ -79,7 +79,7 @@ const validateReservationsLimits = (reservations, data) => {
 const validateReservationConstraints = (reservations, data) => {
   // validate user does not have permanent reservation
   const { start, end } = data;
-  if (reservations.some(reservation => reservation.workspace.permanentlyReserved)) {
+  if (reservations.some(reservation => reservation.endAt === null)) {
     throw errors.CONFLICT(responseMessage.PERMANENT_RESERVATION_CONFLICT);
   }
 
@@ -113,11 +113,7 @@ const getUserReservationsByWorkspaceType = async (userId, workspaceTypeId) => {
     include: [{
       model: workspace,
       where: { typeId: workspaceTypeId },
-      attributes: ['permanentlyReserved'],
-      include: [{
-        model: workspaceType,
-        attributes: []
-      }]
+      attributes: ['permanentlyReserved']
     }],
     order: [['startAt', 'ASC']]
   });

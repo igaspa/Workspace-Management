@@ -3,11 +3,10 @@ const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 
 exports.authenticateUser = async (req, _res, next) => {
+  if (!req.headers.authorization) throw errors.UNAUTHORIZED(responseMessages.MISSING_AUTHORIZATION);
   const authHeader = req.headers.authorization;
   const token = authHeader.split(' ')[1];
-  if (!token) {
-    throw errors.UNAUTHORIZED(responseMessages.INVALID_TOKEN);
-  }
+  if (!token) throw errors.UNAUTHORIZED(responseMessages.INVALID_TOKEN);
   const decodedToken = jwt.verify(token, process.env.TOKEN);
   req.user = decodedToken;
   next();

@@ -41,7 +41,7 @@ exports.deleteWorkspacesFromArea = async (req) => {
   }
 };
 
-exports.deleteLocation = async (req) => {
+exports.deleteLocation = async (req, res) => {
   const { id } = req.params;
   const transaction = await sequelize.transaction();
 
@@ -61,8 +61,13 @@ exports.deleteLocation = async (req) => {
     await area.destroy({
       where: { id: areaIds.map(area => area.id) }
     }, { transaction });
-    await location.destroy({ where: { id } }, { transaction });
+    const deletedLocation = await location.destroy({ where: { id } }, { transaction });
     await transaction.commit();
+    if (!deletedLocation) res.status(404).json({ message: responseMessage.NOT_FOUND(location.name) });
+
+    return res.status(200).json({
+      message: responseMessage.DELETE_SUCCESS(location.name)
+    });
   } catch (error) {
     await transaction.rollback();
     throw error;

@@ -17,12 +17,19 @@ router
     bodyValidator,
     callbackErrorHandler(reservationController.createReservation)
   )
-  .get(callbackErrorHandler(reservationController.getAllReservations));
+  .get(
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    callbackErrorHandler(reservationController.getAllReservations)
+  );
 
 router
   .route('/:id')
   .get(callbackErrorHandler(reservationController.getReservation))
-  .put(callbackErrorHandler(reservationController.updateReservation))
+  .put(
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    bodyValidator,
+    callbackErrorHandler(reservationController.updateReservation)
+  )
   .delete(callbackErrorHandler(reservationController.deleteReservation));
 
 module.exports = router;

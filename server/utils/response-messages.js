@@ -18,9 +18,14 @@ const responseMessages = {
     return `Association with '${association}' does not exist on '${formatModelName(modelName)}'`;
   },
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
+  UPDATE_UNSUCCESSFULL: (modelName) => `Failed to update${formatModelName(modelName)}!`,
 
   // Constant messages
+  UPDATE_STARTED_RESERVATION: 'You cannot updated expired reservation that has already started.',
+  UPDATE_EXPIRED_RESERVATION: 'You cannot updated expired reservation.',
+  USER_PERMISSION_ERROR: 'You do not have access for this action.',
   OVERLAP_RESERVATION_CONFLICT: 'This reservations overlaps with one of your existing reservations.',
+  WORKSPACE_PERMANENTLY_RESERVED: 'You cannot create new reservations for this workspace, this workspace is permanenlty reserved.',
   PERMANENT_RESERVATION_CONFLICT: 'You cannot create new reservations for this workspace, you already have 1 permanent reservation.',
   DAILY_LIMIT_EXCEDEED: 'You exceeded daily limit of reservations for this workspace type.',
   OVERALL_LIMIT_EXCEDEED: 'You exceeded overall limit of reservations for this workspace type.',

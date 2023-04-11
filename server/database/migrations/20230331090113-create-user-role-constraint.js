@@ -3,7 +3,7 @@ const { tableName, constraintName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface, _Sequelize) {
     await queryInterface.addConstraint(tableName.userRole, {
       fields: ['user_id'],
       onDelete: 'cascade',
@@ -29,7 +29,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface, _Sequelize) {
     await queryInterface.removeConstraint(tableName.userRole, constraintName.userRole);
     await queryInterface.removeConstraint(tableName.userRole, constraintName.roleUser);
   }

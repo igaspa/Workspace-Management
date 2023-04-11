@@ -20,6 +20,8 @@ const responseMessages = {
   UNIQUE_CONSTRAINT_ERROR: (messageObj) => `${messageObj.table} with this ${messageObj.elements} already exits!`,
 
   // Constant messages
+  OVERLAP_RESERVATION_CONFLICT: 'This reservations overlaps with one of your existing reservations.',
+  PERMANENT_RESERVATION_CONFLICT: 'You cannot create new reservations for this workspace, you already have 1 permanent reservation.',
   DAILY_LIMIT_EXCEDEED: 'You exceeded daily limit of reservations for this workspace type.',
   OVERALL_LIMIT_EXCEDEED: 'You exceeded overall limit of reservations for this workspace type.',
   RESERVATION_UNIQUE_CONSTRAINT_ERROR: 'Another reservation for this workspace exists within the given range.',

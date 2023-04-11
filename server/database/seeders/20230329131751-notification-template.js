@@ -20,9 +20,9 @@ module.exports = {
                           <table align="center" border="0" cellpadding="50"
                                  cellspacing="0" class="col-550" width="550">
                               <tbody>
-                                <h3>Dear {customerName},</h3>
+                                <h3>Dear {userName},</h3>
     
-                                <p>{Space} you have reserved for {datetime} has been confirmed.</p><br>
+                                <p>{workspaceName} you have reserved for {dateTime} has been confirmed.</p><br>
                       
                                 Thank you for your reservation,<br>
                         

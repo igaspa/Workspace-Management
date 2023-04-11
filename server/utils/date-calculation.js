@@ -3,6 +3,5 @@ exports.convertToMs = (interval) => {
   return dateInMs;
 };
 
-exports.MILISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 
 exports.MINIMUM_RESERVATION_INTERVAL = 300000;

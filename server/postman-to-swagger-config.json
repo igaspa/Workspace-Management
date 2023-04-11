@@ -1,0 +1,11 @@
+{
+    "externalDocs" : {
+    "description": "Link to Confluence page",
+    "url": "https://agilathon.atlassian.net/wiki/spaces/SDT/pages/118259756/Technical+specification+DRT"
+    },
+    "info": {
+      "title": "Workspace Management",
+      "version": "1.0.0"
+  },
+    "outputFormat" : "json"
+  }

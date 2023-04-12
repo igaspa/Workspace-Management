@@ -30,5 +30,15 @@ module.exports.updateReservation = async (req, res) => {
 
 module.exports.deleteReservation = async (req, res) => {
   await reservationService.validateUserRights(req);
-  await generalController.deleteModel(reservation, req, res);
+  await reservationService.deleteReservation(req);
+  return res.status(200).json({
+    message: responseMessage.DELETE_SUCCESS(reservation.name)
+  });
+};
+
+module.exports.deletePermanentReservation = async (req, res) => {
+  await reservationService.deletePermanentReservation(req);
+  return res.status(200).json({
+    message: responseMessage.DELETE_SUCCESS(reservation.name)
+  });
 };

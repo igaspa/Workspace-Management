@@ -23,14 +23,6 @@ router
   );
 
 router
-  .route('/pernament')
-  .post(
-    restrictRoles([roles.administrator, roles.lead]),
-    bodyValidatorAdditionalAttribute,
-    callbackErrorHandler(reservationController.createPernamentReservation)
-  );
-
-router
   .route('/:id')
   .get(
     restrictRoles([roles.administrator, roles.lead, roles.employee]),
@@ -44,6 +36,22 @@ router
   .delete(
     restrictRoles([roles.administrator, roles.lead, roles.employee]),
     callbackErrorHandler(reservationController.deleteReservation)
+  );
+
+router
+  .route('/pernament')
+  .post(
+    restrictRoles([roles.administrator, roles.lead]),
+    bodyValidatorAdditionalAttribute,
+    callbackErrorHandler(reservationController.createPernamentReservation)
+  );
+
+router
+  .route('/pernament/:id')
+  .delete(
+    restrictRoles([roles.administrator, roles.lead]),
+    bodyValidatorAdditionalAttribute,
+    callbackErrorHandler(reservationController.deletePermanentReservation)
   );
 
 module.exports = router;

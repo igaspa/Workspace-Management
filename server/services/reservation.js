@@ -6,6 +6,68 @@ const { validateReservationConstraints, validateMinimumReservationInterval } = r
 const { roles } = require('../utils/roles');
 const { CONFERENCE_ROOM_ID } = require('../utils/constants');
 
+const deletePernamentReservationFromDB = async (data) => {
+  const { id, workspaceId } = data;
+
+  // Start  transaction
+  const transaction = await sequelize.transaction();
+  try {
+    // Add endAt date for reservation
+    await reservation.update(
+      { endAt: new Date() },
+      { where: { id }, transaction }
+    );
+
+    // Update the workspace without the permanentlyReserved flag
+    await workspace.update(
+      { permanentlyReserved: false },
+      { where: { id: workspaceId }, transaction }
+    );
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw errors.INTERNAL_ERROR(responseMessage.DELETE_UNSUCCESSFULL_INTERNAL);
+  }
+};
+
+exports.deletePermanentReservation = async (req) => {
+  const { id } = req.params;
+  const userReservation = await reservation.findOne({
+    where: { id },
+    attributes: ['workspaceId', 'endAt']
+  });
+  if (userReservation.endAt) throw errors.NOT_FOUND(responseMessage.NOT_FOUND('Permanent ' + reservation.name));
+  const workspaceId = { userReservation };
+  const data = { id, workspaceId };
+  await deletePernamentReservationFromDB(data);
+};
+
+exports.deleteReservation = async (req) => {
+  const { id } = req.params;
+  const userReservation = await reservation.findOne({
+    where: { id },
+    attributes: ['startAt', 'endAt']
+  });
+  if (!userReservation) throw responseMessage.NOT_FOUND(reservation.name);
+
+  let destroyedReservation;
+
+  if (new Date(userReservation.startAt) > new Date()) {
+    destroyedReservation = await reservation.destroy({
+      where: { id }
+    });
+  } else if (new Date(userReservation.endAt) < new Date()) {
+    throw errors.BAD_REQUEST(responseMessage.DELETE_EXPIRED_RESERVATION_ERROR);
+  } else {
+    destroyedReservation = await reservation.update(
+      { endAt: new Date() },
+      { where: { id } }
+    );
+  }
+
+  if (!destroyedReservation) throw errors.INTERNAL_ERROR(responseMessage.NOT_FOUND(reservation.name));
+};
+
 exports.validateUserRights = async (req) => {
   const { id } = req.params;
   const userReservation = await reservation.findOne({

@@ -46,7 +46,9 @@ const responseMessages = {
   RESERVATION_EXISTS: 'There are existing reservations for this workspace. Are you sure you want to delete ?',
   WORKSPACE_PERNAMENT_RESERVATION_CONFLICT: 'You cannot create pernament reservation for this workspace. Workspace is already reserved.',
   USER_PERNAMENT_RESERVATION_CONFLICT: 'You cannot create pernament reservation for this user. User already has 1 pernament reservation.',
-  CREATE_UNSUCCESSFULL_INTERNAL: 'Creation unsuccessfull. Please try again later, we are facing an issue on our side.'
+  CREATE_UNSUCCESSFULL_INTERNAL: 'Creation unsuccessfull. Please try again later, we are facing an issue on our side.',
+  DELETE_UNSUCCESSFULL_INTERNAL: 'Deletion unsuccessfull. Please try again later, we are facing an issue on our side.',
+  DELETE_EXPIRED_RESERVATION_ERROR: 'You cannot delete a reservation that has already finished.'
 };
 
 module.exports = responseMessages;

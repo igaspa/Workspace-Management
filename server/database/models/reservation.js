@@ -1,7 +1,9 @@
+/* eslint-disable max-len */
 'use strict';
 const {
   Model
 } = require('sequelize');
+const { calculateStartDate, calculateEndDate } = require('../../utils/date-calculation');
 module.exports = (sequelize, DataTypes) => {
   class reservation extends Model {
     /**
@@ -45,6 +47,14 @@ module.exports = (sequelize, DataTypes) => {
     endAt: {
       allowNull: true,
       type: DataTypes.DATE
+    },
+    dateTime: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        const startAt = calculateStartDate(this.startAt);
+        const endAt = calculateEndDate(this.endAt);
+        return `${startAt} - ${endAt}`;
+      }
     },
     participants: {
       allowNull: true,

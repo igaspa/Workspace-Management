@@ -153,12 +153,6 @@ exports.reservation = joi.object({
       post: (reservationSchema) => reservationSchema.required(),
       put: (reservationSchema) => reservationSchema.forbidden()
     }),
-  userId: joi.string()
-    .guid({ version: 'uuidv4' })
-    .alter({
-      post: (reservationSchema) => reservationSchema.required(),
-      put: (reservationSchema) => reservationSchema.forbidden()
-    }),
   workspaceId: joi.string()
     .guid({ version: 'uuidv4' })
     .alter({

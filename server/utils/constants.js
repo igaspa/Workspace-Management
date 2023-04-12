@@ -3,7 +3,15 @@ module.exports.notificationStatus = {
   failed: 'failed',
   sent: 'sent'
 };
+module.exports.userNotificationAttributes = ['firstName', 'lastName', 'email'];
+module.exports.workspaceNotificationAttributes = ['name'];
 module.exports.EXCLUDE_LIST = ['createdAt', 'updatedAt', 'deletedAt', 'password'];
+
+module.exports.notificationTemplates = {
+  createdReservationTemplate: 'fc06d6a8-15b9-4134-89f9-49e490947f76',
+  updatedReservationTemplate: '855798c2-c224-43df-bc9e-b7b761976674',
+  canceledReservationTemplate: '174cd318-1a47-41a6-9dff-f7a15bda77fe'
+};
 
 module.exports.paginationValues = {
   DEFAULT_LIMIT: 25,

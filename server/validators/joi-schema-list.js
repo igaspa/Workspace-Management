@@ -189,6 +189,32 @@ exports.reservation = joi.object({
 
 }).options({ abortEarly: false });
 
+// Reservation Entity Schema
+exports.reservation_pernament = joi.object({
+  id: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (reservationSchema) => reservationSchema.required(),
+      put: (reservationSchema) => reservationSchema.forbidden()
+    }),
+  userId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (reservationSchema) => reservationSchema.required(),
+      put: (reservationSchema) => reservationSchema.forbidden()
+    }),
+  workspaceId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (reservationSchema) => reservationSchema.required(),
+      put: (reservationSchema) => reservationSchema.forbidden()
+    }),
+  startAt: joi.date()
+    .greater(new Date())
+    .required()
+
+}).options({ abortEarly: false });
+
 // Role Entity Schema
 exports.role = joi.object({
   id: joi.string()

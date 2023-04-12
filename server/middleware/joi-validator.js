@@ -36,7 +36,7 @@ exports.bodyValidator = (req, _res, next) => {
 };
 
 // Validate sent request body
-exports.workspaceCollection = (req, _res, next) => {
+exports.bodyValidatorAdditionalAttribute = (req, _res, next) => {
   if (!Object.keys(req.body).length) throw errors.VALIDATION(responseMessages.NO_BODY);
 
   const schemaNameList = req.originalUrl.split('/');

@@ -39,7 +39,7 @@ router
   );
 
 router
-  .route('/pernament')
+  .route('/permanent')
   .post(
     restrictRoles([roles.administrator, roles.lead]),
     bodyValidatorAdditionalAttribute,
@@ -47,10 +47,9 @@ router
   );
 
 router
-  .route('/pernament/:id')
+  .route('/permanent/:id')
   .delete(
     restrictRoles([roles.administrator, roles.lead]),
-    bodyValidatorAdditionalAttribute,
     callbackErrorHandler(reservationController.deletePermanentReservation)
   );
 

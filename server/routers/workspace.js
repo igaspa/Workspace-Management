@@ -1,5 +1,5 @@
 const { callbackErrorHandler } = require('../middleware/error-handler');
-const { bodyValidator, paramValidator, workspaceCollection } = require('../middleware/joi-validator');
+const { bodyValidator, paramValidator, bodyValidatorAdditionalAttribute } = require('../middleware/joi-validator');
 const express = require('express');
 
 const workspaceController = require('../controllers/workspace');
@@ -22,7 +22,7 @@ router
 
 router
   .route('/collection')
-  .post(workspaceCollection, callbackErrorHandler(workspaceController.createWorkspaces));
+  .post(bodyValidatorAdditionalAttribute, callbackErrorHandler(workspaceController.createWorkspaces));
 
 router
   .route('/delete-collection')

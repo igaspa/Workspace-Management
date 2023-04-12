@@ -3,5 +3,4 @@ exports.convertToMs = (interval) => {
   return dateInMs;
 };
 
-
 exports.MINIMUM_RESERVATION_INTERVAL = 300000;

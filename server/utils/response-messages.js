@@ -21,7 +21,7 @@ const responseMessages = {
   UPDATE_UNSUCCESSFULL: (modelName) => `Failed to update${formatModelName(modelName)}!`,
 
   // Constant messages
-  UPDATE_STARTED_RESERVATION: 'You cannot updated expired reservation that has already started.',
+  UPDATE_STARTED_RESERVATION: 'You cannot updated reservation that has already started.',
   UPDATE_EXPIRED_RESERVATION: 'You cannot updated expired reservation.',
   USER_PERMISSION_ERROR: 'You do not have access for this action.',
   OVERLAP_RESERVATION_CONFLICT: 'This reservations overlaps with one of your existing reservations.',
@@ -43,7 +43,10 @@ const responseMessages = {
   LOGIN_SUCCESS: 'Successfully logged in!',
   INVALID_PAGE: 'Invalid page requested',
   INVALID_ACCESS: 'You do not have access to this page',
-  RESERVATION_EXISTS: 'There are existing reservations for this workspace. Are you sure you want to delete ?'
+  RESERVATION_EXISTS: 'There are existing reservations for this workspace. Are you sure you want to delete ?',
+  WORKSPACE_PERNAMENT_RESERVATION_CONFLICT: 'You cannot create pernament reservation for this workspace. Workspace is already reserved.',
+  USER_PERNAMENT_RESERVATION_CONFLICT: 'You cannot create pernament reservation for this user. User already has 1 pernament reservation.',
+  CREATE_UNSUCCESSFULL_INTERNAL: 'Creation unsuccessfull. Please try again later, we are facing an issue on our side.'
 };
 
 module.exports = responseMessages;

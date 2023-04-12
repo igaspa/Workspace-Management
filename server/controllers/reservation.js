@@ -8,6 +8,11 @@ exports.createReservation = async (req, res) => {
   return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
 };
 
+exports.createPernamentReservation = async (req, res) => {
+  await reservationService.createPernamentReservation(req);
+  return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
+};
+
 module.exports.getAllReservations = async (req, res) => {
   await generalController.findAllModels(reservation, null, req, res);
 };
@@ -24,5 +29,6 @@ module.exports.updateReservation = async (req, res) => {
 };
 
 module.exports.deleteReservation = async (req, res) => {
+  await reservationService.validateUserRights(req);
   await generalController.deleteModel(reservation, req, res);
 };

@@ -1,10 +1,24 @@
-const responseMessage = require('../utils/response-messages');
-const { errors } = require('../utils/errors');
-const { reservation, workspace, workspaceType } = require('../database/models');
-const { CONFERENCE_ROOM_ID } = require('../utils/constants');
+const { reservation, workspace, workspaceType, sequelize } = require('../database/models');
 const { Op } = require('sequelize');
-const { roles } = require('../utils/roles');
+const { errors } = require('../utils/errors');
+const responseMessage = require('../utils/response-messages');
 const { validateReservationConstraints, validateMinimumReservationInterval } = require('./helpers/reservation-calculations');
+const { roles } = require('../utils/roles');
+const { CONFERENCE_ROOM_ID } = require('../utils/constants');
+
+exports.validateUserRights = async (req) => {
+  const { id } = req.params;
+  const userReservation = await reservation.findOne({
+    where: { id },
+    attributes: ['userId', 'endAt']
+  });
+  if (
+    (req.user.id !== userReservation.id && !req.user.roles.includes(roles.administrator)) ||
+    userReservation.endAt === null
+  ) {
+    throw errors.FORBIDDEN(responseMessage.USER_PERMISSION_ERROR);
+  }
+};
 
 const getUserReservationsByWorkspaceType = async (userId, workspaceTypeId) => {
   const reservations = await reservation.findAll({
@@ -41,6 +55,60 @@ const retrieveReservationsThatIsBeingUpdated = async (reservationId, userId) => 
   return currentReservation;
 };
 
+const savePernamentReservationToDB = async (data) => {
+  const { id, userId, workspaceId, start } = data;
+  let transaction;
+
+  try {
+    // Start  transaction
+    transaction = await sequelize.transaction();
+
+    // Create the reservation
+    await reservation.create({ id, userId, workspaceId, startAt: start }, { transaction });
+
+    // Update the workspace with the permanentlyReserved flag
+    await workspace.update(
+      { permanentlyReserved: true },
+      { where: { id: workspaceId }, transaction }
+    );
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw errors.INTERNAL_ERROR(responseMessage.CREATE_UNSUCCESSFULL_INTERNAL);
+  }
+};
+
+exports.createPernamentReservation = async (req) => {
+  const { id, userId, workspaceId, startAt } = req.body;
+
+  // retrieve all current reservations for this worksapceId
+  const workspaceReservations = await reservation.count({
+    where: {
+      workspaceId,
+      [Op.or]: [
+        { endAt: { [Op.gt]: new Date(startAt) } },
+        { endAt: null }
+      ]
+    }
+  });
+
+  // throw error if this workspace has active reservations
+  if (workspaceReservations) throw errors.CONFLICT(responseMessage.WORKSPACE_PERNAMENT_RESERVATION_CONFLICT);
+
+  // count users permanent reservations
+  const userReservations = await reservation.count({
+    where: { userId, endAt: null }
+  });
+
+  // throw error if this user has permanent reservation
+  if (userReservations) throw errors.CONFLICT(responseMessage.USER_PERNAMENT_RESERVATION_CONFLICT);
+
+  // Create date objects corresponding to the dates that were sent
+  const start = new Date(startAt);
+  const data = { id, userId, workspaceId, start };
+  await savePernamentReservationToDB(data);
+};
+
 exports.createReservation = async (req) => {
   const { id, workspaceId, startAt, endAt } = req.body;
 
@@ -52,10 +120,10 @@ exports.createReservation = async (req) => {
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  // validate this workspace is not permanently reserved
-  if (workspaceInfo.permanentlyReserved) throw errors.CONFLICT(responseMessage.WORKSPACE_PERMANENTLY_RESERVED);
+  const { permanentlyReserved, workspaceType: { id: workspaceTypeId, maxReservationTimeDaily, maxReservationTimeOverall } } = workspaceInfo;
 
-  const { maxReservationTimeDaily, maxReservationTimeOverall, id: workspaceTypeId } = workspaceInfo.workspaceType;
+  // validate this workspace is not permanently reserved
+  if (permanentlyReserved) throw errors.CONFLICT(responseMessage.WORKSPACE_PERMANENTLY_RESERVED);
 
   const userId = req.user.id;
   const reservations = await getUserReservationsByWorkspaceType(userId, workspaceTypeId);
@@ -74,7 +142,7 @@ exports.createReservation = async (req) => {
   validateMinimumReservationInterval(start, end);
 
   // Create the reservation
-  const participants = workspaceInfo.workspaceType.id === CONFERENCE_ROOM_ID ? req.body.participants : null;
+  const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
   await reservation.create({
     id,
     userId,
@@ -97,15 +165,11 @@ exports.updateReservation = async (req) => {
   if (!currentReservation) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(reservation.name));
 
   // throw error if someone tries to update expired reservation
-  if (currentReservation.endAt <= new Date()) throw errors.VALIDATION(responseMessage.UPDATE_EXPIRED_RESERVATION);
   if (currentReservation.startAt <= new Date()) throw errors.VALIDATION(responseMessage.UPDATE_STARTED_RESERVATION);
+  if (currentReservation.endAt <= new Date()) throw errors.VALIDATION(responseMessage.UPDATE_EXPIRED_RESERVATION);
 
   // destruct needed attributes for validation
-  const {
-    workspace: { workspaceType: { id: workspaceTypeId } },
-    workspace: { workspaceType: { maxReservationTimeDaily } },
-    workspace: { workspaceType: { maxReservationTimeOverall } }
-  } = currentReservation;
+  const { workspace: { workspaceType: { id: workspaceTypeId, maxReservationTimeDaily, maxReservationTimeOverall } } } = currentReservation;
 
   // create Date object with new start and end
   const start = new Date(startAt);
@@ -115,10 +179,10 @@ exports.updateReservation = async (req) => {
 
   // validate reservation time if user is not administrator or lead
   if (!userRoles.includes(roles.administrator || roles.lead)) {
-    const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
     const reservations = getUserReservationsByWorkspaceType(userId, workspaceTypeId);
     // filter all reservations except requested one, since we need to validate new reservation start and end
     const reservationsExceptRequested = reservations.filter(reservation => reservation.id !== id);
+    const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
     validateReservationConstraints(reservationsExceptRequested, data);
   }
 
@@ -126,8 +190,9 @@ exports.updateReservation = async (req) => {
   validateMinimumReservationInterval(start, end);
 
   // updateReservation
+  const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
   const [updatedModel, _updatedData] = await reservation.update(
-    { startAt: start, endAt: end }, {
+    { startAt: start, endAt: end, participants }, {
       where: {
         id,
         userId

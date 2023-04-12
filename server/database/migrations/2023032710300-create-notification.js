@@ -15,7 +15,7 @@ module.exports = {
         primaryKey: true
       },
       status: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.STRING,
         enum: notificationStatus,
         allowNull: false
       },

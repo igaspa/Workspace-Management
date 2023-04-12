@@ -13,20 +13,21 @@ const deletePernamentReservationFromDB = async (data) => {
   const transaction = await sequelize.transaction();
   try {
     // Add endAt date for reservation
-    await reservation.update(
-      { endAt: new Date() },
-      { where: { id }, transaction }
-    );
+    await reservation.update({ endAt: new Date() }, {
+      where: { id },
+      transaction
+    });
 
     // Update the workspace without the permanentlyReserved flag
-    await workspace.update(
-      { permanentlyReserved: false },
-      { where: { id: workspaceId }, transaction }
-    );
+    await workspace.update({ permanentlyReserved: false }, {
+      where: { id: workspaceId },
+      transaction
+    });
+
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
-    throw errors.INTERNAL_ERROR(responseMessage.DELETE_UNSUCCESSFULL_INTERNAL);
+    throw error;
   }
 };
 
@@ -37,7 +38,7 @@ exports.deletePermanentReservation = async (req) => {
     attributes: ['workspaceId', 'endAt']
   });
   if (userReservation.endAt) throw errors.NOT_FOUND(responseMessage.NOT_FOUND('Permanent ' + reservation.name));
-  const workspaceId = { userReservation };
+  const { workspaceId } = userReservation;
   const data = { id, workspaceId };
   await deletePernamentReservationFromDB(data);
 };
@@ -50,22 +51,18 @@ exports.deleteReservation = async (req) => {
   });
   if (!userReservation) throw responseMessage.NOT_FOUND(reservation.name);
 
-  let destroyedReservation;
-
   if (new Date(userReservation.startAt) > new Date()) {
-    destroyedReservation = await reservation.destroy({
+    await reservation.destroy({
       where: { id }
     });
   } else if (new Date(userReservation.endAt) < new Date()) {
     throw errors.BAD_REQUEST(responseMessage.DELETE_EXPIRED_RESERVATION_ERROR);
   } else {
-    destroyedReservation = await reservation.update(
+    await reservation.update(
       { endAt: new Date() },
       { where: { id } }
     );
   }
-
-  if (!destroyedReservation) throw errors.INTERNAL_ERROR(responseMessage.NOT_FOUND(reservation.name));
 };
 
 exports.validateUserRights = async (req) => {
@@ -136,7 +133,7 @@ const savePernamentReservationToDB = async (data) => {
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
-    throw errors.INTERNAL_ERROR(responseMessage.CREATE_UNSUCCESSFULL_INTERNAL);
+    throw error;
   }
 };
 
@@ -188,7 +185,6 @@ exports.createReservation = async (req) => {
   if (permanentlyReserved) throw errors.CONFLICT(responseMessage.WORKSPACE_PERMANENTLY_RESERVED);
 
   const userId = req.user.id;
-  const reservations = await getUserReservationsByWorkspaceType(userId, workspaceTypeId);
 
   // Create date objects corresponding to the dates that were sent
   const start = new Date(startAt);
@@ -199,6 +195,7 @@ exports.createReservation = async (req) => {
 
   // validate reservation time if user is not administrator or lead
   if (!userRoles.includes(roles.administrator || roles.lead)) {
+    const reservations = await getUserReservationsByWorkspaceType(userId, workspaceTypeId) || [];
     validateReservationConstraints(reservations, data);
   }
   validateMinimumReservationInterval(start, end);
@@ -242,8 +239,9 @@ exports.updateReservation = async (req) => {
   // validate reservation time if user is not administrator or lead
   if (!userRoles.includes(roles.administrator || roles.lead)) {
     const reservations = getUserReservationsByWorkspaceType(userId, workspaceTypeId);
+
     // filter all reservations except requested one, since we need to validate new reservation start and end
-    const reservationsExceptRequested = reservations.filter(reservation => reservation.id !== id);
+    const reservationsExceptRequested = reservations.length ? reservations.filter(reservation => reservation.id !== id) : [];
     const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
     validateReservationConstraints(reservationsExceptRequested, data);
   }

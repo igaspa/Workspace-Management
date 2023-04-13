@@ -15,8 +15,8 @@ module.exports = {
         primaryKey: true
       },
       status: {
-        type: Sequelize.STRING,
-        enum: notificationStatus,
+        type: Sequelize.ENUM,
+        values: [notificationStatus.sent, notificationStatus.failed],
         allowNull: false
       },
       deleted_at: {
@@ -33,7 +33,7 @@ module.exports = {
       }
     });
   },
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface, _Sequelize) {
     await queryInterface.dropTable(tableName.notification);
   }
 };

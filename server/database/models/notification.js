@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { notificationStatus } = require('../../utils/constants');
 module.exports = (sequelize, DataTypes) => {
   class notification extends Model {
     /**
@@ -31,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false
     },
-    status: DataTypes.STRING,
+    status: DataTypes.ENUM(notificationStatus.sent, notificationStatus.failed),
     deletedAt: DataTypes.DATE
   }, {
     sequelize,

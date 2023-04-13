@@ -25,7 +25,7 @@ module.exports.getReservation = async (req, res) => {
 
 module.exports.updateReservation = async (req, res) => {
   await reservationService.updateReservation(req, res);
-  sendReservationUpdatedEmail(req);
+  await sendReservationUpdatedEmail(req);
   return res.status(200).json({
     message: responseMessage.UPDATE_SUCCESS(reservation.name)
   });

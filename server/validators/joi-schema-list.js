@@ -1,5 +1,14 @@
 const joi = require('joi');
 
+const intervalSchema = joi.string().custom((value, helpers) => {
+  const intervalRegex = /^(\d+\s+years?\s*)?(\d+\s+mons?\s*)?(\d+\s+days?\s*)?(\d{2}:\d{2}(:\d{2})?)?$/;
+  if (!intervalRegex.test(value)) {
+    const key = helpers.state.path[0];
+    return helpers.message(`Invalid interval format for ${key}`);
+  }
+  return value;
+});
+
 exports.idSchema = joi.string().guid({ version: 'uuidv4' });
 // Work Space Type Entity Schema
 exports.workspace_type = joi.object({
@@ -16,10 +25,8 @@ exports.workspace_type = joi.object({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
-  maxReservationTimeDaily: joi.string().regex(/^[0-9]{2}:[0-9]{2}$/)
-    .required(),
-  maxReservationTimeOverall: joi.string().regex(/^[0-9]{2}:[0-9]{2}$/)
-    .required()
+  maxReservationTimeDaily: intervalSchema.required(),
+  maxReservationTimeOverall: intervalSchema.required()
 }).options({ abortEarly: false });
 
 // Work Space Entity Schema
@@ -184,7 +191,7 @@ exports.reservation = joi.object({
 }).options({ abortEarly: false });
 
 // Reservation Entity Schema
-exports.reservation_pernament = joi.object({
+exports.reservation_permanent = joi.object({
   id: joi.string()
     .guid({ version: 'uuidv4' })
     .alter({

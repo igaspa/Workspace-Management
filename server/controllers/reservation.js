@@ -1,20 +1,50 @@
-const responseMessage = require('../utils/response-messages');
+const { Op } = require('sequelize');
 const { reservation } = require('../database/models');
-const reservationService = require('../services/reservation');
 const generalController = require('./general');
+const reservationService = require('../services/reservation');
+const responseMessage = require('../utils/response-messages');
+
+const reservationCustomOptions = (queryParams) => {
+  const options = [];
+  const { from, until } = queryParams;
+
+  if (from || until) {
+    const startTime = new Date(from).setHours(0, 0, 0, 0);
+    const endTime = until ? new Date(until) : new Date(new Date(from).setHours(24, 0, 0, 0));
+    // Retrieve all reservations from - until
+    const term = {
+      [Op.or]: [
+        { end_at: null },
+        {
+          [Op.and]: [
+            { start_at: { [Op.lt]: endTime } },
+            { end_at: { [Op.gt]: startTime } }
+          ]
+        }
+      ]
+    };
+    options.push(term);
+  }
+
+  return options;
+};
 
 module.exports.createReservation = async (req, res) => {
   await reservationService.createReservation(req);
   return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
 };
 
-exports.createPernamentReservation = async (req, res) => {
-  await reservationService.createPernamentReservation(req);
+exports.createPermanentReservation = async (req, res) => {
+  await reservationService.createPermanentReservation(req);
   return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
 };
 
 module.exports.getAllReservations = async (req, res) => {
-  await generalController.findAllModels(reservation, null, req, res);
+  const reservationWhereOptions = reservationCustomOptions(req.query);
+  const query = {
+    where: reservationWhereOptions
+  };
+  await generalController.findAllModels(reservation, query, req, res);
 };
 
 module.exports.getReservation = async (req, res) => {

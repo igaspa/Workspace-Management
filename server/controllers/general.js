@@ -1,15 +1,15 @@
-const { EXCLUDE_LIST } = require('../utils/constants');
+const { checkModelAssociations } = require('./helpers/model-associations');
+const responseMessage = require('../utils/response-messages');
 const { findPages, getPagination } = require('../utils/pagination');
 const { errors } = require('../utils/errors');
-const responseMessage = require('../utils/response-messages');
-const { checkModelAssociations } = require('./helpers/model-associations');
+const { EXCLUDE_LIST } = require('../utils/constants');
 
 module.exports.findAllModels = async (Model, customOptions, req, res) => {
   const { page, size, include } = req.query;
 
   // Take page number from parameters
   if (page) {
-    if (isNaN(page) || page < 1) {
+    if (isNaN(page) || page < 0) {
       throw errors.VALIDATION(responseMessage.INVALID_PAGE);
     }
   }

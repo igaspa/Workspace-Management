@@ -18,6 +18,10 @@ exports.calculateStartDate = (startAt) => {
 };
 exports.calculateEndDate = (endAt) => {
   return new Date(endAt).toLocaleString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
     hour12: true

@@ -57,5 +57,6 @@ module.exports.errorMiddleware = async (error, _req, res, _next) => {
     return res.status(422).json({ message: error.parent.detail });
   }
 
+  console.log(error);
   return res.status(500).json({ message: 'Please try again later, we are facing an issue on our side.' });
 };

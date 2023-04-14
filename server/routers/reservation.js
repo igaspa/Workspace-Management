@@ -43,7 +43,7 @@ router
   .post(
     restrictRoles([roles.administrator, roles.lead]),
     bodyValidatorAdditionalAttribute,
-    callbackErrorHandler(reservationController.createPernamentReservation)
+    callbackErrorHandler(reservationController.createPermanentReservation)
   );
 
 router

@@ -44,8 +44,8 @@ const responseMessages = {
   INVALID_PAGE: 'Invalid page requested',
   INVALID_ACCESS: 'You do not have access to this page',
   RESERVATION_EXISTS: 'There are existing reservations for this workspace. Are you sure you want to delete ?',
-  WORKSPACE_PERNAMENT_RESERVATION_CONFLICT: 'You cannot create permanent reservation for this workspace. Workspace is already reserved.',
-  USER_PERNAMENT_RESERVATION_CONFLICT: 'You cannot create permanent reservation for this user. User already has 1 permanent reservation.',
+  ACTIVE_RESERVATION_CONFLICT:
+  'You cannot create a permanent reservation for this workspace/user. This workspace/user has active reservations that overlap with your start time.',
   DELETE_EXPIRED_RESERVATION_ERROR: 'You cannot delete a reservation that has already finished.'
 };
 

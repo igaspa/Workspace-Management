@@ -44,23 +44,26 @@ const calculateUserDailyReservationsInMs = (reservations, start) => {
 const validateReservationsLimits = (reservations, data) => {
   const { start, end, maxReservationTimeDaily, maxReservationTimeOverall } = data;
 
-  const maxReservationTimeDailyInMs = convertToMs(maxReservationTimeDaily);
-  const maxReservationTimeOverallInMs = convertToMs(maxReservationTimeOverall);
-
-  const userDailyReservationCountInMs = calculateUserDailyReservationsInMs(reservations, start);
-  const userOverallReservationCountInMs = calculateUserOverallReservationsInMs(reservations);
+  const maxReservationTimeDailyInMs = maxReservationTimeDaily ? convertToMs(maxReservationTimeDaily) : null;
+  const maxReservationTimeOverallInMs = maxReservationTimeOverall ? convertToMs(maxReservationTimeOverall) : null;
 
   // validate User did not exceed daily limit of reservations
-  const startDate = new Date(start.getTime());
-  const midnight = startDate.setHours(24, 0, 0, 0);
-  if (end.getTime() > midnight) {
-    validateDailyMaxLimit(start.getTime(), midnight, maxReservationTimeDailyInMs, userDailyReservationCountInMs);
-  } else {
-    validateDailyMaxLimit(start.getTime(), end.getTime(), maxReservationTimeDailyInMs, userDailyReservationCountInMs);
+  if (maxReservationTimeDailyInMs) {
+    const userDailyReservationCountInMs = calculateUserDailyReservationsInMs(reservations, start);
+    const startDate = new Date(start.getTime());
+    const midnight = startDate.setHours(24, 0, 0, 0);
+    if (end.getTime() > midnight) {
+      validateDailyMaxLimit(start.getTime(), midnight, maxReservationTimeDailyInMs, userDailyReservationCountInMs);
+    } else {
+      validateDailyMaxLimit(start.getTime(), end.getTime(), maxReservationTimeDailyInMs, userDailyReservationCountInMs);
+    }
   }
 
   // validate User did not exceed overall limit of reservations
-  validateOverallMaxLimit(start.getTime(), end.getTime(), maxReservationTimeOverallInMs, userOverallReservationCountInMs);
+  if (maxReservationTimeOverallInMs) {
+    const userOverallReservationCountInMs = calculateUserOverallReservationsInMs(reservations);
+    validateOverallMaxLimit(start.getTime(), end.getTime(), maxReservationTimeOverallInMs, userOverallReservationCountInMs);
+  }
 };
 
 exports.validateMinimumReservationInterval = (start, end) => {
@@ -83,11 +86,8 @@ exports.validateReservationConstraints = (reservations, data) => {
   const overlappingReservation = reservations.find(reservation => {
     const reservationStart = reservation.startAt;
     const reservationEnd = reservation.endAt;
-    return (
-      (start >= reservationStart && start < reservationEnd) ||
-        (end > reservationStart && end <= reservationEnd) ||
-        (start <= reservationStart && end >= reservationEnd)
-    );
+
+    return start < reservationEnd && end > reservationStart;
   });
 
   if (overlappingReservation) throw errors.CONFLICT(responseMessages.OVERLAP_RESERVATION_CONFLICT);

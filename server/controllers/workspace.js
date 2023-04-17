@@ -2,7 +2,6 @@ const workspaceService = require('../services/workspace');
 const responseMessage = require('../utils/response-messages');
 const { workspace } = require('../database/models');
 const generalController = require('./general');
-const { errors } = require('../utils/errors');
 
 exports.createWorkspaces = async (req, res) => {
   await workspaceService.createMultipleWorkspaces(req);
@@ -28,31 +27,32 @@ module.exports.updateWorkspace = async (req, res) => {
 };
 
 module.exports.deleteWorkspace = async (req, res) => {
-  await generalController.deleteModel(workspace, req, res);
+  await workspaceService.deleteMultipleWorkspaces(req);
+
+  return res.status(200).json({
+    message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
+  });
 };
 
 module.exports.deleteWorkspacesFromArea = async (req, res) => {
-  const deletedWorkSpaces = await workspaceService.deleteWorkspacesFromArea(req);
+  await workspaceService.deleteWorkspacesFromArea(req);
 
-  if (!deletedWorkSpaces) throw errors.NOT_FOUND(workspace.name + 's');
   return res.status(200).json({
     message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
   });
 };
 
 module.exports.deleteWorkspacesFromLocation = async (req, res) => {
-  const deletedWorkSpaces = await workspaceService.deleteWorkspacesFromLocation(req);
+  await workspaceService.deleteWorkspacesFromLocation(req);
 
-  if (!deletedWorkSpaces) throw errors.NOT_FOUND(workspace.name + 's');
   return res.status(200).json({
     message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
   });
 };
 
 module.exports.deleteMultipleWorkspaces = async (req, res) => {
-  const deletedWorkSpaces = await workspaceService.deleteMultipleWorkspaces(req);
+  await workspaceService.deleteMultipleWorkspaces(req);
 
-  if (!deletedWorkSpaces) throw errors.NOT_FOUND(workspace.name + 's');
   return res.status(200).json({
     message: responseMessage.DELETE_SUCCESS(workspace.name + 's')
   });

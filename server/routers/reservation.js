@@ -1,7 +1,7 @@
 const { callbackErrorHandler } = require('../middleware/error-handler');
 const express = require('express');
 
-const { bodyValidator, bodyValidatorAdditionalAttribute } = require('../middleware/joi-validator');
+const { bodyValidator, bodyValidatorAdditionalAttribute, paramValidator } = require('../middleware/joi-validator');
 const reservationController = require('../controllers/reservation');
 const { roles } = require('../utils/roles');
 const { authenticateUser, restrictRoles } = require('../middleware/authenticate-user');
@@ -25,16 +25,16 @@ router
 router
   .route('/:id')
   .get(
-    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee]), paramValidator,
     callbackErrorHandler(reservationController.getReservation)
   )
   .put(
-    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee]), paramValidator,
     bodyValidator,
     callbackErrorHandler(reservationController.updateReservation)
   )
   .delete(
-    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee]), paramValidator,
     callbackErrorHandler(reservationController.deleteReservation)
   );
 
@@ -49,7 +49,7 @@ router
 router
   .route('/permanent/:id')
   .delete(
-    restrictRoles([roles.administrator, roles.lead]),
+    restrictRoles([roles.administrator, roles.lead]), paramValidator,
     callbackErrorHandler(reservationController.deletePermanentReservation)
   );
 

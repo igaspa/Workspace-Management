@@ -1,6 +1,6 @@
 const { location } = require('../database/models');
 const generalController = require('./general');
-const workspaceService = require('../services/workspace');
+const locationService = require('../services/location');
 
 module.exports.getAllLocations = async (req, res) => {
   await generalController.findAllModels(location, null, req, res);
@@ -19,5 +19,5 @@ module.exports.updateLocation = async (req, res) => {
 };
 
 module.exports.deleteLocation = async (req, res) => {
-  await workspaceService.deleteLocation(req, res);
+  await locationService.deleteLocation(req, res);
 };

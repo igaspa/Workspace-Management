@@ -44,10 +44,13 @@
             "name": "User Role"
         },
         {
-            "name": "Working Space"
+            "name": "Workspace"
         },
         {
-            "name": "Working Space Type"
+            "name": "Workspace Type"
+        },
+        {
+            "name": "Reservation"
         }
     ],
     "paths": {
@@ -1616,7 +1619,7 @@
                             "type": "string"
                         },
                         "required": true,
-                        "example": "26bae8e2-50fd-41cd-8b29-d1bf2a5becd2"
+                        "example": "43b38b33-143e-4acd-84ac-f8108a279589"
                     }
                 ],
                 "responses": {
@@ -2880,7 +2883,7 @@
                             "type": "string"
                         },
                         "required": true,
-                        "example": "8bf77293-3e19-4ccb-a0fb-7604322c8587"
+                        "example": "5419ce7d-c415-480d-a980-cd169559bc85"
                     }
                 ],
                 "responses": {
@@ -3277,10 +3280,10 @@
                             "schema": {
                                 "type": "object",
                                 "example": {
-                                    "id": "07209cb2-7d40-4bb7-87ed-87925907c21a",
+                                    "id": "ccd65574-5f62-4261-a1bb-cfff9f288c25",
                                     "firstName": "Ivana",
                                     "lastName": "Gasparov",
-                                    "email": "ig@agilathon.com",
+                                    "email": "ivana.gasparov@agilathon.com",
                                     "password": "test1234",
                                     "phoneNumber": "+15055555555"
                                 }
@@ -5822,7 +5825,7 @@
                                 "type": "object",
                                 "example": {
                                     "roleId": "c40910c3-c2cf-439f-8d5b-be62d7c548be",
-                                    "userId": "07209cb2-7d40-4bb7-87ed-87925907c21a"
+                                    "userId": "ccd65574-5f62-4261-a1bb-cfff9f288c25"
                                 }
                             }
                         }
@@ -6451,38 +6454,337 @@
         "/api/v1/workspace": {
             "get": {
                 "tags": [
-                    "Working Space"
+                    "Workspace"
                 ],
-                "summary": "Get all working spaces",
+                "summary": "Get All Workspaces",
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Access-Control-Expose-Headers": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "X-Total-Pages"
+                                }
+                            },
+                            "X-Total-Pages": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "1"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "200"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"c8-LqkAej73M949iO7PUaZZ9NfCYoM\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:51:17 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": [
+                                    {
+                                        "id": "cae42cfe-1c81-42ce-84d3-222881f76519",
+                                        "name": "Phone Booth Green 1",
+                                        "permanentlyReserved": false,
+                                        "typeId": "1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
+                                        "areaId": "43b38b33-143e-4acd-84ac-f8108a279589"
+                                    }
+                                ]
+                            }
                         }
                     }
                 }
             },
             "post": {
                 "tags": [
-                    "Working Space"
+                    "Workspace"
                 ],
-                "summary": "Create working space",
+                "summary": "Create One Workspace",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "type": "object",
-                                "example": "{\n    \"areaId\": \"26bae8e2-50fd-41cd-8b29-d1bf2a5becd2\"\n    \"typeId\": \"e0ae075e-3ac9-43a2-88eb-59864cf141ef\",\n    \"start\": 1,\n    \"end\": 20,\n    \"permanentlyReserved\": false\n}"
+                                "example": {
+                                    "areaId": "26bae8e2-50fd-41cd-8b29-d1bf2a5becd2",
+                                    "typeId": "eb6e1123-f8c4-43d4-9491-fbaa214cb53a",
+                                    "name": "desk",
+                                    "id": "dd6a99f6-d8a1-4399-a41a-8805a08972b7",
+                                    "permanentlyReserved": false
+                                }
                             }
                         }
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Successful response",
+                    "201": {
+                        "description": "Created",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "278"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"116-hv5u0Iv4sZFvIPTOgFxd/WYOBcU\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:52:32 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "areaId": "26bae8e2-50fd-41cd-8b29-d1bf2a5becd2",
+                                    "typeId": "eb6e1123-f8c4-43d4-9491-fbaa214cb53a",
+                                    "name": "desk",
+                                    "id": "dd6a99f6-d8a1-4399-a41a-8805a08972b7",
+                                    "permanentlyReserved": false,
+                                    "updatedAt": "2023-04-17T11:52:32.821Z",
+                                    "createdAt": "2023-04-17T11:52:32.821Z",
+                                    "deletedAt": null
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "73"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"49-/7cyTqsoecyuAABdsWrd+IrSwR4\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:53:23 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Missing permanentlyReserved",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "permanentlyReserved is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Missing Body ID",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "id is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-2": {
+                                        "summary": "Missing Name",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "name is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-3": {
+                                        "summary": "Missing typeId",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "typeId is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-4": {
+                                        "summary": "Missing areaId",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "areaId is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-5": {
+                                        "summary": "Empty Body",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": "You must not send empty body on this request."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:59:21 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
                         }
                     }
                 }
@@ -6491,9 +6793,9 @@
         "/api/v1/workspace/{id}": {
             "get": {
                 "tags": [
-                    "Working Space"
+                    "Workspace"
                 ],
-                "summary": "Get working space",
+                "summary": "Get One Workspace",
                 "parameters": [
                     {
                         "name": "id",
@@ -6507,18 +6809,196 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "198"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"c6-OuQDsSjIsIT/sGp7a8IZO4hW2dc\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:51:39 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "id": "cae42cfe-1c81-42ce-84d3-222881f76519",
+                                    "name": "Phone Booth Green 1",
+                                    "permanentlyReserved": false,
+                                    "typeId": "1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
+                                    "areaId": "43b38b33-143e-4acd-84ac-f8108a279589"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "68"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"44-/UV+pXXXjSAaRwPrQdUHXPFksx8\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:51:49 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Invalid input",
+                                    "details": [
+                                        "value must be a valid GUID"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "56"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"38-PWm1TxSfu580igQxPqAUjwcCOA4\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:52:13 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "Workspace not found!"
+                                }
+                            }
                         }
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Working Space"
+                    "Workspace"
                 ],
-                "summary": "Delete working space by ID",
+                "summary": "Delete Workspace by ID",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -6527,14 +7007,1364 @@
                             "type": "string"
                         },
                         "required": true,
-                        "example": "cae42cfe-1c81-42ce-84d3-222881f76519"
+                        "example": "fda6447d-0cc9-4829-b186-9f2f19c2e767"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "46"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2e-NaGnLl+OUHPmub8NYMuZxjzV4Ys\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:04:08 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Success",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Delete Success with forceDelete",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "125"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"7d-D1tGZSuBChsTto9hB91fTRI0m2M\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:04:38 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Reservation Exists",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": "There are existing reservations for this workspace. Are you sure you want to delete ?"
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Invalid ID",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "value must be a valid GUID"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:59:43 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "45"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2d-ku4P/WrqgSULgL/GaOiQ7VWoEHM\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:03:42 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "workspace"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/workspace/collection": {
+            "post": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "Create Multiple Workspaces",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "areaId": "26bae8e2-50fd-41cd-8b29-d1bf2a5becd2",
+                                    "typeId": "eb6e1123-f8c4-43d4-9491-fbaa214cb53a",
+                                    "prefix": "Desk",
+                                    "start": 1,
+                                    "end": 40,
+                                    "permanentlyReserved": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "45"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2d-Eh4JvU5l9nLiOSi4LRE33Os2m3A\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 13:57:49 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Workspace successfully created!"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "60"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"3c-gRKYHcR//a2mrVQtwCF+n77lI7I\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 13:58:05 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Missing typeId",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "typeId is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Missing areaId",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "areaId is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-2": {
+                                        "summary": "Missing Prefix",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "prefix is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-3": {
+                                        "summary": "Missing Start",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "start is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-4": {
+                                        "summary": "Missing End",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "end is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-5": {
+                                        "summary": "Missing permanentlyReserved",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "permanentlyReserved is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-6": {
+                                        "summary": "Empty Body",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": "You must not send empty body on this request."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:59:34 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/workspace/delete-collection": {
+            "post": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "Delete Multiple Workspaces",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "workspaceList": [
+                                        {
+                                            "id": "156d9aec-d406-474a-bd30-3dbc797aae10"
+                                        },
+                                        {
+                                            "id": "c473b767-e66a-402c-a618-6411ea8021e0"
+                                        }
+                                    ],
+                                    "forceDelete": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "46"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2e-NaGnLl+OUHPmub8NYMuZxjzV4Ys\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:01:27 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Success",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Delete Success with forceDelete",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "125"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"7d-D1tGZSuBChsTto9hB91fTRI0m2M\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:02:06 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Invalid input",
+                                    "details": "There are existing reservations for this workspace. Are you sure you want to delete ?"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 12:00:10 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "45"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2d-ku4P/WrqgSULgL/GaOiQ7VWoEHM\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:00:01 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "workspace"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/workspace/area/{id}": {
+            "delete": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "Delete Workspace in Area",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "example": "26bae8e2-50fd-41cd-8b29-d1bf2a5becd2"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "46"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2e-NaGnLl+OUHPmub8NYMuZxjzV4Ys\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:06:26 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Success",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Delete Success with forceDelete",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "68"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"44-/UV+pXXXjSAaRwPrQdUHXPFksx8\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:06:38 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Invalid ID",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "value must be a valid GUID"
+                                            ]
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Existing Reservation",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": "There are existing reservations for this workspace. Are you sure you want to delete ?"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:59:52 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "46"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2e-j60MC23hGMhr8zVS10XhntMk4qA\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:07:04 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "workspaces"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/workspace/location/{id}": {
+            "delete": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "Delete Workspace in Location",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "example": "5419ce7d-c415-480d-a980-cd169559bc85"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "46"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2e-NaGnLl+OUHPmub8NYMuZxjzV4Ys\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:11:02 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Success",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Delete Success with forceDelete",
+                                        "value": {
+                                            "message": "Workspaces successfully deleted!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "125"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"7d-D1tGZSuBChsTto9hB91fTRI0m2M\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:09:31 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Existing Reservation",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": "There are existing reservations for this workspace. Are you sure you want to delete ?"
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Invalid ID",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "value must be a valid GUID"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 12:00:00 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "46"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2e-j60MC23hGMhr8zVS10XhntMk4qA\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:10:10 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "workspaces"
+                                }
+                            }
                         }
                     }
                 }
@@ -6543,23 +8373,178 @@
         "/api/v1/workspace-type": {
             "get": {
                 "tags": [
-                    "Working Space Type"
+                    "Workspace Type"
                 ],
                 "summary": "Get All Workspace Types",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Access-Control-Expose-Headers": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "X-Total-Pages"
+                                }
+                            },
+                            "X-Total-Pages": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "1"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "436"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"1b4-LNU3jBUDziSlmM6kckAUQ/k4HS8\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:11:34 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": [
+                                    {
+                                        "id": "1dcdda55-3a43-4dc7-bc0d-0ccf99350502",
+                                        "name": "Phone Booth",
+                                        "maxReservationTimeDaily": {
+                                            "hours": 2
+                                        },
+                                        "maxReservationTimeOverall": {
+                                            "hours": 6
+                                        }
+                                    },
+                                    {
+                                        "id": "07c0865e-f27c-414e-bd0b-ed5178d9aeb5",
+                                        "name": "Conference Room",
+                                        "maxReservationTimeDaily": {
+                                            "hours": 2
+                                        },
+                                        "maxReservationTimeOverall": {
+                                            "hours": 6
+                                        }
+                                    },
+                                    {
+                                        "id": "eb6e1123-f8c4-43d4-9491-fbaa214cb53a",
+                                        "name": "Desk",
+                                        "maxReservationTimeDaily": {
+                                            "hours": 24
+                                        },
+                                        "maxReservationTimeOverall": {
+                                            "hours": 120
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:56:22 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
                         }
                     }
                 }
             },
             "post": {
                 "tags": [
-                    "Working Space Type"
+                    "Workspace Type"
                 ],
-                "summary": "Create Working Space Type",
+                "summary": "Create Workspace Type",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -6568,17 +8553,241 @@
                                 "example": {
                                     "id": "eb6e1123-f8c4-43d4-9491-fbaa214cb536",
                                     "name": "Conference Room",
-                                    "reservationTime": "00:15:00"
+                                    "maxReservationTimeDaily": "02:00",
+                                    "maxReservationTimeOverall": "02:00"
                                 }
                             }
                         }
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "Successful response",
+                    "201": {
+                        "description": "Created",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "243"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"f3-tsL53iU5nVvPShQOdlc6fYCzJIw\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:14:14 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "id": "eb6e1123-f8c4-43d4-9491-fbaa214cb536",
+                                    "name": "Conference Room",
+                                    "maxReservationTimeDaily": {
+                                        "hours": 2
+                                    },
+                                    "maxReservationTimeOverall": {
+                                        "hours": 2
+                                    },
+                                    "updatedAt": "2023-04-17T14:14:14.135Z",
+                                    "createdAt": "2023-04-17T14:14:14.135Z",
+                                    "deletedAt": null
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "79"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"4f-1O7r+WZatWL09sHjLIVw48QEqzs\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:14:34 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Missing maxReservationTimeOverall",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "maxReservationTimeOverall is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Missing maxReservationTimeDaily",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "maxReservationTimeDaily is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-2": {
+                                        "summary": "Missing Name",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "name is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-3": {
+                                        "summary": "Missing id",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "id is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-4": {
+                                        "summary": "Empty Body",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": "You must not send empty body on this request."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:56:45 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
                         }
                     }
                 }
@@ -6587,9 +8796,14 @@
         "/api/v1/workspace-type/{id}": {
             "get": {
                 "tags": [
-                    "Working Space Type"
+                    "Workspace Type"
                 ],
                 "summary": "Get WorkSpace Type",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -6602,19 +8816,206 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Successful response",
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "68"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"44-/UV+pXXXjSAaRwPrQdUHXPFksx8\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:12:00 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Invalid input",
+                                    "details": [
+                                        "value must be a valid GUID"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:56:35 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "61"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"3d-rCKYCg0EYa0Yb/gxAQzTTIbeMSE\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:11:47 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Success",
+                                        "value": {
+                                            "message": "Not found",
+                                            "details": "Workspace Type not found!"
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "Not Found",
+                                        "value": {
+                                            "message": "Not found",
+                                            "details": "Workspace Type not found!"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Working Space Type"
+                    "Workspace Type"
                 ],
-                "summary": "Delete working space type",
+                "summary": "Delete Workspace Type",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -6628,9 +9029,1022 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "50"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"32-8ji0cJWHjUd02hJkpTI+a1D6OnI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:15:55 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Workspace Type successfully deleted!"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "68"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"44-/UV+pXXXjSAaRwPrQdUHXPFksx8\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:16:04 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Invalid input",
+                                    "details": [
+                                        "value must be a valid GUID"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "81"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"51-cHIbkUbjNxX4ZD99iigrfGv5JXI\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 11:56:54 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Unauthorized access",
+                                    "details": "Missing authorization from headers!"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "61"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"3d-rCKYCg0EYa0Yb/gxAQzTTIbeMSE\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:16:17 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "Workspace Type not found!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservation": {
+            "get": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Get All Reservations",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Access-Control-Expose-Headers": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "X-Total-Pages"
+                                }
+                            },
+                            "X-Total-Pages": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "1"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "290"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"122-elV2y/twCNdYW0SGGfNYzWgA3iU\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:19:38 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": [
+                                    {
+                                        "dateTime": "Thu, Apr 20, 2023, 4:00 PM - 4:15 PM",
+                                        "id": "e1ea525a-a455-4f2d-9324-7f276b439fb4",
+                                        "userId": "47f6daa2-a1ed-495a-ba55-c626b4366c5e",
+                                        "workspaceId": "cae42cfe-1c81-42ce-84d3-222881f76519",
+                                        "startAt": "2023-04-20T14:00:00.000Z",
+                                        "endAt": "2023-04-20T14:15:00.000Z",
+                                        "participants": null
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Create Reservation",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "id": "e1ea525a-a455-4f2d-9324-7f276b439fb4",
+                                    "workspaceId": "cae42cfe-1c81-42ce-84d3-222881f76519",
+                                    "startAt": "2023-04-20T16:00:00",
+                                    "endAt": "2023-04-20T16:15:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "47"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2f-WZYJRL79SkjAP1RLGFC1KbUmDFg\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:17:04 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Reservation successfully created!"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "59"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"3b-1IPkIrSzET0t6s03Evb3aOmIB6U\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:17:16 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "example-0": {
+                                        "summary": "Missing endAt",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "endAt is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-1": {
+                                        "summary": "startAt less than today date",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "startAt must be greater than 2023-04-17T14:17:02.425Z"
+                                            ]
+                                        }
+                                    },
+                                    "example-2": {
+                                        "summary": "Missing startAt",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "startAt is required",
+                                                "endAt date references ref:startAt which must have a valid date format"
+                                            ]
+                                        }
+                                    },
+                                    "example-3": {
+                                        "summary": "Missing workspaceId",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "workspaceId is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-4": {
+                                        "summary": "Missing id",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": [
+                                                "id is required"
+                                            ]
+                                        }
+                                    },
+                                    "example-5": {
+                                        "summary": "Empty Body",
+                                        "value": {
+                                            "message": "Invalid input",
+                                            "details": "You must not send empty body on this request."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "56"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"38-PWm1TxSfu580igQxPqAUjwcCOA4\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:18:59 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "Workspace not found!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservation/{id}": {
+            "get": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Get One Reservation",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "example": "e1ea525a-a455-4f2d-9324-7f276b439fb4"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "288"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"120-9bXmj9Nt2DqWQ5KQNQmCRWzJEFw\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:19:50 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "dateTime": "Thu, Apr 20, 2023, 4:00 PM - 4:15 PM",
+                                    "id": "e1ea525a-a455-4f2d-9324-7f276b439fb4",
+                                    "userId": "47f6daa2-a1ed-495a-ba55-c626b4366c5e",
+                                    "workspaceId": "cae42cfe-1c81-42ce-84d3-222881f76519",
+                                    "startAt": "2023-04-20T14:00:00.000Z",
+                                    "endAt": "2023-04-20T14:15:00.000Z",
+                                    "participants": null
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "68"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"44-/UV+pXXXjSAaRwPrQdUHXPFksx8\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:20:29 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Invalid input",
+                                    "details": [
+                                        "value must be a valid GUID"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Update Reservation",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "startAt": "2023-04-14T15:00:00",
+                                    "endAt": "2023-04-14T15:45:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "example": "e1ea525a-a455-4f2d-9324-7f276b439fb4"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "47"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2f-MqOpVsIrxlKiC/fDstfkYAHbz3M\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:22:20 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Reservation successfully updated!"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "95"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"5f-owCsSM2fyJPVxm7p63mZ6TCJgDE\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:21:21 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Invalid input",
+                                    "details": [
+                                        "startAt must be greater than 2023-04-17T14:20:27.881Z"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "58"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"3a-ZtQejTNDDkkiDkNRG0k5zSxIuXg\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:21:36 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Not found",
+                                    "details": "Reservation not found!"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Delete Reservation",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "example": "e1ea525a-a455-4f2d-9324-7f276b439fb4"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Powered-By": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Express"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "application/json; charset=utf-8"
+                                }
+                            },
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "integer",
+                                    "example": "47"
+                                }
+                            },
+                            "ETag": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "W/\"2f-0vB3kjnm6wH6tCLM3xEfB8wQGcQ\""
+                                }
+                            },
+                            "Date": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Mon, 17 Apr 2023 14:24:45 GMT"
+                                }
+                            },
+                            "Connection": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "keep-alive"
+                                }
+                            },
+                            "Keep-Alive": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "timeout=5"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Reservation successfully deleted!"
+                                }
+                            }
                         }
                     }
                 }
@@ -6648,7 +10062,7 @@
                             "schema": {
                                 "type": "object",
                                 "example": {
-                                    "email": "admin@example.com",
+                                    "email": "ivana.gasparov@agilathon.com",
                                     "password": "test1234"
                                 }
                             }

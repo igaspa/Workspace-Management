@@ -3,7 +3,7 @@ const { tableName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface, _Sequelize) {
     return queryInterface.bulkInsert(tableName.location, [
       {
         id: '5419ce7d-c415-480d-a980-cd169559bc85',
@@ -16,7 +16,7 @@ module.exports = {
     ]);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface, _Sequelize) {
     await queryInterface.bulkDelete(tableName.location, null, {});
   }
 };

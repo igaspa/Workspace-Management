@@ -3,7 +3,7 @@ const { tableName, constraintName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface, _Sequelize) {
     await queryInterface.addConstraint(tableName.notification, {
       fields: ['notification_template_id'],
       onDelete: 'cascade',

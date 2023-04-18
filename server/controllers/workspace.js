@@ -52,32 +52,26 @@ const workspaceCustomIncludeOptions = (queryParams) => {
     options.push(term);
   }
 
-  return options;
-};
-
-const workspaceCustomWhereOptions = (queryParams) => {
-  const options = [];
-  const { from, until, status } = queryParams;
-
   if (status && status === 'available') {
+    const term = {
+      attributes: { exclude: EXCLUDE_LIST },
+      model: reservation
+    };
     const startTime = from ? new Date(from) : new Date();
     const endTime = until ? new Date(until) : new Date(new Date(startTime).setHours(24, 0, 0, 0));
-    // Return all workspaces whose reservation is not overlapping with the requested date range
-    const term = {
-      [Op.not]: [
-        sequelize.literal(`EXISTS (
-          SELECT *
-          FROM reservation
-          WHERE
-            reservation.workspace_id = workspace.id AND
-            reservation.start_at < ${sequelize.escape(endTime)} AND
-            reservation.end_at > ${sequelize.escape(startTime)}
-        )`)
-      ],
-      permanently_reserved: false
+    term.where = {
+      [Op.and]: [
+        {
+          [Op.or]: [
+            { start_at: { [Op.gte]: endTime } },
+            { end_at: { [Op.lte]: startTime } }
+          ]
+        },
+        { permanently_reserved: false }
+      ]
     };
-    options.push(term);
   }
+
   return options;
 };
 
@@ -94,11 +88,9 @@ exports.createOneWorkspace = async (req, res) => {
 
 module.exports.getAllWorkspaces = async (req, res) => {
   const customIncludeOptions = workspaceCustomIncludeOptions(req.query);
-  const customWhereOptions = workspaceCustomWhereOptions(req.query);
 
   const customOptions = {
-    include: customIncludeOptions,
-    where: customWhereOptions
+    include: customIncludeOptions
   };
 
   await generalController.findAllModels(workspace, customOptions, req, res);

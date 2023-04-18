@@ -13,6 +13,10 @@ module.exports = {
       name: {
         allowNull: false,
         type: Sequelize.STRING
+      },
+      allow_multiple_reservations: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
       }
     });
   },

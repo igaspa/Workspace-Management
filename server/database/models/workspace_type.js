@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: DataTypes.STRING,
+    allowPermanentReservations: DataTypes.BOOLEAN,
     maxReservationTimeDaily: AdditDataTypes.INTERVAL,
     maxReservationTimeOverall: AdditDataTypes.INTERVAL
   }, {

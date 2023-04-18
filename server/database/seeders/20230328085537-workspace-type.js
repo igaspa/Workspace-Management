@@ -10,6 +10,7 @@ module.exports = {
         max_reservation_time_daily: '02:00:00',
         max_reservation_time_overall: '06:00:00',
         name: 'Phone Booth',
+        allow_permanent_reservations: false,
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -18,6 +19,7 @@ module.exports = {
         max_reservation_time_daily: '02:00:00',
         max_reservation_time_overall: '06:00:00',
         name: 'Conference Room',
+        allow_permanent_reservations: false,
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -26,6 +28,7 @@ module.exports = {
         max_reservation_time_daily: '24:00:00',
         max_reservation_time_overall: '120:00:00',
         name: 'Desk',
+        allow_permanent_reservations: true,
         created_at: new Date(),
         updated_at: new Date()
       }

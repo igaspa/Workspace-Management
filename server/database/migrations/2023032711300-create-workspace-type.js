@@ -23,6 +23,10 @@ module.exports = {
         allowNull: false,
         type: SequelizeType.INTERVAL
       },
+      allow_permanent_reservations: {
+        allowNull: false,
+        type: SequelizeType.BOOLEAN
+      },
       deleted_at: {
         allowNull: true,
         type: Sequelize.DATE

@@ -85,7 +85,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface, _Sequelize) {
     await queryInterface.removeConstraint(tableName.notification, constraintName.notificationTemplate);
     await queryInterface.removeConstraint(tableName.notification, constraintName.notificationReservation);
     await queryInterface.removeConstraint(tableName.reservation, constraintName.reservationUser);

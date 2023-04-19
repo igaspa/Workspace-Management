@@ -213,11 +213,10 @@ exports.createReservation = async (req) => {
 };
 
 exports.updateReservation = async (req) => {
-  // TO DO
   const { startAt, endAt } = req.body;
   const { id } = req.params;
 
-  // retrive reservation with workspace and workspaceType information
+  // retrieve reservation with workspace and workspaceType information
   const userId = req.user.id;
   const currentReservation = await retrieveReservationsThatIsBeingUpdated(id, userId);
 

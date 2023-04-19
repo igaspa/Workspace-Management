@@ -28,12 +28,10 @@ const createSequelizeConstraintErrorMessage = (error) => {
     ? data.join(' and ')
     : `${data.slice(0, -1).join(', ')}, and ${data[data.length - 1]}`;
 
-  const obj = {
+  return {
     table: tableCapitalized,
     elements
   };
-
-  return obj;
 };
 
 module.exports.errorMiddleware = async (error, _req, res, _next) => {

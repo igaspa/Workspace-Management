@@ -8,8 +8,7 @@ module.exports = {
     return queryInterface.bulkInsert(tableName.role, [
       {
         id: 'd2477f3b-d4ce-4269-9221-0ad479fd45ad',
-        name: 'Administrator',
-        allow_multiple_reservations: true
+        name: 'Administrator'
       }
     ]);
   },

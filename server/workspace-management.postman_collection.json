@@ -8170,7 +8170,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
+									"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8180,16 +8180,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":firstId",
-										":secondId"
+										":userId",
+										":roleId"
 									],
 									"variable": [
 										{
-											"key": "firstId",
+											"key": "userId",
 											"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 										},
 										{
-											"key": "secondId",
+											"key": "roleId",
 											"value": "d2477f3b-d4ce-4269-9221-0ad479fd45ad"
 										}
 									]
@@ -8237,7 +8237,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:4000/api/v1/user-role/:firstId/:secondId",
+									"raw": "http://127.0.0.1:4000/api/v1/user-role/:userId/:roleId",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -8250,16 +8250,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":firstId",
-										":secondId"
+										":userId",
+										":roleId"
 									],
 									"variable": [
 										{
-											"key": "firstId",
+											"key": "userId",
 											"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 										},
 										{
-											"key": "secondId",
+											"key": "roleId",
 											"value": "0bdd577d-c8e5-4973-a6e3-6cf806d8a601"
 										}
 									]
@@ -8307,7 +8307,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
+									"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8317,16 +8317,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":firstId",
-										":secondId"
+										":userId",
+										":roleId"
 									],
 									"variable": [
 										{
-											"key": "firstId",
+											"key": "userId",
 											"value": null
 										},
 										{
-											"key": "secondId",
+											"key": "roleId",
 											"value": null
 										}
 									]
@@ -8846,7 +8846,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
+									"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8856,16 +8856,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":firstId",
-										":secondId"
+										":userId",
+										":roleId"
 									],
 									"variable": [
 										{
-											"key": "firstId",
+											"key": "userId",
 											"value": "07209cb2-7d40-4bb7-87ed-87925907c21a"
 										},
 										{
-											"key": "secondId",
+											"key": "roleId",
 											"value": "c40910c3-c2cf-439f-8d5b-be62d7c548be"
 										}
 									]
@@ -8913,7 +8913,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:4000/api/v1/user-role/:firstId/:secondId",
+									"raw": "http://127.0.0.1:4000/api/v1/user-role/:userId/:roleId",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -8926,16 +8926,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":firstId",
-										":secondId"
+										":userId",
+										":roleId"
 									],
 									"variable": [
 										{
-											"key": "firstId",
+											"key": "userId",
 											"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 										},
 										{
-											"key": "secondId",
+											"key": "roleId",
 											"value": "0bdd577d-c8e5-4973-a6e3-6cf806d8a601"
 										}
 									]

@@ -18,8 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.UUID
     },
-    name: DataTypes.STRING,
-    multipleReservations: DataTypes.BOOLEAN
+    name: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'role',

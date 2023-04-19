@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     allowPermanentReservations: DataTypes.BOOLEAN,
-    maxReservationTimeDaily: AdditDataTypes.INTERVAL,
-    maxReservationTimeOverall: AdditDataTypes.INTERVAL
+    maxReservationInterval: AdditDataTypes.INTERVAL,
+    maxReservationWindow: AdditDataTypes.INTERVAL
   }, {
     sequelize,
     modelName: 'workspaceType',

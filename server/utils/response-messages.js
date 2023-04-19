@@ -21,6 +21,7 @@ const responseMessages = {
   UPDATE_UNSUCCESSFULL: (modelName) => `Failed to update${formatModelName(modelName)}!`,
 
   // Constant messages
+  INVALID_RESERVATION_WORKSPACE_SINGULARITY: 'Each reservation needs belong to the same workspace.',
   UPDATE_STARTED_RESERVATION: 'You cannot updated reservation that has already started.',
   UPDATE_EXPIRED_RESERVATION: 'You cannot updated expired reservation.',
   USER_PERMISSION_ERROR: 'You do not have access for this action.',

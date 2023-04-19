@@ -151,8 +151,6 @@ exports.createPermanentReservation = async (req) => {
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  // to do -- add permanent attribute for workspaceType
-
   const { workspaceType: { id: workspaceTypeId } } = workspaceInfo;
 
   // retrieve all current reservations from this worksapceId or user
@@ -261,8 +259,6 @@ exports.updateReservation = async (req) => {
   const { workspace: { workspaceType: { id: workspaceTypeId, maxReservationTimeDaily, maxReservationTimeOverall } } } = currentReservation;
 
   // create Date object with new start and end
-  const start = new Date(startAt);
-  const end = new Date(endAt);
 
   const userRoles = req.user.roles;
 
@@ -272,10 +268,12 @@ exports.updateReservation = async (req) => {
 
     // filter all reservations except requested one, since we need to validate new reservation start and end
     const reservationsExceptRequested = reservations.length ? reservations.filter(reservation => reservation.id !== id) : [];
-    const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
+    const data = { startAt, endAt, maxReservationTimeDaily, maxReservationTimeOverall };
     validateReservationConstraints(reservationsExceptRequested, data);
   }
 
+  const start = new Date(startAt);
+  const end = new Date(endAt);
   // all reservations need to be divisible with min interval
   validateMinimumReservationInterval(start, end);
 

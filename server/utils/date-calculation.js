@@ -1,5 +1,5 @@
 exports.convertToMs = (interval) => {
-  const dateInMs = ((interval.hours || 0) * 60 * 60 + (interval.minutes || 0) * 60) * 1000;
+  const dateInMs = ((interval.days || 0) * 24 * 60 * 60 + (interval.hours || 0) * 60 * 60 + (interval.minutes || 0) * 60) * 1000;
   return dateInMs;
 };
 

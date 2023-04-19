@@ -1,10 +1,23 @@
 const joi = require('joi');
 
-const intervalSchema = joi.string().custom((value, helpers) => {
+const reservationIntervalSchema = joi.string().custom((value, helpers) => {
   const intervalRegex = /^(\d+\s+days?\s*)?(\d{2}:\d{2}(:\d{2})?)?$/;
   if (!intervalRegex.test(value)) {
     const key = helpers.state.path[0];
-    return helpers.message(`Invalid interval format for ${key}`);
+    return helpers.message(`Invalid interval format for ${key}. Valid example: "08:00".`);
+  }
+  return value;
+});
+
+const reservationWindowSchema = joi.string().custom((value, helpers) => {
+  const intervalRegex = /^(\d+\s+days?)?$/;
+  const key = helpers.state.path[0];
+  if (!intervalRegex.test(value)) {
+    return helpers.message(`Invalid interval format for ${key}. Valid example: "7 days".`);
+  }
+  const numOfDays = parseInt(value.split(' ')[0]);
+  if (numOfDays < 1 || numOfDays > 365) {
+    return helpers.message(`Allowed number of days for ${key} is 1-365. Valid example: "7 days".`);
   }
   return value;
 });
@@ -25,8 +38,9 @@ exports.workspace_type = joi.object({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
-  maxReservationTimeDaily: intervalSchema.required(),
-  maxReservationTimeOverall: intervalSchema.required()
+  maxReservationInterval: reservationIntervalSchema.required(),
+  maxReservationWindow: reservationWindowSchema.required(),
+  allowPermanentReservations: joi.boolean().required()
 }).options({ abortEarly: false });
 
 // Work Space Entity Schema

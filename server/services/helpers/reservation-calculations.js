@@ -1,6 +1,7 @@
 const { errors } = require('../../utils/errors');
 const responseMessages = require('../../utils/response-messages');
 const { convertToMs, MINIMUM_RESERVATION_INTERVAL } = require('../../utils/date-calculation');
+const { DateTime } = require('luxon');
 
 const validateDailyMaxLimit = (startInMs, endInMs, maxReservationTimeDailyInMs, userDailyReservationCountInMs) => {
   if ((endInMs - startInMs + userDailyReservationCountInMs) > maxReservationTimeDailyInMs) {
@@ -42,28 +43,21 @@ const calculateUserDailyReservationsInMs = (reservations, start) => {
 };
 
 const validateReservationsLimits = (reservations, data) => {
-  const { start, end, maxReservationTimeDaily, maxReservationTimeOverall } = data;
+  const { startAt, endAt, maxReservationTimeDaily, maxReservationTimeOverall } = data;
+  const start = new Date(startAt);
+  const end = new Date(endAt);
 
-  const maxReservationTimeDailyInMs = maxReservationTimeDaily ? convertToMs(maxReservationTimeDaily) : null;
-  const maxReservationTimeOverallInMs = maxReservationTimeOverall ? convertToMs(maxReservationTimeOverall) : null;
+  const maxReservationTimeDailyInMs = convertToMs(maxReservationTimeDaily);
+  const maxReservationTimeOverallInMs = convertToMs(maxReservationTimeOverall);
+
+  const userDailyReservationCountInMs = calculateUserDailyReservationsInMs(reservations, start);
+  const userOverallReservationCountInMs = calculateUserOverallReservationsInMs(reservations);
 
   // validate User did not exceed daily limit of reservations
-  if (maxReservationTimeDailyInMs) {
-    const userDailyReservationCountInMs = calculateUserDailyReservationsInMs(reservations, start);
-    const startDate = new Date(start.getTime());
-    const midnight = startDate.setHours(24, 0, 0, 0);
-    if (end.getTime() > midnight) {
-      validateDailyMaxLimit(start.getTime(), midnight, maxReservationTimeDailyInMs, userDailyReservationCountInMs);
-    } else {
-      validateDailyMaxLimit(start.getTime(), end.getTime(), maxReservationTimeDailyInMs, userDailyReservationCountInMs);
-    }
-  }
+  validateDailyMaxLimit(start.getTime(), end.getTime(), maxReservationTimeDailyInMs, userDailyReservationCountInMs);
 
   // validate User did not exceed overall limit of reservations
-  if (maxReservationTimeOverallInMs) {
-    const userOverallReservationCountInMs = calculateUserOverallReservationsInMs(reservations);
-    validateOverallMaxLimit(start.getTime(), end.getTime(), maxReservationTimeOverallInMs, userOverallReservationCountInMs);
-  }
+  validateOverallMaxLimit(start.getTime(), end.getTime(), maxReservationTimeOverallInMs, userOverallReservationCountInMs);
 };
 
 exports.validateMinimumReservationInterval = (start, end) => {
@@ -77,19 +71,24 @@ exports.validateMinimumReservationInterval = (start, end) => {
 
 exports.validateReservationConstraints = (reservations, data) => {
   // validate user does not have permanent reservation
-  const { start, end } = data;
+  const { startAt, endAt } = data;
+
+  // Create date objects fromd dates
+  const start = new Date(startAt);
+  const end = new Date(endAt);
+
   if (reservations.some(reservation => reservation.endAt === null)) {
     throw errors.CONFLICT(responseMessages.PERMANENT_RESERVATION_CONFLICT);
   }
 
   // validate there are no overlaps between existing reservations and the new one
+  // this is also handled on db
   const overlappingReservation = reservations.find(reservation => {
     const reservationStart = reservation.startAt;
     const reservationEnd = reservation.endAt;
 
     return start < reservationEnd && end > reservationStart;
   });
-
   if (overlappingReservation) throw errors.CONFLICT(responseMessages.OVERLAP_RESERVATION_CONFLICT);
 
   // validate user did not exceed daily or overall reservation limit

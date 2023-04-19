@@ -8138,7 +8138,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
+							"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -8148,16 +8148,16 @@
 								"api",
 								"v1",
 								"user-role",
-								":firstId",
-								":secondId"
+								":userId",
+								":roleId"
 							],
 							"variable": [
 								{
-									"key": "firstId",
+									"key": "userId",
 									"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 								},
 								{
-									"key": "secondId",
+									"key": "roleId",
 									"value": "d2477f3b-d4ce-4269-9221-0ad479fd45ad"
 								}
 							]
@@ -8814,7 +8814,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
+							"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -8824,17 +8824,17 @@
 								"api",
 								"v1",
 								"user-role",
-								":firstId",
-								":secondId"
+								":userId",
+								":roleId"
 							],
 							"variable": [
 								{
-									"key": "firstId",
-									"value": "07209cb2-7d40-4bb7-87ed-87925907c21a"
+									"key": "userId",
+									"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 								},
 								{
-									"key": "secondId",
-									"value": "c40910c3-c2cf-439f-8d5b-be62d7c548be"
+									"key": "roleId",
+									"value": "d2477f3b-d4ce-4269-9221-0ad479fd45ad"
 								}
 							]
 						}
@@ -10461,7 +10461,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"workspaceList\":[\n       {\"id\": \"156d9aec-d406-474a-bd30-3dbc797aae10\"},\n        {\"id\":\"c473b767-e66a-402c-a618-6411ea8021e0\"}\n    ],\n    \"forceDelete\": true\n}",
+							"raw": "{\n    \"workspaceList\":[\n       {\"id\": \"156d9aec-d406-474a-bd30-3dbc797aae10\"},\n       {\"id\":\"c473b767-e66a-402c-a618-6411ea8021e0\"}\n    ],\n    \"forceDelete\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -14579,7 +14579,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "  {  \n    \"email\": \"ivana.gasparov@agilathon.com\",\n    \"password\": \"test1234\"\n    }      ",
+					"raw": "  {  \n    \"email\": \"admin@example.com\",\n    \"password\": \"test1234\"\n    }      ",
 					"options": {
 						"raw": {
 							"language": "json"

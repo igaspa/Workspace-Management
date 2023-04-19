@@ -8,9 +8,9 @@ module.exports.getAllUserRoles = async (req, res) => {
 };
 
 module.exports.getUserRoles = async (req, res) => {
-  const { firstId, secondId } = req.params;
+  const { userId, roleId } = req.params;
   const query = {
-    where: { userId: firstId, roleId: secondId }
+    where: { userId, roleId }
   };
 
   const model = await userRole.findOne(query);
@@ -23,8 +23,8 @@ module.exports.createUserRole = async (req, res) => {
 };
 
 module.exports.deleteUserRole = async (req, res) => {
-  const { firstId, secondId } = req.params;
-  const model = await userRole.destroy({ where: { userId: firstId, roleId: secondId } });
+  const { userId, roleId } = req.params;
+  const model = await userRole.destroy({ where: { userId, roleId } });
   if (!model) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(model));
   res.status(200).json(model);
 };

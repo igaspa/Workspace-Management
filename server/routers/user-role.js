@@ -15,7 +15,7 @@ router
   .post(restrictRoles([roles.administrator]), bodyValidator, callbackErrorHandler(generalController.createUserRole));
 
 router
-  .route('/:firstId/:secondId')
+  .route('/:userId/:roleId')
   .get(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.getUserRoles))
   .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.deleteUserRole));
 

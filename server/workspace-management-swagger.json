@@ -6094,7 +6094,7 @@
                 }
             }
         },
-        "/api/v1/user-role/{firstId}/{secondId}": {
+        "/api/v1/user-role/{userId}/{roleId}": {
             "get": {
                 "tags": [
                     "User Role"
@@ -6107,7 +6107,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "firstId",
+                        "name": "userId",
                         "in": "path",
                         "schema": {
                             "type": "string"
@@ -6116,7 +6116,7 @@
                         "example": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
                     },
                     {
-                        "name": "secondId",
+                        "name": "roleId",
                         "in": "path",
                         "schema": {
                             "type": "string"
@@ -6316,7 +6316,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "firstId",
+                        "name": "userId",
                         "in": "path",
                         "schema": {
                             "type": "string"
@@ -6325,7 +6325,7 @@
                         "example": "07209cb2-7d40-4bb7-87ed-87925907c21a"
                     },
                     {
-                        "name": "secondId",
+                        "name": "roleId",
                         "in": "path",
                         "schema": {
                             "type": "string"

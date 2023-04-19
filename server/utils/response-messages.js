@@ -21,6 +21,10 @@ const responseMessages = {
   UPDATE_UNSUCCESSFULL: (modelName) => `Failed to update${formatModelName(modelName)}!`,
 
   // Constant messages
+  INVALID_RESERVATION_TIME: 'Reservation time is invalid. App can only accept reservations every 5min.',
+  MAX_RESERVATION_WINDOW_EXCEDEED: 'Reservation window exceeded. You cannot create reservation which starts at this date.',
+  MAX_RESERVATION_INTERVAL_EXCEDEED: 'The reservation interval exceeds the maximum allowed duration.',
+  INVALID_RESERVATION_TIME_RANGE: 'Reservation does not belong to the same day.',
   INVALID_RESERVATION_WORKSPACE_SINGULARITY: 'Each reservation needs belong to the same workspace.',
   UPDATE_STARTED_RESERVATION: 'You cannot updated reservation that has already started.',
   UPDATE_EXPIRED_RESERVATION: 'You cannot updated expired reservation.',

@@ -1,4 +1,4 @@
-module.exports.schemeName = 'table_management';
+module.exports.schemeName = 'workspace_management';
 module.exports.EXCLUDE_LIST = ['createdAt', 'updatedAt', 'deletedAt', 'password'];
 
 module.exports.notificationStatus = {

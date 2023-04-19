@@ -6322,7 +6322,7 @@
                             "type": "string"
                         },
                         "required": true,
-                        "example": "07209cb2-7d40-4bb7-87ed-87925907c21a"
+                        "example": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
                     },
                     {
                         "name": "roleId",
@@ -6331,7 +6331,7 @@
                             "type": "string"
                         },
                         "required": true,
-                        "example": "c40910c3-c2cf-439f-8d5b-be62d7c548be"
+                        "example": "d2477f3b-d4ce-4269-9221-0ad479fd45ad"
                     }
                 ],
                 "responses": {
@@ -10062,7 +10062,7 @@
                             "schema": {
                                 "type": "object",
                                 "example": {
-                                    "email": "ivana.gasparov@agilathon.com",
+                                    "email": "admin@example.com",
                                     "password": "test1234"
                                 }
                             }

@@ -110,7 +110,7 @@ const retrieveReservationsThatIsBeingUpdated = async (reservationId, userId) => 
       model: workspace,
       include: [{
         model: workspaceType,
-        attributes: ['id', 'maxReservationTimeDaily', 'maxReservationTimeOverall']
+        attributes: ['id', 'maxReservationInterval', 'maxReservationWindow']
       }]
     }]
   });
@@ -204,22 +204,17 @@ exports.createReservation = async (req) => {
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
     attributes: ['permanentlyReserved'],
-    include: [{ model: workspaceType, attributes: ['id', 'maxReservationTimeDaily', 'maxReservationTimeOverall'] }]
+    include: [{ model: workspaceType, attributes: ['id', 'maxReservationInterval', 'maxReservationWindow'] }]
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  const { permanentlyReserved, workspaceType: { id: workspaceTypeId, maxReservationTimeDaily, maxReservationTimeOverall } } = workspaceInfo;
+  const { permanentlyReserved, workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow } } = workspaceInfo;
 
   // validate this workspace is not permanently reserved
   if (permanentlyReserved) throw errors.CONFLICT(responseMessage.WORKSPACE_PERMANENTLY_RESERVED);
 
   const userId = req.user.id;
-
-  // Create date objects corresponding to the dates that were sent
-  const start = new Date(startAt);
-  const end = new Date(endAt);
-
-  const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
+  const data = { startAt, endAt, maxReservationInterval, maxReservationWindow };
   const userRoles = req.user.roles;
 
   // validate reservation time if user is not administrator or lead
@@ -227,7 +222,7 @@ exports.createReservation = async (req) => {
     const reservations = await getUserReservationsByWorkspaceType(userId, workspaceTypeId) || [];
     validateReservationConstraints(reservations, data);
   }
-  validateMinimumReservationInterval(start, end);
+  validateMinimumReservationInterval(startAt, endAt);
 
   // Create the reservation
   const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
@@ -235,8 +230,8 @@ exports.createReservation = async (req) => {
     id,
     userId,
     workspaceId,
-    startAt: start,
-    endAt: end,
+    startAt: new Date(startAt),
+    endAt: new Date(endAt),
     participants: participants || null
   });
 };
@@ -256,31 +251,26 @@ exports.updateReservation = async (req) => {
   if (currentReservation.endAt <= new Date()) throw errors.VALIDATION(responseMessage.UPDATE_EXPIRED_RESERVATION);
 
   // destruct needed attributes for validation
-  const { workspace: { workspaceType: { id: workspaceTypeId, maxReservationTimeDaily, maxReservationTimeOverall } } } = currentReservation;
-
-  // create Date object with new start and end
-
-  const userRoles = req.user.roles;
+  const { workspace: { workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow } } } = currentReservation;
 
   // validate reservation time if user is not administrator or lead
+  const userRoles = req.user.roles;
   if (!userRoles.includes(roles.administrator || roles.lead)) {
     const reservations = getUserReservationsByWorkspaceType(userId, workspaceTypeId);
 
     // filter all reservations except requested one, since we need to validate new reservation start and end
     const reservationsExceptRequested = reservations.length ? reservations.filter(reservation => reservation.id !== id) : [];
-    const data = { startAt, endAt, maxReservationTimeDaily, maxReservationTimeOverall };
+    const data = { startAt, endAt, maxReservationInterval, maxReservationWindow };
     validateReservationConstraints(reservationsExceptRequested, data);
   }
 
-  const start = new Date(startAt);
-  const end = new Date(endAt);
   // all reservations need to be divisible with min interval
-  validateMinimumReservationInterval(start, end);
+  validateMinimumReservationInterval(startAt, endAt);
 
   // updateReservation
   const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
   const [updatedModel, _updatedData] = await reservation.update(
-    { startAt: start, endAt: end, participants }, {
+    { startAt: new Date(startAt), endAt: new Date(endAt), participants }, {
       where: {
         id,
         userId

@@ -23,18 +23,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
     include: []
   };
 
-  // Add included models
-  if (include) {
-    const includeOptions = checkModelAssociations(Model, include);
-    options.include = includeOptions;
-  }
-
-  // Add new options if they exist
-  if (customOptions) {
-    for (const property in customOptions) {
-      options[property] = options[property].concat(customOptions[property]);
-    }
-  }
+  addIncludeModelAndCustomOptions(include, customOptions, Model, options);
 
   // Find number of pages
   const pageCount = await findPages(Model, options);
@@ -60,18 +49,7 @@ module.exports.findOneModel = async (Model, customOptions, req, res) => {
     include: []
   };
 
-  // Add included models
-  if (include) {
-    const includeOptions = checkModelAssociations(Model, include);
-    options.include = includeOptions;
-  }
-
-  // Add new options if they exist
-  if (customOptions) {
-    for (const property in customOptions) {
-      options[property] = options[property].concat(customOptions[property]);
-    }
-  }
+  addIncludeModelAndCustomOptions(include, customOptions, Model, options);
 
   const model = await Model.findOne(options);
   if (!model) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
@@ -105,4 +83,19 @@ module.exports.deleteModel = async (Model, req, res) => {
   if (!deletedModel) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(Model.name));
 
   res.status(200).json({ message: responseMessage.DELETE_SUCCESS(Model.name) });
+};
+
+const addIncludeModelAndCustomOptions = (include, customOptions, Model, options) => {
+  // Add included models
+  if (include) {
+    const includeOptions = checkModelAssociations(Model, include);
+    options.include = includeOptions;
+  }
+
+  // Add new options if they exist
+  if (customOptions) {
+    for (const property in customOptions) {
+      options[property] = options[property].concat(customOptions[property]);
+    }
+  }
 };

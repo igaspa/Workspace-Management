@@ -21,6 +21,7 @@ const responseMessages = {
   UPDATE_UNSUCCESSFULL: (modelName) => `Failed to update${formatModelName(modelName)}!`,
 
   // Constant messages
+  PERMANENT_RESERVATION_NOT_SUPPORTED: 'This workspace does not support permanent reservations.',
   INVALID_RESERVATION_TIME: 'Reservation time is invalid. App can only accept reservations every 5min.',
   MAX_RESERVATION_WINDOW_EXCEDEED: 'Reservation window exceeded. You cannot create reservation which starts at this date.',
   MAX_RESERVATION_INTERVAL_EXCEDEED: 'The reservation interval exceeds the maximum allowed duration.',

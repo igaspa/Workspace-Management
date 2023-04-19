@@ -3,8 +3,35 @@ const responseMessage = require('../utils/response-messages');
 const { workspace, workspaceType, reservation, sequelize } = require('../database/models');
 const { Op } = require('sequelize');
 const generalController = require('./general');
-const { errors } = require('../utils/errors');
 const { EXCLUDE_LIST } = require('../utils/constants');
+
+const workspaceCustomWhereOptions = (queryParams) => {
+  const options = [];
+  const { status, from, until } = queryParams;
+
+  if (status && status === 'available') {
+    const startTime = new Date(from);
+    const endTime = until ? new Date(until) : new Date(from).setHours(24, 0, 0, 0);
+    const term = {
+      where: sequelize.where(
+        sequelize.fn(
+          'NOT EXISTS',
+          sequelize.literal(`(
+            SELECT *
+            FROM reservation
+            WHERE
+              reservation.workspace_id = workspace.id AND
+              reservation.start_at < ${sequelize.escape(endTime)} AND
+              reservation.end_at > ${sequelize.escape(startTime)}
+          )`)
+        ),
+        true
+      )
+    };
+    options.push(term);
+  }
+  return options;
+};
 
 const workspaceCustomIncludeOptions = (queryParams) => {
   const options = [];
@@ -52,26 +79,6 @@ const workspaceCustomIncludeOptions = (queryParams) => {
     options.push(term);
   }
 
-  if (status && status === 'available') {
-    const term = {
-      attributes: { exclude: EXCLUDE_LIST },
-      model: reservation
-    };
-    const startTime = from ? new Date(from) : new Date();
-    const endTime = until ? new Date(until) : new Date(new Date(startTime).setHours(24, 0, 0, 0));
-    term.where = {
-      [Op.and]: [
-        {
-          [Op.or]: [
-            { start_at: { [Op.gte]: endTime } },
-            { end_at: { [Op.lte]: startTime } }
-          ]
-        },
-        { permanently_reserved: false }
-      ]
-    };
-  }
-
   return options;
 };
 
@@ -88,9 +95,11 @@ exports.createOneWorkspace = async (req, res) => {
 
 module.exports.getAllWorkspaces = async (req, res) => {
   const customIncludeOptions = workspaceCustomIncludeOptions(req.query);
+  const customWhereOptions = workspaceCustomWhereOptions(req.query);
 
   const customOptions = {
-    include: customIncludeOptions
+    include: customIncludeOptions,
+    where: customWhereOptions
   };
 
   await generalController.findAllModels(workspace, customOptions, req, res);

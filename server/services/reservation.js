@@ -147,11 +147,13 @@ exports.createPermanentReservation = async (req) => {
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
     attributes: [],
-    include: [{ model: workspaceType, attributes: ['id'] }]
+    include: [{ model: workspaceType, attributes: ['id', 'allowPermanentReservations'] }]
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  const { workspaceType: { id: workspaceTypeId } } = workspaceInfo;
+  const { workspaceType: { id: workspaceTypeId, allowPermanentReservations } } = workspaceInfo;
+
+  if (!allowPermanentReservations) throw errors.BAD_REQUEST(responseMessage.PERMANENT_RESERVATION_NOT_SUPPORTED);
 
   // retrieve all current reservations from this worksapceId or user
   const countActiveUserOrWorkspaceReservations = await reservation.count({

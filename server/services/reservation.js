@@ -2,7 +2,7 @@ const { reservation, workspace, workspaceType, sequelize } = require('../databas
 const { Op } = require('sequelize');
 const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
-const { validateReservationConstraints, validateMinimumReservationInterval } = require('./helpers/reservation-calculations');
+const { validateReservationConstraints, validateReservationTimeIntervals } = require('./helpers/reservation-calculations');
 const { roles } = require('../utils/roles');
 const { CONFERENCE_ROOM_ID } = require('../utils/constants');
 
@@ -224,7 +224,7 @@ exports.createReservation = async (req) => {
     const reservations = await getUserReservationsByWorkspaceType(userId, workspaceTypeId) || [];
     validateReservationConstraints(reservations, data);
   }
-  validateMinimumReservationInterval(startAt, endAt);
+  validateReservationTimeIntervals(startAt, endAt);
 
   // Create the reservation
   const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
@@ -267,7 +267,7 @@ exports.updateReservation = async (req) => {
   }
 
   // all reservations need to be divisible with min interval
-  validateMinimumReservationInterval(startAt, endAt);
+  validateReservationTimeIntervals(startAt, endAt);
 
   // updateReservation
   const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
@@ -279,5 +279,5 @@ exports.updateReservation = async (req) => {
       },
       returning: true
     });
-  if (!updatedModel) throw errors.BAD_REQUEST(responseMessage.UPDATE_UNSUCCESSFULL(reservation.name));
+  if (!updatedModel) throw errors.CONFLICT(responseMessage.UPDATE_UNSUCCESSFUL(reservation.name));
 };

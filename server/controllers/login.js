@@ -21,7 +21,7 @@ const createToken = async (user, _req, res) => {
   });
   const roles = userRoles.map(el => el.roleId);
   const token = signToken(user.id, user.firstName, user.lastName, user.email, roles);
-  res.status(200).json({ token });
+  res.status(200).set('Authorization', token).json({ token });
 };
 
 const comparePassword = async (enteredPassword, dbPassword) => {

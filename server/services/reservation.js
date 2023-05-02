@@ -202,7 +202,7 @@ exports.createPermanentReservation = async (req) => {
 exports.createReservation = async (req) => {
   const { id, workspaceId, startAt, endAt } = req.body;
 
-  // retrive workspace with workspaceType from db to get information abot reservation interval
+  // retrieve workspace with workspaceType from db to get information abot reservation interval
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
     attributes: ['permanentlyReserved'],

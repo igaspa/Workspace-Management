@@ -8,7 +8,7 @@ module.exports.findPages = async (Model, options) => {
 
 module.exports.getPagination = (page, size) => {
   const limit = size ? Number(size) : paginationValues.DEFAULT_LIMIT;
-  const offset = page ? page * limit : paginationValues.DEFAULT_OFFSET;
+  const offset = page ? (Number(page) - 1) * limit : paginationValues.DEFAULT_OFFSET;
 
   return { limit, offset };
 };

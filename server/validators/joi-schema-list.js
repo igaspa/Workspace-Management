@@ -319,3 +319,19 @@ exports.login = joi.object({
       put: (loginSchema) => loginSchema.optional()
     })
 }).options({ abortEarly: false });
+
+// Workspace-Equipment Entity Schema
+exports.workspace_equipment = joi.object({
+  workspaceId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (workspaceEquipmentSchema) => workspaceEquipmentSchema.required(),
+      put: (workspaceEquipmentSchema) => workspaceEquipmentSchema.forbidden()
+    }),
+  equipmentId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (workspaceEquipmentSchema) => workspaceEquipmentSchema.required(),
+      put: (workspaceEquipmentSchema) => workspaceEquipmentSchema.forbidden()
+    })
+}).options({ abortEarly: false });

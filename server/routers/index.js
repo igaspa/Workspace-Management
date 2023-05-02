@@ -9,6 +9,7 @@ const userRouter = require('./user');
 const roleRouter = require('./role');
 const userRoleRouter = require('./user-role');
 const loginRouter = require('./login');
+const workspaceEquipment = require('./workspace-equipment');
 
 const express = require('express');
 const router = express.Router();
@@ -24,5 +25,6 @@ router.use('/user', userRouter);
 router.use('/user-role', userRoleRouter);
 router.use('/role', roleRouter);
 router.use('/login', loginRouter);
+router.use('/workspace-equipment', workspaceEquipment);
 
 module.exports = router;

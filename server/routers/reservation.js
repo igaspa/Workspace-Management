@@ -19,6 +19,27 @@ router
   )
   .get(
     restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    callbackErrorHandler(reservationController.getUserActiveReservations)
+  );
+
+router
+  .route('/history')
+  .get(
+    restrictRoles([roles.administrator, roles.lead]),
+    callbackErrorHandler(reservationController.getUserReservationHistory)
+  );
+
+router
+  .route('/all')
+  .get(
+    restrictRoles([roles.administrator, roles.lead]),
+    callbackErrorHandler(reservationController.getAllActiveReservations)
+  );
+
+router
+  .route('/all/history')
+  .get(
+    restrictRoles([roles.administrator, roles.lead]),
     callbackErrorHandler(reservationController.getAllReservations)
   );
 

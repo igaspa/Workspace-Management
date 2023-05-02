@@ -4,28 +4,15 @@ const generalController = require('./general');
 const reservationService = require('../services/reservation');
 const responseMessage = require('../utils/response-messages');
 
-const reservationCustomOptions = (queryParams) => {
+const activeReservations = () => {
   const options = [];
-  const { from, until } = queryParams;
-
-  if (from || until) {
-    const startTime = new Date(from).setHours(0, 0, 0, 0);
-    const endTime = until ? new Date(until) : new Date(new Date(from).setHours(24, 0, 0, 0));
-    // Retrieve all reservations from - until
-    const term = {
-      [Op.or]: [
-        { end_at: null },
-        {
-          [Op.and]: [
-            { start_at: { [Op.lt]: endTime } },
-            { end_at: { [Op.gt]: startTime } }
-          ]
-        }
-      ]
-    };
-    options.push(term);
-  }
-
+  const term = {
+    [Op.or]: [
+      { end_at: null },
+      { end_at: { [Op.gt]: new Date() } }
+    ]
+  };
+  options.push(term);
   return options;
 };
 
@@ -39,11 +26,25 @@ exports.createPermanentReservation = async (req, res) => {
   return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
 };
 
+module.exports.getAllActiveReservations = async (req, res) => {
+  const reservationWhereOptions = activeReservations(req.query);
+  const query = { where: reservationWhereOptions };
+  await generalController.findAllModels(reservation, query, req, res);
+};
+
 module.exports.getAllReservations = async (req, res) => {
-  const reservationWhereOptions = reservationCustomOptions(req.query);
-  const query = {
-    where: reservationWhereOptions
-  };
+  await generalController.findAllModels(reservation, null, req, res);
+};
+
+module.exports.getUserActiveReservations = async (req, res) => {
+  const reservationWhereOptions = activeReservations();
+  reservationWhereOptions.push({ user_id: req.user.id });
+  const query = { where: reservationWhereOptions };
+  await generalController.findAllModels(reservation, query, req, res);
+};
+
+module.exports.getUserReservationHistory = async (req, res) => {
+  const query = { where: [{ user_id: req.user.id }] };
   await generalController.findAllModels(reservation, query, req, res);
 };
 

@@ -25,7 +25,7 @@ router
 router
   .route('/history')
   .get(
-    restrictRoles([roles.administrator, roles.lead]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
     callbackErrorHandler(reservationController.getUserReservationHistory)
   );
 

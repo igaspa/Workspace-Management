@@ -10,8 +10,8 @@ const workspaceCustomWhereOptions = (queryParams) => {
   const { status, from, until } = queryParams;
 
   if (status && status === 'available') {
-    const startTime = new Date(from);
-    const endTime = until ? new Date(until) : new Date(from).setHours(24, 0, 0, 0);
+    const startTime = from ? new Date(from) : new Date(new Date().setHours(0, 0, 0, 0));
+    const endTime = until ? new Date(until) : new Date(new Date(startTime).setHours(24, 0, 0, 0));
     const term = {
       where: sequelize.where(
         sequelize.fn(
@@ -54,7 +54,7 @@ const workspaceCustomIncludeOptions = (queryParams) => {
     };
     if (from || until) {
       // Return all workspaces that all reserved from-until date range
-      const startTime = from ? new Date(from) : new Date();
+      const startTime = from ? new Date(from) : new Date(new Date().setHours(0, 0, 0, 0));
       const endTime = until ? new Date(until) : new Date(new Date(startTime).setHours(24, 0, 0, 0));
       term.where = {
         [Op.or]: [

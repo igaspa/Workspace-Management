@@ -38,7 +38,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, startHour, date, endHour }
 				</CardContent>
 			</CardActionArea>
 			<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-				<Reservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour}/>
+				<Reservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
 		</Card>
 	);

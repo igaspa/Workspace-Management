@@ -10,11 +10,12 @@ import { v4 as uuidv4 } from 'uuid';
 import SubmitButton from '../../../components/Reservation/submitButton';
 import PropTypes from 'prop-types';
 import { useCreateReservationMutation } from '../../../api/reservationApiSlice';
-import { successToast, errorToast } from '../../../utils/toastifyNotification';
+import { successToast } from '../../../utils/toastifyNotification';
+import { errorHandler } from '../../../utils/errors';
 
 const theme = createTheme();
 
-const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate }) => {
+const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, onClose }) => {
 	const [date, setDate] = React.useState(reservationDate || '');
 	const [startHour, setStartHour] = React.useState(startTime || '');
 	const [endHour, setEndHour] = React.useState(endTime || '');
@@ -68,9 +69,10 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate })
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
+				onClose();
 			})
 			.catch((error) => {
-				error.data.details.forEach(err => errorToast(err));
+				errorHandler(error);
 			});
 	};
 
@@ -113,5 +115,6 @@ CreateReservation.propTypes = {
 	workspaceId: PropTypes.string,
 	startTime: PropTypes.string,
 	endTime: PropTypes.string,
-	reservationDate: PropTypes.string
+	reservationDate: PropTypes.string,
+	onClose: PropTypes.func
 };

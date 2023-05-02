@@ -61,7 +61,7 @@ const Reservations = () => {
 										/>
 									))}
 									<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-										<UpdateReservation reservationId={selectedId}/>
+										<UpdateReservation reservationId={selectedId} onClose={handleDrawerClose} />
 									</Drawer>
 								</Grid>
 								<BasicPagination count={pages} page={page} onChange={handlePageChange} />

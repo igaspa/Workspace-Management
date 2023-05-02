@@ -9,11 +9,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import SubmitButton from '../../../components/Reservation/submitButton';
 import { useUpdateReservationMutation } from '../../../api/reservationApiSlice';
-import { successToast, errorToast } from '../../../utils/toastifyNotification';
+import { successToast } from '../../../utils/toastifyNotification';
+import { errorHandler } from '../../../utils/errors';
 
 const theme = createTheme();
 
-export default function UpdateReservation ({ reservationId }) {
+export default function UpdateReservation ({ reservationId, onClose }) {
 	const [date, setDate] = React.useState('');
 	const [startHour, setStartHour] = React.useState('');
 	const [endHour, setEndHour] = React.useState('');
@@ -61,9 +62,10 @@ export default function UpdateReservation ({ reservationId }) {
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
+				onClose();
 			})
 			.catch((error) => {
-				error.data.details.forEach(err => errorToast(err));
+				errorHandler(error);
 			});
 	};
 
@@ -100,5 +102,6 @@ export default function UpdateReservation ({ reservationId }) {
 	);
 };
 UpdateReservation.propTypes = {
-	reservationId: PropTypes.string
+	reservationId: PropTypes.string,
+	onClose: PropTypes.func
 };

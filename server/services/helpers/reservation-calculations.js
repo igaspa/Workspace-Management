@@ -27,7 +27,7 @@ const validateMaxReservationWindowLimit = (data) => {
   }
 };
 
-exports.validateMinimumReservationInterval = (start, end) => {
+exports.validateReservationTimeIntervals = (start, end) => {
   const startDate = DateTime.fromISO(start);
   const endDate = DateTime.fromISO(end);
 
@@ -60,7 +60,7 @@ const validateOverlappingReservations = (reservations, start, end) => {
 };
 
 exports.validateReservationConstraints = (reservations, data) => {
-  const { startAt, endAt } = data;
+  const { startAt, endAt, maxReservationInterval, maxReservationWindow } = data;
 
   // validate user does not have permanent reservation
   if (reservations.some(reservation => reservation.endAt === null)) {
@@ -74,8 +74,8 @@ exports.validateReservationConstraints = (reservations, data) => {
   validateSameDayStartAndEnd(DateTime.fromISO(startAt), DateTime.fromISO(endAt));
 
   // validate reservation does not exceed maximum reservation interval
-  validateMaxReservationIntervalLimit(data);
+  if (maxReservationInterval) validateMaxReservationIntervalLimit(data);
 
   // validate reservation does not exceed maximum reservation window
-  validateMaxReservationWindowLimit(data);
+  if (maxReservationWindow) validateMaxReservationWindowLimit(data);
 };

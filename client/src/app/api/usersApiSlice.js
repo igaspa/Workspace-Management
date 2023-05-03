@@ -3,7 +3,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const usersApiSlice = createApi({
 	reducerPath: 'usersApi',
 	baseQuery: fetchBaseQuery({
-		baseUrl: import.meta.env.VITE_SERVER_API_URL
+		baseUrl: import.meta.env.VITE_SERVER_API_URL,
+		prepareHeaders: (headers, { getState }) => {
+			const token = localStorage.getItem('token');
+			if (token) {
+				headers.set('Authorization', `Bearer ${token}`);
+			}
+			return headers;
+		}
 	}),
 	tagTypes: ['usersList', 'user'],
 	endpoints: (builder) => ({

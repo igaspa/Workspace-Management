@@ -124,7 +124,7 @@ export default function PersistentDrawerLeft ({ children }) {
 				</DrawerHeader>
 				<Divider />
 				<List>
-					{[{ text: 'Home', route: '/' }, { text: 'Users', route: 'users' }, { text: 'Reservations', route: 'reservations' }].map(({ text, route }) => (
+					{[{ text: 'Home', route: '/' }, { text: 'Reservations', route: 'reservations' }].map(({ text, route }) => (
 						<ListItem key={text} disablePadding>
 							<Link to={route} style={{ color: '#202120' }}>
 								<ListItemButton>

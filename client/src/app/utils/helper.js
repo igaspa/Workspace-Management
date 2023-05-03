@@ -2,13 +2,16 @@ export function deconstructName (name) {
 	return name.replace(' ', '_').toLowerCase();
 }
 
-export function getHours () {
+// get hours for time filter
+export function getHours (date) {
 	const hours = [];
-	const now = new Date();
+	const today = new Date();
+	const todayDate = today.toISOString().split('T')[0];
+	const now = date && date !== todayDate ? new Date(`${date}, 00:00:00`) : today;
 	now.setMinutes(Math.floor(now.getMinutes() / 5) * 5); // round down to nearest 5 minutes
-	for (let i = 0; i < 24; i++) {
-		for (let j = 0; j < 60; j += 5) {
-			const hourString = `${i.toString().padStart(2, '0')}:${j.toString().padStart(2, '0')}`;
+	for (let hour = 0; hour < 24; hour++) {
+		for (let minute = 0; minute < 60; minute += 5) {
+			const hourString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 			if (hourString >= now.toTimeString().slice(0, 5)) { // compare with current time
 				hours.push(hourString);
 			}

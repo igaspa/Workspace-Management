@@ -23,7 +23,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 	const [endAt, setEndAt] = React.useState('');
 	const [createReservation] = useCreateReservationMutation();
 
-	const hours = getHours();
+	const hours = getHours(date);
 	const dates = getNext7Days();
 
 	// get selected date

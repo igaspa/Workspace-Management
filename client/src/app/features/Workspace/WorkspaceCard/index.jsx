@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Card, CardContent, CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Drawer from '@mui/material/Drawer';
-import Reservation from '../../Reservation/CreateReservation';
+import CreateReservation from '../../Reservation/CreateReservation';
 
 const WorkspaceCard = ({ workspace, handleDrawerOpen, startHour, date, endHour }) => {
 	const [open, setOpen] = React.useState(false);
@@ -38,7 +38,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, startHour, date, endHour }
 				</CardContent>
 			</CardActionArea>
 			<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-				<Reservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
+				<CreateReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
 		</Card>
 	);

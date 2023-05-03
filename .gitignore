@@ -127,3 +127,4 @@ dist
 
 .vscode
 
+client/.vite/deps_temp_a03dfaf6/package.json

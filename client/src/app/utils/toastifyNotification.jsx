@@ -1,4 +1,4 @@
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // toast.configure({ autoClose: 2000, position: toast.POSITION.BOTTOM_CENTER });

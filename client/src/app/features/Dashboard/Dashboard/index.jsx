@@ -24,7 +24,7 @@ const Dashboard = () => {
 	const [endHour, setEndHour] = React.useState('');
 	const [page, setPage] = React.useState(1);
 
-	const hours = getHours();
+	const hours = getHours(date);
 	const dates = getNext7Days();
 
 	const handlePageChange = async (event, value) => {
@@ -39,7 +39,6 @@ const Dashboard = () => {
 
 	// get selected date
 	const handleDateChange = (event) => {
-		console.log(event);
 		setDate(event.target.value);
 	};
 	// get selected start hour

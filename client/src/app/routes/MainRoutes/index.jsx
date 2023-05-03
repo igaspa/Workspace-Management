@@ -4,8 +4,7 @@ import MainLayout from '../../layout/MainLayout';
 import DashboardDefault from '../../pages/dashboard';
 import Users from '../../pages/Users';
 import User from '../../pages/User';
-import Reservation from '../../features/Reservation/CreateReservation';
-import Reservations from '../../features/Reservation/ReservationList';
+import ReservationList from '../../pages/Reservations';
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -23,16 +22,11 @@ const MainRoutes = {
 		},
 		{
 			path: '/reservations',
-			element: <Reservations />
+			element: <ReservationList />
 		},
 		{
 			path: '/users/:userId',
 			element: <User />,
-			exact: true
-		},
-		{
-			path: '/reservations/:workspaceId',
-			element: <Reservation />,
 			exact: true
 		},
 		{

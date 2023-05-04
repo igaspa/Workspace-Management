@@ -20,7 +20,7 @@ const WorkspaceTypeList = () => {
 						<Typography color="error">Failed to load workspace types.</Typography>
 					)
 					: (
-						<Stack spacing={2} direction="row" useFlexGap flexWrap="wrap">
+						<Stack spacing={2} direction="row" useflexgap={true.toString()} flexWrap="wrap">
 							{data.map((workspaceType) => (
 								<WorkspaceTypeCard key={workspaceType.id} workspaceType={workspaceType} />
 							))}

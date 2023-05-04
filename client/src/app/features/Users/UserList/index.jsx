@@ -20,7 +20,7 @@ const UsersList = () => {
 						<Typography color="error">Failed to load users.</Typography>
 					)
 					: (
-						<Stack spacing={2} direction="row" useFlexGap flexWrap="wrap">
+						<Stack spacing={2} direction="row" useflexgap={true.toString()} flexWrap="wrap">
 							{data.map((user) => (
 								<UserCard key={user.id} user={user} />
 							))}

@@ -21,7 +21,7 @@ const UserDetails = () => {
 						<Typography color="error">Failed to load users.</Typography>
 					)
 					: (
-						<Stack spacing={2} direction="column" useFlexGap flexWrap="wrap">
+						<Stack spacing={2} direction="column" useflexgap={true.toString()} flexWrap="wrap">
 							<UserDetailsCard key={data.userId} user={data} />
 						</Stack>
 					)}

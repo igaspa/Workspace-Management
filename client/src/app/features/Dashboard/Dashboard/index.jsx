@@ -12,10 +12,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { deconstructName, getNext7Days, getHours } from '../../../utils/helper';
 import { BasicPagination } from '../../../components/Pagination/pagination';
+import { errorHandler } from '../../../utils/errors';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 const Dashboard = () => {
+	const navigate = useNavigate();
 	const [selectedWorkspaceType, setSelectedWorkspaceType] = React.useState(null);
 	const [from, setFrom] = React.useState(null);
 	const [until, setUntil] = React.useState(null);
@@ -51,37 +54,40 @@ const Dashboard = () => {
 		setEndHour(event.target.value);
 	};
 
-	// set until value
+	// set from and until value
 	React.useEffect(() => {
-		if (date && startHour) {
-			setFrom(`${date}T${startHour}`);
-		}
-	}, [date, startHour, from]);
+		if (date && startHour) setFrom(`${date}T${startHour}`);
+		if (date && endHour) setUntil(`${date}T${endHour}`);
+	}, [date, startHour, from, endHour, until]);
 
-	// set until value
-	React.useEffect(() => {
-		if (date && endHour) {
-			setUntil(`${date}T${endHour}`);
-		}
-	}, [date, endHour, until]);
+	// const [workspaceData, setWorkspaceData] = React.useState('');
+	// const [workspaceTypeData, setWorkspaceTypeData] = React.useState('');
 
-	// Fetch workspace types data
-	const { data: workspaceTypesData = [], isError: workspaceTypesError, isLoading: workspaceTypesLoading } = useGetWorkspaceTypesListQuery();
+	const { data: workspaceTypesData = [], isError: workspaceTypesError, error: workspaceTypeErrorObject, isLoading: workspaceTypesLoading } = useGetWorkspaceTypesListQuery();
+
 	// Fetch workspaces data
-	const { data: [workspacesData, pages] = [], isError: workspacesError, isLoading: workspacesLoading } = useGetWorkspacesListQuery({
+	const { data: [workspacesData, pages] = [], isError: workspacesError, error: workspacesErrorObject, isLoading: workspacesLoading } = useGetWorkspacesListQuery({
 		...(selectedWorkspaceType && { workspace_type: selectedWorkspaceType }),
 		...(from && { from }),
 		...(until && { until }),
 		...(page && { page })
 	});
 
+	// React.useEffect(() => {
+	// 	setWorkspaceData(workspacesData);
+	// 	setWorkspaceTypeData(workspaceTypesData);
+	// }, [workspacesData, workspaceTypesData]);
+
+	React.useEffect(() => {
+		if (workspaceTypesError || workspacesError) {
+			const authorizationError = errorHandler(workspaceTypeErrorObject) || errorHandler(workspacesErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+	}, [workspaceTypesData, workspacesData]);
+
 	// Render loading state
 	if (workspacesLoading || workspaceTypesLoading) {
 		return <CircularProgress />;
-	}
-	// Render error state
-	if (workspacesError || workspaceTypesError) {
-		return <Typography color="error">Failed to load data.</Typography>;
 	}
 
 	return (

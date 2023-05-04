@@ -22,8 +22,9 @@ export const workspacesApiSlice = createApi({
 					...(params.until && { until: params.until }),
 					page: params.page,
 					workspace_type: params.workspace_type
+
 				};
-				if (params.from && params.until) {
+				if (params.from || params.until) {
 					queryParameters.status = 'available';
 				}
 				return {
@@ -37,7 +38,8 @@ export const workspacesApiSlice = createApi({
 				const pages = Number(meta.response.headers.get('X-Total-Pages'));
 
 				return [response, pages];
-			}
+			},
+			invalidatesTags: ['workspacesList']
 		}),
 
 		// this method creates a new workspace

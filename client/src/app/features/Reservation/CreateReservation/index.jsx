@@ -80,7 +80,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<main>
-				<Box spacing={2} direction="row" useFlexGap flexWrap="wrap">
+				<Box spacing={2} direction="row" useflexgap={true.toString()} flexWrap="wrap">
 					<Container maxWidth="sm">
 						<Typography
 							component="h1"

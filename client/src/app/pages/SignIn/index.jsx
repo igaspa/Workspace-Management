@@ -33,6 +33,7 @@ export default function SignIn () {
 				const token = response.token;
 				localStorage.setItem('token', token);
 				navigate('/');
+				navigate(0);
 			})
 			.catch((error) => {
 				console.log(error);

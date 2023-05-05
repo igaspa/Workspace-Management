@@ -3,16 +3,35 @@ const { reservation } = require('../database/models');
 const generalController = require('./general');
 const reservationService = require('../services/reservation');
 const responseMessage = require('../utils/response-messages');
+const { DateTime } = require('luxon');
 
-const activeReservations = () => {
+const activeReservations = (queryParams) => {
   const options = [];
-  const term = {
-    [Op.or]: [
-      { end_at: null },
-      { end_at: { [Op.gt]: new Date() } }
-    ]
-  };
-  options.push(term);
+  const { date, workspaceId } = queryParams;
+  if (date) {
+    const dateLocalTZ = DateTime.fromISO(date).toLocal();
+    const startTime = (new Date(dateLocalTZ) > new Date()) ? new Date(dateLocalTZ) : new Date();
+    const endTime = new Date(new Date(dateLocalTZ).setHours(24, 0, 0, 0));
+    // Retrieve all reservations from that day
+    const term = {
+      [Op.and]: [
+        { start_at: { [Op.lt]: endTime } },
+        { end_at: { [Op.gt]: startTime } }
+      ]
+    };
+    options.push(term);
+  } else {
+    const term = {
+      [Op.or]: [
+        { end_at: null },
+        { end_at: { [Op.gt]: new Date() } }
+      ]
+    };
+    options.push(term);
+  }
+  if (workspaceId) {
+    options.push({ workspace_id: workspaceId });
+  }
   return options;
 };
 
@@ -27,7 +46,7 @@ exports.createPermanentReservation = async (req, res) => {
 };
 
 module.exports.getAllActiveReservations = async (req, res) => {
-  const reservationWhereOptions = activeReservations();
+  const reservationWhereOptions = activeReservations(req.query);
   const query = { where: reservationWhereOptions };
   await generalController.findAllModels(reservation, query, req, res);
 };
@@ -37,7 +56,7 @@ module.exports.getAllReservations = async (req, res) => {
 };
 
 module.exports.getUserActiveReservations = async (req, res) => {
-  const reservationWhereOptions = activeReservations();
+  const reservationWhereOptions = activeReservations(req.query);
   reservationWhereOptions.push({ user_id: req.user.id });
   const query = { where: reservationWhereOptions };
   await generalController.findAllModels(reservation, query, req, res);

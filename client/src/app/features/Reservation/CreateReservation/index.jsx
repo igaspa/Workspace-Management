@@ -12,10 +12,14 @@ import PropTypes from 'prop-types';
 import { useCreateReservationMutation } from '../../../api/reservationApiSlice';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
+import { useDispatch } from 'react-redux';
+import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
 
 const theme = createTheme();
 
 const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, onClose }) => {
+	const dispatch = useDispatch();
+
 	const [date, setDate] = React.useState(reservationDate || '');
 	const [startHour, setStartHour] = React.useState(startTime || '');
 	const [endHour, setEndHour] = React.useState(endTime || '');
@@ -37,7 +41,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 		setStartHour(event.target.value);
 	};
 
-	// // get selected end hour
+	// get selected end hour
 	const handleEndHourChange = (event) => {
 		setEndHour(event.target.value);
 	};
@@ -69,6 +73,8 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
+				dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
+
 				onClose();
 			})
 			.catch((error) => {

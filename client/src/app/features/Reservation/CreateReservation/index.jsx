@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, CircularProgress, Grid } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -9,11 +9,12 @@ import { getNext7Days, getHours } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
 import SubmitButton from '../../../components/Reservation/submitButton';
 import PropTypes from 'prop-types';
-import { useCreateReservationMutation } from '../../../api/reservationApiSlice';
+import { useCreateReservationMutation, useGetReservationsFromWorkspaceQuery } from '../../../api/reservationApiSlice';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
 import { useDispatch } from 'react-redux';
 import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
+import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
 
 const theme = createTheme();
 
@@ -26,16 +27,17 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 	const [startAt, setStartAt] = React.useState('');
 	const [endAt, setEndAt] = React.useState('');
 	const [createReservation] = useCreateReservationMutation();
+	const divRef = React.useRef();
 
 	const hours = getHours(date);
 	const dates = getNext7Days();
 
 	// get selected date
 	const handleDateChange = (event) => {
-		console.log(event.target.value);
+		// console.log(event.target.value);
 		setDate(event.target.value);
 	};
-	console.log(date);
+	// console.log(date);
 	// get selected start hour
 	const handleStartHourChange = (event) => {
 		setStartHour(event.target.value);
@@ -59,6 +61,18 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 			setEndAt(`${date}T${endHour}`);
 		}
 	}, [date, endHour, endAt]);
+
+	// eslint-disable-next-line no-unused-vars
+	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
+		{ date, workspaceId },
+		{ skip: !date }
+	);
+
+	console.log(reservations);
+	// Render loading state
+	if (reservationsLoading) {
+		return <CircularProgress />;
+	}
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -108,6 +122,21 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={hours}/>
 							<SubmitButton onChange={handleSubmit} />
 						</div>
+
+						{reservations && reservations.length > 0 && (
+							(
+								<>
+									<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
+
+									<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
+										<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)', paddingBottom: 2 }}>
+											{reservations.map((reservation) => (
+												<ActiveReservationCard key={reservation.id} reservation={reservation}/>
+											))}
+										</Grid>
+									</Box>
+								</>)
+						)}
 					</Container>
 				</Box>
 			</main>

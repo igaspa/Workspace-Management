@@ -24,6 +24,27 @@ export const reservationsApiSlice = createApi({
 				return [response, pages];
 			}
 		}),
+
+		// this method gets all reservations with specific workspaceId
+		getReservationsFromWorkspace: builder.query({
+			providesTags: ['reservationsList'],
+			query: (params) => {
+				const queryParameters = {
+					...(params.date && { date: params.date }),
+					page: params.page,
+					workspace_id: params.workspaceId
+				};
+				return {
+					url: '/reservation/all',
+					method: 'GET',
+					params: queryParameters
+				};
+			},
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+				return [response, pages];
+			}
+		}),
 		// this method creates a new reservation
 		createReservation: builder.mutation({
 			query: (body) => ({
@@ -64,6 +85,7 @@ export const reservationsApiSlice = createApi({
 
 export const {
 	useGetReservationsListQuery,
+	useGetReservationsFromWorkspaceQuery,
 	useCreateReservationMutation,
 	useGetReservationQuery,
 	useUpdateReservationMutation,

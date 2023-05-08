@@ -1,7 +1,7 @@
 const { paginationValues } = require('../utils/constants');
-module.exports.findPages = async (Model, options) => {
+module.exports.findPages = async (Model, options, limit) => {
   const allItems = await Model.count(options);
-  const pageCount = Math.ceil(allItems / paginationValues.DEFAULT_LIMIT);
+  const pageCount = Math.ceil(allItems / limit);
 
   return pageCount;
 };

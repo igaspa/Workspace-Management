@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useRef } from 'react';
 import { useGetReservationsListQuery, useDeleteReservationMutation } from '../../../api/reservationApiSlice';
 import { CircularProgress, Typography, Grid, Box } from '@mui/material';
 import ReservationCard from '../../../components/Reservation/reservationCard';
@@ -10,10 +10,10 @@ import { BasicPagination } from '../../../components/Pagination/pagination';
 const Reservations = () => {
 	const { data: [reservationData, pages] = [], isError, isLoading } = useGetReservationsListQuery();
 	const [deleteReservation] = useDeleteReservationMutation();
-	const [open, setOpen] = React.useState(false);
-	const [selectedId, setSelectedId] = React.useState(' ');
-	const divRef = React.useRef();
-	const [page, setPage] = React.useState(1);
+	const [open, setOpen] = useState(false);
+	const [selectedId, setSelectedId] = useState(' ');
+	const divRef = useRef();
+	const [page, setPage] = useState(1);
 
 	const handleDrawerOpen = (_event, reservation) => {
 		setSelectedId(reservation.id);

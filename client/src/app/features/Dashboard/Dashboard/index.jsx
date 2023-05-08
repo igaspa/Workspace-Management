@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import { CircularProgress, Typography, Stack, Box } from '@mui/material';
 import WorkspaceCard from '../../Workspace/WorkspaceCard';
@@ -19,13 +19,13 @@ const theme = createTheme();
 
 const Dashboard = () => {
 	const navigate = useNavigate();
-	const [selectedWorkspaceType, setSelectedWorkspaceType] = React.useState(null);
-	const [from, setFrom] = React.useState(null);
-	const [until, setUntil] = React.useState(null);
-	const [date, setDate] = React.useState('');
-	const [startHour, setStartHour] = React.useState('');
-	const [endHour, setEndHour] = React.useState('');
-	const [page, setPage] = React.useState(1);
+	const [selectedWorkspaceType, setSelectedWorkspaceType] = useState(null);
+	const [from, setFrom] = useState(null);
+	const [until, setUntil] = useState(null);
+	const [date, setDate] = useState('');
+	const [startHour, setStartHour] = useState('');
+	const [endHour, setEndHour] = useState('');
+	const [page, setPage] = useState(1);
 
 	const hours = getHours(date);
 	const dates = getNext7Days();
@@ -55,13 +55,10 @@ const Dashboard = () => {
 	};
 
 	// set from and until value
-	React.useEffect(() => {
+	useEffect(() => {
 		if (date && startHour) setFrom(`${date}T${startHour}`);
 		if (date && endHour) setUntil(`${date}T${endHour}`);
 	}, [date, startHour, from, endHour, until]);
-
-	// const [workspaceData, setWorkspaceData] = React.useState('');
-	// const [workspaceTypeData, setWorkspaceTypeData] = React.useState('');
 
 	const { data: workspaceTypesData = [], isError: workspaceTypesError, error: workspaceTypeErrorObject, isLoading: workspaceTypesLoading } = useGetWorkspaceTypesListQuery();
 
@@ -73,12 +70,7 @@ const Dashboard = () => {
 		...(page && { page })
 	});
 
-	// React.useEffect(() => {
-	// 	setWorkspaceData(workspacesData);
-	// 	setWorkspaceTypeData(workspaceTypesData);
-	// }, [workspacesData, workspaceTypesData]);
-
-	React.useEffect(() => {
+	useEffect(() => {
 		if (workspaceTypesError || workspacesError) {
 			const authorizationError = errorHandler(workspaceTypeErrorObject) || errorHandler(workspacesErrorObject);
 			if (authorizationError) navigate('/sign-in');

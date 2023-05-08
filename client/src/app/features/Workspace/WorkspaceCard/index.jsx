@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Drawer from '@mui/material/Drawer';
 import CreateReservation from '../../Reservation/CreateReservation';
+// import PermanentButton from '../../../components/Workspace/permanentButton';
 
 const WorkspaceCard = ({ workspace, handleDrawerOpen, startHour, date, endHour }) => {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 
 	// get all equipment for one workspace
 	const equipmentName = workspace.equipment.map((equipment) => equipment.name);
@@ -37,6 +38,9 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, startHour, date, endHour }
 					</CardContent>
 				</CardContent>
 			</CardActionArea>
+			{/* TODO <CardContent>
+				<PermanentButton onClick={handleDrawerOpen}></PermanentButton>
+			</CardContent> */}
 			<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
 				<CreateReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>

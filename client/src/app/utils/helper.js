@@ -12,7 +12,7 @@ export function getHours (date) {
 	for (let hour = 0; hour < 24; hour++) {
 		for (let minute = 0; minute < 60; minute += 5) {
 			const hourString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-			if (hourString >= now.toTimeString().slice(0, 5)) { // compare with current time
+			if (hourString >= now.toTimeString()) {
 				hours.push(hourString);
 			}
 		}

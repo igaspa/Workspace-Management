@@ -46,7 +46,7 @@ exports.workspace_type = joi.object({
 // Work Space Entity Schema
 exports.workspace_collection = joi.object({
   permanentlyReserved: joi.boolean()
-    .required(),
+    .optional(),
   typeId: joi.string()
     .guid({ version: 'uuidv4' })
     .required(),

@@ -50,6 +50,16 @@ export const workspacesApiSlice = createApi({
 			}),
 			invalidatesTags: ['workspacesList']
 		}),
+
+		// this method created list of workspaces
+		createMultipleWorkspaces: builder.mutation({
+			query: (body) => ({
+				url: '/workspace/collection',
+				method: 'POST',
+				body
+			}),
+			invalidatesTags: ['workspacesList']
+		}),
 		// this method gets a workspace by the id
 		getWorkspace: builder.query({
 			query: (id) => `/workspace/${id}`,
@@ -78,6 +88,7 @@ export const workspacesApiSlice = createApi({
 export const {
 	useGetWorkspacesListQuery,
 	useCreateWorkspaceMutation,
+	useCreateMultipleWorkspacesMutation,
 	useGetWorkspaceQuery,
 	useUpdateWorkspaceMutation,
 	useDeleteWorkspaceMutation

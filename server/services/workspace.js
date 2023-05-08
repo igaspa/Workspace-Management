@@ -14,7 +14,7 @@ exports.createMultipleWorkspaces = async (req) => {
     objectList.push({
       id: uuidv4(),
       name: `${prefix} - ${count}`,
-      permanentlyReserved,
+      permanentlyReserved: permanentlyReserved || false,
       typeId,
       areaId
     });

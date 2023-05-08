@@ -47,7 +47,10 @@ exports.createPermanentReservation = async (req, res) => {
 
 module.exports.getAllActiveReservations = async (req, res) => {
   const reservationWhereOptions = activeReservations(req.query);
-  const query = { where: reservationWhereOptions };
+  const query = {
+    where: reservationWhereOptions,
+    order: [['startAt', 'ASC']]
+  };
   await generalController.findAllModels(reservation, query, req, res);
 };
 
@@ -58,7 +61,10 @@ module.exports.getAllReservations = async (req, res) => {
 module.exports.getUserActiveReservations = async (req, res) => {
   const reservationWhereOptions = activeReservations(req.query);
   reservationWhereOptions.push({ user_id: req.user.id });
-  const query = { where: reservationWhereOptions };
+  const query = {
+    where: reservationWhereOptions,
+    order: [['startAt', 'ASC']]
+  };
   await generalController.findAllModels(reservation, query, req, res);
 };
 

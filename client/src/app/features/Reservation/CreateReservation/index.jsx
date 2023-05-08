@@ -1,5 +1,5 @@
-import React from 'react';
-import { Typography, Box, CircularProgress, Grid } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
+import { Typography, Box, Grid, CircularProgress } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -21,20 +21,19 @@ const theme = createTheme();
 const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, onClose }) => {
 	const dispatch = useDispatch();
 
-	const [date, setDate] = React.useState(reservationDate || '');
-	const [startHour, setStartHour] = React.useState(startTime || '');
-	const [endHour, setEndHour] = React.useState(endTime || '');
-	const [startAt, setStartAt] = React.useState('');
-	const [endAt, setEndAt] = React.useState('');
+	const [date, setDate] = useState(reservationDate || '');
+	const [startHour, setStartHour] = useState(startTime || '');
+	const [endHour, setEndHour] = useState(endTime || '');
+	const [startAt, setStartAt] = useState('');
+	const [endAt, setEndAt] = useState('');
 	const [createReservation] = useCreateReservationMutation();
-	const divRef = React.useRef();
+	const divRef = useRef();
 
 	const hours = getHours(date);
 	const dates = getNext7Days();
 
 	// get selected date
 	const handleDateChange = (event) => {
-		// console.log(event.target.value);
 		setDate(event.target.value);
 	};
 	// console.log(date);
@@ -49,14 +48,14 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 	};
 
 	// set startAt value
-	React.useEffect(() => {
+	useEffect(() => {
 		if (date && startHour) {
 			setStartAt(`${date}T${startHour}`);
 		}
 	}, [date, startHour, startAt]);
 
 	// // set endAt value
-	React.useEffect(() => {
+	useEffect(() => {
 		if (date && endHour) {
 			setEndAt(`${date}T${endHour}`);
 		}

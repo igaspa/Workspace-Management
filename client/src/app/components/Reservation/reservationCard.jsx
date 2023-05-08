@@ -1,10 +1,10 @@
-import React from 'react';
+import { useState } from 'react';
 import { Card, CardContent, Button, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 
 export default function ReservationCard ({ reservation, handleDeleteClick, handleUpdateClick }) {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => {
 		setOpen(true);

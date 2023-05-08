@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Container, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -15,11 +15,11 @@ import { errorHandler } from '../../../utils/errors';
 const theme = createTheme();
 
 export default function UpdateReservation ({ reservationId, onClose }) {
-	const [date, setDate] = React.useState('');
-	const [startHour, setStartHour] = React.useState('');
-	const [endHour, setEndHour] = React.useState('');
-	const [startAt, setStartAt] = React.useState('');
-	const [endAt, setEndAt] = React.useState('');
+	const [date, setDate] = useState('');
+	const [startHour, setStartHour] = useState('');
+	const [endHour, setEndHour] = useState('');
+	const [startAt, setStartAt] = useState('');
+	const [endAt, setEndAt] = useState('');
 	const [updateReservation] = useUpdateReservationMutation();
 
 	const hours = getHours();
@@ -39,14 +39,14 @@ export default function UpdateReservation ({ reservationId, onClose }) {
 	};
 
 	// set startAt value
-	React.useEffect(() => {
+	useEffect(() => {
 		if (date && startHour) {
 			setStartAt(`${date}T${startHour}`);
 		}
 	}, [date, startHour, startAt]);
 
 	// set endAt value
-	React.useEffect(() => {
+	useEffect(() => {
 		if (date && endHour) {
 			setEndAt(`${date}T${endHour}`);
 		}

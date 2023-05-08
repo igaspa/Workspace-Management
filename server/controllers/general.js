@@ -26,7 +26,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
   addIncludeModelAndCustomOptions(include, customOptions, Model, options);
 
   // Find number of pages
-  const pageCount = await findPages(Model, options);
+  const pageCount = await findPages(Model, options, limit);
 
   // Set number of pages into header
   res.set('Access-Control-Expose-Headers', 'X-Total-Pages');

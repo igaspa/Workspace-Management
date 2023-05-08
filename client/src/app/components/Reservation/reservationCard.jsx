@@ -28,7 +28,7 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 
 				<CardContent spacing={1}>
 					<Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-						<Button size="small" color="primary" onClick={handleUpdateClick}>
+						<Button size="small" color="primary" onClick={handleUpdateClick} disabled={new Date(reservation.startAt) < new Date()}>
 							Update
 						</Button>
 						<Button size="small" color="primary" onClick={handleOpen}>

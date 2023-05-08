@@ -20,15 +20,20 @@ export function getHours (date) {
 	return hours;
 }
 
+export const createDate = (i) => {
+	const date = new Date();
+	date.setDate(date.getDate() + i);
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	const dateString = `${year}-${month}-${day}`;
+	return dateString;
+};
+
 export function getNext7Days () {
 	const dates = [];
 	for (let i = 0; i < 8; i++) {
-		const date = new Date();
-		date.setDate(date.getDate() + i);
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-		const dateString = `${year}-${month}-${day}`;
+		const dateString = createDate(i);
 		dates.push(dateString);
 	}
 	return dates;

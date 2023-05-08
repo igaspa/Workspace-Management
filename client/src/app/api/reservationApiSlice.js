@@ -32,10 +32,11 @@ export const reservationsApiSlice = createApi({
 				const queryParameters = {
 					...(params.date && { date: params.date }),
 					page: params.page,
-					workspace_id: params.workspaceId
+					workspaceId: params.workspaceId
 				};
+
 				return {
-					url: '/reservation/all',
+					url: '/reservation/all?include=user&size=5',
 					method: 'GET',
 					params: queryParameters
 				};
@@ -43,7 +44,8 @@ export const reservationsApiSlice = createApi({
 			transformResponse: (response, meta, args) => {
 				const pages = Number(meta.response.headers.get('X-Total-Pages'));
 				return [response, pages];
-			}
+			},
+			invalidatesTags: ['reservationsList']
 		}),
 		// this method creates a new reservation
 		createReservation: builder.mutation({

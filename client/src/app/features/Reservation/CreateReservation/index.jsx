@@ -5,7 +5,7 @@ import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { getNext7Days, getHours } from '../../../utils/helper';
+import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
 import SubmitButton from '../../../components/Reservation/submitButton';
 import PropTypes from 'prop-types';
@@ -15,19 +15,26 @@ import { errorHandler } from '../../../utils/errors';
 import { useDispatch } from 'react-redux';
 import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
 import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
+import { BasicPagination } from '../../../components/Pagination/pagination';
 
 const theme = createTheme();
 
 const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, onClose }) => {
 	const dispatch = useDispatch();
+	const currentDay = createDate(0);
 
-	const [date, setDate] = useState(reservationDate || '');
+	const [date, setDate] = useState(reservationDate || currentDay);
 	const [startHour, setStartHour] = useState(startTime || '');
 	const [endHour, setEndHour] = useState(endTime || '');
 	const [startAt, setStartAt] = useState('');
 	const [endAt, setEndAt] = useState('');
 	const [createReservation] = useCreateReservationMutation();
 	const divRef = useRef();
+	const [page, setPage] = useState(1);
+
+	const handlePageChange = async (event, value) => {
+		setPage(value);
+	};
 
 	const hours = getHours(date);
 	const dates = getNext7Days();
@@ -63,11 +70,14 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 
 	// eslint-disable-next-line no-unused-vars
 	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
-		{ date, workspaceId },
-		{ skip: !date }
+		{
+			date,
+			workspaceId,
+			...(page && { page })
+		}
+
 	);
 
-	console.log(reservations);
 	// Render loading state
 	if (reservationsLoading) {
 		return <CircularProgress />;
@@ -75,6 +85,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+
 		const objectToPost = {
 			id: uuidv4(),
 			workspaceId,
@@ -128,7 +139,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 									<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
 
 									<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
-										<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)', paddingBottom: 2 }}>
+										<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(1, 1fr)', paddingBottom: 2 }}>
 											{reservations.map((reservation) => (
 												<ActiveReservationCard key={reservation.id} reservation={reservation}/>
 											))}
@@ -137,6 +148,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 								</>)
 						)}
 					</Container>
+					<BasicPagination count={pages} page={page} onChange={handlePageChange}/>
 				</Box>
 			</main>
 		</ThemeProvider>

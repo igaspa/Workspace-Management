@@ -11,12 +11,12 @@ router.use(callbackErrorHandler(authenticateUser));
 
 router
   .route('/')
-  .get(restrictRoles([roles.administrator]), callbackErrorHandler(generalController.getAllUsers))
+  .get(restrictRoles([roles.administrator, roles.employee, roles.lead]), callbackErrorHandler(generalController.getAllUsers))
   .post(restrictRoles([roles.administrator]), bodyValidator, callbackErrorHandler(generalController.createUser));
 
 router
   .route('/:id')
-  .get(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.getUser))
+  .get(restrictRoles([roles.administrator, roles.employee, roles.lead]), paramValidator, callbackErrorHandler(generalController.getUser))
   .put(restrictRoles([roles.administrator]), paramValidator, bodyValidator, callbackErrorHandler(generalController.updateUser))
   .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.deleteUser));
 

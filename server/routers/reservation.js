@@ -32,7 +32,7 @@ router
 router
   .route('/all')
   .get(
-    restrictRoles([roles.administrator, roles.lead]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
     callbackErrorHandler(reservationController.getAllActiveReservations)
   );
 

@@ -11,12 +11,12 @@ router.use(callbackErrorHandler(authenticateUser));
 
 router
   .route('/')
-  .get(restrictRoles([roles.administrator]), callbackErrorHandler(generalController.getAllEquipments))
+  .get(restrictRoles([roles.administrator, roles.lead, roles.employee]), callbackErrorHandler(generalController.getAllEquipments))
   .post(restrictRoles([roles.administrator]), bodyValidator, callbackErrorHandler(generalController.createEquipment));
 
 router
   .route('/:id')
-  .get(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.getEquipment))
+  .get(restrictRoles([roles.administrator, roles.employee, roles.lead]), paramValidator, callbackErrorHandler(generalController.getEquipment))
   .put(restrictRoles([roles.administrator]), paramValidator, bodyValidator, callbackErrorHandler(generalController.updateEquipment))
   .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.deleteEquipment));
 

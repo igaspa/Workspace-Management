@@ -43,7 +43,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 	const handleDateChange = (event) => {
 		setDate(event.target.value);
 	};
-	// console.log(date);
+
 	// get selected start hour
 	const handleStartHourChange = (event) => {
 		setStartHour(event.target.value);
@@ -61,7 +61,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 		}
 	}, [date, startHour, startAt]);
 
-	// // set endAt value
+	// set endAt value
 	useEffect(() => {
 		if (date && endHour) {
 			setEndAt(`${date}T${endHour}`);

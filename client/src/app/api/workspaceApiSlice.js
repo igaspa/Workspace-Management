@@ -22,7 +22,6 @@ export const workspacesApiSlice = createApi({
 					...(params.until && { until: params.until }),
 					page: params.page,
 					workspace_type: params.workspace_type
-
 				};
 				if (params.from || params.until) {
 					queryParameters.status = 'available';

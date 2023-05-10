@@ -1,59 +1,55 @@
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Card, CardContent, CardActionArea } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import Drawer from '@mui/material/Drawer';
-import CreateReservation from '../../Reservation/CreateReservation';
-// import PermanentButton from '../../../components/Workspace/permanentButton';
+import WorkspaceCard from '../../../components/Workspace/workspaceCard';
 
-const WorkspaceCard = ({ workspace, handleDrawerOpen, startHour, date, endHour }) => {
+const Workspace = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen, startHour, date, endHour, handleMultipleDrawerOpen }) => {
 	const [open, setOpen] = useState(false);
-
-	// get all equipment for one workspace
-	const equipmentName = workspace.equipment.map((equipment) => equipment.name);
+	const [openPermanent, setOpenPermanent] = useState(false);
+	const [openMultiple, setOpenMultiple] = useState(false);
 
 	// open drawer for reservation
 	handleDrawerOpen = () => {
 		setOpen(true);
 	};
 
+	handlePermanentDrawerOpen = () => {
+		setOpenPermanent(true);
+	};
+
+	handleMultipleDrawerOpen = () => {
+		setOpenMultiple(true);
+	};
+
 	// close drawer
 	const handleDrawerClose = () => {
 		setOpen(false);
+		setOpenPermanent(false);
+		setOpenMultiple(false);
 	};
 
 	return (
-		<Card sx={{ maxWidth: 'sm' }}>
-			<CardActionArea onClick={handleDrawerOpen}>
-				<CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-					<CardContent sx={{ height: 80 }}>
-						<Typography variant="h7" gutterBottom>{workspace.name}</Typography>
-						<Link to={workspace.id}>
-						</Link>
-					</CardContent>
-					<CardContent sx={{ display: 'grid', justifyContent: 'center', height: 25 }}>
-						<Typography fontSize={12} gutterBottom>{`${equipmentName}`}</Typography>
-						<Typography fontSize={12} gutterBottom> Area: {workspace.area.name}</Typography>
-					</CardContent>
-				</CardContent>
-			</CardActionArea>
-			{/* TODO <CardContent>
-				<PermanentButton onClick={handleDrawerOpen}></PermanentButton>
-			</CardContent> */}
-			<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-				<CreateReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
-			</Drawer>
-		</Card>
+		<WorkspaceCard workspace={workspace}
+			date={date}
+			open={open}
+			openPermanent={openPermanent}
+			openMultiple={openMultiple}
+			startTime={startHour}
+			endTime={endHour}
+			handleDrawerClose={handleDrawerClose}
+			handleDrawerOpen={handleDrawerOpen}
+			handlePermanentDrawerOpen={handlePermanentDrawerOpen}
+			handleMultipleDrawerOpen= {handleMultipleDrawerOpen}/>
 	);
 };
 
-WorkspaceCard.propTypes = {
+Workspace.propTypes = {
 	workspace: PropTypes.object,
 	handleDrawerOpen: PropTypes.func,
 	startHour: PropTypes.string,
 	endHour: PropTypes.string,
-	date: PropTypes.string
+	date: PropTypes.string,
+	handlePermanentDrawerOpen: PropTypes.func,
+	handleMultipleDrawerOpen: PropTypes.func
 };
 
-export default WorkspaceCard;
+export default Workspace;

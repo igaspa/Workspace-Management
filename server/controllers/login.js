@@ -23,7 +23,6 @@ const createToken = async (user, _req, res) => {
     }
   });
   const roles = userRoles.map(el => el.role.name);
-  console.log(roles);
   const token = signToken(user.id, user.firstName, user.lastName, user.email, roles);
   res.status(200).set('Authorization', token).json({ token, roles });
 };

@@ -13,7 +13,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 
 	return (
 		<Card sx={{ maxWidth: 'sm' }}>
-			<CardActionArea onClick={handleDrawerOpen}>
+			<CardActionArea onClick = { () => { role.includes('Administrator', 'Lead') ? handleMultipleDrawerOpen() : handleDrawerOpen(); } } >
 				<CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 					<CardContent sx={{ height: 80 }}>
 						<Typography variant="h7" gutterBottom>{workspace.name}</Typography>
@@ -29,6 +29,9 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 			<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
 				<CreateReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
+			<Drawer anchor="right" open={openMultiple} onClose={handleDrawerClose}>
+				<CreateMultipleReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
+			</Drawer>
 			{role.includes('Administrator')
 				? <div> <CardContent>
 					<Button onClick={handlePermanentDrawerOpen}>Permanent Reservation</Button>
@@ -36,12 +39,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 				<Drawer anchor="right" open={openPermanent} onClose={handleDrawerClose}>
 					<CreatePermanentReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 				</Drawer>
-				<CardContent>
-					<Button onClick={handleMultipleDrawerOpen}>Multiple Reservations</Button>
-				</CardContent>
-				<Drawer anchor="right" open={openMultiple} onClose={handleDrawerClose}>
-					<CreateMultipleReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
-				</Drawer></div>
+				</div>
 				: null}
 		</Card>
 	);

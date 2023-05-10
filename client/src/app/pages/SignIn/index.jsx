@@ -28,7 +28,10 @@ export default function SignIn () {
 			.unwrap()
 			.then((response) => {
 				const token = response.token;
+				const role = response.roles;
+				console.log(token);
 				localStorage.setItem('token', token);
+				localStorage.setItem('role', role);
 				navigate('/');
 				navigate(0);
 			})

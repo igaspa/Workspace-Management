@@ -1,6 +1,4 @@
-import * as React from 'react';
-import { Card, CardHeader, CardContent, Button, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Card, CardHeader, CardContent, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const UserDetailsCard = ({ user }) => {

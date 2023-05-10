@@ -15,7 +15,7 @@ import { errorHandler } from '../../../utils/errors';
 
 const theme = createTheme();
 
-const CreateMultipleReservation = ({ workspaceId, onClose, endTime, startTime }) => {
+const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime }) => {
 	const currentDay = createDate(0);
 	const [startDate, setStartDate] = useState(currentDay);
 	const [endDate, setEndDate] = useState('');
@@ -118,9 +118,9 @@ const CreateMultipleReservation = ({ workspaceId, onClose, endTime, startTime })
 	);
 };
 
-export default CreateMultipleReservation;
+export default CreateMultipleDayReservation;
 
-CreateMultipleReservation.propTypes = {
+CreateMultipleDayReservation.propTypes = {
 	workspaceId: PropTypes.string,
 	startTime: PropTypes.string,
 	endTime: PropTypes.string,

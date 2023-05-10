@@ -99,7 +99,7 @@ const Dashboard = () => {
 							}} />
 						))}
 					</Stack>
-					<Container maxWidth="sm">
+					<Container maxWidth="lg" display="grid" gridtemplaterows="1fr 1fr)">
 						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, fontSize: 15 }}> Select a date: </Typography>
 							<DateFilter onChange={(event) => {

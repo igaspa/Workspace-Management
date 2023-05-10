@@ -7,7 +7,6 @@ import User from '../../pages/User';
 import ReservationList from '../../pages/Reservations';
 
 // ==============================|| MAIN ROUTING ||============================== //
-
 const MainRoutes = {
 	path: '/',
 	element: <MainLayout />,

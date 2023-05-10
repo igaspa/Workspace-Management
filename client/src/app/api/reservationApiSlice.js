@@ -16,9 +16,9 @@ export const reservationsApiSlice = createApi({
 	endpoints: (builder) => ({
 		// this method gets all the reservations
 		getReservationsList: builder.query({
-			query: () => '/reservation?include=workspace',
+			query: () => '/reservation?include=user&include=workspace',
 			providesTags: ['reservationsList', 'reservation'],
-			transformResponse: (response, meta, args) => {
+			transformResponse: (response, meta) => {
 				const pages = Number(meta.response.headers.get('X-Total-Pages'));
 
 				return [response, pages];
@@ -51,6 +51,15 @@ export const reservationsApiSlice = createApi({
 		createReservation: builder.mutation({
 			query: (body) => ({
 				url: '/reservation',
+				method: 'POST',
+				body
+			}),
+			invalidatesTags: ['reservationsList']
+		}),
+		// this method creates a new permanent  reservation
+		createPermanentReservation: builder.mutation({
+			query: (body) => ({
+				url: '/reservation/permanent',
 				method: 'POST',
 				body
 			}),
@@ -89,6 +98,7 @@ export const {
 	useGetReservationsListQuery,
 	useGetReservationsFromWorkspaceQuery,
 	useCreateReservationMutation,
+	useCreatePermanentReservationMutation,
 	useGetReservationQuery,
 	useUpdateReservationMutation,
 	useDeleteReservationMutation

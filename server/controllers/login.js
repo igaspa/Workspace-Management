@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { user, userRole } = require('../database/models');
+const { user, userRole, role } = require('../database/models');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 
@@ -17,11 +17,15 @@ const createToken = async (user, _req, res) => {
     where: {
       userId: user.id
     },
-    attributes: ['roleId']
+    include: {
+      model: role,
+      attributes: ['name']
+    }
   });
-  const roles = userRoles.map(el => el.roleId);
+  const roles = userRoles.map(el => el.role.name);
+  console.log(roles);
   const token = signToken(user.id, user.firstName, user.lastName, user.email, roles);
-  res.status(200).set('Authorization', token).json({ token });
+  res.status(200).set('Authorization', token).json({ token, roles });
 };
 
 const comparePassword = async (enteredPassword, dbPassword) => {

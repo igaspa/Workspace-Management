@@ -5,7 +5,6 @@ import DashboardDefault from '../../pages/dashboard';
 import Users from '../../pages/Users';
 import User from '../../pages/User';
 import ReservationList from '../../pages/Reservations';
-import WorkspaceCreation from '../../pages/Workspace/createCollection';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const MainRoutes = {
@@ -32,11 +31,8 @@ const MainRoutes = {
 		{
 			path: '*',
 			element: <DashboardDefault />
-		},
-		{
-			path: '/backoffice/workspace/collection',
-			element: <WorkspaceCreation />
 		}
+
 	]
 };
 

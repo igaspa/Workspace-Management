@@ -22,7 +22,6 @@ const Dashboard = () => {
 	const [selectedWorkspaceType, setSelectedWorkspaceType] = useState(null);
 	const [from, setFrom] = useState(null);
 	const [until, setUntil] = useState(null);
-	// const [date, setDate] = useState('');
 	const [fromDate, setFromDate] = useState('');
 	const [untilDate, setUntilDate] = useState('');
 	const role = localStorage.getItem('role');
@@ -31,7 +30,6 @@ const Dashboard = () => {
 	const [endHour, setEndHour] = useState('');
 	const [page, setPage] = useState(1);
 
-	// const hours = getHours(date);
 	const dates = getNext7Days();
 
 	const startHours = getHours(fromDate);

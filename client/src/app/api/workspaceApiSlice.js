@@ -83,10 +83,16 @@ export const workspacesApiSlice = createApi({
 		}),
 		// this method deletes a workspace by the id
 		deleteWorkspace: builder.mutation({
-			query: (id) => ({
-				url: `/workspace/${id}`,
-				method: 'DELETE'
-			}),
+			query: (params) => {
+				const forceDelete = params.forceDelete || false;
+				return {
+					url: `/workspace/${params.id}`,
+					method: 'DELETE',
+					body: {
+						forceDelete
+					}
+				};
+			},
 			invalidatesTags: ['workspacesList']
 		})
 	})

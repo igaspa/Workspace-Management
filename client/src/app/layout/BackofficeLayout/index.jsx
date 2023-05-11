@@ -126,7 +126,7 @@ export default function PersistentDrawerLeft ({ children }) {
 				</DrawerHeader>
 				<Divider />
 				<List>
-					{[{ text: 'Home', route: '/' }, { text: 'Workspace', route: 'workspace' }].map(({ text, route }) => (
+					{[{ text: 'Home', route: '/backoffice' }, { text: 'Workspace', route: 'workspaces' }].map(({ text, route }) => (
 						<ListItem key={text} disablePadding>
 							<Link to={route} style={{ color: '#202120' }}>
 								<ListItemButton>
@@ -141,7 +141,7 @@ export default function PersistentDrawerLeft ({ children }) {
 				</List>
 				<Divider />
 				<List>
-					{[{ text: 'Logout', route: 'sign-in' }].map(({ text, route }) => (
+					{[{ text: 'Logout', route: '/sign-in' }].map(({ text, route }) => (
 						<ListItem key={text} disablePadding>
 							<Link to={route} style={{ color: '#202120' }} onClick={deleteToken}>
 								<ListItemButton>

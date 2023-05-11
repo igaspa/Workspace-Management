@@ -59,9 +59,8 @@ module.exports.findOneModel = async (Model, customOptions, req, res) => {
 
 module.exports.createModel = async (Model, req, res) => {
   const itemData = req.body;
-  const newItem = await Model.create(itemData);
-
-  res.status(201).json(newItem);
+  await Model.create(itemData);
+  res.status(201).json({ message: responseMessage.CREATE_SUCCESS(Model.name) });
 };
 
 module.exports.updateModel = async (Model, req, res) => {

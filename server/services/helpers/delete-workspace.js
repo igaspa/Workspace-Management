@@ -22,9 +22,16 @@ const deleteWorkspaces = async (workspaceIdList, forceDelete, transaction) => {
 const checkCurrentReservations = async (idList) => {
   const reservations = await reservation.findAll({
     where: {
-      workspaceId: { [Op.or]: idList },
-      startAt: { [Op.gte]: new Date() },
-      endAt: { [Op.gte]: new Date() }
+      [Op.or]: [
+        {
+          workspaceId: { [Op.or]: idList },
+          endAt: { [Op.gt]: new Date() }
+        },
+        {
+          workspaceId: { [Op.or]: idList },
+          endAt: null
+        }
+      ]
     }
   });
 

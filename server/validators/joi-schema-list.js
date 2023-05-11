@@ -86,7 +86,7 @@ exports.workspace = joi.object({
     }),
   name: joi.string()
     .min(2)
-    .max(20)
+    .max(30)
     .alter({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()

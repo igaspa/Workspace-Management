@@ -11,7 +11,7 @@ const validateMaxReservationIntervalLimit = (data) => {
   const intervalDuration = Duration.fromObject(maxReservationInterval);
 
   if (endDate.diff(startDate) > intervalDuration) {
-    throw errors.BAD_REQUEST(responseMessages.MAX_RESERVATION_INTERVAL_EXCEDEED);
+    throw errors.BAD_REQUEST(responseMessages.MAX_RESERVATION_INTERVAL_EXCEEDED);
   }
 };
 
@@ -23,7 +23,7 @@ const validateMaxReservationWindowLimit = (data) => {
     .endOf('day');
 
   if (startDate > maxDate) {
-    throw errors.BAD_REQUEST(responseMessages.MAX_RESERVATION_WINDOW_EXCEDEED);
+    throw errors.BAD_REQUEST(responseMessages.MAX_RESERVATION_WINDOW_EXCEEDED);
   }
 };
 

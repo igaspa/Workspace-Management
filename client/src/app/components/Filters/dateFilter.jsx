@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 export function DateFilter ({ onChange, date, dates }) {
 	return (
-		<Box sx={{ minWidth: 150, paddingTop: 1 }}>
+		<Box sx={{ minWidth: 120, maxWidth: 120, paddingTop: 1 }}>
 			<FormControl fullWidth>
 				<InputLabel id="demo-simple-select-label">Date</InputLabel>
 				<Select
@@ -16,6 +16,7 @@ export function DateFilter ({ onChange, date, dates }) {
 					value={date}
 					label="Date"
 					onChange={onChange}
+					sx={{ fontSize: 14, padding: 0 }}
 				>
 					{dates.map(date => (
 						<MenuItem key={date} value={date}>{date}</MenuItem>

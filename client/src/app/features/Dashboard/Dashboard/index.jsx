@@ -22,13 +22,20 @@ const Dashboard = () => {
 	const [selectedWorkspaceType, setSelectedWorkspaceType] = useState(null);
 	const [from, setFrom] = useState(null);
 	const [until, setUntil] = useState(null);
-	const [date, setDate] = useState('');
+	// const [date, setDate] = useState('');
+	const [fromDate, setFromDate] = useState('');
+	const [untilDate, setUntilDate] = useState('');
+	const role = localStorage.getItem('role');
+
 	const [startHour, setStartHour] = useState('');
 	const [endHour, setEndHour] = useState('');
 	const [page, setPage] = useState(1);
 
-	const hours = getHours(date);
+	// const hours = getHours(date);
 	const dates = getNext7Days();
+
+	const startHours = getHours(fromDate);
+	const endHours = getHours(untilDate || fromDate);
 
 	const handlePageChange = async (event, value) => {
 		setPage(value);
@@ -40,9 +47,14 @@ const Dashboard = () => {
 		setSelectedWorkspaceType(newName);
 	};
 
-	// get selected date
-	const handleDateChange = (event) => {
-		setDate(event.target.value);
+	const handleFromDateChange = (event) => {
+		setFromDate(event.target.value);
+		if (!untilDate)setUntilDate(event.target.value);
+	};
+
+	const handleUntilDateChange = (event) => {
+		setUntilDate(event.target.value);
+		if (!fromDate)setFromDate(event.target.value);
 	};
 	// get selected start hour
 	const handleStartHourChange = (event) => {
@@ -56,9 +68,9 @@ const Dashboard = () => {
 
 	// set from and until value
 	useEffect(() => {
-		if (date && startHour) setFrom(`${date}T${startHour}`);
-		if (date && endHour) setUntil(`${date}T${endHour}`);
-	}, [date, startHour, from, endHour, until]);
+		if (fromDate && startHour) setFrom(`${fromDate}T${startHour}`);
+		if ((fromDate || untilDate) && endHour) setUntil(`${untilDate || fromDate}T${endHour}`);
+	}, [fromDate, untilDate, startHour, endHour, from, until]);
 
 	const { data: workspaceTypesData = [], isError: workspaceTypesError, error: workspaceTypeErrorObject, isLoading: workspaceTypesLoading } = useGetWorkspaceTypesListQuery();
 
@@ -101,28 +113,38 @@ const Dashboard = () => {
 					</Stack>
 					<Container maxWidth="lg" display="grid" gridtemplaterows="1fr 1fr)">
 						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, fontSize: 15 }}> Select a date: </Typography>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
 							<DateFilter onChange={(event) => {
 								setPage(1);
-								handleDateChange(event);
-							}} date={date} dates={dates} />
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> from: </Typography>
+								handleFromDateChange(event);
+							}} date={fromDate} dates={dates} />
+
+							{ role.includes('Administrator') &&
+							<>
+								<Typography align="center" color="text.primary" sx={{ paddingLeft: 1, paddingRight: 1, fontSize: 14 }}> Until: </Typography>
+								<DateFilter onChange={(event) => {
+									setPage(1);
+									handleUntilDateChange(event);
+								}} date={untilDate} dates={dates} />
+							</>
+							}
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time start: </Typography>
 							<TimeFilter onChange={(event) => {
 								setPage(1);
 								handleStartHourChange(event);
-							}} hour={startHour} hours={hours}/>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> until: </Typography>
+							}} hour={startHour} hours={startHours}/>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time end: </Typography>
 							<TimeFilter onChange={(event) => {
 								setPage(1);
 								handleEndHourChange(event);
-							}} hour={endHour} hours={hours}/>
+							}} hour={endHour} hours={endHours}/>
 						</div>
 					</Container>
 					<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
 						<Grid container sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)' }}>
 							{workspacesData
 								.map((workspace) => {
-									return <WorkspaceCard key={workspace.id} workspace={workspace} date={date} startHour={startHour} endHour={endHour}/>;
+									return <WorkspaceCard key={workspace.id} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>;
 								})}
 						</Grid>
 					</Container>

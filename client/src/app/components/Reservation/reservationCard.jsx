@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, CardContent, Button, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Card, CardContent, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 
@@ -15,7 +15,7 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 	};
 
 	return (
-		<Card sx={{ maxWidth: 200 }}>
+		<Card>
 			<CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 
 				<CardContent sx={{ height: 50 }}>
@@ -23,31 +23,30 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 				</CardContent>
 
 				<CardContent >
-					<Typography sx={{ paddingTop: 2 }}fontSize={12} gutterBottom>{reservation.dateTime}</Typography>
+					<Typography sx={{ paddingTop: 2 }} fontSize={12} gutterBottom>{reservation.dateTime}</Typography>
 				</CardContent>
 
 				<CardContent spacing={1}>
-					<Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-						<Button size="small" color="primary" onClick={handleUpdateClick} disabled={new Date(reservation.startAt) < new Date()}>
+					<Button size="small" color="primary" onClick={handleUpdateClick} disabled={new Date(reservation.startAt) < new Date()}>
 							Update
-						</Button>
-						<Button size="small" color="primary" onClick={handleOpen}>
+					</Button>
+					<Button size="small" color="primary" onClick={handleOpen}>
 							Delete
-						</Button>
+					</Button>
 
-						<Dialog open={open} onClose={handleClose}>
-							<DialogTitle>Delete Reservation</DialogTitle>
-							<DialogContent>
-								<DialogContentText>
+					<Dialog open={open} onClose={handleClose}>
+						<DialogTitle>Delete Reservation</DialogTitle>
+						<DialogContent>
+							<DialogContentText>
 							Are you sure you want to delete this reservation?
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={handleDeleteClick} autoFocus>Delete</Button>
-								<Button onClick={handleClose}>Cancel</Button>
-							</DialogActions>
-						</Dialog>
-					</Box>
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={handleDeleteClick} autoFocus>Delete</Button>
+							<Button onClick={handleClose}>Cancel</Button>
+						</DialogActions>
+					</Dialog>
+
 				</CardContent>
 			</CardContent>
 		</Card>

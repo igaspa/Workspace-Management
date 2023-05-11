@@ -64,7 +64,10 @@ const Reservations = () => {
 										<UpdateReservation reservationId={selectedId} onClose={handleDrawerClose} />
 									</Drawer>
 								</Grid>
-								<BasicPagination count={pages} page={page} onChange={handlePageChange} />
+								{(reservationData.length)
+									? <BasicPagination count={pages} page={page} onChange={handlePageChange} />
+									: "You don't have any reservaitons"
+								}
 							</Box>
 						</main>)}
 

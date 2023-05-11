@@ -71,11 +71,11 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 	// eslint-disable-next-line no-unused-vars
 	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
 		{
-			date,
+			from: date,
+			until: date,
 			workspaceId,
 			...(page && { page })
 		}
-
 	);
 
 	// Render loading state
@@ -98,7 +98,6 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 			.then((response) => {
 				successToast(response.message);
 				dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
-
 				onClose();
 			})
 			.catch((error) => {
@@ -148,7 +147,9 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 								</>)
 						)}
 					</Container>
-					<BasicPagination count={pages} page={page} onChange={handlePageChange}/>
+					{reservations && reservations.length > 0 &&
+						(<BasicPagination count={pages} page={page} onChange={handlePageChange}/>)
+					}
 				</Box>
 			</main>
 		</ThemeProvider>

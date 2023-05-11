@@ -7,7 +7,7 @@ import CreateReservation from '../../features/Reservation/CreateReservation';
 import CreatePermanentReservation from '../../features/Reservation/PermanentReservations';
 import CreateMultipleReservation from '../../features/Reservation/MultipleReservation';
 
-const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen, handleMultipleDrawerOpen, startHour, date, endHour, handleDrawerClose, open, openPermanent, openMultiple }) => {
+const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen, handleMultipleDrawerOpen, startHour, endHour, handleDrawerClose, open, openPermanent, openMultiple, fromDate, untilDate }) => {
 	const equipmentName = workspace.equipment.map((equipment) => equipment.name);
 	const role = localStorage.getItem('role');
 
@@ -27,17 +27,17 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 				</CardContent>
 			</CardActionArea>
 			<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-				<CreateReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
+				<CreateReservation workspaceId={workspace.id} reservationDate={fromDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
 			<Drawer anchor="right" open={openMultiple} onClose={handleDrawerClose}>
-				<CreateMultipleReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
+				<CreateMultipleReservation workspaceId={workspace.id} reservationFromDate={fromDate} reservationUntilDate={untilDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
 			{role.includes('Administrator')
 				? <div> <CardContent>
 					<Button onClick={handlePermanentDrawerOpen}>Permanent Reservation</Button>
 				</CardContent>
 				<Drawer anchor="right" open={openPermanent} onClose={handleDrawerClose}>
-					<CreatePermanentReservation workspaceId={workspace.id} reservationDate={date} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
+					<CreatePermanentReservation workspaceId={workspace.id} reservationDate={fromDate} startTime={startHour} onClose={handleDrawerClose} />
 				</Drawer>
 				</div>
 				: null}
@@ -51,7 +51,8 @@ WorkspaceCard.propTypes = {
 	handleDrawerClose: PropTypes.func,
 	startHour: PropTypes.string,
 	endHour: PropTypes.string,
-	date: PropTypes.string,
+	fromDate: PropTypes.string,
+	untilDate: PropTypes.string,
 	open: PropTypes.bool,
 	openPermanent: PropTypes.bool,
 	openMultiple: PropTypes.bool,

@@ -30,7 +30,8 @@ export const reservationsApiSlice = createApi({
 			providesTags: ['reservationsList'],
 			query: (params) => {
 				const queryParameters = {
-					...(params.date && { date: params.date }),
+					...(params.from && { from: params.from }),
+					...(params.until && { until: params.until }),
 					page: params.page,
 					workspaceId: params.workspaceId
 				};

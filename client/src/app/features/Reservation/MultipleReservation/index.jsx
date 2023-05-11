@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Typography, Box } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
+import { Typography, Box, Grid } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -9,23 +9,37 @@ import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
 import SubmitButton from '../../../components/Reservation/submitButton';
 import PropTypes from 'prop-types';
-import { useCreateReservationMutation } from '../../../api/reservationApiSlice';
+import { useCreateReservationMutation, useGetReservationsFromWorkspaceQuery } from '../../../api/reservationApiSlice';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
+import { useDispatch } from 'react-redux';
+import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
+import { BasicPagination } from '../../../components/Pagination/pagination';
+import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
+import { Stack } from '@mui/system';
 
 const theme = createTheme();
 
-const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime }) => {
+const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime, reservationFromDate, reservationUntilDate }) => {
+	const dispatch = useDispatch();
+
 	const currentDay = createDate(0);
-	const [startDate, setStartDate] = useState(currentDay);
-	const [endDate, setEndDate] = useState('');
+	const [startDate, setStartDate] = useState(reservationFromDate || currentDay);
+	const [endDate, setEndDate] = useState(reservationUntilDate || startDate);
 	const [startHour, setStartHour] = useState(startTime || '');
 	const [startAt, setStartAt] = useState('');
 	const [endHour, setEndHour] = useState(endTime || '');
 	const [endAt, setEndAt] = useState('');
-	const [createPermanentReservation] = useCreateReservationMutation();
+	const [createReservation] = useCreateReservationMutation();
+	const [page, setPage] = useState(1);
+	const divRef = useRef();
 
-	const hours = getHours(startDate);
+	const handlePageChange = async (event, value) => {
+		setPage(value);
+	};
+
+	const startHours = getHours(startDate);
+	const endHours = getHours(endDate || startDate);
 	const dates = getNext7Days();
 
 	// get selected start date
@@ -62,6 +76,16 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 		}
 	}, [endDate, endHour, endAt]);
 
+	// eslint-disable-next-line no-unused-vars
+	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
+		{
+			from: startDate,
+			until: endDate,
+			workspaceId,
+			...(page && { page })
+		}
+	);
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
@@ -72,10 +96,11 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 			endAt
 		};
 
-		await createPermanentReservation(objectToPost)
+		await createReservation(objectToPost)
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
+				dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
 				onClose();
 			})
 			.catch((error) => {
@@ -91,27 +116,51 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 					<Container maxWidth="sm">
 						<Typography
 							component="h1"
-							variant="h2"
+							variant="h4"
 							align="center"
 							color="text.primary"
 							gutterBottom
+							paddingTop={2}
 						>
-               Reserve a Space for multiple days
+               Reserve a Space
 						</Typography>
 					</Container>
 					<Container>
-						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, fontSize: 15 }}> Select a start date: </Typography>
-							<DateFilter onChange={handleStartDateChange} date={startDate} dates={dates} />
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> Select an end date: </Typography>
-							<DateFilter onChange={handleEndDateChange} date={endDate} dates={dates} />
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> from: </Typography>
-							<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={hours}/>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> until: </Typography>
-							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={hours}/>
-							<SubmitButton onChange={handleSubmit} />
-						</div>
+						<Stack spacing={1} justifyContent="space-between">
+
+							<Stack justifyContent="start" direction="row" alignItems="center" textAlign="left" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
+								<Typography color="text.primary" sx={{ fontSize: 15 }}>Start date:</Typography>
+								<DateFilter align="left" onChange={handleStartDateChange} date={startDate} dates={dates} />
+								<Typography color="text.primary" sx={{ fontSize: 15 }}>End date:</Typography>
+								<DateFilter onChange={handleEndDateChange} date={endDate} dates={dates} />
+								<Typography color="text.primary" sx={{ fontSize: 15 }}>Start time:</Typography>
+								<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={startHours} />
+								<Typography color="text.primary" sx={{ fontSize: 15 }}>End time:</Typography>
+								<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours} />
+								<SubmitButton onChange={handleSubmit} />
+							</Stack>
+
+							<Stack justifyContent="start" direction="row" alignItems="center" textAlign="left" spacing={1}>
+							</Stack>
+						</Stack>
+						{reservations && reservations.length > 0 && (
+							(
+								<>
+									<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
+
+									<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
+										<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(1, 1fr)', paddingBottom: 2 }}>
+											{reservations.map((reservation) => (
+												<ActiveReservationCard key={reservation.id} reservation={reservation}/>
+											))}
+										</Grid>
+									</Box>
+								</>)
+						)}
 					</Container>
+					{reservations && reservations.length > 0 &&
+						(<BasicPagination count={pages} page={page} onChange={handlePageChange}/>)
+					}
 				</Box>
 			</main>
 		</ThemeProvider>
@@ -124,6 +173,7 @@ CreateMultipleDayReservation.propTypes = {
 	workspaceId: PropTypes.string,
 	startTime: PropTypes.string,
 	endTime: PropTypes.string,
-	reservationDate: PropTypes.string,
+	reservationFromDate: PropTypes.string,
+	reservationUntilDate: PropTypes.string,
 	onClose: PropTypes.func
 };

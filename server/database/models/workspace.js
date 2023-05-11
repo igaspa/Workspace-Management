@@ -25,7 +25,10 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING
     },
-    permanentlyReserved: DataTypes.BOOLEAN,
+    permanentlyReserved: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     typeId: DataTypes.INTEGER,
     areaId: DataTypes.INTEGER
   }, {

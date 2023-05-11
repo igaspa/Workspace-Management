@@ -92,10 +92,7 @@ exports.workspace = joi.object({
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
   permanentlyReserved: joi.boolean()
-    .alter({
-      post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
-      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
-    })
+    .optional()
 }).options({ abortEarly: false });
 
 // Area Entity Schema

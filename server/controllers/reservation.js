@@ -7,24 +7,30 @@ const { DateTime } = require('luxon');
 
 const activeReservations = (queryParams) => {
   const options = [];
-  const { date, workspaceId } = queryParams;
-  if (date) {
-    const dateLocalTZ = DateTime.fromISO(date).toLocal();
-    const startTime = (new Date(dateLocalTZ) > new Date()) ? new Date(dateLocalTZ) : new Date();
-    const endTime = new Date(new Date(dateLocalTZ).setHours(24, 0, 0, 0));
-    // Retrieve all reservations from that day
+  const { from, until, workspaceId } = queryParams;
+
+  if (from && until) {
+    const dateFrom = from ? DateTime.fromISO(from) : DateTime.now();
+    const dateUntil = until ? DateTime.fromISO(until) : dateFrom;
+
+    const startTime = dateFrom > DateTime.now() ? dateFrom : DateTime.now();
+    const endTime = dateUntil.endOf('day');
+
+    // Retrieve all reservations from given range
     const term = {
       [Op.and]: [
-        { start_at: { [Op.lt]: endTime } },
-        { end_at: { [Op.gt]: startTime } }
+        { start_at: { [Op.lte]: endTime.toISO() } },
+        { end_at: { [Op.gt]: startTime.toISO() } }
       ]
     };
     options.push(term);
   } else {
+    const dateFrom = from ? DateTime.fromISO(from) : DateTime.now();
+    const startTime = dateFrom > DateTime.now() ? dateFrom : DateTime.now();
     const term = {
       [Op.or]: [
         { end_at: null },
-        { end_at: { [Op.gt]: new Date() } }
+        { end_at: { [Op.gt]: startTime.toISO() } }
       ]
     };
     options.push(term);

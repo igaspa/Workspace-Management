@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useGetAreaListQuery } from '../../api/areaApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../api/workspaceTypeApiSlice';
 import { errorHandler } from '../../utils/errors';
@@ -17,8 +17,19 @@ import { useCreateMultipleWorkspacesMutation } from '../../api/workspaceApiSlice
 
 const theme = createTheme();
 
-export default function WorkspaceCreation () {
+export default function MultipleWorkspacesCreation () {
 	const navigate = useNavigate();
+
+	const [open, setOpen] = useState(false);
+
+	const handleOpen = (e) => {
+		e.preventDefault();
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
 
 	const [formData, setFormData] = useState(
 		{ areaId: '', typeId: '' }
@@ -35,7 +46,7 @@ export default function WorkspaceCreation () {
 
 	const [createWorkspaces] = useCreateMultipleWorkspacesMutation();
 
-	const handleSubmit = async (event) => {
+	const handleCreateClick = async (event, reservation) => {
 		event.preventDefault();
 		await createWorkspaces(formData)
 			.unwrap()
@@ -47,6 +58,7 @@ export default function WorkspaceCreation () {
 				if (authorizationError) navigate('/sign-in');
 			});
 		setFormData({});
+		handleClose();
 	};
 
 	const { data: areas = [], isError: isAreaError, error: areaErrorObject, isLoading: isAreaLoading } = useGetAreaListQuery();
@@ -81,7 +93,7 @@ export default function WorkspaceCreation () {
 				<CssBaseline />
 				<Box
 					sx={{
-						marginTop: 8,
+						marginTop: 2,
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center'
@@ -94,7 +106,7 @@ export default function WorkspaceCreation () {
 
 					{(areas && workspaceTypes) &&
 						(
-							<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+							<Box component="form" onSubmit={handleOpen} sx={{ mt: 3 }}>
 								<Grid container spacing={2}>
 									<Grid item xs={12} >
 										<FormControl fullWidth>
@@ -123,12 +135,12 @@ export default function WorkspaceCreation () {
 											<InputLabel id="select-workspace-type">Workspace Type</InputLabel>
 											<Select
 												labelId="select-workspace-type"
-												label="Select Area"
+												label="Select Workspace Type"
 												onChange={handleChange}
 												sx={{ textAlign: 'left' }}
 												required
 												value={formData.typeId || ''}
-												name="workspaceTypeId"
+												name="typeId"
 											>
 												{workspaceTypes.map((workspaceType) => (
 													<MenuItem key={workspaceType.id} value={workspaceType.id}>
@@ -179,16 +191,31 @@ export default function WorkspaceCreation () {
 									</Grid>
 								</Grid>
 								<Button
-									type="submit"
+									type='submit'
 									fullWidth
 									variant="contained"
 									sx={{ mt: 3, mb: 2 }}
 								>
 									Create
 								</Button>
+
+								<Dialog open={open} onClose={handleClose}>
+									<DialogTitle>Create workspaces</DialogTitle>
+									<DialogContent>
+										<DialogContentText>
+											Are you sure you want to create {formData.end - formData.start + 1} workspace/s ? <br></br><br></br>
+											<strong>&quot;{formData.prefix} - {formData.start}&quot; .... &quot;{formData.prefix} - {formData.end}&quot;</strong>
+										</DialogContentText>
+									</DialogContent>
+									<DialogActions>
+										<Button onClick={handleCreateClick} autoFocus>Create</Button>
+										<Button onClick={handleClose}>Cancel</Button>
+									</DialogActions>
+								</Dialog>
 							</Box>
 						)
 					}
+
 				</Box>
 			</Container>
 		</ThemeProvider>

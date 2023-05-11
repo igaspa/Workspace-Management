@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Typography, Box, CircularProgress } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
+import { Typography, Box, CircularProgress, Grid } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -9,23 +9,30 @@ import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
 import SubmitButton from '../../../components/Reservation/submitButton';
 import PropTypes from 'prop-types';
-import { useCreatePermanentReservationMutation } from '../../../api/reservationApiSlice';
+import { useCreatePermanentReservationMutation, useGetReservationsFromWorkspaceQuery } from '../../../api/reservationApiSlice';
 import { useGetUsersListQuery } from '../../../api/usersApiSlice';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
 import UserFilter from '../../../components/Users/userFilter';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
+import { BasicPagination } from '../../../components/Pagination/pagination';
+import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
 
 const theme = createTheme();
 
-const CreatePermanentReservation = ({ workspaceId, onClose }) => {
+const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, startTime }) => {
+	const dispatch = useDispatch();
 	const currentDay = createDate(0);
-	const [date, setDate] = useState(currentDay);
-	const [startHour, setStartHour] = useState('');
+	const [date, setDate] = useState(reservationDate || currentDay);
+	const [startHour, setStartHour] = useState(startTime || '');
 	const [startAt, setStartAt] = useState('');
 	const [createPermanentReservation] = useCreatePermanentReservationMutation();
 	const [selectedUser, setSelectedUser] = useState([]);
 	const navigate = useNavigate();
+	const [page, setPage] = useState(1);
+	const divRef = useRef();
 
 	const hours = getHours(date);
 	const dates = getNext7Days();
@@ -46,7 +53,20 @@ const CreatePermanentReservation = ({ workspaceId, onClose }) => {
 		}
 	}, [date, startHour, startAt]);
 
+	const handlePageChange = async (event, value) => {
+		setPage(value);
+	};
+
 	const { data: usersData = [], isError: userError, isLoading: userLoading, error: userErrorObject } = useGetUsersListQuery();
+
+	// eslint-disable-next-line no-unused-vars
+	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
+		{
+			from: date,
+			workspaceId,
+			...(page && { page })
+		}
+	);
 
 	const handleSelectedUser = (selectedUser) => {
 		setSelectedUser(selectedUser);
@@ -66,6 +86,7 @@ const CreatePermanentReservation = ({ workspaceId, onClose }) => {
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
+				dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
 				onClose();
 			})
 			.catch((error) => {
@@ -92,7 +113,8 @@ const CreatePermanentReservation = ({ workspaceId, onClose }) => {
 					<Container maxWidth="sm">
 						<Typography
 							component="h1"
-							variant="h2"
+							variant="h4"
+							paddingTop={2}
 							align="center"
 							color="text.primary"
 							gutterBottom
@@ -115,7 +137,25 @@ const CreatePermanentReservation = ({ workspaceId, onClose }) => {
 							}} />
 							<SubmitButton onChange={handleSubmit} />
 						</div>
+
+						{reservations && reservations.length > 0 && (
+							(
+								<>
+									<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
+
+									<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
+										<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(1, 1fr)', paddingBottom: 2 }}>
+											{reservations.map((reservation) => (
+												<ActiveReservationCard key={reservation.id} reservation={reservation}/>
+											))}
+										</Grid>
+									</Box>
+								</>)
+						)}
 					</Container>
+					{reservations && reservations.length > 0 &&
+						(<BasicPagination count={pages} page={page} onChange={handlePageChange}/>)
+					}
 				</Box>
 			</main>
 		</ThemeProvider>
@@ -127,7 +167,6 @@ export default CreatePermanentReservation;
 CreatePermanentReservation.propTypes = {
 	workspaceId: PropTypes.string,
 	startTime: PropTypes.string,
-	endTime: PropTypes.string,
 	reservationDate: PropTypes.string,
 	onClose: PropTypes.func
 };

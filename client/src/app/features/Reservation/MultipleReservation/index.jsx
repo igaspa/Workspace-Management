@@ -41,7 +41,6 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 	const startHours = getHours(startDate);
 	const endHours = getHours(endDate || startDate);
 	const dates = getNext7Days();
-
 	// get selected start date
 	const handleStartDateChange = (event) => {
 		setStartDate(event.target.value);

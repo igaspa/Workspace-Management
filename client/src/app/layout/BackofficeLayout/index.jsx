@@ -18,8 +18,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import LogoutIcon from '@mui/icons-material/Logout';
-import BackofficeButton from '../../components/Backoffice/backofficeButton';
 import { Link, Outlet } from 'react-router-dom';
+import BackofficeButton from '../../components/Backoffice/backofficeButton';
 
 const drawerWidth = 240;
 
@@ -126,7 +126,7 @@ export default function PersistentDrawerLeft ({ children }) {
 				</DrawerHeader>
 				<Divider />
 				<List>
-					{[{ text: 'Home', route: '/backoffice' }, { text: 'Workspace', route: 'workspaces' }].map(({ text, route }) => (
+					{[{ text: 'Home', route: '/backoffice' }, { text: 'Equipment', route: 'equipment' }, { text: 'WorkspaceType', route: 'workspace-type' }, { text: 'Workspace', route: 'workspaces' }].map(({ text, route }) => (
 						<ListItem key={text} disablePadding>
 							<Link to={route} style={{ color: '#202120' }}>
 								<ListItemButton>
@@ -158,10 +158,10 @@ export default function PersistentDrawerLeft ({ children }) {
 				<List>
 					{role.includes('Administrator') && (
 						<ListItem disablePadding>
-							<Link to="/backoffice" style={{ color: '#202120' }} onClick={handleDrawerClose}>
+							<Link to="/" style={{ color: '#202120' }} onClick={handleDrawerClose}>
 								<ListItemButton>
 									<ListItemIcon>
-										<BackofficeButton/>
+										<BackofficeButton text={'Go back'}/>
 									</ListItemIcon>
 								</ListItemButton>
 							</Link>

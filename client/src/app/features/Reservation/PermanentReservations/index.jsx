@@ -36,7 +36,6 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 
 	const hours = getHours(date);
 	const dates = getNext7Days();
-
 	// get selected date
 	const handleDateChange = (event) => {
 		setDate(event.target.value);
@@ -128,7 +127,6 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 							<DateFilter onChange={handleDateChange} date={date} dates={dates} />
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> from: </Typography>
 							<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={hours}/>
-
 						</div>
 						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> Select a user: </Typography>

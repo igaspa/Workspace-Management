@@ -29,7 +29,6 @@ export default function SignIn () {
 			.then((response) => {
 				const token = response.token;
 				const role = response.roles;
-				console.log(token);
 				localStorage.setItem('token', token);
 				localStorage.setItem('role', role);
 				navigate('/');

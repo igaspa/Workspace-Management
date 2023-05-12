@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { CircularProgress, Typography, Box, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@mui/material';
-import { successToast, errorToast } from '../../../utils/toastifyNotification';
+import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
 import { useGetWorkspaceTypesListQuery, useUpdateWorkspaceTypeMutation, useDeleteWorkspaceTypeMutation } from '../../../api/workspaceTypeApiSlice';
 import Paper from '@mui/material/Paper';
@@ -45,7 +45,7 @@ const WorkspaceType = () => {
 			})
 			.catch((error) => {
 				handleClose();
-				errorToast(error.data.details);
+				errorHandler(error);
 			});
 	};
 

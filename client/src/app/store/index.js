@@ -5,6 +5,7 @@ import { reservationsApiSlice } from '../api/reservationApiSlice';
 import { usersApiSlice } from '../api/usersApiSlice';
 import { workspacesApiSlice } from '../api/workspaceApiSlice';
 import { workspaceTypesApiSlice } from '../api/workspaceTypeApiSlice';
+import { equipmentsApiSlice } from '../api/equipmentApiSlice';
 import { areaApiSlice } from '../api/areaApiSlice';
 
 export default configureStore({
@@ -15,7 +16,8 @@ export default configureStore({
 		[workspaceTypesApiSlice.reducerPath]: workspaceTypesApiSlice.reducer,
 		[reservationsApiSlice.reducerPath]: reservationsApiSlice.reducer,
 		[areaApiSlice.reducerPath]: areaApiSlice.reducer,
-		[loginApiSlice.reducerPath]: loginApiSlice.reducer
+		[loginApiSlice.reducerPath]: loginApiSlice.reducer,
+		[equipmentsApiSlice.reducerPath]: equipmentsApiSlice.reducer
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware()
@@ -26,4 +28,5 @@ export default configureStore({
 			.concat(reservationsApiSlice.middleware)
 			.concat(areaApiSlice.middleware)
 			.concat(loginApiSlice.middleware)
+			.concat(equipmentsApiSlice.middleware)
 });

@@ -74,7 +74,7 @@ export default function MultipleWorkspacesCreation () {
 			const authorizationError = errorHandler(areaErrorObject);
 			if (authorizationError) navigate('/sign-in');
 		}
-		if (workspaceTypes.length && areas.length) {
+		if (workspaceTypes?.length && areas?.length) {
 			setFormData((prevState) => ({
 				...prevState,
 				typeId: workspaceTypes[0].id,

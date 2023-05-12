@@ -74,8 +74,6 @@ export const reservationsApiSlice = createApi({
 		// this method updates a reservation by the id
 		updateReservation: builder.mutation({
 			query: ({ id, body }) => {
-				console.log(id);
-				console.log(body);
 				return {
 					url: `/reservation/${id}`,
 					method: 'PUT',

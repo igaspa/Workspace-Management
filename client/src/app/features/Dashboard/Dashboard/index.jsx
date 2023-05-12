@@ -70,7 +70,7 @@ const Dashboard = () => {
 		if ((fromDate || untilDate) && endHour) setUntil(`${untilDate || fromDate}T${endHour}`);
 	}, [fromDate, untilDate, startHour, endHour, from, until]);
 
-	const { data: workspaceTypesData = [], isError: workspaceTypesError, error: workspaceTypeErrorObject, isLoading: workspaceTypesLoading } = useGetWorkspaceTypesListQuery();
+	const { data: [workspaceTypesData] = [], isError: workspaceTypesError, error: workspaceTypeErrorObject, isLoading: workspaceTypesLoading } = useGetWorkspaceTypesListQuery();
 
 	// Fetch workspaces data
 	const { data: [workspacesData, pages] = [], isError: workspacesError, error: workspacesErrorObject, isLoading: workspacesLoading } = useGetWorkspacesListQuery({

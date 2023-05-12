@@ -48,12 +48,10 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 			const authorizationError = errorHandler(areaErrorObject);
 			if (authorizationError) navigate('/sign-in');
 		}
-		if (workspaceTypes && areas) {
-			if (workspaceTypes.length && areas.length) {
-				setFormData((prevState) => ({
-					...prevState
-				}));
-			}
+		if (workspaceTypes?.length && areas?.length) {
+			setFormData((prevState) => ({
+				...prevState
+			}));
 		}
 	}, [workspaceTypes, areas]);
 

@@ -12,12 +12,12 @@ import { errorHandler } from '../../../utils/errors';
 const theme = createTheme();
 
 export default function CreateWorkspaceType () {
-	const [createEquipment] = useCreateWorkspaceTypeMutation();
+	const [createWorkspaceType] = useCreateWorkspaceTypeMutation();
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
 
-		await createEquipment(
+		await createWorkspaceType(
 			{
 				id: uuidv4(),
 				name: data.get('workspaceType'),

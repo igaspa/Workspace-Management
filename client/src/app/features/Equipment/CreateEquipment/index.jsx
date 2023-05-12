@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCreateEquipmentMutation } from '../../../api/equipmentApiSlice';
+import { errorHandler } from '../../../utils/errors';
 
 const theme = createTheme();
 
@@ -26,7 +27,7 @@ export default function CreateEquipment () {
 				event.target.reset();
 			})
 			.catch((error) => {
-				console.log(error);
+				errorHandler(error);
 			});
 	};
 

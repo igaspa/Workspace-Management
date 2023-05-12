@@ -161,7 +161,7 @@ export default function PersistentDrawerLeft ({ children }) {
 							<Link to="/backoffice" style={{ color: '#202120' }} onClick={handleDrawerClose}>
 								<ListItemButton>
 									<ListItemIcon>
-										<BackofficeButton/>
+										<BackofficeButton text={'Backoffice'}/>
 									</ListItemIcon>
 								</ListItemButton>
 							</Link>

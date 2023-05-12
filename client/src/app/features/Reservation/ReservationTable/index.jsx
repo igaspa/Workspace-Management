@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const columns = [
 	{ id: 'name', label: 'Workspace', minWidth: 170 },
-	{ id: 'code', label: 'User', minWidth: 100 },
+	{ id: 'user', label: 'User', minWidth: 100 },
 	{
 		id: 'startTime',
 		label: 'Start Time',

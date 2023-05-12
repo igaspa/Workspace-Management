@@ -18,12 +18,14 @@ export const workspaceTypesApiSlice = createApi({
 		getWorkspaceTypesList: builder.query({
 			query: (params = {}) => ({
 				url: '/workspace-type',
-				method: 'GET',
-				params: {
-					workspaces: params.workspaces
-				}
+				method: 'GET'
 			}),
-			providesTags: ['workspaceTypesList']
+			providesTags: ['workspaceTypesList'],
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			}
 		}),
 		// get workspaces in one workspace-type
 		getWorkspacesByType: builder.query({

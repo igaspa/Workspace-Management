@@ -10,7 +10,6 @@ import CreateMultipleReservation from '../../features/Reservation/MultipleReserv
 const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen, handleMultipleDrawerOpen, startHour, endHour, handleDrawerClose, open, openPermanent, openMultiple, fromDate, untilDate }) => {
 	const equipmentName = workspace.equipment.map((equipment) => equipment.name);
 	const role = localStorage.getItem('role');
-
 	return (
 		<Card sx={{ maxWidth: 'sm' }}>
 			<CardActionArea onClick = { () => { role.includes('Administrator', 'Lead') ? handleMultipleDrawerOpen() : handleDrawerOpen(); } } >

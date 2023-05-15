@@ -37,20 +37,7 @@ const workspaceCustomWhereOptions = (queryParams) => {
       };
       options.push(term);
     } else {
-      const term = {
-        where: sequelize.where(
-          sequelize.fn(
-            'NOT EXISTS',
-            sequelize.literal(`(
-              SELECT *
-              FROM reservation
-              WHERE
-              reservation.workspace_id = workspace.id AND reservation.end_at IS NULL
-            )`)
-          ),
-          true
-        )
-      };
+      const term = { permanently_reserved: false };
       options.push(term);
     }
   }

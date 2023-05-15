@@ -20,12 +20,10 @@ export const workspacesApiSlice = createApi({
 				const queryParameters = {
 					...(params.from && { from: params.from }),
 					...(params.until && { until: params.until }),
+					...(params.status && { status: params.status }),
 					page: params.page,
 					workspace_type: params.workspace_type
 				};
-				if (params.from || params.until) {
-					queryParameters.status = 'available';
-				}
 				let url = '/workspace?include=equipment&include=area';
 				const { include } = params;
 				if (include && include.length) {

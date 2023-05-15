@@ -31,18 +31,18 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 							Update
 					</Button>
 					<Button size="small" color="primary" onClick={handleOpen}>
-							Delete
+							Cancel
 					</Button>
 
 					<Dialog open={open} onClose={handleClose}>
-						<DialogTitle>Delete Reservation</DialogTitle>
+						<DialogTitle>Cancel Reservation</DialogTitle>
 						<DialogContent>
 							<DialogContentText>
-							Are you sure you want to delete this reservation?
+							Are you sure you want to cancel this reservation?
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button onClick={handleDeleteClick} autoFocus>Delete</Button>
+							<Button onClick={handleDeleteClick} autoFocus>Confirm</Button>
 							<Button onClick={handleClose}>Cancel</Button>
 						</DialogActions>
 					</Dialog>

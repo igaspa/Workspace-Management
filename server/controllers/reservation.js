@@ -18,9 +18,16 @@ const activeReservations = (queryParams) => {
 
     // Retrieve all reservations from given range
     const term = {
-      [Op.and]: [
-        { start_at: { [Op.lte]: endTime.toISO() } },
-        { end_at: { [Op.gt]: startTime.toISO() } }
+      [Op.or]: [
+        {
+          [Op.and]: [
+            { start_at: { [Op.lte]: endTime.toISO() } },
+            { end_at: { [Op.gt]: startTime.toISO() } }
+          ]
+        },
+        {
+          end_at: null
+        }
       ]
     };
     options.push(term);

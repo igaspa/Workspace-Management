@@ -10,7 +10,7 @@ import { useGetWorkspaceTypesListQuery } from '../../../api/workspaceTypeApiSlic
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { deconstructName, getNext7Days, getHours } from '../../../utils/helper';
+import { deconstructName, getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { BasicPagination } from '../../../components/Pagination/pagination';
 import { errorHandler } from '../../../utils/errors';
 import { useNavigate } from 'react-router-dom';
@@ -18,12 +18,14 @@ import { useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 const Dashboard = () => {
+	const currentDay = createDate(0);
+
 	const navigate = useNavigate();
 	const [selectedWorkspaceType, setSelectedWorkspaceType] = useState(null);
-	const [from, setFrom] = useState(null);
-	const [until, setUntil] = useState(null);
-	const [fromDate, setFromDate] = useState('');
-	const [untilDate, setUntilDate] = useState('');
+	const [from, setFrom] = useState();
+	const [until, setUntil] = useState();
+	const [fromDate, setFromDate] = useState(currentDay);
+	const [untilDate, setUntilDate] = useState(currentDay);
 	const role = localStorage.getItem('role');
 
 	const [startHour, setStartHour] = useState('');
@@ -48,11 +50,13 @@ const Dashboard = () => {
 	const handleFromDateChange = (event) => {
 		setFromDate(event.target.value);
 		if (!untilDate)setUntilDate(event.target.value);
+		if (new Date(event.target.value) > new Date(untilDate)) setUntilDate(event.target.value);
 	};
 
 	const handleUntilDateChange = (event) => {
 		setUntilDate(event.target.value);
 		if (!fromDate)setFromDate(event.target.value);
+		if (new Date(event.target.value) < new Date(fromDate)) setFromDate(event.target.value);
 	};
 	// get selected start hour
 	const handleStartHourChange = (event) => {
@@ -77,7 +81,8 @@ const Dashboard = () => {
 		...(selectedWorkspaceType && { workspace_type: selectedWorkspaceType }),
 		...(from && { from }),
 		...(until && { until }),
-		...(page && { page })
+		...(page && { page }),
+		status: 'available'
 	});
 
 	useEffect(() => {

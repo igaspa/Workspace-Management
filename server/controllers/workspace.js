@@ -10,25 +10,49 @@ const workspaceCustomWhereOptions = (queryParams) => {
   const { status, from, until } = queryParams;
 
   if (status && status === 'available') {
-    const startTime = from ? new Date(from) : new Date(new Date().setHours(0, 0, 0, 0));
-    const endTime = until ? new Date(until) : new Date(new Date(startTime).setHours(24, 0, 0, 0));
-    const term = {
-      where: sequelize.where(
-        sequelize.fn(
-          'NOT EXISTS',
-          sequelize.literal(`(
-            SELECT *
-            FROM reservation
-            WHERE
+    if (from || until) {
+      const startTime = from ? new Date(from) : new Date(new Date().setHours(0, 0, 0, 0));
+      const endTime = until ? new Date(until) : new Date(new Date(startTime).setHours(24, 0, 0, 0));
+      const term = {
+        where: sequelize.where(
+          sequelize.fn(
+            'NOT EXISTS',
+            sequelize.literal(`(
+              SELECT *
+              FROM reservation
+              WHERE
               reservation.workspace_id = workspace.id AND
-              reservation.start_at < ${sequelize.escape(endTime)} AND
-              reservation.end_at > ${sequelize.escape(startTime)}
-          )`)
-        ),
-        true
-      )
-    };
-    options.push(term);
+              (
+                (
+                reservation.start_at < ${sequelize.escape(endTime)} AND
+                reservation.end_at > ${sequelize.escape(startTime)}
+                ) 
+                OR
+                reservation.end_at IS NULL
+              )
+            )`)
+          ),
+          true
+        )
+      };
+      options.push(term);
+    } else {
+      const term = {
+        where: sequelize.where(
+          sequelize.fn(
+            'NOT EXISTS',
+            sequelize.literal(`(
+              SELECT *
+              FROM reservation
+              WHERE
+              reservation.workspace_id = workspace.id AND reservation.end_at IS NULL
+            )`)
+          ),
+          true
+        )
+      };
+      options.push(term);
+    }
   }
   return options;
 };

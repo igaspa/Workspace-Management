@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CircularProgress, Typography, Box, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { CircularProgress, Typography, Box, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, useMediaQuery } from '@mui/material';
 import { successToast } from '../../utils/toastifyNotification';
 import { BasicPagination } from '../../components/Pagination/pagination';
 import { useDeleteWorkspaceMutation, useGetWorkspacesListQuery, useUpdateWorkspaceMutation } from '../../api/workspaceApiSlice';
@@ -7,11 +7,14 @@ import { useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import { errorHandler } from '../../utils/errors';
 import WorkspaceForm from '../../components/Workspace/updateWorkspaceForm';
+import { useTheme } from '@mui/material/styles';
 
 const Workspaces = () => {
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
 	const navigate = useNavigate();
 	const [deleteWorkspace] = useDeleteWorkspaceMutation();
-	const [forceDeleteWorkspace] = useDeleteWorkspaceMutation();
 	const [open, setOpen] = useState(false);
 	const [openForceDelete, setOpenForceDelete] = useState(false);
 	const [selectedId, setSelectedId] = useState();
@@ -98,7 +101,7 @@ const Workspaces = () => {
 
 	const handleForceDeleteClick = async (event) => {
 		event.preventDefault();
-		await forceDeleteWorkspace({ id: selectedId, forceDelete: true })
+		await deleteWorkspace({ id: selectedId, forceDelete: true })
 			.unwrap()
 			.then((response) => {
 				handleCloseForceDelete();
@@ -244,7 +247,7 @@ const Workspaces = () => {
 												<BasicPagination count={workspacePages} page={page} onChange={handlePageChange} />
 
 												{showUpdateForm && (
-													<Dialog open={showUpdateForm} onClose={() => setShowUpdateForm(false)}>
+													<Dialog open={showUpdateForm} fullScreen={fullScreen} onClose={() => setShowUpdateForm(false)}>
 														<DialogTitle>Update Workspace</DialogTitle>
 														<DialogContent>
 															<WorkspaceForm

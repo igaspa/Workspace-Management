@@ -119,8 +119,8 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 				</Select>
 			</FormControl>
 
-			<Button type="submit" sx = {{ marginTop: 2, border: '1px solid #333', fontSize: 11 }}> <strong>Save</strong></Button>
-			<Button sx = {{ marginTop: 2, border: '1px solid #333', fontSize: 11 }} onClick={onCancel}><strong>Cancel</strong></Button>
+			<Button fullWidth type="submit" sx = {{ marginTop: 2, border: '1px solid #333', fontSize: 11 }}> <strong>Save</strong></Button>
+			<Button fullWidth sx = {{ marginTop: 2, border: '1px solid #333', fontSize: 11 }} onClick={onCancel}><strong>Cancel</strong></Button>
 
 		</Box>
 			}

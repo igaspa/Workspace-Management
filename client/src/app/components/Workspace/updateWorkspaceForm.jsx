@@ -132,6 +132,7 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 	return (
 		<>
 			{(areas && workspaceTypes && equipment?.length) &&
+
 		<Box
 			component="form"
 			onSubmit={handleSubmit}

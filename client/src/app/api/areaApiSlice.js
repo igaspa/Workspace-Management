@@ -23,7 +23,13 @@ export const areaApiSlice = createApi({
 					workspaces: params.workspaces
 				}
 			}),
-			providesTags: ['areaList']
+			providesTags: ['areaList'],
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			},
+			invalidatesTags: ['areaList']
 		}),
 
 		// this method creates a new area

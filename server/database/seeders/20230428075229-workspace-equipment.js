@@ -182,22 +182,22 @@ module.exports = {
       },
       {
         workspace_id: 'cae42cfe-1c81-42ce-84d3-222881f76519',
-        equipment_id: '6427a70a-4c69-47b9-b252-3dac0bdbddbc',
+        equipment_id: '692ab33c-9811-4478-a7d5-62007c55ac37',
         equipment_quantity: 1
       },
       {
         workspace_id: 'a385ea94-ab46-4181-9a96-ccadf3cdef39',
-        equipment_id: '6427a70a-4c69-47b9-b252-3dac0bdbddbc',
+        equipment_id: '692ab33c-9811-4478-a7d5-62007c55ac37',
         equipment_quantity: 1
       },
       {
         workspace_id: 'd63788be-41d4-42e4-a42a-cf31eda0839b',
-        equipment_id: '6427a70a-4c69-47b9-b252-3dac0bdbddbc',
+        equipment_id: '692ab33c-9811-4478-a7d5-62007c55ac37',
         equipment_quantity: 1
       },
       {
         workspace_id: '312f8f1b-d8f4-486b-8ce3-8ab48c4abac8',
-        equipment_id: '6427a70a-4c69-47b9-b252-3dac0bdbddbc',
+        equipment_id: '692ab33c-9811-4478-a7d5-62007c55ac37',
         equipment_quantity: 1
       }
     ]);

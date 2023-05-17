@@ -24,24 +24,6 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 'e88af55a-5039-403d-8356-681d7246e487',
-        name: 'iPhone 12',
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        id: 'cff24a3f-f656-4d78-9025-55f0e25276bf',
-        name: 'Samsung Galaxy S21',
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        id: 'f92b64ff-702d-4323-a47f-b09a55b7c9b9',
-        name: 'Ipad 8',
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
         id: 'f1293a71-76c5-409c-a75d-1c8fec8f27ea',
         name: 'Psychological Monitoring Device',
         created_at: new Date(),

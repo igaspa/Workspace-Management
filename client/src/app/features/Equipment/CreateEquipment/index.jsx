@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/material';
@@ -8,15 +7,25 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCreateEquipmentMutation } from '../../../api/equipmentApiSlice';
 import { errorHandler } from '../../../utils/errors';
-
+import { successToast } from '../../../utils/toastifyNotification';
+import ConfirmButton from '../../../components/Buttons/confirmButton';
+import CancelButton from '../../../components/Buttons/cancelButton';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 export default function CreateEquipment () {
 	const [createEquipment] = useCreateEquipmentMutation();
+	const divRef = useRef();
+	const navigate = useNavigate();
+
+	const handleCancel = (event) => {
+		navigate('/backoffice/equipment');
+	};
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-
+		const data = new FormData(divRef.current);
+		console.log(data.get('equipment'));
 		await createEquipment(
 			{
 				id: uuidv4(),
@@ -24,7 +33,8 @@ export default function CreateEquipment () {
 			})
 			.unwrap()
 			.then((response) => {
-				event.target.reset();
+				successToast(response.message);
+				divRef.current.reset();
 			})
 			.catch((error) => {
 				errorHandler(error);
@@ -46,7 +56,7 @@ export default function CreateEquipment () {
 					<Typography component="h1" variant="h5">
             Create new Equipment
 					</Typography>
-					<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+					<Box component="form" ref={divRef} noValidate sx={{ mt: 1 }}>
 						<TextField
 							margin="normal"
 							required
@@ -55,14 +65,10 @@ export default function CreateEquipment () {
 							label="Equipment Name"
 							name="equipment"
 						/>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							sx={{ mt: 3, mb: 2 }}
-						>
-             Submit
-						</Button>
+						<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+							<ConfirmButton text={'Confirm'} onClick={handleSubmit}/>
+							<CancelButton text={'Cancel'} onClick={handleCancel}/>
+						</div>
 					</Box>
 				</Box>
 			</Container>

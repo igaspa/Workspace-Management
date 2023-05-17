@@ -25,7 +25,6 @@ export default function CreateEquipment () {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(divRef.current);
-		console.log(data.get('equipment'));
 		await createEquipment(
 			{
 				id: uuidv4(),

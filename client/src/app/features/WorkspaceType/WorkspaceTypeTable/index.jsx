@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, TextField } from '@mui/material';
+import { CircularProgress, Typography, Box, TextField, Checkbox } from '@mui/material';
 import { useGetWorkspaceTypesListQuery, useUpdateWorkspaceTypeMutation, useDeleteWorkspaceTypeMutation } from '../../../api/workspaceTypeApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -55,6 +55,7 @@ export default function WorkspaceTypeTable () {
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
 	const divRef = useRef();
+	const [allowPermanentReservation, setAllowPermanentReservation] = useState(false);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -64,7 +65,7 @@ export default function WorkspaceTypeTable () {
 		setPage(0);
 	};
 
-	const handleCreateClick = (workspaceTypeId) => {
+	const handleCreateClick = () => {
 		navigate('/backoffice/create-workspace-type');
 	};
 
@@ -74,12 +75,13 @@ export default function WorkspaceTypeTable () {
 	};
 
 	const handleClickOpenUpdate = (workspaceTypeId) => {
-		const chosenWorkspaceType = displayedData.find(el => el.id === workspaceTypeId);
+		const chosenWorkspaceType = displayedData.find(el => {
+			return (el.id === workspaceTypeId);
+		});
 		setFormData(chosenWorkspaceType);
 		setSelectedId(workspaceTypeId);
 		setOpenUpdate(true);
 	};
-
 	const handleClose = () => {
 		setOpenUpdate(false);
 		setOpenDelete(false);
@@ -109,7 +111,7 @@ export default function WorkspaceTypeTable () {
 			...(data.get('workspaceType') && { name: data.get('workspaceType') }),
 			...(data.get('maxReservationInterval') && { maxReservationInterval: data.get('maxReservationInterval') }),
 			...(data.get('maxReservationWindow') && { maxReservationWindow: `${data.get('maxReservationWindow')} days` }),
-			...(data.get('allowPermanentReservations') && { allowPermanentReservations: data.get('allowPermanentReservations') })
+			allowPermanentReservations: allowPermanentReservation
 		};
 
 		await updateWorkspaceType({
@@ -131,86 +133,101 @@ export default function WorkspaceTypeTable () {
 	const displayedData = workspaceType?.map((el) => ({
 		id: el.id,
 		name: el.name,
-		maxReservationInterval: el.maxReservationInterval.hours,
-		maxReservationWindow: el.maxReservationWindow.days,
+		maxReservationInterval: `${el.maxReservationInterval.hours.toString().padStart(2, '0')}:${el.maxReservationInterval.minutes ? el.maxReservationInterval.minutes.toString().padStart(2, '0') : '00'}`,
+		maxReservationWindow: `${el.maxReservationWindow.days} days`,
 		allowPermanentReservations: el.allowPermanentReservations.toString(),
 		actions: <div style={{ display: 'flex', flexDirection: 'row' }}>
 			<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
 			<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
 		</div>
 	}));
+
 	return (
 		<div>
-			{ role.includes('Administrator')
-				? isWorkspaceTypesLoading
-					? (
-						<CircularProgress />
-					)
-					: isWorkspaceTypesError
-						? (
-							<Typography color="error">Failed to load workspace types.</Typography>
-						)
-						: (<>
-							<CreateButton onClick={handleCreateClick} text={'Create new Workspace Type'} />
-							<DefaultTable
-								columns={columns}
-								rows={displayedData}
-								page={page}
-								count={count}
-								rowsPerPage={size}
-								handleChangePage={handleChangePage}
-								handleChangeRowsPerPage={handleChangeRowsPerPage}
-								rowsPerPageOptions={[10, 25, 50, 100]}/>
-							<Prompt open={openDelete}
-								onClose={handleClose}
-								title={'Remove Workspace Type'}
-								body={'Are you sure you want to remove this workspace type?'}
-								handleCancel={handleClose}
-								handleConfirm={handleDeleteClick} />
-							<Prompt open={openUpdate}
-								onClose={handleClose}
-								title={'Update Workspace Type'}
-								body={<Box
-									component="form" ref={divRef} noValidate sx={{ mt: 1 }}>
-									<TextField
-										margin="normal"
-										fullWidth
-										value={formData.name || ''}
-										id="workspaceType"
-										label="WorkspaceType Name"
-										name="workspaceType"
-									/>
-									<TextField
-										margin="normal"
-										fullWidth
-										id="workspaceType"
-										label="Max Reservation Interval"
-										name="maxReservationInterval"
-										defaultValue="hh:mm"
-									/>
-									<TextField
-										fullWidth
-										margin="normal"
-										id="workspaceType"
-										label="Max Reservation Window"
-										name="maxReservationWindow"
-										defaultValue={1}
-										type="number"
-										inputProps={{ min: 1 }}
-									/>
-									<TextField
-										margin="normal"
-										fullWidth
-										id="workspaceType"
-										value={formData.allowPermanentReservations || ''}
-										label="Allow Permanent Reservations"
-										name="allowPermanentReservations"
-									/></Box>}
-								handleCancel={handleClose}
-								handleConfirm={handleUpdateClick} />
-						</>
-						)
-				: navigate('/')}
+			{role.includes('Administrator')
+				? (
+					<>
+						{isWorkspaceTypesLoading
+							? (
+								<CircularProgress />
+							)
+							: isWorkspaceTypesError
+								? (
+									<Typography color="error">Failed to load workspace types.</Typography>
+								)
+								: (
+									<>
+										<CreateButton onClick={handleCreateClick} text={'Create new Workspace Type'} />
+										<DefaultTable
+											columns={columns}
+											rows={displayedData}
+											page={page}
+											count={count}
+											rowsPerPage={size}
+											handleChangePage={handleChangePage}
+											handleChangeRowsPerPage={handleChangeRowsPerPage}
+											rowsPerPageOptions={[10, 25, 50, 100]}
+										/>
+										<Prompt
+											open={openDelete}
+											onClose={handleClose}
+											title={'Remove Workspace Type'}
+											body={'Are you sure you want to remove this workspace type?'}
+											handleCancel={handleClose}
+											handleConfirm={handleDeleteClick}
+										/>
+										<Prompt
+											open={openUpdate}
+											onClose={handleClose}
+											title={'Update Workspace Type'}
+											body={
+												<Box component="form" ref={divRef} noValidate sx={{ mt: 1 }}>
+													<TextField
+														margin="normal"
+														fullWidth
+														defaultValue={formData.name || ''}
+														id="workspaceType"
+														label="WorkspaceType Name"
+														name="workspaceType"
+													/>
+													<TextField
+														margin="normal"
+														fullWidth
+														id="workspaceType"
+														label="Max Reservation Interval"
+														name="maxReservationInterval"
+														defaultValue={formData.maxReservationInterval || ''}
+													/>
+													<TextField
+														fullWidth
+														margin="normal"
+														id="workspaceType"
+														label="Max Reservation Window(days)"
+														name="maxReservationWindow"
+														defaultValue={1}
+														type="number"
+														inputProps={{ min: 1 }}
+													/>
+													<Box sx={{ display: 'flex', alignItems: 'center' }}>
+														<Checkbox
+															id="allowPermanentReservations"
+															defaultChecked={formData.allowPermanentReservations === 'true'}
+															onChange={(event) => setAllowPermanentReservation(event.target.checked)}
+														/>
+														<label htmlFor="allowPermanentReservations">Allow Permanent Reservations</label>
+													</Box>
+												</Box>
+											}
+											handleCancel={handleClose}
+											handleConfirm={handleUpdateClick}
+										/>
+									</>
+								)}
+					</>
+				)
+				: (
+					navigate('/')
+				)}
 		</div>
 	);
 }

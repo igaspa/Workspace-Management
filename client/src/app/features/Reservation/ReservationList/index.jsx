@@ -66,7 +66,7 @@ const Reservations = () => {
 								</Grid>
 								{(reservationData.length)
 									? <BasicPagination count={pages} page={page} onChange={handlePageChange} />
-									: "You don't have any reservaitons"
+									: "You don't have any reservations."
 								}
 							</Box>
 						</main>)}

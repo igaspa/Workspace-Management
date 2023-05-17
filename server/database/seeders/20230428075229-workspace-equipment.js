@@ -176,11 +176,6 @@ module.exports = {
         equipment_quantity: 1
       },
       {
-        workspace_id: 'b3cb1ef4-6f6b-48c9-ae95-bf2aaf8e8148',
-        equipment_id: 'e88af55a-5039-403d-8356-681d7246e487',
-        equipment_quantity: 1
-      },
-      {
         workspace_id: '653a640e-965f-4465-8e99-e9134b63cba3',
         equipment_id: '361ee388-8069-4887-93b7-f85a19e1139e',
         equipment_quantity: 1

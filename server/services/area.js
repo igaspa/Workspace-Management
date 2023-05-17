@@ -10,7 +10,7 @@ exports.deleteArea = async (req, res) => {
   const workspaceList = await workspace.findAll({ where: { areaId: id } });
   const workspaceIdList = workspaceList.map(workspace => workspace.id);
   try {
-    if (workspaceIdList) {
+    if (workspaceIdList.length) {
       await deleteWorkspaces(workspaceIdList, req.body.forceDelete, transaction);
     }
     const deletedArea = await area.destroy({ where: { id } }, { transaction });

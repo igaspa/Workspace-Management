@@ -18,7 +18,8 @@ export const equipmentsApiSlice = createApi({
 		getEquipmentsList: builder.query({
 			query: (params) => {
 				const queryParameters = {
-					page: params.page
+					page: params.page,
+					size: params.size
 				};
 
 				return {

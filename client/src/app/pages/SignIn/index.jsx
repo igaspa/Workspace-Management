@@ -9,6 +9,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useCreateLoginMutation } from '../../api/loginApiSlice';
+import { errorHandler } from '../../utils/errors';
 
 const theme = createTheme();
 
@@ -35,7 +36,7 @@ export default function SignIn () {
 				navigate(0);
 			})
 			.catch((error) => {
-				console.log(error);
+				errorHandler(error);
 			});
 	};
 

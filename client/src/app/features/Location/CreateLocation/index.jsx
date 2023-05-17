@@ -23,7 +23,6 @@ export default function CreateLocation () {
 	const handleConfirm = async (event) => {
 		event.preventDefault();
 		const data = new FormData(divRef.current);
-		console.log(data.get('address'));
 		await createLocation(
 			{
 				id: uuidv4(),
@@ -37,7 +36,6 @@ export default function CreateLocation () {
 				divRef.current.reset();
 			})
 			.catch((error) => {
-				console.log(error);
 				errorHandler(error);
 			});
 	};

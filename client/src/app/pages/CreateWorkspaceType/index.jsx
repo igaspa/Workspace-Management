@@ -1,9 +1,7 @@
 import CreateWorkspaceType from '../../features/WorkspaceType/CreateWorkspaceType';
 
-export default function WorkspaceTypeList () {
+export default function CreateWorkspaceTypePage () {
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly', paddingTop: 20, paddingBottom: 2 }}>
-			<CreateWorkspaceType/>
-		</div>
+		<CreateWorkspaceType/>
 	);
 }

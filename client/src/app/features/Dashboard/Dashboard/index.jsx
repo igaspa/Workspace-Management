@@ -122,7 +122,7 @@ const Dashboard = () => {
 								handleFromDateChange(event);
 							}} date={fromDate} dates={dates} />
 
-							{ role.includes('Administrator') &&
+							{ (role.includes('Administrator') || role.includes('Lead')) &&
 							<>
 								<Typography align="center" color="text.primary" sx={{ paddingLeft: 1, paddingRight: 1, fontSize: 14 }}> Until: </Typography>
 								<DateFilter onChange={(event) => {

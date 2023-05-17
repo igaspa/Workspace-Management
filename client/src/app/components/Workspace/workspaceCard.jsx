@@ -12,7 +12,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 	const role = localStorage.getItem('role');
 	return (
 		<Card sx={{ maxWidth: 'sm' }}>
-			<CardActionArea onClick = { () => { role.includes('Administrator', 'Lead') ? handleMultipleDrawerOpen() : handleDrawerOpen(); } } >
+			<CardActionArea onClick = { () => { (role.includes('Administrator') || role.includes('Lead')) ? handleMultipleDrawerOpen() : handleDrawerOpen(); } } >
 				<CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 					<CardContent sx={{ height: 80 }}>
 						<Typography variant="h7" gutterBottom>{workspace.name}</Typography>

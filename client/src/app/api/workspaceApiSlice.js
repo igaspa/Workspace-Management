@@ -72,11 +72,13 @@ export const workspacesApiSlice = createApi({
 		}),
 		// this method updates a workspace by the id
 		updateWorkspace: builder.mutation({
-			query: ({ id, body }) => ({
-				url: `/workspace/${id}`,
-				method: 'PUT',
-				body
-			}),
+			query: (params) => {
+				return {
+					url: `/workspace/${params.id}`,
+					method: 'PUT',
+					body: params.body
+				};
+			},
 			invalidatesTags: ['workspacesList', 'workspace']
 		}),
 		// this method deletes a workspace by the id

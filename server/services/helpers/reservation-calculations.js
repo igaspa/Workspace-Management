@@ -5,7 +5,7 @@ const { DateTime, Duration } = require('luxon');
 
 const validateMaxReservationIntervalLimit = (data) => {
   const { startAt, endAt, maxReservationInterval } = data;
-  console.log(maxReservationInterval);
+
   const startDate = DateTime.fromISO(startAt);
   const endDate = DateTime.fromISO(endAt);
   const intervalDuration = Duration.fromObject(maxReservationInterval);

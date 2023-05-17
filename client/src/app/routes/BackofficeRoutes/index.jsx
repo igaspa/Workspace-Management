@@ -2,8 +2,7 @@ import BackofficeLayout from '../../layout/BackofficeLayout';
 
 // render - dashboard
 import BackofficeDashboard from '../../pages/BackofficeDashboard';
-import MultipleWorkspacesCreation from '../../pages/Workspace/createCollection';
-import WorkspaceCreation from '../../pages/Workspace/createOneWorkspace';
+import WorkspaceCreation from '../../pages/Workspace/createWorkspaces';
 import WorkspaceList from '../../pages/Workspace/workspaceList';
 import EquipmentList from '../../pages/Equipment';
 import WorkspaceTypeList from '../../pages/WorkspaceType';
@@ -27,12 +26,8 @@ const BackofficeRoutes = {
 			element: <WorkspaceList />
 		},
 		{
-			path: '/backoffice/workspace',
+			path: '/backoffice/create-workspace',
 			element: <WorkspaceCreation />
-		},
-		{
-			path: '/backoffice/workspace/collection',
-			element: <MultipleWorkspacesCreation />
 		},
 		{
 			path: '/backoffice/equipment',

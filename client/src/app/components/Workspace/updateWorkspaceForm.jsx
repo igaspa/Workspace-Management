@@ -1,13 +1,63 @@
-import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Chip, OutlinedInput } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { validate } from 'uuid';
 import { useGetAreaListQuery } from '../../api/areaApiSlice';
+import { useGetEquipmentsListQuery } from '../../api/equipmentApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../api/workspaceTypeApiSlice';
 import { errorHandler } from '../../utils/errors';
 
 const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 	const navigate = useNavigate();
+
+	const initialEquipment = () => {
+		const initialEquipment = workspace.equipment.map((eq) => {
+			return {
+				id: eq.id,
+				quantity: eq.workspaceEquipment.quantity
+			};
+		});
+		return initialEquipment;
+	};
+
+	const [currentEquipment, setEquipment] = useState(initialEquipment);
+
+	const handleEquipmentChange = (event) => {
+		const { target: { value } } = event;
+		const newEl = value.slice(-1)[0];
+
+		const newEquipmentQuantity = [...currentEquipment];
+
+		// find if any element id is same as the newly added
+		const found = newEquipmentQuantity.find((el) => (el.id === newEl));
+
+		// if there are no elements with newly adding id, add that element to the list, otherwise increase quantity by 1
+		if (!found) {
+			newEquipmentQuantity.push({ id: newEl, quantity: 1 });
+		} else {
+			newEquipmentQuantity.map((el) => {
+				if (el.id === newEl) {
+					el.quantity += 1;
+				}
+				return el;
+			});
+		}
+
+		setEquipment(newEquipmentQuantity);
+	};
+
+	const handleDelete = (id) => {
+		const newEquipmentQuantity = [...currentEquipment];
+		const index = newEquipmentQuantity.findIndex((el) => el.id === id);
+		if (index !== -1) {
+			newEquipmentQuantity[index].quantity -= 1;
+			if (newEquipmentQuantity[index].quantity === 0) {
+				newEquipmentQuantity.splice(index, 1);
+			}
+		}
+		setEquipment(newEquipmentQuantity);
+	};
 
 	const handleChange = (e) => {
 		const value = e.target.value;
@@ -24,6 +74,28 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 		areaId: workspace.area.id
 	});
 
+	const calculateAddedAndRemovedItemLists = (formData) => {
+		const oldWorkspaceEquipment = workspace.equipment.map(eq => {
+			return {
+				id: eq.id,
+				quantity: eq.workspaceEquipment.quantity
+			};
+		});
+
+		const addedAccessories = currentEquipment.filter(newItem => !oldWorkspaceEquipment.some(oldItem => oldItem.id === newItem.id));
+
+		const removedAccessories = oldWorkspaceEquipment.filter(newItem => !currentEquipment.some(oldItem => oldItem.id === newItem.id));
+
+		const updatedAccessories = currentEquipment.filter(el1 => {
+			const item = oldWorkspaceEquipment.find(el2 => el2.id === el1.id);
+			return item && el1.quantity !== item.quantity;
+		});
+
+		if (addedAccessories.length) formData.addedAccessories = addedAccessories;
+		if (removedAccessories.length) formData.removedAccessories = removedAccessories;
+		if (updatedAccessories.length) formData.updatedAccessories = updatedAccessories;
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const changedData = {};
@@ -32,6 +104,7 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 				changedData[key] = value;
 			}
 		});
+		calculateAddedAndRemovedItemLists(changedData);
 		onSave(changedData);
 	};
 
@@ -39,36 +112,35 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 
 	const { data: [workspaceTypes] = [], isError: isWorkspaceTypesError, error: workspaceTypeErrorObject, isLoading: isWorkspaceTypesLoading } = useGetWorkspaceTypesListQuery();
 
-	useEffect(() => {
-		if (isWorkspaceTypesError) {
-			const authorizationError = errorHandler(workspaceTypeErrorObject);
-			if (authorizationError) navigate('/sign-in');
-		}
-		if (isAreaError) {
-			const authorizationError = errorHandler(areaErrorObject);
-			if (authorizationError) navigate('/sign-in');
-		}
-		if (workspaceTypes?.length && areas?.length) {
-			setFormData((prevState) => ({
-				...prevState
-			}));
-		}
-	}, [workspaceTypes, areas]);
+	const { data: [equipment] = [], isError: isEquipmentError, error: equipmentErrorObject, isLoading: isEquipmentsLoading } = useGetEquipmentsListQuery({});
 
-	if (isAreaLoading || isWorkspaceTypesLoading) {
+	const validateError = (errorObj) => {
+		const authorizationError = errorHandler(errorObj);
+		if (authorizationError) navigate('/sign-in');
+	};
+
+	useEffect(() => {
+		if (isWorkspaceTypesError) validateError(workspaceTypeErrorObject);
+		if (isAreaError) validate(areaErrorObject);
+		if (isEquipmentError) validateError(equipmentErrorObject);
+	}, [workspaceTypes, areas, equipment]);
+
+	if (isAreaLoading || isWorkspaceTypesLoading || isEquipmentsLoading) {
 		return <CircularProgress />;
 	}
 
 	return (
 		<>
-			{(areas && workspaceTypes) &&
+			{(areas && workspaceTypes && equipment?.length) &&
+
 		<Box
 			component="form"
 			onSubmit={handleSubmit}
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
-				minWidth: '300px'
+				minWidth: 400,
+				maxWidth: '100%'
 			}}
 		>
 
@@ -116,6 +188,37 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 							{workspaceType.name}
 						</MenuItem>
 					))}
+				</Select>
+			</FormControl>
+
+			<FormControl fullWidth sx={{ marginTop: 2 }}>
+				<InputLabel id="multiple-chip-label">Accessories</InputLabel>
+				<Select
+					labelId="multiple-chip-label"
+					id="multiple-chip"
+					multiple
+					value={currentEquipment}
+					onChange={handleEquipmentChange}
+					input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+					renderValue={(selected) => (
+						<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+							{selected.map((currEq) => {
+								const eq = equipment.find(eq => eq.id === currEq.id);
+								return <Chip key={eq.id} label={`${eq.name} - ${currEq.quantity}`} onDelete={(event) => handleDelete(eq.id)}
+									onMouseDown={(event) => event.stopPropagation()}
+								/>;
+							})}
+						</Box>
+					)}
+				>
+
+					{equipment.map((eq) => (
+						<MenuItem key={eq.id} value={eq.id}>
+							{/* <Checkbox checked={currentEquipment.includes(eq.id)} /> */}
+							{eq.name}
+						</MenuItem>
+					))}
+
 				</Select>
 			</FormControl>
 

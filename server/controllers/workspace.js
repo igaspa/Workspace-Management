@@ -121,7 +121,8 @@ module.exports.getWorkspace = async (req, res) => {
 };
 
 module.exports.updateWorkspace = async (req, res) => {
-  await generalController.updateModel(workspace, req, res);
+  await workspaceService.updateWorkspace(req);
+  res.status(200).json({ message: responseMessage.UPDATE_SUCCESS(workspace.name) });
 };
 
 module.exports.deleteWorkspace = async (req, res) => {

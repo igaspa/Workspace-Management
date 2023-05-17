@@ -24,7 +24,7 @@ const Workspaces = () => {
 	const [updateWorkspace] = useUpdateWorkspaceMutation();
 
 	const handleCreateWorkspaceButton = () => {
-		navigate('/backoffice/workspace');
+		navigate('/backoffice/create-workspace');
 	};
 
 	const handleDeleteButton = (workspaceId) => {
@@ -68,10 +68,6 @@ const Workspaces = () => {
 
 	const handleCloseForceDelete = () => {
 		setOpenForceDelete(false);
-	};
-
-	const handleCreateMultipleWorkspaceButton = () => {
-		navigate('/backoffice/workspace/collection');
 	};
 
 	const handlePageChange = async (event, value) => {
@@ -138,16 +134,9 @@ const Workspaces = () => {
 										onClick={handleCreateWorkspaceButton}
 										sx={{ marginBottom: 2, textAlign: 'left' }}
 									>
-										Create Workspace
+										Create Workspaces
 									</Button>
 
-									<Button
-										variant="contained"
-										onClick={handleCreateMultipleWorkspaceButton}
-										sx={{ marginBottom: 2, marginLeft: 3, textAlign: 'left' }}
-									>
-										Create Multiple Workspaces
-									</Button>
 								</Box>
 
 								<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
@@ -176,8 +165,19 @@ const Workspaces = () => {
 																		{workspace.permanentlyReserved ? 'true' : 'false'}
 																	</TableCell>
 																	<TableCell>
-																		{workspace.equipment.length ? workspace.equipment.map((eq) => eq.name + ' ') : '/'}
+																		{workspace.equipment.length
+																			? (
+																				workspace.equipment.map((eq) => (
+																					<div key={eq.id}>
+																						{eq.name} - Qty: {eq.workspaceEquipment.quantity}
+																					</div>
+																				))
+																			)
+																			: (
+																				'/'
+																			)}
 																	</TableCell>
+
 																	<TableCell align='center'>
 																		<Button
 																			variant="contained"

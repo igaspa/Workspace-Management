@@ -15,17 +15,9 @@ module.exports = {
         type: Sequelize.UUID,
         primaryKey: true
       },
-      equipment_quantity: {
+      quantity: {
         type: Sequelize.INTEGER,
         defaultValue: 1
-      },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },

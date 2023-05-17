@@ -101,7 +101,32 @@ exports.workspace = joi.object({
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
   permanentlyReserved: joi.boolean()
-    .optional()
+    .optional(),
+  addedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
+    .alter({
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    }),
+  removedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
+    .alter({
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    }),
+  updatedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
+    .alter({
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    })
+
 }).options({ abortEarly: false });
 
 // Area Entity Schema

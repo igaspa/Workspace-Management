@@ -7,20 +7,29 @@ const { roles } = require('../utils/roles');
 const { CONFERENCE_ROOM_ID } = require('../utils/constants');
 
 const deletePermamentReservationFromDB = async (data) => {
-  const { id, workspaceId } = data;
+  const { id, userReservation } = data;
 
   // Start  transaction
   const transaction = await sequelize.transaction();
   try {
-    // Add endAt date for reservation
-    await reservation.update({ endAt: new Date() }, {
-      where: { id },
-      transaction
-    });
+    // if reservations has not started completely delete it from db
+    console.log(new Date(), new Date(userReservation.startAt));
+    if (new Date(userReservation.startAt) > new Date()) {
+      await reservation.destroy({
+        where: { id },
+        transaction
+      });
+    } else {
+      // Add endAt date for reservation
+      await reservation.update({ endAt: new Date() }, {
+        where: { id },
+        transaction
+      });
+    }
 
     // Update the workspace without the permanentlyReserved flag
     await workspace.update({ permanentlyReserved: false }, {
-      where: { id: workspaceId },
+      where: { id: userReservation.workspaceId },
       transaction
     });
 
@@ -31,19 +40,19 @@ const deletePermamentReservationFromDB = async (data) => {
   }
 };
 
-exports.deletePermanentReservation = async (req) => {
+const deletePermanentReservation = async (req) => {
   const { id } = req.params;
   const userReservation = await reservation.findOne({
     where: { id },
-    attributes: ['workspaceId', 'endAt']
+    attributes: ['workspaceId', 'endAt', 'startAt']
   });
   if (userReservation.endAt) throw errors.NOT_FOUND(responseMessage.NOT_FOUND('Permanent ' + reservation.name));
-  const { workspaceId } = userReservation;
-  const data = { id, workspaceId };
+  const data = { id, userReservation };
   await deletePermamentReservationFromDB(data);
 };
+exports.deletePermanentReservation = deletePermanentReservation;
 
-exports.deleteReservation = async (req) => {
+const deleteReservation = async (req) => {
   const { id } = req.params;
   const userReservation = await reservation.findOne({
     where: { id },
@@ -64,8 +73,9 @@ exports.deleteReservation = async (req) => {
     );
   }
 };
+exports.deleteReservation = deleteReservation;
 
-exports.validateUserRights = async (req) => {
+exports.validateUserRightsAndDeleteReservation = async (req) => {
   const { id } = req.params;
   const userReservation = await reservation.findOne({
     where: { id },
@@ -74,12 +84,12 @@ exports.validateUserRights = async (req) => {
 
   if (!userReservation) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(reservation.name));
 
-  if (
-    (req.user.id !== userReservation.userId && !req.user.roles.includes(roles.administrator)) ||
-    userReservation.endAt === null
-  ) {
+  if (req.user.id !== userReservation.userId && !req.user.roles.includes(roles.administrator)) {
     throw errors.FORBIDDEN(responseMessage.USER_PERMISSION_ERROR);
   }
+
+  if (userReservation.endAt) await deleteReservation(req);
+  else await deletePermanentReservation(req);
 };
 
 const getUserReservationsByWorkspaceType = async (userId, workspaceTypeId) => {

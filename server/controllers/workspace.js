@@ -52,8 +52,7 @@ const workspaceCustomIncludeOptions = (queryParams) => {
     const workspaceTypeName = workspace_type.replace(/_/g, ' ');
     const term = {
       model: workspaceType,
-      where: { name: { [Op.iLike]: workspaceTypeName } },
-      attributes: []
+      where: { name: { [Op.iLike]: workspaceTypeName } }
     };
     options.push(term);
   }

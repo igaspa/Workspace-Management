@@ -82,6 +82,7 @@ const Dashboard = () => {
 		...(from && { from }),
 		...(until && { until }),
 		...(page && { page }),
+		include: ['workspaceType'],
 		status: 'available'
 	});
 

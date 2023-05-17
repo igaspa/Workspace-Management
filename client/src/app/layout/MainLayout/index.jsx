@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import LogoutIcon from '@mui/icons-material/Logout';
-import BackofficeButton from '../../components/Backoffice/backofficeButton';
+import BackofficeButton from '../../components/Buttons/backofficeButton';
 import { Link, Outlet } from 'react-router-dom';
 
 const drawerWidth = 240;

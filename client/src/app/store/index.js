@@ -7,6 +7,7 @@ import { workspacesApiSlice } from '../api/workspaceApiSlice';
 import { workspaceTypesApiSlice } from '../api/workspaceTypeApiSlice';
 import { equipmentsApiSlice } from '../api/equipmentApiSlice';
 import { areaApiSlice } from '../api/areaApiSlice';
+import { locationApiSlice } from '../api/locationApiSlice';
 
 export default configureStore({
 	reducer: {
@@ -17,7 +18,8 @@ export default configureStore({
 		[reservationsApiSlice.reducerPath]: reservationsApiSlice.reducer,
 		[areaApiSlice.reducerPath]: areaApiSlice.reducer,
 		[loginApiSlice.reducerPath]: loginApiSlice.reducer,
-		[equipmentsApiSlice.reducerPath]: equipmentsApiSlice.reducer
+		[equipmentsApiSlice.reducerPath]: equipmentsApiSlice.reducer,
+		[locationApiSlice.reducerPath]: locationApiSlice.reducer
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware()
@@ -29,4 +31,5 @@ export default configureStore({
 			.concat(areaApiSlice.middleware)
 			.concat(loginApiSlice.middleware)
 			.concat(equipmentsApiSlice.middleware)
+			.concat(locationApiSlice.middleware)
 });

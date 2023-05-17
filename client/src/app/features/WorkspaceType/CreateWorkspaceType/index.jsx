@@ -1,28 +1,34 @@
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import { Box } from '@mui/material';
+import { TextField, Typography, Container, Box } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCreateWorkspaceTypeMutation } from '../../../api/workspaceTypeApiSlice';
 import { errorHandler } from '../../../utils/errors';
+import ConfirmButton from '../../../components/Buttons/confirmButton';
+import CancelButton from '../../../components/Buttons/cancelButton';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function CreateWorkspaceType () {
 	const [createWorkspaceType] = useCreateWorkspaceTypeMutation();
+	const divRef = useRef();
+	const navigate = useNavigate();
+
+	const handleCancel = (event) => {
+		navigate('/backoffice/workspace-type');
+	};
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const data = new FormData(event.currentTarget);
+		const data = new FormData(divRef.current);
 
 		await createWorkspaceType(
 			{
 				id: uuidv4(),
 				name: data.get('workspaceType'),
 				maxReservationInterval: data.get('maxReservationInterval'),
-				maxReservationWindow: data.get('maxReservationWindow'),
+				maxReservationWindow: `${data.get('maxReservationWindow')} days`,
 				allowPermanentReservations: data.get('allowPermanentReservations')
 			})
 			.unwrap()
@@ -49,13 +55,14 @@ export default function CreateWorkspaceType () {
 					<Typography component="h1" variant="h5">
             Create new Workspace Type
 					</Typography>
-					<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+					<Box component="form" ref={divRef} noValidate sx={{ mt: 1 }}>
 						<TextField
 							margin="normal"
 							fullWidth
 							id="workspaceType"
 							label="WorkspaceType Name"
 							name="workspaceType"
+							required={true}
 						/>
 						<TextField
 							margin="normal"
@@ -63,13 +70,19 @@ export default function CreateWorkspaceType () {
 							id="workspaceType"
 							label="Max Reservation Interval"
 							name="maxReservationInterval"
+							required={true}
+							defaultValue="hh:mm"
 						/>
 						<TextField
-							margin="normal"
 							fullWidth
+							margin="normal"
 							id="workspaceType"
 							label="Max Reservation Window"
 							name="maxReservationWindow"
+							defaultValue={1}
+							type="number"
+							required={true}
+							inputProps={{ min: 1 }}
 						/>
 						<TextField
 							margin="normal"
@@ -77,15 +90,12 @@ export default function CreateWorkspaceType () {
 							id="workspaceType"
 							label="Allow Permanent Reservations"
 							name="allowPermanentReservations"
+							required={true}
 						/>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							sx={{ mt: 3, mb: 2 }}
-						>
-             Submit
-						</Button>
+						<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+							<ConfirmButton text={'Confirm'} onClick={handleSubmit}/>
+							<CancelButton text={'Cancel'} onClick={handleCancel}/>
+						</div>
 					</Box>
 				</Box>
 			</Container>

@@ -1,4 +1,4 @@
-import WorkspaceType from '../../features/WorkspaceType/WorkspaceTypeList';
+import WorkspaceType from '../../features/WorkspaceType/WorkspaceTypeTable';
 
 export default function WorkspaceTypeList () {
 	return (

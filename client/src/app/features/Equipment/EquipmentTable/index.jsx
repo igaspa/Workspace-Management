@@ -143,7 +143,6 @@ export default function EquipmentTable () {
 								body={'Are you sure you want to remove this equipment?'}
 								handleCancel={handleClose}
 								handleConfirm={handleDeleteClick} />
-
 							<Prompt open={openUpdate}
 								onClose={handleClose}
 								title={'Update Equipment'}
@@ -153,7 +152,7 @@ export default function EquipmentTable () {
 										margin="normal"
 										required
 										fullWidth
-										value={formData.name || ''}
+										defaultValue={formData.name || ''}
 										id="equipment"
 										label="Equipment Name"
 										name="equipment"

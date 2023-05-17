@@ -167,7 +167,7 @@ export default function LocationTable () {
 									<TextField
 										margin="normal"
 										fullWidth
-										value={formData.address || ' '}
+										defaultValue={formData.address || ' '}
 										id="location"
 										label="Location Address"
 										name="address"
@@ -175,7 +175,7 @@ export default function LocationTable () {
 									<TextField
 										margin="normal"
 										fullWidth
-										value={formData.city || ' '}
+										defaultValue={formData.city || ' '}
 										id="location"
 										label="City"
 										name="city"
@@ -183,7 +183,7 @@ export default function LocationTable () {
 									<TextField
 										margin="normal"
 										fullWidth
-										value={formData.country || ' '}
+										defaultValue={formData.country || ' '}
 										id="location"
 										label="Country"
 										name="country"

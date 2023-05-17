@@ -8,7 +8,6 @@ import EquipmentList from '../../pages/Equipment';
 import WorkspaceTypeList from '../../pages/WorkspaceType';
 import CreateWorkspaceTypePage from '../../pages/CreateWorkspaceType';
 import CreateEquipmentPage from '../../pages/CreateEquipment';
-import AreaList from '../../pages/Area';
 import LocationList from '../../pages/Location';
 import CreateLocationPage from '../../pages/CreateLocation';
 
@@ -44,10 +43,6 @@ const BackofficeRoutes = {
 		{
 			path: '/backoffice/create-workspace-type',
 			element: <CreateWorkspaceTypePage />
-		},
-		{
-			path: '/backoffice/area',
-			element: <AreaList />
 		},
 		{
 			path: '/backoffice/location',

@@ -16,6 +16,7 @@ export const workspacesApiSlice = createApi({
 	endpoints: (builder) => ({
 		// this method gets all the workspaces
 		getWorkspacesList: builder.query({
+			providesTags: ['workspacesList'],
 			query: (params) => {
 				const queryParameters = {
 					...(params.from && { from: params.from }),
@@ -37,7 +38,6 @@ export const workspacesApiSlice = createApi({
 					params: queryParameters
 				};
 			},
-			providesTags: ['workspacesList'],
 			transformResponse: (response, meta, args) => {
 				const pages = Number(meta.response.headers.get('X-Total-Pages'));
 

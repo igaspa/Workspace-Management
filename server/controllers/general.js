@@ -9,7 +9,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
 
   // Take page number from parameters
   if (page) {
-    if (isNaN(page) || page < 0) {
+    if (isNaN(page) || page < 1) {
       throw errors.VALIDATION(responseMessage.INVALID_PAGE);
     }
   }

@@ -20,7 +20,9 @@ export const locationApiSlice = createApi({
 				url: '/location',
 				method: 'GET',
 				params: {
-					workspaces: params.workspaces
+					workspaces: params.workspaces,
+					page: params.page,
+					size: params.size
 				}
 			}),
 			providesTags: ['locationList'],

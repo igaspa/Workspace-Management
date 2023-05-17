@@ -98,8 +98,7 @@ module.exports.updateReservation = async (req, res) => {
 };
 
 module.exports.deleteReservation = async (req, res) => {
-  await reservationService.validateUserRights(req);
-  await reservationService.deleteReservation(req);
+  await reservationService.validateUserRightsAndDeleteReservation(req);
   return res.status(200).json({
     message: responseMessage.DELETE_SUCCESS(reservation.name)
   });

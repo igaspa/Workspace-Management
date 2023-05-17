@@ -16,7 +16,7 @@ export const reservationsApiSlice = createApi({
 	endpoints: (builder) => ({
 		// this method gets all the reservations
 		getReservationsList: builder.query({
-			query: () => '/reservation?include=user&include=workspace',
+			query: () => '/reservation/all?include=user&include=workspace',
 			providesTags: ['reservationsList', 'reservation'],
 			transformResponse: (response, meta) => {
 				const pages = Number(meta.response.headers.get('X-Total-Pages'));

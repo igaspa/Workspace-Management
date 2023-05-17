@@ -18,7 +18,11 @@ export const workspaceTypesApiSlice = createApi({
 		getWorkspaceTypesList: builder.query({
 			query: (params = {}) => ({
 				url: '/workspace-type',
-				method: 'GET'
+				method: 'GET',
+				params: {
+					page: params.page,
+					size: params.size
+				}
 			}),
 			providesTags: ['workspaceTypesList'],
 			transformResponse: (response, meta, args) => {

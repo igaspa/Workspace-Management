@@ -30,11 +30,10 @@ exports.deleteLocation = async (req, res) => {
     const deletedLocation = await location.destroy({ where: { id } }, { transaction });
 
     if (!deletedLocation) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(location.name));
-
+    await transaction.commit();
     res.status(200).json({
       message: responseMessage.DELETE_SUCCESS(location.name)
     });
-    await transaction.commit();
   } catch (error) {
     await transaction.rollback();
     throw error;

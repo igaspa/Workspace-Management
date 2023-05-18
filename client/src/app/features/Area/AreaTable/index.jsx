@@ -10,6 +10,7 @@ import Prompt from '../../../components/Dialogs/dialog';
 import CreateButton from '../../../components/Buttons/createButton';
 import DefaultTable from '../../../components/Backoffice/table';
 import { useGetLocationListQuery } from '../../../api/locationApiSlice';
+import ImagePrompt from '../../../components/Dialogs/imageDialog';
 
 const columns = [
 	{
@@ -120,10 +121,7 @@ export default function AreaTable () {
 		...(size && { size })
 	});
 
-	const { data: [locations] = [], isError: isLocationsError, isLoading: isLocationsLoading } = useGetLocationListQuery({
-		...(page && { page: page + 1 }),
-		...(size && { size })
-	});
+	const { data: [locations] = [], isError: isLocationsError, isLoading: isLocationsLoading } = useGetLocationListQuery({});
 
 	const handleUpdateClick = async (event) => {
 		event.preventDefault();
@@ -147,6 +145,7 @@ export default function AreaTable () {
 				errorHandler(error);
 			});
 	};
+	const count = pages * size;
 	const data = area?.map((el) => {
 		return {
 			id: el.id,
@@ -181,7 +180,7 @@ export default function AreaTable () {
 							<DefaultTable columns={columns}
 								rows={data}
 								page={page}
-								count={pages}
+								count={count}
 								rowsPerPage={size}
 								handleChangePage={handleChangePage}
 								handleChangeRowsPerPage={handleChangeRowsPerPage}
@@ -192,7 +191,7 @@ export default function AreaTable () {
 								body={'Are you sure you want to remove this area?'}
 								handleCancel={handleClose}
 								handleConfirm={handleDeleteClick} />
-							<Prompt open={openImage}
+							<ImagePrompt open={openImage}
 								onClose={handleClose}
 								title={'Area Image'}
 								body={<Box

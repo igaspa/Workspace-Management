@@ -117,7 +117,7 @@ const Workspaces = () => {
 				)
 				: isWorkspacesError
 					? (
-						<Typography color="error">Failed to load reservations.</Typography>
+						<Typography color="error">Failed to load workspaces.</Typography>
 					)
 					: (
 						<main>

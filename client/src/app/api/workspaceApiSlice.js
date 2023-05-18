@@ -22,6 +22,7 @@ export const workspacesApiSlice = createApi({
 					...(params.from && { from: params.from }),
 					...(params.until && { until: params.until }),
 					...(params.status && { status: params.status }),
+					...(params.size && { size: params.size }),
 					page: params.page,
 					workspace_type: params.workspace_type
 				};

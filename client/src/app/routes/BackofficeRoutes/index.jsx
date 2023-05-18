@@ -3,7 +3,7 @@ import BackofficeLayout from '../../layout/BackofficeLayout';
 // render - dashboard
 import BackofficeDashboard from '../../pages/BackofficeDashboard';
 import WorkspaceCreation from '../../pages/Workspace/createWorkspaces';
-import WorkspaceList from '../../pages/Workspace/workspaceList';
+import WorkspaceList from '../../features/Workspace/WorkspaceTable';
 import EquipmentList from '../../pages/Equipment';
 import WorkspaceTypeList from '../../pages/WorkspaceType';
 import CreateWorkspaceTypePage from '../../pages/CreateWorkspaceType';

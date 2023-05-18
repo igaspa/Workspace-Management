@@ -56,7 +56,7 @@ export default function EquipmentTable () {
 	};
 
 	const handleClickOpenUpdate = (equipmentId) => {
-		const chosenEquipment = displayedData.find(el => el.id === equipmentId);
+		const chosenEquipment = data.find(el => el.id === equipmentId);
 		setFormData(chosenEquipment);
 		setSelectedId(equipmentId);
 		setOpenUpdate(true);
@@ -106,7 +106,7 @@ export default function EquipmentTable () {
 	};
 
 	const count = pages * size;
-	const displayedData = equipment?.map((el) => ({
+	const data = equipment?.map((el) => ({
 		id: el.id,
 		name: el.name,
 		actions: (
@@ -132,7 +132,7 @@ export default function EquipmentTable () {
 							<CreateButton onClick={handleCreateClick} text={'Create Equipment'}/>
 							<DefaultTable
 								columns={columns}
-								rows={displayedData}
+								rows={data}
 								page={page}
 								count={count}
 								rowsPerPage={size}

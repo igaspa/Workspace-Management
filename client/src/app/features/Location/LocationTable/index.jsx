@@ -68,7 +68,7 @@ export default function LocationTable () {
 	};
 
 	const handleClickOpenUpdate = (locationId) => {
-		const chosenLocation = displayedData.find(el => el.id === locationId);
+		const chosenLocation = data.find(el => el.id === locationId);
 		setFormData(chosenLocation);
 		setSelectedId(locationId);
 		setOpenUpdate(true);
@@ -120,7 +120,7 @@ export default function LocationTable () {
 			});
 	};
 	const count = pages * size;
-	const displayedData = location?.map((el) => ({
+	const data = location?.map((el) => ({
 		id: el.id,
 		address: el.address,
 		city: el.city,
@@ -145,7 +145,7 @@ export default function LocationTable () {
 							<CreateButton onClick={handleCreateClick} text={'Create Location'}/>
 							<DefaultTable
 								columns={columns}
-								rows={displayedData}
+								rows={data}
 								page={page}
 								count={count}
 								rowsPerPage={size}

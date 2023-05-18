@@ -100,7 +100,8 @@ exports.createWorkspaces = async (req, res) => {
 };
 
 exports.createOneWorkspace = async (req, res) => {
-  await generalController.createModel(workspace, req, res);
+  await workspaceService.createWorkspace(req);
+  res.status(201).json({ message: responseMessage.CREATE_SUCCESS(workspace.name) });
 };
 
 module.exports.getAllWorkspaces = async (req, res) => {

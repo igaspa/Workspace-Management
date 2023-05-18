@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import { Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { useGetAreaListQuery } from '../../api/areaApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../api/workspaceTypeApiSlice';
 import { errorHandler } from '../../utils/errors';
@@ -16,6 +16,7 @@ import { successToast } from '../../utils/toastifyNotification';
 import { useCreateMultipleWorkspacesMutation, useCreateWorkspaceMutation } from '../../api/workspaceApiSlice';
 import { v4 as uuidv4 } from 'uuid';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import { useGetEquipmentsListQuery } from '../../api/equipmentApiSlice';
 
 const theme = createTheme();
 
@@ -53,6 +54,44 @@ export default function WorkspaceCreation () {
 		{ areaId: '', typeId: '' }
 	);
 
+	const [currentEquipment, setEquipment] = useState([]);
+
+	const handleEquipmentChange = (event) => {
+		const { target: { value } } = event;
+		const newEl = value.slice(-1)[0];
+
+		const newEquipmentQuantity = [...currentEquipment];
+
+		// find if any element id is same as the newly added
+		const found = newEquipmentQuantity.find((el) => (el.id === newEl));
+
+		// if there are no elements with newly adding id, add that element to the list, otherwise increase quantity by 1
+		if (!found) {
+			newEquipmentQuantity.push({ id: newEl, quantity: 1 });
+		} else {
+			newEquipmentQuantity.map((el) => {
+				if (el.id === newEl) {
+					el.quantity += 1;
+				}
+				return el;
+			});
+		}
+
+		setEquipment(newEquipmentQuantity);
+	};
+
+	const handleEquipmentRemove = (id) => {
+		const newEquipmentQuantity = [...currentEquipment];
+		const index = newEquipmentQuantity.findIndex((el) => el.id === id);
+		if (index !== -1) {
+			newEquipmentQuantity[index].quantity -= 1;
+			if (newEquipmentQuantity[index].quantity === 0) {
+				newEquipmentQuantity.splice(index, 1);
+			}
+		}
+		setEquipment(newEquipmentQuantity);
+	};
+
 	const handleChange = (e) => {
 		const value = e.target.value;
 		const name = e.target.name;
@@ -81,6 +120,7 @@ export default function WorkspaceCreation () {
 		const uuid = uuidv4();
 		const apiCall = multipleWorkspaces ? createMultipleWorkspaces : createWorkspace;
 		if (!multipleWorkspaces) formData.id = uuid;
+		if (currentEquipment.length) formData.addedAccessories = currentEquipment;
 		await apiCall(formData)
 			.unwrap()
 			.then((response) => {
@@ -91,6 +131,7 @@ export default function WorkspaceCreation () {
 				if (authorizationError) navigate('/sign-in');
 			});
 		setFormData({});
+		setEquipment([]);
 		handleCreateOneClose();
 		handleCreateMultipleClose();
 	};
@@ -99,9 +140,11 @@ export default function WorkspaceCreation () {
 		navigate('/backoffice/workspaces');
 	};
 
-	const { data: areas = [], isError: isAreaError, error: areaErrorObject, isLoading: isAreaLoading } = useGetAreaListQuery();
+	const { data: [areas] = [], isError: isAreaError, error: areaErrorObject, isLoading: isAreaLoading } = useGetAreaListQuery();
 
 	const { data: [workspaceTypes] = [], isError: isWorkspaceTypesError, error: workspaceTypeErrorObject, isLoading: isWorkspaceTypesLoading } = useGetWorkspaceTypesListQuery();
+
+	const { data: [equipment] = [], isError: isEquipmentError, error: equipmentErrorObject, isLoading: isEquipmentsLoading } = useGetEquipmentsListQuery({});
 
 	useEffect(() => {
 		if (isWorkspaceTypesError) {
@@ -112,6 +155,10 @@ export default function WorkspaceCreation () {
 			const authorizationError = errorHandler(areaErrorObject);
 			if (authorizationError) navigate('/sign-in');
 		}
+		if (isEquipmentError) {
+			const authorizationError = errorHandler(equipmentErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
 		if (workspaceTypes?.length && areas?.length) {
 			setFormData((prevState) => ({
 				...prevState,
@@ -119,9 +166,9 @@ export default function WorkspaceCreation () {
 				areaId: areas[0].id
 			}));
 		}
-	}, [workspaceTypes, areas]);
+	}, [workspaceTypes, areas, equipment]);
 
-	if (isAreaLoading || isWorkspaceTypesLoading) {
+	if (isAreaLoading || isWorkspaceTypesLoading || isEquipmentsLoading) {
 		return <CircularProgress />;
 	}
 
@@ -196,6 +243,39 @@ export default function WorkspaceCreation () {
 														{workspaceType.name}
 													</MenuItem>
 												))}
+											</Select>
+										</FormControl>
+									</Grid>
+
+									<Grid item xs={12}>
+										<FormControl fullWidth>
+											<InputLabel id="multiple-chip-label">Accessories</InputLabel>
+											<Select
+												labelId="multiple-chip-label"
+												id="multiple-chip"
+												multiple
+												value={currentEquipment}
+												onChange={handleEquipmentChange}
+												input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+												renderValue={(selected) => (
+													<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+														{selected.map((currEq) => {
+															const eq = equipment.find(eq => eq.id === currEq.id);
+															return <Chip key={eq.id} label={`${eq.name} - ${currEq.quantity}`} onDelete={(event) => handleEquipmentRemove(eq.id)}
+																onMouseDown={(event) => event.stopPropagation()}
+															/>;
+														})}
+													</Box>
+												)}
+											>
+
+												{equipment.map((eq) => (
+													<MenuItem key={eq.id} value={eq.id}>
+														{/* <Checkbox checked={currentEquipment.includes(eq.id)} /> */}
+														{eq.name}
+													</MenuItem>
+												))}
+
 											</Select>
 										</FormControl>
 									</Grid>

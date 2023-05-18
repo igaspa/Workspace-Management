@@ -87,11 +87,14 @@ const Dashboard = () => {
 	});
 
 	useEffect(() => {
-		if (workspaceTypesError || workspacesError) {
-			const authorizationError = errorHandler(workspaceTypeErrorObject) || errorHandler(workspacesErrorObject);
+		if (workspaceTypesError) {
+			const authorizationError = errorHandler(workspaceTypeErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		} else if (workspacesError) {
+			const authorizationError = errorHandler(workspaceTypeErrorObject);
 			if (authorizationError) navigate('/sign-in');
 		}
-	}, [workspaceTypesData, workspacesData]);
+	}, [workspaceTypeErrorObject, workspacesErrorObject]);
 
 	// Render loading state
 	if (workspacesLoading || workspaceTypesLoading) {
@@ -102,28 +105,30 @@ const Dashboard = () => {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<main>
-				<Box spacing={2} direction="row" flexWrap="wrap" margin={0}>
-					<Container maxWidth="sm">
-						<Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>Find a Space
-						</Typography>
-					</Container>
-					<Stack sx={{ pt: 1 }} direction="row" spacing={2} justifyContent="center">
-						{workspaceTypesData.map((workspaceType) => (
-							<WorkspaceTypeCard key={workspaceType.id} workspaceType={workspaceType} handleWorkspaceTypeSelect={() => {
-								setPage(1);
-								handleWorkspaceTypeSelect(workspaceType.name);
-							}} />
-						))}
-					</Stack>
-					<Container maxWidth="lg" display="grid" gridtemplaterows="1fr 1fr)">
-						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
-							<DateFilter onChange={(event) => {
-								setPage(1);
-								handleFromDateChange(event);
-							}} date={fromDate} dates={dates} />
+				{workspaceTypesData?.length
 
-							{ (role.includes('Administrator') || role.includes('Lead')) &&
+					? <Box spacing={2} direction="row" flexWrap="wrap" margin={0}>
+						<Container maxWidth="sm">
+							<Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>Find a Space
+							</Typography>
+						</Container>
+						<Stack sx={{ pt: 1 }} direction="row" spacing={2} justifyContent="center">
+							{workspaceTypesData.map((workspaceType) => (
+								<WorkspaceTypeCard key={workspaceType.id} workspaceType={workspaceType} handleWorkspaceTypeSelect={() => {
+									setPage(1);
+									handleWorkspaceTypeSelect(workspaceType.name);
+								}} />
+							))}
+						</Stack>
+						<Container maxWidth="lg" display="grid" gridtemplaterows="1fr 1fr)">
+							<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
+								<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
+								<DateFilter onChange={(event) => {
+									setPage(1);
+									handleFromDateChange(event);
+								}} date={fromDate} dates={dates} />
+
+								{ (role.includes('Administrator') || role.includes('Lead')) &&
 							<>
 								<Typography align="center" color="text.primary" sx={{ paddingLeft: 1, paddingRight: 1, fontSize: 14 }}> Until: </Typography>
 								<DateFilter onChange={(event) => {
@@ -131,29 +136,31 @@ const Dashboard = () => {
 									handleUntilDateChange(event);
 								}} date={untilDate} dates={dates} />
 							</>
-							}
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time start: </Typography>
-							<TimeFilter onChange={(event) => {
-								setPage(1);
-								handleStartHourChange(event);
-							}} hour={startHour} hours={startHours}/>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time end: </Typography>
-							<TimeFilter onChange={(event) => {
-								setPage(1);
-								handleEndHourChange(event);
-							}} hour={endHour} hours={endHours}/>
-						</div>
-					</Container>
-					<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
-						<Grid container sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)' }}>
-							{workspacesData
-								.map((workspace) => {
-									return <WorkspaceCard key={workspace.id} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>;
-								})}
-						</Grid>
-					</Container>
-					<BasicPagination count={pages} page={page} onChange={handlePageChange}/>
-				</Box>
+								}
+								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time start: </Typography>
+								<TimeFilter onChange={(event) => {
+									setPage(1);
+									handleStartHourChange(event);
+								}} hour={startHour} hours={startHours}/>
+								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time end: </Typography>
+								<TimeFilter onChange={(event) => {
+									setPage(1);
+									handleEndHourChange(event);
+								}} hour={endHour} hours={endHours}/>
+							</div>
+						</Container>
+						<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
+							<Grid container sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)' }}>
+								{workspacesData
+									.map((workspace) => {
+										return <WorkspaceCard key={workspace.id} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>;
+									})}
+							</Grid>
+						</Container>
+						<BasicPagination count={pages} page={page} onChange={handlePageChange}/>
+					</Box>
+					:				'Something went wrong...'
+				}
 			</main>
 		</ThemeProvider>
 	);

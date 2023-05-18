@@ -14,6 +14,18 @@ export const reservationsApiSlice = createApi({
 	}),
 	tagTypes: ['reservationsList', 'reservation'],
 	endpoints: (builder) => ({
+
+		// this method gets users reservations
+		getUsersReservationList: builder.query({
+			query: () => '/reservation?include=user&include=workspace',
+			providesTags: ['reservationsList', 'reservation'],
+			transformResponse: (response, meta) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			}
+		}),
+
 		// this method gets all the reservations
 		getReservationsList: builder.query({
 			query: () => '/reservation/all?include=user&include=workspace',
@@ -94,6 +106,7 @@ export const reservationsApiSlice = createApi({
 });
 
 export const {
+	useGetUsersReservationListQuery,
 	useGetReservationsListQuery,
 	useGetReservationsFromWorkspaceQuery,
 	useCreateReservationMutation,

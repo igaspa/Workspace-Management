@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useGetReservationsListQuery, useDeleteReservationMutation } from '../../../api/reservationApiSlice';
+import { useDeleteReservationMutation, useGetUsersReservationListQuery } from '../../../api/reservationApiSlice';
 import { CircularProgress, Typography, Grid, Box } from '@mui/material';
 import ReservationCard from '../../../components/Reservation/reservationCard';
 import UpdateReservation from '../UpdateReservation';
@@ -8,7 +8,7 @@ import { successToast, errorToast } from '../../../utils/toastifyNotification';
 import { BasicPagination } from '../../../components/Pagination/pagination';
 
 const Reservations = () => {
-	const { data: [reservationData, pages] = [], isError, isLoading } = useGetReservationsListQuery();
+	const { data: [reservationData, pages] = [], isError, isLoading } = useGetUsersReservationListQuery();
 	const [deleteReservation] = useDeleteReservationMutation();
 	const [open, setOpen] = useState(false);
 	const [selectedId, setSelectedId] = useState(' ');

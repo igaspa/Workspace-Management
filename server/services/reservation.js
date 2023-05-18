@@ -13,14 +13,13 @@ const deletePermamentReservationFromDB = async (data) => {
   const transaction = await sequelize.transaction();
   try {
     // if reservations has not started completely delete it from db
-    console.log(new Date(), new Date(userReservation.startAt));
     if (new Date(userReservation.startAt) > new Date()) {
       await reservation.destroy({
         where: { id },
         transaction
       });
     } else {
-      // Add endAt date for reservation
+      // if reservation started, set endAt date to current date
       await reservation.update({ endAt: new Date() }, {
         where: { id },
         transaction

@@ -5,25 +5,35 @@ const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 
 exports.createMultipleWorkspaces = async (req) => {
-  const { prefix, start, end, areaId, typeId, permanentlyReserved } = req.body;
+  const { prefix, start, end, areaId, typeId, permanentlyReserved, addedAccessories } = req.body;
 
   let count = start;
 
-  // after we count working spaces we know from where to continue
-  const objectList = [];
-  while (count <= end) {
-    objectList.push({
-      id: uuidv4(),
-      name: `${prefix} - ${count}`,
-      permanentlyReserved: permanentlyReserved || false,
-      typeId,
-      areaId
-    });
-    count++;
-  }
+  let transaction;
+  try {
+    transaction = await sequelize.transaction();
+    while (count <= end) {
+      const id = uuidv4();
+      const data = {
+        id,
+        name: `${prefix} - ${count}`,
+        permanentlyReserved: permanentlyReserved || false,
+        typeId,
+        areaId
+      };
+      // create workspace
+      await workspace.create(data, { transaction });
 
-  // bulk insert all working spaces in db
-  await workspace.bulkCreate(objectList);
+      // create workspaceEquipment
+      if (addedAccessories.length) await addEquipmentWorkspace(addedAccessories, transaction, id);
+
+      count++;
+    }
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };
 
 exports.deleteWorkspacesFromArea = async (req) => {
@@ -81,12 +91,10 @@ exports.deleteMultipleWorkspaces = async (req) => {
 
 const addEquipmentWorkspace = async (itemList, transaction, workspaceId) => {
   for (const el of itemList) {
-    console.log(el.quantity, new Date());
     const newModel = await workspaceEquipment.create(
       { workspaceId, equipmentId: el.id, quantity: el.quantity },
       { transaction }
     );
-    console.log(newModel);
     if (!newModel) throw errors.BAD_REQUEST(responseMessages.INVALID_ID_TYPE);
   }
 };
@@ -146,6 +154,28 @@ exports.updateWorkspace = async (req) => {
       }, { transaction });
       if (!updatedModel) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(workspace.name));
     }
+    await transaction.commit();
+  } catch (error) {
+    // if there was an error, rollback the transaction
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+exports.createWorkspace = async (req) => {
+  let transaction;
+  try {
+    transaction = await sequelize.transaction();
+
+    const { id, typeId, areaId, name, permanentlyReserved, addedAccessories } = req.body;
+
+    // create workspace
+    await workspace.create({ id, typeId, areaId, name, permanentlyReserved }, { transaction });
+
+    // create workspaceEquipment
+    if (addedAccessories.length) await addEquipmentWorkspace(addedAccessories, transaction, id);
+
+    // commit transcation
     await transaction.commit();
   } catch (error) {
     // if there was an error, rollback the transaction

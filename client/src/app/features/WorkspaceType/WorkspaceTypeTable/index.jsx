@@ -75,7 +75,7 @@ export default function WorkspaceTypeTable () {
 	};
 
 	const handleClickOpenUpdate = (workspaceTypeId) => {
-		const chosenWorkspaceType = displayedData.find(el => {
+		const chosenWorkspaceType = data.find(el => {
 			return (el.id === workspaceTypeId);
 		});
 		setFormData(chosenWorkspaceType);
@@ -128,9 +128,8 @@ export default function WorkspaceTypeTable () {
 				errorHandler(error);
 			});
 	};
-
 	const count = pages * size;
-	const displayedData = workspaceType?.map((el) => ({
+	const data = workspaceType?.map((el) => ({
 		id: el.id,
 		name: el.name,
 		maxReservationInterval: `${el.maxReservationInterval.hours.toString().padStart(2, '0')}:${el.maxReservationInterval.minutes ? el.maxReservationInterval.minutes.toString().padStart(2, '0') : '00'}`,
@@ -160,7 +159,7 @@ export default function WorkspaceTypeTable () {
 										<CreateButton onClick={handleCreateClick} text={'Create new Workspace Type'} />
 										<DefaultTable
 											columns={columns}
-											rows={displayedData}
+											rows={data}
 											page={page}
 											count={count}
 											rowsPerPage={size}

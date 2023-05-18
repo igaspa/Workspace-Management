@@ -5,6 +5,7 @@ import DeleteButton from '../../../components/Buttons/deleteButton';
 import { successToast, errorToast } from '../../../utils/toastifyNotification';
 import DefaultTable from '../../../components/Backoffice/table';
 import { useState } from 'react';
+import Prompt from '../../../components/Dialogs/dialog';
 
 const columns = [
 	{
@@ -39,22 +40,34 @@ export default function ReservationTable () {
 	const navigate = useNavigate();
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
+	const [selectedId, setSelectedId] = useState('');
+	const [openDelete, setOpenDelete] = useState(false);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
+
 	const handleChangeRowsPerPage = (event) => {
 		setSize(+event.target.value);
 		setPage(0);
+	};
+
+	const handleClickOpenDelete = (equipmentId) => {
+		setSelectedId(equipmentId);
+		setOpenDelete(true);
+	};
+	const handleClose = () => {
+		setOpenDelete(false);
 	};
 
 	const { data: [reservationData, pages] = [], isError, isLoading } = useGetReservationsListQuery({
 		...(page && { page: page + 1 }),
 		...(size && { size })
 	});
-	const handleDeleteClick = async (event, id) => {
+
+	const handleDeleteClick = async (event) => {
 		event.preventDefault();
-		await deleteReservation(id)
+		await deleteReservation(selectedId)
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
@@ -64,16 +77,13 @@ export default function ReservationTable () {
 			});
 	};
 	const count = pages * size;
-	const displayedData = reservationData?.map((el) => {
-		const button = <DeleteButton onClick={(event) => handleDeleteClick(event, el.id)} text={'Delete Reservation'} />;
-		return {
-			id: el.id,
-			user: `${el.user.firstName} ${el.user.lastName}`,
-			workspace: el.workspace.name,
-			dateTime: el.dateTime,
-			actions: button
-		};
-	});
+	const data = reservationData?.map((el) => ({
+		id: el.id,
+		user: `${el.user.firstName} ${el.user.lastName}`,
+		workspace: el.workspace.name,
+		dateTime: el.dateTime,
+		actions: <DeleteButton onClick={(event) => handleClickOpenDelete(event, el.id)} text={'Delete Reservation'} />
+	}));
 	return (
 		<div>
 			{ role.includes('Administrator')
@@ -85,16 +95,22 @@ export default function ReservationTable () {
 						? (
 							<Typography color="error">Failed to load reservations.</Typography>
 						)
-						: (
+						: (<>
 							<DefaultTable columns={columns}
-								rows={displayedData}
+								rows={data}
 								page={page}
 								count={count}
 								rowsPerPage={size}
 								handleChangePage={handleChangePage}
 								handleChangeRowsPerPage={handleChangeRowsPerPage}
 								rowsPerPageOptions={[10, 25, 50, 100]}/>
-						)
+							<Prompt open={openDelete}
+								onClose={handleClose}
+								title={'Delete Reservation'}
+								body={'Are you sure you want to delete this reservation?'}
+								handleCancel={handleClose}
+								handleConfirm={handleDeleteClick} />
+						</>)
 				: navigate('/')}
 		</div>
 	);

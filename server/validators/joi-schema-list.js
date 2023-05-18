@@ -64,14 +64,18 @@ exports.workspace_collection = joi.object({
     .required(),
   prefix: joi.string()
     .min(2)
-    .max(20)
+    .max(30)
     .required(),
   start: joi.number()
     .min(1)
     .required(),
   end: joi.number()
     .max(200)
-    .required()
+    .required(),
+  addedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
 }).options({ abortEarly: false });
 
 exports.workspace = joi.object({

@@ -156,7 +156,7 @@ export default function PersistentDrawerLeft ({ children }) {
 				</List>
 				<Divider />
 				<List>
-					{role.includes('Administrator') && (
+					{role?.length && role.includes('Administrator') && (
 						<ListItem disablePadding>
 							<Link to="/backoffice" style={{ color: '#202120' }} onClick={handleDrawerClose}>
 								<ListItemButton>

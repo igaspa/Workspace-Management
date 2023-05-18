@@ -10,6 +10,8 @@ import CreateWorkspaceTypePage from '../../pages/CreateWorkspaceType';
 import CreateEquipmentPage from '../../pages/CreateEquipment';
 import LocationList from '../../pages/Location';
 import CreateLocationPage from '../../pages/CreateLocation';
+import AreaTable from '../../features/Area/AreaTable';
+import CreateArea from '../../features/Area/CreateArea';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const BackofficeRoutes = {
@@ -51,6 +53,14 @@ const BackofficeRoutes = {
 		{
 			path: '/backoffice/create-location',
 			element: <CreateLocationPage />
+		},
+		{
+			path: '/backoffice/area',
+			element: <AreaTable />
+		},
+		{
+			path: '/backoffice/create-area',
+			element: < CreateArea/>
 		}
 	]
 };

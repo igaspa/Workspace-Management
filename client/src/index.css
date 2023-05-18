@@ -70,3 +70,12 @@ button:focus-visible {
 .css-hyum1k-MuiToolbar-root{
   background-color: #4183D7;
 }
+::-webkit-scrollbar {
+  background-color: rgb(227, 225, 225);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+  background-color:rgb(255,255,255);
+  border-radius: 8px;
+  border: 1px solid;
+}

@@ -128,7 +128,7 @@ export default function PersistentDrawerLeft ({ children }) {
 				<List>
 					{[{ text: 'Home', route: '/backoffice' }, { text: 'Equipment', route: 'equipment' },
 						{ text: 'WorkspaceType', route: 'workspace-type' }, { text: 'Workspace', route: 'workspaces' },
-						{ text: 'Location', route: 'location' }].map(({ text, route }) => (
+						{ text: 'Location', route: 'location' }, { text: 'Area', route: 'area' }].map(({ text, route }) => (
 						<ListItem key={text} disablePadding>
 							<Link to={route} style={{ color: '#202120' }}>
 								<ListItemButton>

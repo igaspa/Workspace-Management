@@ -61,10 +61,12 @@ export default function EquipmentTable () {
 		setSelectedId(equipmentId);
 		setOpenUpdate(true);
 	};
+
 	const handleClose = () => {
 		setOpenUpdate(false);
 		setOpenDelete(false);
 	};
+
 	const { data: [equipment, pages] = [], isError: isEquipmentsError, isLoading: isEquipmentsLoading } = useGetEquipmentsListQuery({
 		...(page && { page: page + 1 }),
 		...(size && { size })

@@ -131,7 +131,7 @@ export default function AreaTable () {
 		const objectToUpdate = {
 			...(data.get('name') && { name: data.get('name') }),
 			...(data.get('floor') && { floor: data.get('floor') }),
-			...(data.get('location') && { country: data.get('location') })
+			...(data.get('location') && { locationId: data.get('location') })
 		};
 		await updateArea({
 			id: selectedId,

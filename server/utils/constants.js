@@ -48,5 +48,5 @@ module.exports.constraintName = {
   userRole: 'role_user_role',
   roleUser: 'user_user_role',
   equipmentWorkspace: 'equipment_workspace',
-  workspaceEquipment: 'workspaceEquipment'
+  workspaceEquipment: 'workspace_equipment'
 };

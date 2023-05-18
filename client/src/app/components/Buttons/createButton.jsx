@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function CreateButton ({ onClick, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={{ paddingLeft: 2, paddingBottom: 2 }}>
+		<Stack spacing={2} direction="row" sx={{ paddingBottom: 2 }}>
 			<Button
 				variant="contained"
 				size="medium"

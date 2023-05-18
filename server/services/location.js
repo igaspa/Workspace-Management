@@ -20,7 +20,7 @@ exports.deleteLocation = async (req, res) => {
   const workspaceIdList = workspaceList.map(workspace => workspace.id);
 
   try {
-    if (workspaceIdList) {
+    if (workspaceIdList.length) {
       await deleteWorkspaces(workspaceIdList, req.body.forceDelete, transaction);
       await area.destroy({
         where: { id: areaIds.map(area => area.id) }
@@ -29,12 +29,10 @@ exports.deleteLocation = async (req, res) => {
 
     const deletedLocation = await location.destroy({ where: { id } }, { transaction });
 
-    if (!deletedLocation) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(location.address));
-
+    if (!deletedLocation) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(location.name));
     await transaction.commit();
-
     res.status(200).json({
-      message: responseMessage.DELETE_SUCCESS(location.address)
+      message: responseMessage.DELETE_SUCCESS(location.name)
     });
   } catch (error) {
     await transaction.rollback();

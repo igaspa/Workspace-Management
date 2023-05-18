@@ -3,7 +3,7 @@ const models = require('../../database/models');
 const responseMessages = require('../../utils/response-messages');
 const { EXCLUDE_LIST } = require('../../utils/constants');
 
-module.exports.checkModelAssociations = (Model, include, attribiteList) => {
+module.exports.checkModelAssociations = (Model, include) => {
   const associations = Object.keys(Model.associations);
   const result = [];
 

@@ -15,13 +15,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      max_reservation_time_daily: {
+      max_reservation_interval: {
         allowNull: true,
         type: SequelizeType.INTERVAL
       },
-      max_reservation_time_overall: {
-        allowNull: false,
+      max_reservation_window: {
+        allowNull: true,
         type: SequelizeType.INTERVAL
+      },
+      allow_permanent_reservations: {
+        allowNull: false,
+        type: SequelizeType.BOOLEAN
       },
       deleted_at: {
         allowNull: true,

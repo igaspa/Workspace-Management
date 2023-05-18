@@ -24,7 +24,6 @@ module.exports = {
     `);
   },
   async down (queryInterface, _Sequelize) {
-    await queryInterface.removeConstraint(tableName.reservation, 'overlapping_reservation');
     await queryInterface.dropTable(tableName.reservation);
   }
 };

@@ -1,9 +1,9 @@
 'use strict';
-const { schemeName } = require('../../utils/constants');
+const { schemaName } = require('../../utils/constants');
 
 module.exports = {
   up: async (queryInterface, _Sequelize) => {
-    await queryInterface.createSchema(schemeName);
+    await queryInterface.createSchema(schemaName);
   },
 
   down: async (_queryInterface, _Sequelize) => {

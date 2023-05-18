@@ -10,7 +10,7 @@ module.exports = {
         name: 'East Wing',
         location_id: '5419ce7d-c415-480d-a980-cd169559bc85',
         floor: 'First Floor',
-        image: 'https://drive.google.com/file/d/1Z5CBJ8I0Q6s_nM2Lfax95zj8vQiGgUf6/view?usp=share_link',
+        image: 'https://drive.google.com/uc?id=1Z5CBJ8I0Q6s_nM2Lfax95zj8vQiGgUf6',
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -19,7 +19,7 @@ module.exports = {
         name: 'West Wing',
         location_id: '5419ce7d-c415-480d-a980-cd169559bc85',
         floor: 'First Floor',
-        image: 'https://drive.google.com/file/d/1wt0xNQGs4Ud5vi37oiJqEZIOgXuyy4kq/view?usp=share_link',
+        image: 'https://drive.google.com/uc?id=1wt0xNQGs4Ud5vi37oiJqEZIOgXuyy4kq',
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -28,7 +28,7 @@ module.exports = {
         name: 'Third Floor',
         location_id: '5419ce7d-c415-480d-a980-cd169559bc85',
         floor: 'Third Floor',
-        image: 'https://drive.google.com/file/d/1v0m6_cdwT4DqUehUiA7s-rCLuDUJ7yjh/view?usp=share_link',
+        image: 'https://drive.google.com/uc?id=1v0m6_cdwT4DqUehUiA7s-rCLuDUJ7yjh',
         created_at: new Date(),
         updated_at: new Date()
       }

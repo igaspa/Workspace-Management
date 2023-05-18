@@ -53,6 +53,7 @@ Workspace Management will be used to reserve workspaces in the office. Included 
 #### Frontend Built With:
 
 - [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
+- [![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)](https://redux-toolkit.js.org/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -92,6 +93,11 @@ Workspace Management will be used to reserve workspaces in the office. Included 
 6. In the server folder run the following command to start the backend:
    ```
     npm run start:{env}
+   ```
+
+7. In the client folder run the following command to start the backend:
+   ```
+    npm run dev
    ```
 
    

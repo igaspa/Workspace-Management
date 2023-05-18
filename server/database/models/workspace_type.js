@@ -23,8 +23,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: DataTypes.STRING,
-    maxReservationTimeDaily: AdditDataTypes.INTERVAL,
-    maxReservationTimeOverall: AdditDataTypes.INTERVAL
+    participantLimit: {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
+      allowNull: true
+    },
+    allowPermanentReservations: DataTypes.BOOLEAN,
+    maxReservationInterval: AdditDataTypes.INTERVAL,
+    maxReservationWindow: AdditDataTypes.INTERVAL
   }, {
     sequelize,
     modelName: 'workspaceType',

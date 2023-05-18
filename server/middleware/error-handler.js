@@ -46,16 +46,17 @@ module.exports.errorMiddleware = async (error, _req, res, _next) => {
 
   if (error.name === 'SequelizeUniqueConstraintError') {
     const messageObj = createSequelizeConstraintErrorMessage(error);
-    return res.status(422).json({ message: responseMessage.UNIQUE_CONSTRAINT_ERROR(messageObj) });
+    return res.status(422).json({ details: responseMessage.UNIQUE_CONSTRAINT_ERROR(messageObj) });
   }
 
   if (error.original?.constraint === 'overlapping_reservation') {
-    return res.status(422).json({ message: responseMessage.RESERVATION_UNIQUE_CONSTRAINT_ERROR });
+    return res.status(422).json({ details: responseMessage.RESERVATION_UNIQUE_CONSTRAINT_ERROR });
   }
 
   if (error.name === 'SequelizeForeignKeyConstraintError') {
-    return res.status(422).json({ message: error.parent.detail });
+    return res.status(422).json({ details: error.parent.detail });
   }
 
-  return res.status(500).json({ message: 'Please try again later, we are facing an issue on our side.' });
+  console.log(error);
+  return res.status(500).json({ details: 'Please try again later, we are facing an issue on our side.' });
 };

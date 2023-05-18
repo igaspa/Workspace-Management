@@ -2,25 +2,33 @@ const { reservation, workspace, workspaceType, sequelize } = require('../databas
 const { Op } = require('sequelize');
 const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
-const { validateReservationConstraints, validateMinimumReservationInterval } = require('./helpers/reservation-calculations');
+const { validateReservationConstraints, validateReservationTimeIntervals } = require('./helpers/reservation-calculations');
 const { roles } = require('../utils/roles');
 const { CONFERENCE_ROOM_ID } = require('../utils/constants');
 
-const deletePernamentReservationFromDB = async (data) => {
-  const { id, workspaceId } = data;
+const deletePermamentReservationFromDB = async (data) => {
+  const { id, userReservation } = data;
 
   // Start  transaction
   const transaction = await sequelize.transaction();
   try {
-    // Add endAt date for reservation
-    await reservation.update({ endAt: new Date() }, {
-      where: { id },
-      transaction
-    });
+    // if reservations has not started completely delete it from db
+    if (new Date(userReservation.startAt) > new Date()) {
+      await reservation.destroy({
+        where: { id },
+        transaction
+      });
+    } else {
+      // if reservation started, set endAt date to current date
+      await reservation.update({ endAt: new Date() }, {
+        where: { id },
+        transaction
+      });
+    }
 
     // Update the workspace without the permanentlyReserved flag
     await workspace.update({ permanentlyReserved: false }, {
-      where: { id: workspaceId },
+      where: { id: userReservation.workspaceId },
       transaction
     });
 
@@ -31,19 +39,19 @@ const deletePernamentReservationFromDB = async (data) => {
   }
 };
 
-exports.deletePermanentReservation = async (req) => {
+const deletePermanentReservation = async (req) => {
   const { id } = req.params;
   const userReservation = await reservation.findOne({
     where: { id },
-    attributes: ['workspaceId', 'endAt']
+    attributes: ['workspaceId', 'endAt', 'startAt']
   });
   if (userReservation.endAt) throw errors.NOT_FOUND(responseMessage.NOT_FOUND('Permanent ' + reservation.name));
-  const { workspaceId } = userReservation;
-  const data = { id, workspaceId };
-  await deletePernamentReservationFromDB(data);
+  const data = { id, userReservation };
+  await deletePermamentReservationFromDB(data);
 };
+exports.deletePermanentReservation = deletePermanentReservation;
 
-exports.deleteReservation = async (req) => {
+const deleteReservation = async (req) => {
   const { id } = req.params;
   const userReservation = await reservation.findOne({
     where: { id },
@@ -64,19 +72,23 @@ exports.deleteReservation = async (req) => {
     );
   }
 };
+exports.deleteReservation = deleteReservation;
 
-exports.validateUserRights = async (req) => {
+exports.validateUserRightsAndDeleteReservation = async (req) => {
   const { id } = req.params;
   const userReservation = await reservation.findOne({
     where: { id },
     attributes: ['userId', 'endAt']
   });
-  if (
-    (req.user.id !== userReservation.id && !req.user.roles.includes(roles.administrator)) ||
-    userReservation.endAt === null
-  ) {
+
+  if (!userReservation) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(reservation.name));
+
+  if (req.user.id !== userReservation.userId && !req.user.roles.includes(roles.administrator)) {
     throw errors.FORBIDDEN(responseMessage.USER_PERMISSION_ERROR);
   }
+
+  if (userReservation.endAt) await deleteReservation(req);
+  else await deletePermanentReservation(req);
 };
 
 const getUserReservationsByWorkspaceType = async (userId, workspaceTypeId) => {
@@ -107,14 +119,14 @@ const retrieveReservationsThatIsBeingUpdated = async (reservationId, userId) => 
       model: workspace,
       include: [{
         model: workspaceType,
-        attributes: ['id', 'maxReservationTimeDaily', 'maxReservationTimeOverall']
+        attributes: ['id', 'maxReservationInterval', 'maxReservationWindow']
       }]
     }]
   });
   return currentReservation;
 };
 
-const savePernamentReservationToDB = async (data) => {
+const savePermanentReservationToDB = async (data) => {
   const { id, userId, workspaceId, start } = data;
   let transaction;
 
@@ -137,60 +149,83 @@ const savePernamentReservationToDB = async (data) => {
   }
 };
 
-exports.createPernamentReservation = async (req) => {
+exports.createPermanentReservation = async (req) => {
   const { id, userId, workspaceId, startAt } = req.body;
 
-  // retrieve all current reservations for this worksapceId
-  const workspaceReservations = await reservation.count({
+  // retrieve workspaceInfo we want to create reservation for
+  const workspaceInfo = await workspace.findOne({
+    where: { id: workspaceId },
+    attributes: [],
+    include: [{ model: workspaceType, attributes: ['id', 'allowPermanentReservations'] }]
+  });
+  if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
+
+  const { workspaceType: { id: workspaceTypeId, allowPermanentReservations } } = workspaceInfo;
+
+  if (!allowPermanentReservations) throw errors.BAD_REQUEST(responseMessage.PERMANENT_RESERVATION_NOT_SUPPORTED);
+
+  // retrieve all current reservations from this worksapceId or user
+  const countActiveUserOrWorkspaceReservations = await reservation.count({
     where: {
-      workspaceId,
       [Op.or]: [
-        { endAt: { [Op.gt]: new Date(startAt) } },
-        { endAt: null }
+        {
+          workspaceId,
+          [Op.or]: [
+            { endAt: { [Op.gt]: new Date(startAt) } },
+            { endAt: null }
+          ]
+        },
+        {
+          userId,
+          [Op.or]: [
+            { endAt: { [Op.gt]: new Date(startAt) } },
+            { endAt: null }
+          ]
+        }
       ]
-    }
+    },
+    include: [
+      {
+        model: workspace,
+        include: [
+          {
+            model: workspaceType,
+            where: {
+              id: workspaceTypeId
+            }
+          }
+        ]
+      }
+    ]
   });
 
-  // throw error if this workspace has active reservations
-  if (workspaceReservations) throw errors.CONFLICT(responseMessage.WORKSPACE_PERNAMENT_RESERVATION_CONFLICT);
-
-  // count users permanent reservations
-  const userReservations = await reservation.count({
-    where: { userId, endAt: null }
-  });
-
-  // throw error if this user has permanent reservation
-  if (userReservations) throw errors.CONFLICT(responseMessage.USER_PERNAMENT_RESERVATION_CONFLICT);
+  // throw error if this user or workspace already has active reservations
+  if (countActiveUserOrWorkspaceReservations) throw errors.CONFLICT(responseMessage.ACTIVE_RESERVATION_CONFLICT);
 
   // Create date objects corresponding to the dates that were sent
   const start = new Date(startAt);
   const data = { id, userId, workspaceId, start };
-  await savePernamentReservationToDB(data);
+  await savePermanentReservationToDB(data);
 };
 
 exports.createReservation = async (req) => {
   const { id, workspaceId, startAt, endAt } = req.body;
 
-  // retrive workspace with workspaceType from db to get information abot reservation interval
+  // retrieve workspace with workspaceType from db to get information abot reservation interval
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
     attributes: ['permanentlyReserved'],
-    include: [{ model: workspaceType, attributes: ['id', 'maxReservationTimeDaily', 'maxReservationTimeOverall'] }]
+    include: [{ model: workspaceType, attributes: ['id', 'maxReservationInterval', 'maxReservationWindow'] }]
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  const { permanentlyReserved, workspaceType: { id: workspaceTypeId, maxReservationTimeDaily, maxReservationTimeOverall } } = workspaceInfo;
+  const { permanentlyReserved, workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow } } = workspaceInfo;
 
   // validate this workspace is not permanently reserved
   if (permanentlyReserved) throw errors.CONFLICT(responseMessage.WORKSPACE_PERMANENTLY_RESERVED);
 
   const userId = req.user.id;
-
-  // Create date objects corresponding to the dates that were sent
-  const start = new Date(startAt);
-  const end = new Date(endAt);
-
-  const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
+  const data = { startAt, endAt, maxReservationInterval, maxReservationWindow };
   const userRoles = req.user.roles;
 
   // validate reservation time if user is not administrator or lead
@@ -198,7 +233,7 @@ exports.createReservation = async (req) => {
     const reservations = await getUserReservationsByWorkspaceType(userId, workspaceTypeId) || [];
     validateReservationConstraints(reservations, data);
   }
-  validateMinimumReservationInterval(start, end);
+  validateReservationTimeIntervals(startAt, endAt);
 
   // Create the reservation
   const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
@@ -206,8 +241,8 @@ exports.createReservation = async (req) => {
     id,
     userId,
     workspaceId,
-    startAt: start,
-    endAt: end,
+    startAt: new Date(startAt),
+    endAt: new Date(endAt),
     participants: participants || null
   });
 };
@@ -227,36 +262,31 @@ exports.updateReservation = async (req) => {
   if (currentReservation.endAt <= new Date()) throw errors.VALIDATION(responseMessage.UPDATE_EXPIRED_RESERVATION);
 
   // destruct needed attributes for validation
-  const { workspace: { workspaceType: { id: workspaceTypeId, maxReservationTimeDaily, maxReservationTimeOverall } } } = currentReservation;
-
-  // create Date object with new start and end
-  const start = new Date(startAt);
-  const end = new Date(endAt);
-
-  const userRoles = req.user.roles;
+  const { workspace: { workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow } } } = currentReservation;
 
   // validate reservation time if user is not administrator or lead
+  const userRoles = req.user.roles;
   if (!userRoles.includes(roles.administrator || roles.lead)) {
     const reservations = getUserReservationsByWorkspaceType(userId, workspaceTypeId);
 
     // filter all reservations except requested one, since we need to validate new reservation start and end
     const reservationsExceptRequested = reservations.length ? reservations.filter(reservation => reservation.id !== id) : [];
-    const data = { start, end, maxReservationTimeDaily, maxReservationTimeOverall };
+    const data = { startAt, endAt, maxReservationInterval, maxReservationWindow };
     validateReservationConstraints(reservationsExceptRequested, data);
   }
 
   // all reservations need to be divisible with min interval
-  validateMinimumReservationInterval(start, end);
+  validateReservationTimeIntervals(startAt, endAt);
 
   // updateReservation
   const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
   const [updatedModel, _updatedData] = await reservation.update(
-    { startAt: start, endAt: end, participants }, {
+    { startAt: new Date(startAt), endAt: new Date(endAt), participants }, {
       where: {
         id,
         userId
       },
       returning: true
     });
-  if (!updatedModel) throw errors.BAD_REQUEST(responseMessage.UPDATE_UNSUCCESSFULL(reservation.name));
+  if (!updatedModel) throw errors.CONFLICT(responseMessage.UPDATE_UNSUCCESSFUL(reservation.name));
 };

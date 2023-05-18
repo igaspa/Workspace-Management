@@ -1,4 +1,4 @@
-module.exports.schemeName = 'table_management';
+module.exports.schemaName = 'workspace_management';
 module.exports.EXCLUDE_LIST = ['createdAt', 'updatedAt', 'deletedAt', 'password'];
 
 module.exports.notificationStatus = {
@@ -32,7 +32,9 @@ module.exports.tableName = {
   workspaceType: 'workspace_type',
   workspace: 'workspace',
   reservation: 'reservation',
-  userRole: 'user_role'
+  userRole: 'user_role',
+  equipment: 'equipment',
+  workspaceEquipment: 'workspace_equipment'
 };
 
 module.exports.constraintName = {
@@ -44,5 +46,7 @@ module.exports.constraintName = {
   workspaceArea: 'workspace_area',
   areaLocation: 'area_location',
   userRole: 'role_user_role',
-  roleUser: 'user_user_role'
+  roleUser: 'user_user_role',
+  equipmentWorkspace: 'equipment_workspace',
+  workspaceEquipment: 'workspace_equipment'
 };

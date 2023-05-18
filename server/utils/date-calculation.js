@@ -1,9 +1,8 @@
-exports.convertToMs = (interval) => {
-  const dateInMs = ((interval.hours || 0) * 60 * 60 + (interval.minutes || 0) * 60) * 1000;
-  return dateInMs;
-};
+exports.MINIMUM_RESERVATION_MINUTES = 5;
 
-exports.MINIMUM_RESERVATION_INTERVAL = 300000;
+exports.convertDateToMinutes = (date) => {
+  return date.hour * 60 + date.minute;
+};
 
 exports.calculateStartDate = (startAt) => {
   return new Date(startAt).toLocaleString('en-US', {
@@ -18,6 +17,10 @@ exports.calculateStartDate = (startAt) => {
 };
 exports.calculateEndDate = (endAt) => {
   return new Date(endAt).toLocaleString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
     hour12: true

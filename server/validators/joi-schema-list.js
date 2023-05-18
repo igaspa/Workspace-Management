@@ -1,5 +1,27 @@
 const joi = require('joi');
 
+const reservationIntervalSchema = joi.string().custom((value, helpers) => {
+  const intervalRegex = /^(\d+\s+days?\s*)?(\d{2}:\d{2}(:\d{2})?)?$/;
+  if (!intervalRegex.test(value)) {
+    const key = helpers.state.path[0];
+    return helpers.message(`Invalid interval format for ${key}. Valid example: "08:00".`);
+  }
+  return value;
+});
+
+const reservationWindowSchema = joi.string().custom((value, helpers) => {
+  const intervalRegex = /^(\d+\s+days?)?$/;
+  const key = helpers.state.path[0];
+  if (!intervalRegex.test(value)) {
+    return helpers.message(`Invalid interval format for ${key}. Valid example: "7 days".`);
+  }
+  const numOfDays = parseInt(value.split(' ')[0]);
+  if (numOfDays < 1 || numOfDays > 365) {
+    return helpers.message(`Allowed number of days for ${key} is 1-365. Valid example: "7 days".`);
+  }
+  return value;
+});
+
 exports.idSchema = joi.string().guid({ version: 'uuidv4' });
 // Work Space Type Entity Schema
 exports.workspace_type = joi.object({
@@ -16,16 +38,24 @@ exports.workspace_type = joi.object({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
-  maxReservationTimeDaily: joi.string().regex(/^[0-9]{2}:[0-9]{2}$/)
-    .required(),
-  maxReservationTimeOverall: joi.string().regex(/^[0-9]{2}:[0-9]{2}$/)
-    .required()
+  maxReservationInterval: reservationIntervalSchema.alter({
+    post: (reservationIntervalSchema) => reservationIntervalSchema.required(),
+    put: (reservationIntervalSchema) => reservationIntervalSchema.optional()
+  }),
+  maxReservationWindow: reservationWindowSchema.alter({
+    post: (reservationWindowSchema) => reservationWindowSchema.required(),
+    put: (reservationWindowSchema) => reservationWindowSchema.optional()
+  }),
+  allowPermanentReservations: joi.boolean().alter({
+    post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
+    put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+  })
 }).options({ abortEarly: false });
 
 // Work Space Entity Schema
 exports.workspace_collection = joi.object({
   permanentlyReserved: joi.boolean()
-    .required(),
+    .optional(),
   typeId: joi.string()
     .guid({ version: 'uuidv4' })
     .required(),
@@ -34,14 +64,18 @@ exports.workspace_collection = joi.object({
     .required(),
   prefix: joi.string()
     .min(2)
-    .max(20)
+    .max(30)
     .required(),
   start: joi.number()
     .min(1)
     .required(),
   end: joi.number()
     .max(200)
-    .required()
+    .required(),
+  addedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
 }).options({ abortEarly: false });
 
 exports.workspace = joi.object({
@@ -65,16 +99,38 @@ exports.workspace = joi.object({
     }),
   name: joi.string()
     .min(2)
-    .max(20)
+    .max(30)
     .alter({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
   permanentlyReserved: joi.boolean()
+    .optional(),
+  addedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
     .alter({
-      post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    }),
+  removedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
+    .alter({
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    }),
+  updatedAccessories: joi.array().items(joi.object().keys({
+    id: joi.string().guid(),
+    quantity: joi.number()
+  }))
+    .alter({
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     })
+
 }).options({ abortEarly: false });
 
 // Area Entity Schema
@@ -184,7 +240,7 @@ exports.reservation = joi.object({
 }).options({ abortEarly: false });
 
 // Reservation Entity Schema
-exports.reservation_pernament = joi.object({
+exports.reservation_permanent = joi.object({
   id: joi.string()
     .guid({ version: 'uuidv4' })
     .alter({
@@ -296,5 +352,38 @@ exports.login = joi.object({
     .alter({
       post: (loginSchema) => loginSchema.required(),
       put: (loginSchema) => loginSchema.optional()
+    })
+}).options({ abortEarly: false });
+
+// Workspace-Equipment Entity Schema
+exports.workspace_equipment = joi.object({
+  workspaceId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (workspaceEquipmentSchema) => workspaceEquipmentSchema.required(),
+      put: (workspaceEquipmentSchema) => workspaceEquipmentSchema.forbidden()
+    }),
+  equipmentId: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (workspaceEquipmentSchema) => workspaceEquipmentSchema.required(),
+      put: (workspaceEquipmentSchema) => workspaceEquipmentSchema.forbidden()
+    })
+}).options({ abortEarly: false });
+
+// Equipment Entity Schema
+exports.equipment = joi.object({
+  id: joi.string()
+    .guid({ version: 'uuidv4' })
+    .alter({
+      post: (equipmentSchema) => equipmentSchema.required(),
+      put: (equipmentSchema) => equipmentSchema.forbidden()
+    }),
+  name: joi.string()
+    .min(4)
+    .max(50)
+    .alter({
+      post: (equipmentSchema) => equipmentSchema.required(),
+      put: (equipmentSchema) => equipmentSchema.optional()
     })
 }).options({ abortEarly: false });

@@ -1,8 +1,8 @@
-const { EXCLUDE_LIST } = require('../utils/constants');
+const { checkModelAssociations } = require('./helpers/model-associations');
+const responseMessage = require('../utils/response-messages');
 const { findPages, getPagination } = require('../utils/pagination');
 const { errors } = require('../utils/errors');
-const responseMessage = require('../utils/response-messages');
-const { checkModelAssociations } = require('./helpers/model-associations');
+const { EXCLUDE_LIST } = require('../utils/constants');
 
 module.exports.findAllModels = async (Model, customOptions, req, res) => {
   const { page, size, include } = req.query;
@@ -26,7 +26,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
   addIncludeModelAndCustomOptions(include, customOptions, Model, options);
 
   // Find number of pages
-  const pageCount = await findPages(Model, options);
+  const pageCount = await findPages(Model, options, limit);
 
   // Set number of pages into header
   res.set('Access-Control-Expose-Headers', 'X-Total-Pages');
@@ -59,9 +59,8 @@ module.exports.findOneModel = async (Model, customOptions, req, res) => {
 
 module.exports.createModel = async (Model, req, res) => {
   const itemData = req.body;
-  const newItem = await Model.create(itemData);
-
-  res.status(201).json(newItem);
+  await Model.create(itemData);
+  res.status(201).json({ message: responseMessage.CREATE_SUCCESS(Model.name) });
 };
 
 module.exports.updateModel = async (Model, req, res) => {

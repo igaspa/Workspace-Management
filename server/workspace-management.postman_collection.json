@@ -8170,7 +8170,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
+									"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8180,16 +8180,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":userId",
-										":roleId"
+										":firstId",
+										":secondId"
 									],
 									"variable": [
 										{
-											"key": "userId",
+											"key": "firstId",
 											"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 										},
 										{
-											"key": "roleId",
+											"key": "secondId",
 											"value": "d2477f3b-d4ce-4269-9221-0ad479fd45ad"
 										}
 									]
@@ -8237,7 +8237,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:4000/api/v1/user-role/:userId/:roleId",
+									"raw": "http://127.0.0.1:4000/api/v1/user-role/:firstId/:secondId",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -8250,16 +8250,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":userId",
-										":roleId"
+										":firstId",
+										":secondId"
 									],
 									"variable": [
 										{
-											"key": "userId",
+											"key": "firstId",
 											"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 										},
 										{
-											"key": "roleId",
+											"key": "secondId",
 											"value": "0bdd577d-c8e5-4973-a6e3-6cf806d8a601"
 										}
 									]
@@ -8307,7 +8307,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
+									"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8317,16 +8317,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":userId",
-										":roleId"
+										":firstId",
+										":secondId"
 									],
 									"variable": [
 										{
-											"key": "userId",
+											"key": "firstId",
 											"value": null
 										},
 										{
-											"key": "roleId",
+											"key": "secondId",
 											"value": null
 										}
 									]
@@ -8846,7 +8846,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:4000/api/v1/user-role/:userId/:roleId",
+									"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8856,16 +8856,16 @@
 										"api",
 										"v1",
 										"user-role",
-										":userId",
-										":roleId"
+										":firstId",
+										":secondId"
 									],
 									"variable": [
 										{
-											"key": "userId",
+											"key": "firstId",
 											"value": "07209cb2-7d40-4bb7-87ed-87925907c21a"
 										},
 										{
-											"key": "roleId",
+											"key": "secondId",
 											"value": "c40910c3-c2cf-439f-8d5b-be62d7c548be"
 										}
 									]
@@ -8913,7 +8913,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:4000/api/v1/user-role/:userId/:roleId",
+									"raw": "http://127.0.0.1:4000/api/v1/user-role/:firstId/:secondId",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -8926,16 +8926,704 @@
 										"api",
 										"v1",
 										"user-role",
-										":userId",
-										":roleId"
+										":firstId",
+										":secondId"
 									],
 									"variable": [
 										{
-											"key": "userId",
+											"key": "firstId",
 											"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
 										},
 										{
-											"key": "roleId",
+											"key": "secondId",
+											"value": "0bdd577d-c8e5-4973-a6e3-6cf806d8a601"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "81"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"51-brb9r1pd3gvSONV+mty/4sNCdW8\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Apr 2023 12:03:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unauthorized access\",\n    \"details\": \"You do not have access to this page\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Workspace Equipment",
+			"item": [
+				{
+					"name": "Get All Workspace Equipment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/workspace-equipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"workspace-equipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Workspace Equipment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-role/:workspaceId/:equipmentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user-role",
+								":workspaceId",
+								":equipmentId"
+							],
+							"variable": [
+								{
+									"key": "workspaceId",
+									"value": null
+								},
+								{
+									"key": "equipmentId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"workspaceId\": \"c40910c3-c2cf-439f-8d5b-be62d7c548be\",\n   \"equipmentId\": \"ccd65574-5f62-4261-a1bb-cfff9f288c25\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/workspace-equipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"workspace-equipment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"roleId\": \"c40910c3-c2cf-439f-8d5b-be62d7c548be\",\n   \"userId\": \"07209cb2-7d40-4bb7-87ed-87925907c21a\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/user-role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "97"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"61-0WKotJL82BHLc7MdWOivrYxiwec\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:48:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"roleId\": \"c40910c3-c2cf-439f-8d5b-be62d7c548be\",\n    \"userId\": \"07209cb2-7d40-4bb7-87ed-87925907c21a\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"roleId\": \"c40910c3-c2cf-439f-8d5b-be62d7c548be\",\n   \"userId\": \"07209cb2-7d40-4bb7-87ed-87925907c21a\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:4000/api/v1/user-role",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "81"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"51-brb9r1pd3gvSONV+mty/4sNCdW8\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Apr 2023 12:03:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unauthorized access\",\n    \"details\": \"You do not have access to this page\"\n}"
+						},
+						{
+							"name": "Missing roleId",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\n   \"userId\": \"07209cb2-7d40-4bb7-87ed-87925907c21a\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/user-role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "60"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3c-j31ycAdjUWBea+zzE4l90BbU3Lw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:48:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid input\",\n    \"details\": [\n        \"roleId is required\"\n    ]\n}"
+						},
+						{
+							"name": "Missing userId",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"roleId\": \"c40910c3-c2cf-439f-8d5b-be62d7c548be\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/user-role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "60"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3c-eX2ZMI9gFLAyYhY6iSzcWDtMbQI\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:48:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid input\",\n    \"details\": [\n        \"userId is required\"\n    ]\n}"
+						},
+						{
+							"name": "Empty Body",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/user-role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "85"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"55-LxGu8ASb54CYdWvJeYE6uriFmJQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:49:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid input\",\n    \"details\": \"You must not send empty body on this request.\"\n}"
+						},
+						{
+							"name": "Duplicate ID Input",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"roleId\": \"c40910c3-c2cf-439f-8d5b-be62d7c548be\",\n   \"userId\": \"07209cb2-7d40-4bb7-87ed-87925907c21a\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/user-role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "76"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4c-rKukqHK5z36ULXNNyCogYG0pZoI\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:49:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User role with this \\\"role_id\\\" and \\\"user_id\\\" already exits!\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/user-role/:workspaceId/:equipmentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"user-role",
+								":workspaceId",
+								":equipmentId"
+							],
+							"variable": [
+								{
+									"key": "workspaceId",
+									"value": null
+								},
+								{
+									"key": "equipmentId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/user-role/:firstId/:secondId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role",
+										":firstId",
+										":secondId"
+									],
+									"variable": [
+										{
+											"key": "firstId",
+											"value": "07209cb2-7d40-4bb7-87ed-87925907c21a"
+										},
+										{
+											"key": "secondId",
+											"value": "c40910c3-c2cf-439f-8d5b-be62d7c548be"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1-NWoZK3kTsExUV00Ywo1G5jlUKKs\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:50:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "1"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:4000/api/v1/user-role/:firstId/:secondId",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"user-role",
+										":firstId",
+										":secondId"
+									],
+									"variable": [
+										{
+											"key": "firstId",
+											"value": "47f6daa2-a1ed-495a-ba55-c626b4366c5e"
+										},
+										{
+											"key": "secondId",
 											"value": "0bdd577d-c8e5-4973-a6e3-6cf806d8a601"
 										}
 									]
@@ -8987,10 +9675,20 @@
 				{
 					"name": "Get All Workspaces",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/api/v1/workspace",
+							"raw": "http://localhost:4000/api/v1/workspace?from=2023-04-24T00:00&until=2023-04-25T00:00&status=available",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -9000,6 +9698,25 @@
 								"api",
 								"v1",
 								"workspace"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "area",
+									"disabled": true
+								},
+								{
+									"key": "from",
+									"value": "2023-04-24T00:00"
+								},
+								{
+									"key": "until",
+									"value": "2023-04-25T00:00"
+								},
+								{
+									"key": "status",
+									"value": "available"
+								}
 							]
 						}
 					},
@@ -14198,6 +14915,47 @@
 					]
 				},
 				{
+					"name": "Create Permanent Reservation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"5aa2e31a-3e7f-458b-bcda-0e4fd18aa4aa\",\n    \"userId\": \"47f6daa2-a1ed-495a-ba55-c626b4366c5e\",\n    \"workspaceId\": \"fd1cb6a0-934f-4f5e-9c91-e1a96edcae11\",\n    \"startAt\": \"2023-04-20T00:00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/reservation/permanent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"reservation",
+								"permanent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Reservation",
 					"request": {
 						"auth": {
@@ -14558,6 +15316,45 @@
 							"body": "{\n    \"message\": \"Reservation successfully deleted!\"\n}"
 						}
 					]
+				},
+				{
+					"name": "Delete Permanent Reservation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/reservation/permanent/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"reservation",
+								"permanent",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

@@ -5,7 +5,7 @@ const { searchByTerm } = require('../utils/filter');
 
 module.exports.getAllLocations = async (req, res) => {
   const { address } = req.query;
-  const searchedTerm = address ? searchByTerm(address) : searchByTerm(0);
+  const searchedTerm = address ? searchByTerm(address) : null;
   if (address?.length < 3) {
     res.status(200).json([]);
   } else if (!searchedTerm) {

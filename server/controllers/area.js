@@ -5,7 +5,7 @@ const { searchByTerm } = require('../utils/filter');
 
 module.exports.getAllAreas = async (req, res) => {
   const { name } = req.query;
-  const searchedTerm = name ? searchByTerm(name) : searchByTerm(0);
+  const searchedTerm = name ? searchByTerm(name) : null;
   if (name?.length < 3) {
     res.status(200).json([]);
   } else if (!searchedTerm) {

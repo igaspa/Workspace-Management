@@ -16,8 +16,8 @@
     "rules": {
         "max-len": [    
             "error", { 
-                "comments": 250,
-                 "code":150 }],
+                "comments": 120,
+                 "code": 120 }],
 
         "semi": [
             "error",

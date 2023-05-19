@@ -1,8 +1,20 @@
 const { equipment } = require('../database/models');
 const generalController = require('./general');
+const { searchByTerm } = require('../utils/filter');
 
 module.exports.getAllEquipments = async (req, res) => {
-  await generalController.findAllModels(equipment, null, req, res);
+  const { name } = req.query;
+  const searchedTerm = name ? searchByTerm(name) : searchByTerm(0);
+  if (name?.length < 3) {
+    res.status(200).json([]);
+  } else if (!searchedTerm) {
+    await generalController.findAllModels(equipment, null, req, res);
+  } else {
+    const query = {
+      where: [{ name: searchedTerm }]
+    };
+    await generalController.findAllModels(equipment, query, req, res);
+  }
 };
 
 module.exports.getEquipment = async (req, res) => {

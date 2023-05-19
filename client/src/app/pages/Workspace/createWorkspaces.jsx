@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { useGetAreaListQuery } from '../../api/areaApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../api/workspaceTypeApiSlice';
 import { errorHandler } from '../../utils/errors';
@@ -15,8 +15,9 @@ import { useNavigate } from 'react-router-dom';
 import { successToast } from '../../utils/toastifyNotification';
 import { useCreateMultipleWorkspacesMutation, useCreateWorkspaceMutation } from '../../api/workspaceApiSlice';
 import { v4 as uuidv4 } from 'uuid';
-import ArrowBack from '@mui/icons-material/ArrowBack';
 import { useGetEquipmentsListQuery } from '../../api/equipmentApiSlice';
+import ConfirmButton from '../../components/Buttons/confirmButton';
+import CancelButton from '../../components/Buttons/cancelButton';
 
 const theme = createTheme();
 
@@ -174,17 +175,6 @@ export default function WorkspaceCreation () {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-				<IconButton
-					sx={{
-						mt: 3,
-						mb: 2
-					}}
-					onClick={navigateBack}
-				>
-					<ArrowBack />
-				</IconButton>
-			</Box>
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<Box
@@ -367,14 +357,11 @@ export default function WorkspaceCreation () {
 									}
 
 								</Grid>
-								<Button
-									type='submit'
-									fullWidth
-									variant="contained"
-									sx={{ mt: 3, mb: 2 }}
-								>
-									Create
-								</Button>
+
+								<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
+									<ConfirmButton type={'submit'} text={'Confirm'} />
+									<CancelButton text={'Cancel'} onClick={navigateBack}/>
+								</div>
 
 								<Dialog open={createOneOpen} onClose={handleCreateOneClose}>
 									<DialogTitle>Confirmation</DialogTitle>

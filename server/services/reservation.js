@@ -4,7 +4,6 @@ const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
 const { validateReservationConstraints, validateReservationTimeIntervals } = require('./helpers/reservation-calculations');
 const { roles } = require('../utils/roles');
-const { CONFERENCE_ROOM_ID } = require('../utils/constants');
 
 const deletePermamentReservationFromDB = async (data) => {
   const { id, userReservation } = data;

@@ -14,3 +14,11 @@ exports.searchByUserName = (queryParams) => {
 
   return option;
 };
+
+exports.searchByTerm = (queryParams) => {
+  if (queryParams) {
+    const term = { [Sequelize.Op.iLike]: '%' + queryParams + '%' };
+    return term;
+  }
+  return '';
+};

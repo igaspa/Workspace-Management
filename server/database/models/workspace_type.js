@@ -23,12 +23,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: DataTypes.STRING,
-    participantLimit: {
-      type: DataTypes.INTEGER,
-      defaultValue: null,
-      allowNull: true
+    allowPermanentReservations: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
-    allowPermanentReservations: DataTypes.BOOLEAN,
+    allowMultipleParticipants: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     maxReservationInterval: AdditDataTypes.INTERVAL,
     maxReservationWindow: AdditDataTypes.INTERVAL
   }, {

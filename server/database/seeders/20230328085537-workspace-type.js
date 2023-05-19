@@ -11,7 +11,7 @@ module.exports = {
         max_reservation_window: '2 days',
         name: 'Phone Booth',
         allow_permanent_reservations: false,
-        participant_limit: 1,
+        allow_multiple_participants: false,
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -21,7 +21,7 @@ module.exports = {
         max_reservation_window: '15 days',
         name: 'Conference Room',
         allow_permanent_reservations: false,
-        participant_limit: null,
+        allow_multiple_participants: true,
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -31,7 +31,7 @@ module.exports = {
         max_reservation_window: '7 days',
         name: 'Desk',
         allow_permanent_reservations: true,
-        participant_limit: 1,
+        allow_multiple_participants: false,
         created_at: new Date(),
         updated_at: new Date()
       }

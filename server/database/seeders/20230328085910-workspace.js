@@ -10,6 +10,7 @@ module.exports = {
         type_id: '1dcdda55-3a43-4dc7-bc0d-0ccf99350502',
         name: 'Phone Booth Green 1',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -19,6 +20,7 @@ module.exports = {
         type_id: '1dcdda55-3a43-4dc7-bc0d-0ccf99350502',
         name: 'Phone Booth Green 2',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -28,6 +30,7 @@ module.exports = {
         type_id: '1dcdda55-3a43-4dc7-bc0d-0ccf99350502',
         name: 'Phone Booth Blue 1',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -37,6 +40,7 @@ module.exports = {
         type_id: '1dcdda55-3a43-4dc7-bc0d-0ccf99350502',
         name: 'Phone Booth Blue 2',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -46,6 +50,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 1',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -55,6 +60,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 2',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -64,6 +70,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 3',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -73,6 +80,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 4',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -82,6 +90,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 5',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -91,6 +100,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 6',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -100,6 +110,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 7',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -109,6 +120,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 8',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -118,6 +130,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 9',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -127,6 +140,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 10',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -136,6 +150,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 11',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -145,6 +160,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 12',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -154,6 +170,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 13',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -163,6 +180,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 14',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -172,6 +190,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 15',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -181,6 +200,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 16',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -190,6 +210,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 17',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -199,6 +220,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 18',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -208,6 +230,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 19',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -217,6 +240,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 20',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -226,6 +250,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 21',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -235,6 +260,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 22',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -244,6 +270,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 23',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -253,6 +280,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 24',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -262,6 +290,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 25',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -271,6 +300,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 26',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -280,6 +310,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 27',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -289,6 +320,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 28',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -298,6 +330,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 29',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -307,6 +340,7 @@ module.exports = {
         type_id: 'eb6e1123-f8c4-43d4-9491-fbaa214cb53a',
         name: 'Desk 30',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 1,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -316,6 +350,7 @@ module.exports = {
         type_id: '07c0865e-f27c-414e-bd0b-ed5178d9aeb5',
         name: 'Conference Room 1',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 10,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()
@@ -325,6 +360,7 @@ module.exports = {
         type_id: '07c0865e-f27c-414e-bd0b-ed5178d9aeb5',
         name: 'Conference Room 2',
         area_id: '43b38b33-143e-4acd-84ac-f8108a279589',
+        participant_limit: 5,
         permanently_reserved: false,
         created_at: new Date(),
         updated_at: new Date()

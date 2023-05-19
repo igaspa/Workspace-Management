@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    participantLimit: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+      allowNull: true
+    },
     typeId: DataTypes.INTEGER,
     areaId: DataTypes.INTEGER
   }, {

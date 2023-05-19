@@ -26,7 +26,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 				</CardContent>
 			</CardActionArea>
 			<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-				<CreateReservation workspaceId={workspace.id} reservationDate={fromDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
+				<CreateReservation workspace={workspace} reservationDate={fromDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
 			<Drawer anchor="right" open={openMultiple} onClose={handleDrawerClose}>
 				<CreateMultipleReservation workspaceId={workspace.id} reservationFromDate={fromDate} reservationUntilDate={untilDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />

@@ -9,7 +9,7 @@ export default function ConfirmButton ({ onClick, text, type }) {
 				variant="contained"
 				size="small"
 				sx={{
-					background: '#59a2cb',
+					background: '#333',
 					fontSize: 11,
 					':hover': {
 						background: '#3787b5'

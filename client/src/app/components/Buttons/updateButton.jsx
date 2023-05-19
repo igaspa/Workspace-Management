@@ -9,10 +9,10 @@ export default function UpdateButton ({ onClick, text }) {
 				variant="contained"
 				size="small"
 				sx={{
-					background: '#1E90FF',
+					background: '#FF6347',
 					fontSize: 11,
 					':hover': {
-						background: '#3455DB'
+						background: '#9090C0'
 					}
 				}} onClick={onClick}>{text}</Button>
 		</Stack>

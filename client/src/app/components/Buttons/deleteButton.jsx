@@ -9,10 +9,10 @@ export default function DeleteButton ({ onClick, text }) {
 				variant="contained"
 				size="small"
 				sx={{
-					background: '#34495E',
+					background: '#4A646C',
 					fontSize: 11,
 					':hover': {
-						background: '#1978D4'
+						background: '#36454F'
 					}
 				}}
 				onClick={onClick}

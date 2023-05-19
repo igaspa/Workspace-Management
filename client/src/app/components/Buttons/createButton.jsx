@@ -9,10 +9,10 @@ export default function CreateButton ({ onClick, text }) {
 				variant="contained"
 				size="medium"
 				sx={{
-					background: '#00A4A6',
+					background: '#54626F',
 					fontSize: 11,
 					':hover': {
-						background: '#008080'
+						background: '#98AFC7'
 					}
 				}} onClick={onClick}>{text}</Button>
 		</Stack>

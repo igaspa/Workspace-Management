@@ -4,12 +4,12 @@ const { searchByTerm } = require('../utils/filter');
 
 module.exports.getAllWorkspaceTypes = async (req, res) => {
   const { name } = req.query;
-  const searchedTerm = name ? searchByTerm(name) : null;
   if (name?.length < 3) {
     res.status(200).json([]);
-  } else if (!searchedTerm) {
+  } else if (!name) {
     await generalController.findAllModels(workspaceType, null, req, res);
   } else {
+    const searchedTerm = searchByTerm(name);
     const query = {
       where: [{ name: searchedTerm }]
     };

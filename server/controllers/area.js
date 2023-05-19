@@ -5,12 +5,12 @@ const { searchByTerm } = require('../utils/filter');
 
 module.exports.getAllAreas = async (req, res) => {
   const { name } = req.query;
-  const searchedTerm = name ? searchByTerm(name) : null;
   if (name?.length < 3) {
     res.status(200).json([]);
-  } else if (!searchedTerm) {
+  } else if (!name) {
     await generalController.findAllModels(area, null, req, res);
   } else {
+    const searchedTerm = searchByTerm(name);
     const query = {
       where: [{ name: searchedTerm }]
     };

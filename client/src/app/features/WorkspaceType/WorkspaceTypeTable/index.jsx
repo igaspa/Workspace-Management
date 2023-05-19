@@ -132,7 +132,9 @@ export default function WorkspaceTypeTable () {
 	const data = workspaceType?.map((el) => ({
 		id: el.id,
 		name: el.name,
-		maxReservationInterval: `${el.maxReservationInterval.hours.toString().padStart(2, '0')}:${el.maxReservationInterval.minutes ? el.maxReservationInterval.minutes.toString().padStart(2, '0') : '00'}`,
+		maxReservationInterval: `${el.maxReservationInterval.hours
+			? el.maxReservationInterval.hours.toString().padStart(2, '0')
+			: '00'}:${el.maxReservationInterval.minutes ? el.maxReservationInterval.minutes.toString().padStart(2, '0') : '00'}`,
 		maxReservationWindow: `${el.maxReservationWindow.days} days`,
 		allowPermanentReservations: el.allowPermanentReservations.toString(),
 		actions: <div style={{ display: 'flex', flexDirection: 'row' }}>

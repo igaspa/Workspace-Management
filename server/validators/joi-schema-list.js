@@ -62,6 +62,13 @@ exports.workspace_collection = joi.object({
   areaId: joi.string()
     .guid({ version: 'uuidv4' })
     .required(),
+  participantLimit: joi.number()
+    .min(1)
+    .max(100)
+    .alter({
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    }),
   prefix: joi.string()
     .min(2)
     .max(30)
@@ -102,6 +109,13 @@ exports.workspace = joi.object({
     .max(30)
     .alter({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
+      put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
+    }),
+  participantLimit: joi.number()
+    .min(1)
+    .max(100)
+    .alter({
+      post: (workspaceTypeSchema) => workspaceTypeSchema.optional(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
   permanentlyReserved: joi.boolean()
@@ -224,11 +238,11 @@ exports.reservation = joi.object({
   participants: joi.array()
     .items({
       firstName: joi.string()
-        .min(5)
+        .min(1)
         .max(50)
         .required(),
       lastName: joi.string()
-        .min(5)
+        .min(1)
         .max(50)
         .required(),
       email: joi.string()

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Box, Grid, CircularProgress } from '@mui/material';
+import { Typography, Box, Grid, CircularProgress, InputLabel, Select, FormControl, MenuItem, Chip, OutlinedInput } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -16,10 +16,13 @@ import { useDispatch } from 'react-redux';
 import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
 import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
 import { BasicPagination } from '../../../components/Pagination/pagination';
+import { useGetUsersListQuery } from '../../../api/usersApiSlice';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
-const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, onClose }) => {
+const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onClose }) => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const currentDay = createDate(0);
 
@@ -31,6 +34,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 	const [createReservation] = useCreateReservationMutation();
 	const divRef = useRef();
 	const [page, setPage] = useState(1);
+	const [selectedUsers, setSelectedUsers] = useState([]);
 
 	const handlePageChange = async (event, value) => {
 		setPage(value);
@@ -54,6 +58,15 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 		setEndHour(event.target.value);
 	};
 
+	const handleUserSelect = (event) => {
+		const {
+			target: { value }
+		} = event;
+		setSelectedUsers(
+			typeof value === 'string' ? value.split(',') : value
+		);
+	};
+
 	// set startAt value
 	useEffect(() => {
 		if (date && startHour) {
@@ -73,24 +86,48 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 		{
 			from: date,
 			until: date,
-			workspaceId,
+			workspaceId: workspace.id,
 			...(page && { page })
 		}
 	);
+	const { data: users = [], isError: userFetchError, error: userErrorObject, isLoading: userLoading } = useGetUsersListQuery();
+
+	useEffect(() => {
+		if (reservationsFetchError) {
+			const authorizationError = errorHandler(reservationErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+		if (userFetchError) {
+			const authorizationError = errorHandler(userErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+	}, [reservations, users]);
 
 	// Render loading state
-	if (reservationsLoading) {
+	if (reservationsLoading || userLoading) {
 		return <CircularProgress />;
 	}
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
+		const participants = selectedUsers.map(user => {
+			console.log(user);
+			return {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				email: user.email
+			};
+		}
+		);
+
+		console.log(participants);
 		const objectToPost = {
 			id: uuidv4(),
-			workspaceId,
+			workspaceId: workspace.id,
 			startAt,
-			endAt
+			endAt,
+			participants
 		};
 
 		await createReservation(objectToPost)
@@ -113,22 +150,57 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 					<Container maxWidth="sm">
 						<Typography
 							component="h1"
-							variant="h2"
+							variant="h4"
 							align="center"
 							color="text.primary"
 							gutterBottom
+							sx={{ paddingTop: 2 }}
 						>
-              Reserve a Space
+              Reserve a Space <br></br>
+							- { workspace.name} -
 						</Typography>
 					</Container>
 					<Container>
 						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, fontSize: 15 }}> Select a date: </Typography>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, fontSize: 14 }}> Select a date: </Typography>
 							<DateFilter onChange={handleDateChange} date={date} dates={dates} />
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> from: </Typography>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Start time: </Typography>
 							<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={hours}/>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> until: </Typography>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> End time: </Typography>
 							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={hours}/>
+							{(workspace.workspaceType.allowMultipleParticipants) &&
+							<>
+								<FormControl sx={{ m: 1, width: 300 }}>
+									<InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+									<Select
+										labelId="demo-multiple-chip-label"
+										id="demo-multiple-chip"
+										multiple
+										value={selectedUsers}
+										onChange={handleUserSelect}
+										input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+										renderValue={(selected) => (
+											<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+												{selected.map((user) => (
+													<Chip key={user.id} label={`${user.firstName} ${user.lastName}`} />
+												))}
+											</Box>
+										)}
+									>
+										{users.map((user) => (
+											<MenuItem
+												key={user.id}
+												value={user}
+											>
+												{user.firstName} {user.lastName}
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							</>
+
+							}
+
 							<SubmitButton onChange={handleSubmit} />
 						</div>
 
@@ -159,7 +231,7 @@ const CreateReservation = ({ workspaceId, startTime, endTime, reservationDate, o
 export default CreateReservation;
 
 CreateReservation.propTypes = {
-	workspaceId: PropTypes.string,
+	workspace: PropTypes.string,
 	startTime: PropTypes.string,
 	endTime: PropTypes.string,
 	reservationDate: PropTypes.string,

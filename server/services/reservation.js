@@ -4,7 +4,6 @@ const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
 const { validateReservationConstraints, validateReservationTimeIntervals } = require('./helpers/reservation-calculations');
 const { roles } = require('../utils/roles');
-const { CONFERENCE_ROOM_ID } = require('../utils/constants');
 
 const deletePermamentReservationFromDB = async (data) => {
   const { id, userReservation } = data;
@@ -119,7 +118,7 @@ const retrieveReservationsThatIsBeingUpdated = async (reservationId, userId) => 
       model: workspace,
       include: [{
         model: workspaceType,
-        attributes: ['id', 'maxReservationInterval', 'maxReservationWindow']
+        attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants']
       }]
     }]
   });
@@ -215,11 +214,14 @@ exports.createReservation = async (req) => {
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
     attributes: ['permanentlyReserved'],
-    include: [{ model: workspaceType, attributes: ['id', 'maxReservationInterval', 'maxReservationWindow'] }]
+    include: [{ model: workspaceType, attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants'] }]
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  const { permanentlyReserved, workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow } } = workspaceInfo;
+  const {
+    permanentlyReserved, workspaceType:
+    { id: workspaceTypeId, maxReservationInterval, maxReservationWindow, allowMultipleParticipants }
+  } = workspaceInfo;
 
   // validate this workspace is not permanently reserved
   if (permanentlyReserved) throw errors.CONFLICT(responseMessage.WORKSPACE_PERMANENTLY_RESERVED);
@@ -236,7 +238,8 @@ exports.createReservation = async (req) => {
   validateReservationTimeIntervals(startAt, endAt);
 
   // Create the reservation
-  const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
+  const participants = allowMultipleParticipants ? req.body.participants : null;
+
   await reservation.create({
     id,
     userId,
@@ -262,7 +265,12 @@ exports.updateReservation = async (req) => {
   if (currentReservation.endAt <= new Date()) throw errors.VALIDATION(responseMessage.UPDATE_EXPIRED_RESERVATION);
 
   // destruct needed attributes for validation
-  const { workspace: { workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow } } } = currentReservation;
+  const {
+    workspace: {
+      workspaceType:
+    { id: workspaceTypeId, maxReservationInterval, maxReservationWindow, allowMultipleParticipants }
+    }
+  } = currentReservation;
 
   // validate reservation time if user is not administrator or lead
   const userRoles = req.user.roles;
@@ -279,7 +287,7 @@ exports.updateReservation = async (req) => {
   validateReservationTimeIntervals(startAt, endAt);
 
   // updateReservation
-  const participants = workspaceTypeId === CONFERENCE_ROOM_ID ? req.body.participants : null;
+  const participants = allowMultipleParticipants ? req.body.participants : null;
   const [updatedModel, _updatedData] = await reservation.update(
     { startAt: new Date(startAt), endAt: new Date(endAt), participants }, {
       where: {

@@ -1,13 +1,55 @@
-const { workspace, workspaceEquipment, area, sequelize } = require('../database/models');
+const { workspace, workspaceType, workspaceEquipment, area, sequelize } = require('../database/models');
 const { v4: uuidv4 } = require('uuid');
 const { deleteWorkspaces } = require('./helpers/delete-workspace');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 
+exports.createWorkspace = async (req) => {
+  let transaction;
+
+  try {
+    transaction = await sequelize.transaction();
+
+    const { id, typeId, areaId, name, permanentlyReserved, addedAccessories } = req.body;
+    const type = await workspaceType.findOne({
+      where: {
+        id: typeId
+      }
+    });
+    if (!type) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(workspaceType.name));
+
+    // if workspace type allows multiple participants retrieve value user sends
+    const participantLimit = type.allowMultipleParticipants ? req.body.participantLimit : 1;
+
+    // create workspace
+    await workspace.create({ id, typeId, areaId, name, permanentlyReserved, participantLimit }, { transaction });
+
+    // create workspaceEquipment
+    if (addedAccessories.length) await addEquipmentWorkspace(addedAccessories, transaction, id);
+
+    // commit transcation
+    await transaction.commit();
+  } catch (error) {
+    // if there was an error, rollback the transaction
+    await transaction.rollback();
+    throw error;
+  }
+};
+
 exports.createMultipleWorkspaces = async (req) => {
   const { prefix, start, end, areaId, typeId, permanentlyReserved, addedAccessories } = req.body;
 
   let count = start;
+
+  const type = await workspaceType.findOne({
+    where: {
+      id: typeId
+    }
+  });
+  if (!type) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(workspaceType.name));
+
+  // if workspace type allows multiple participants retrieve value user sends
+  const participantLimit = type.allowMultipleParticipants ? req.body.participantLimit : 1;
 
   let transaction;
   try {
@@ -19,7 +61,8 @@ exports.createMultipleWorkspaces = async (req) => {
         name: `${prefix} - ${count}`,
         permanentlyReserved: permanentlyReserved || false,
         typeId,
-        areaId
+        areaId,
+        participantLimit
       };
       // create workspace
       await workspace.create(data, { transaction });
@@ -154,28 +197,6 @@ exports.updateWorkspace = async (req) => {
       }, { transaction });
       if (!updatedModel) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(workspace.name));
     }
-    await transaction.commit();
-  } catch (error) {
-    // if there was an error, rollback the transaction
-    await transaction.rollback();
-    throw error;
-  }
-};
-
-exports.createWorkspace = async (req) => {
-  let transaction;
-  try {
-    transaction = await sequelize.transaction();
-
-    const { id, typeId, areaId, name, permanentlyReserved, addedAccessories } = req.body;
-
-    // create workspace
-    await workspace.create({ id, typeId, areaId, name, permanentlyReserved }, { transaction });
-
-    // create workspaceEquipment
-    if (addedAccessories.length) await addEquipmentWorkspace(addedAccessories, transaction, id);
-
-    // commit transcation
     await transaction.commit();
   } catch (error) {
     // if there was an error, rollback the transaction

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Box, Grid, CircularProgress, InputLabel, Select, FormControl, MenuItem, Chip, OutlinedInput } from '@mui/material';
+import { Typography, Box, Grid, CircularProgress, FormControl } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -18,23 +18,29 @@ import ActiveReservationCard from '../../../components/Reservation/workspaceRese
 import { BasicPagination } from '../../../components/Pagination/pagination';
 import { useGetUsersListQuery } from '../../../api/usersApiSlice';
 import { useNavigate } from 'react-router-dom';
+import MultipleUserFilter from '../../../components/Users/multipleUserFilter';
 
 const theme = createTheme();
 
 const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onClose }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [createReservation] = useCreateReservationMutation();
+
 	const currentDay = createDate(0);
 
 	const [date, setDate] = useState(reservationDate || currentDay);
 	const [startHour, setStartHour] = useState(startTime || '');
 	const [endHour, setEndHour] = useState(endTime || '');
+
 	const [startAt, setStartAt] = useState('');
 	const [endAt, setEndAt] = useState('');
-	const [createReservation] = useCreateReservationMutation();
+
 	const divRef = useRef();
 	const [page, setPage] = useState(1);
+
 	const [selectedUsers, setSelectedUsers] = useState([]);
+	const [participantEmailSlice, setParticipantEmailSlice] = useState('');
 
 	const handlePageChange = async (event, value) => {
 		setPage(value);
@@ -58,15 +64,6 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 		setEndHour(event.target.value);
 	};
 
-	const handleUserSelect = (event) => {
-		const {
-			target: { value }
-		} = event;
-		setSelectedUsers(
-			typeof value === 'string' ? value.split(',') : value
-		);
-	};
-
 	// set startAt value
 	useEffect(() => {
 		if (date && startHour) {
@@ -81,38 +78,19 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 		}
 	}, [date, endHour, endAt]);
 
-	// eslint-disable-next-line no-unused-vars
-	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
-		{
-			from: date,
-			until: date,
-			workspaceId: workspace.id,
-			...(page && { page })
-		}
-	);
-	const { data: users = [], isError: userFetchError, error: userErrorObject, isLoading: userLoading } = useGetUsersListQuery();
+	const handleParticipantChange = (event, value) => {
+		setSelectedUsers(value);
+	};
 
-	useEffect(() => {
-		if (reservationsFetchError) {
-			const authorizationError = errorHandler(reservationErrorObject);
-			if (authorizationError) navigate('/sign-in');
-		}
-		if (userFetchError) {
-			const authorizationError = errorHandler(userErrorObject);
-			if (authorizationError) navigate('/sign-in');
-		}
-	}, [reservations, users]);
-
-	// Render loading state
-	if (reservationsLoading || userLoading) {
-		return <CircularProgress />;
-	}
+	const handleEmailInputChange = (e) => {
+		const email = e.target.value;
+		if (e.target.value.length > 2) setParticipantEmailSlice(email.slice(0, 3));
+	};
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
 		const participants = selectedUsers.map(user => {
-			console.log(user);
 			return {
 				firstName: user.firstName,
 				lastName: user.lastName,
@@ -121,7 +99,6 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 		}
 		);
 
-		console.log(participants);
 		const objectToPost = {
 			id: uuidv4(),
 			workspaceId: workspace.id,
@@ -141,6 +118,36 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 				errorHandler(error);
 			});
 	};
+
+	// eslint-disable-next-line no-unused-vars
+	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
+		{
+			from: date,
+			until: date,
+			workspaceId: workspace.id,
+			...(page && { page })
+		}
+	);
+
+	const { data: users = [], isError: userFetchError, error: userErrorObject, isLoading: userLoading } = useGetUsersListQuery({
+		email: participantEmailSlice.length ? participantEmailSlice : '/'
+	});
+
+	useEffect(() => {
+		if (reservationsFetchError) {
+			const authorizationError = errorHandler(reservationErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+		if (userFetchError) {
+			const authorizationError = errorHandler(userErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+	}, [reservations, users]);
+
+	// Render loading state
+	if (reservationsLoading || userLoading) {
+		return <CircularProgress />;
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -169,36 +176,15 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> End time: </Typography>
 							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={hours}/>
 							{(workspace.workspaceType.allowMultipleParticipants) &&
-							<>
 								<FormControl sx={{ m: 1, width: 300 }}>
-									<InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-									<Select
-										labelId="demo-multiple-chip-label"
-										id="demo-multiple-chip"
-										multiple
-										value={selectedUsers}
-										onChange={handleUserSelect}
-										input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-										renderValue={(selected) => (
-											<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-												{selected.map((user) => (
-													<Chip key={user.id} label={`${user.firstName} ${user.lastName}`} />
-												))}
-											</Box>
-										)}
-									>
-										{users.map((user) => (
-											<MenuItem
-												key={user.id}
-												value={user}
-											>
-												{user.firstName} {user.lastName}
-											</MenuItem>
-										))}
-									</Select>
+									<MultipleUserFilter
+										multiple={true}
+										users={users}
+										selectedUsers={selectedUsers}
+										handleParticipantChange={handleParticipantChange}
+										handleEmailInputChange={handleEmailInputChange}
+									/>
 								</FormControl>
-							</>
-
 							}
 
 							<SubmitButton onChange={handleSubmit} />
@@ -231,7 +217,7 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 export default CreateReservation;
 
 CreateReservation.propTypes = {
-	workspace: PropTypes.string,
+	workspace: PropTypes.object,
 	startTime: PropTypes.string,
 	endTime: PropTypes.string,
 	reservationDate: PropTypes.string,

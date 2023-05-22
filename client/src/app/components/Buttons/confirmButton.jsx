@@ -22,5 +22,5 @@ export default function ConfirmButton ({ onClick, text, type }) {
 ConfirmButton.propTypes = {
 	onClick: PropTypes.func,
 	text: PropTypes.string,
-	type: PropTypes.type
+	type: PropTypes.string
 };

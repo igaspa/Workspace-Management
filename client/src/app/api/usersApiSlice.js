@@ -14,10 +14,19 @@ export const usersApiSlice = createApi({
 	}),
 	tagTypes: ['usersList', 'user'],
 	endpoints: (builder) => ({
-		// this method gets all the users
 		getUsersList: builder.query({
-			query: () => '/user',
-			providesTags: ['usersList']
+			providesTags: ['userList'],
+			query: (params) => {
+				const queryParameters = {
+					...(params?.email && { email: params.email })
+				};
+				return {
+					url: '/user',
+					method: 'GET',
+					params: queryParameters
+				};
+			},
+			invalidatesTags: ['userList']
 		}),
 		// this method creates a new user
 		createUser: builder.mutation({

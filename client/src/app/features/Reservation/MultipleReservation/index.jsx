@@ -50,14 +50,17 @@ const CreateMultipleDayReservation = ({ workspace, onClose, endTime, startTime, 
 	const startHours = getHours(startDate);
 	const endHours = getHours(endDate || startDate);
 	const dates = getNext7Days();
+
 	// get selected start date
 	const handleStartDateChange = (event) => {
 		setStartDate(event.target.value);
+		if (new Date(event.target.value) > new Date(endDate)) setEndDate(event.target.value);
 	};
 
 	// get selected start date
 	const handleEndDateChange = (event) => {
 		setEndDate(event.target.value);
+		if (new Date(event.target.value) < new Date(startDate)) setStartDate(event.target.value);
 	};
 
 	// get selected start hour
@@ -169,7 +172,8 @@ const CreateMultipleDayReservation = ({ workspace, onClose, endTime, startTime, 
 							gutterBottom
 							paddingTop={2}
 						>
-               Reserve a Space
+							Reserve a Space <br></br>
+							- { workspace.name} -
 						</Typography>
 					</Container>
 					<Container>
@@ -188,7 +192,6 @@ const CreateMultipleDayReservation = ({ workspace, onClose, endTime, startTime, 
 								{(workspace.workspaceType.allowMultipleParticipants) &&
 								<FormControl sx={{ m: 1, width: 300 }}>
 									<MultipleUserFilter
-										multiple={true}
 										users={users}
 										selectedUsers={selectedUsers}
 										handleParticipantChange={handleParticipantChange}

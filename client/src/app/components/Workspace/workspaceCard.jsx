@@ -37,7 +37,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 					<Button onClick={handlePermanentDrawerOpen}>Permanent Reservation</Button>
 				</CardContent>
 				<Drawer anchor="right" open={openPermanent} onClose={handleDrawerClose}>
-					<CreatePermanentReservation workspaceId={workspace.id} reservationDate={fromDate} startTime={startHour} onClose={handleDrawerClose} />
+					<CreatePermanentReservation workspace={workspace} reservationDate={fromDate} startTime={startHour} onClose={handleDrawerClose} />
 				</Drawer>
 				</div>
 				: null}

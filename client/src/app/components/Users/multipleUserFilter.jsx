@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const MultipleUserFilter = ({ multiple, users, selectedUsers, handleParticipantChange, handleEmailInputChange }) => {
+const MultipleUserFilter = ({ users, selectedUsers, handleParticipantChange, handleEmailInputChange }) => {
 	return (
 		<Autocomplete
-			multiple = {multiple}
+			multiple
 			id="tags-standard"
 			options={users}
 			value={selectedUsers}
@@ -28,8 +28,7 @@ MultipleUserFilter.propTypes = {
 	users: PropTypes.array.isRequired,
 	selectedUsers: PropTypes.array.isRequired,
 	handleParticipantChange: PropTypes.func.isRequired,
-	handleEmailInputChange: PropTypes.func.isRequired,
-	multiple: PropTypes.func
+	handleEmailInputChange: PropTypes.func.isRequired
 };
 
 export default MultipleUserFilter;

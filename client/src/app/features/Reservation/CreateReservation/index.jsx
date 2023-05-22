@@ -163,7 +163,7 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 							gutterBottom
 							sx={{ paddingTop: 2 }}
 						>
-              Reserve a Space <br></br>
+							Reserve a Space <br></br>
 							- { workspace.name} -
 						</Typography>
 					</Container>
@@ -175,10 +175,10 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 							<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={hours}/>
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> End time: </Typography>
 							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={hours}/>
+							<br></br>
 							{(workspace.workspaceType.allowMultipleParticipants) &&
 								<FormControl sx={{ m: 1, width: 300 }}>
 									<MultipleUserFilter
-										multiple={true}
 										users={users}
 										selectedUsers={selectedUsers}
 										handleParticipantChange={handleParticipantChange}

@@ -27,7 +27,10 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 				</CardContent>
 
 				<CardContent spacing={1}>
-					<Button size="small" color="primary" onClick={handleUpdateClick} disabled={new Date(reservation.startAt) < new Date()}>
+					<Button size="small" color="primary" onClick={handleUpdateClick} disabled={
+						(new Date(reservation.startAt) < new Date()) ||
+						!reservation.endAt
+					}>
 							Update
 					</Button>
 					<Button size="small" color="primary" onClick={handleOpen}>

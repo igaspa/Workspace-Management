@@ -22,7 +22,7 @@ import ActiveReservationCard from '../../../components/Reservation/workspaceRese
 
 const theme = createTheme();
 
-const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, startTime }) => {
+const CreatePermanentReservation = ({ workspace, onClose, reservationDate, startTime }) => {
 	const [createPermanentReservation] = useCreatePermanentReservationMutation();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -75,7 +75,7 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 		const objectToPost = {
 			id: uuidv4(),
 			userId: selectedUser.id,
-			workspaceId,
+			workspaceId: workspace.id,
 			startAt
 		};
 
@@ -94,7 +94,7 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
 		{
 			from: date,
-			workspaceId,
+			workspaceId: workspace.id,
 			...(page && { page })
 		}
 	);
@@ -134,7 +134,8 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 							color="text.primary"
 							gutterBottom
 						>
-              Permanently Reserve a Space
+              Permanently Reserve a Space <br></br>
+					- { workspace.name} -
 						</Typography>
 					</Container>
 					<Container>
@@ -183,7 +184,7 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 export default CreatePermanentReservation;
 
 CreatePermanentReservation.propTypes = {
-	workspaceId: PropTypes.string,
+	workspace: PropTypes.object,
 	startTime: PropTypes.string,
 	reservationDate: PropTypes.string,
 	onClose: PropTypes.func

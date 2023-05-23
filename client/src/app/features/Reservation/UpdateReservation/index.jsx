@@ -88,12 +88,10 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 
 	// set endAt value
 	useEffect(() => {
-		if (endDate && endHour) {
-			setEndAt(`${endDate}T${endHour}`);
-		} else if (startDate && endHour) {
-			setEndAt(`${startDate}T${endHour}`);
-		}
-	}, [endDate, endHour, endAt]);
+		if (role.includes('Administrator') || role.includes('Lead')) {
+			if (endDate && endHour) setEndAt(`${endDate}T${endHour}`);
+		} else if (startDate && endHour) setEndAt(`${startDate}T${endHour}`);
+	}, [endDate, endHour, startDate, startHour]);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();

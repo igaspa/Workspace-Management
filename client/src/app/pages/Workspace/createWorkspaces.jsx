@@ -283,7 +283,7 @@ export default function WorkspaceCreation () {
 												name="numOfWorkspaces"
 											>
 												<MenuItem key='one' value='one'>
-													One
+													Single
 												</MenuItem>
 												<MenuItem key='multiple' value='multiple'>
 													Multiple

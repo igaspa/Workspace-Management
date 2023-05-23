@@ -33,7 +33,15 @@ export const locationApiSlice = createApi({
 			},
 			invalidatesTags: ['locationList']
 		}),
-
+		getLocationSearchList: builder.query({
+			query: (params = {}) => ({
+				url: '/location',
+				method: 'GET',
+				params: {
+					name: params.name
+				}
+			})
+		}),
 		// this method creates a new location
 		createLocation: builder.mutation({
 			query: (body) => ({
@@ -70,6 +78,7 @@ export const locationApiSlice = createApi({
 
 export const {
 	useGetLocationListQuery,
+	useGetLocationSearchListQuery,
 	useCreateLocationMutation,
 	useGetLocationQuery,
 	useUpdateLocationMutation,

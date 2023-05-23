@@ -22,7 +22,7 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 	};
 	const [currentEquipment, setEquipment] = useState(initialEquipment);
 
-	const [allowMultiple, setAllowMultiple] = useState(!!((!workspace.participantLimit || workspace.participantLimit > 1)));
+	const [allowMultiple, setAllowMultiple] = useState(!workspace.participantLimit || workspace.participantLimit > 1);
 
 	const handleEquipmentChange = (event) => {
 		const { target: { value } } = event;

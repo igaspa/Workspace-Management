@@ -68,7 +68,7 @@ exports.createMultipleWorkspaces = async (req) => {
       await workspace.create(data, { transaction });
 
       // create workspaceEquipment
-      if (addedAccessories.length) await addEquipmentWorkspace(addedAccessories, transaction, id);
+      if (addedAccessories?.length) await addEquipmentWorkspace(addedAccessories, transaction, id);
 
       count++;
     }

@@ -157,7 +157,7 @@ const Workspaces = () => {
 		};
 	});
 
-	const count = workspacePages * size;
+	const count = workspacePages * size - 1;
 
 	const handleDeleteClick = async (event) => {
 		event.preventDefault();

@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Chip, OutlinedInput } from '@mui/material';
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Chip, OutlinedInput, Grid } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,8 +20,9 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 		});
 		return initialEquipment;
 	};
-
 	const [currentEquipment, setEquipment] = useState(initialEquipment);
+
+	const [allowMultiple, setAllowMultiple] = useState(!!((!workspace.participantLimit || workspace.participantLimit > 1)));
 
 	const handleEquipmentChange = (event) => {
 		const { target: { value } } = event;
@@ -59,9 +60,17 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 		setEquipment(newEquipmentQuantity);
 	};
 
+	const handleTypeChange = (name, value) => {
+		const selectedType = workspaceTypes.find(el => el.id === value);
+		if (!selectedType.allowMultipleParticipants) delete formData.participantLimit;
+		else formData.participantLimit = null;
+		setAllowMultiple(selectedType.allowMultipleParticipants);
+	};
+
 	const handleChange = (e) => {
-		const value = e.target.value;
 		const name = e.target.name;
+		const value = e.target.value;
+		if (name === 'typeId') handleTypeChange(name, value);
 		setFormData((prevState) => ({
 			...prevState,
 			[name]: value
@@ -190,6 +199,22 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
 					))}
 				</Select>
 			</FormControl>
+
+			{allowMultiple &&
+				<FormControl fullWidth sx = {{ marginTop: 2 }}>
+					<TextField
+						fullWidth
+						id="participantLimit"
+						name="participantLimit"
+						onChange={handleChange}
+						margin="normal"
+						label="Participant limit (leave empty for unlimited)"
+						defaultValue={null}
+						type="number"
+						inputProps={{ min: 1 }}
+					/>
+				</FormControl>
+			}
 
 			<FormControl fullWidth sx={{ marginTop: 2 }}>
 				<InputLabel id="multiple-chip-label">Accessories</InputLabel>

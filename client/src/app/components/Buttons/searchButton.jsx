@@ -2,24 +2,26 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 
-export default function CreateButton ({ onClick, text }) {
+export default function SearchButton ({ onClick, text, disabled }) {
 	return (
 		<Stack spacing={2} direction="row">
 			<Button
 				variant="contained"
-				size="medium"
+				size="small"
 				sx={{
-					background: '#54626F',
+					background: '#9090C0',
 					fontSize: 11,
 					':hover': {
-						background: '#98AFC7'
+						background: '#9090C0'
 					}
-				}} onClick={onClick}>{text}</Button>
+				}} onClick={onClick}
+				disabled={disabled}>{text}</Button>
 		</Stack>
 	);
 }
 
-CreateButton.propTypes = {
+SearchButton.propTypes = {
 	onClick: PropTypes.func,
-	text: PropTypes.string
+	text: PropTypes.string,
+	disabled: PropTypes.bool
 };

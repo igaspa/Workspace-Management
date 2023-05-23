@@ -20,9 +20,7 @@ export const areaApiSlice = createApi({
 				url: '/area?include=location',
 				method: 'GET',
 				params: {
-					workspaces: params.workspaces,
-					...(params.name && { name: params.name })
-
+					workspaces: params.workspaces
 				}
 			}),
 			providesTags: ['areaList'],

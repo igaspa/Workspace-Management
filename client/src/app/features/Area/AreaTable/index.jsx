@@ -1,5 +1,5 @@
 import { CircularProgress, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { useGetAreaListQuery, useDeleteAreaMutation, useUpdateAreaMutation } from '../../../api/areaApiSlice';
+import { useGetAreaListQuery, useDeleteAreaMutation, useUpdateAreaMutation, useGetAreaSearchListQuery } from '../../../api/areaApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
@@ -11,6 +11,8 @@ import CreateButton from '../../../components/Buttons/createButton';
 import DefaultTable from '../../../components/Backoffice/table';
 import { useGetLocationListQuery } from '../../../api/locationApiSlice';
 import ImagePrompt from '../../../components/Dialogs/imageDialog';
+import SearchField from '../../../components/Filters/searchField';
+import SearchButton from '../../../components/Buttons/searchButton';
 
 const columns = [
 	{
@@ -55,11 +57,14 @@ export default function AreaTable () {
 	const [selectedId, setSelectedId] = useState(' ');
 	const [areaImage, setAreaImage] = useState('');
 	const divRef = useRef();
+	const searchRef = useRef();
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
 	const [formData, setFormData] = useState('');
+	const [searchData, setSearchData] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
 
-	const handleChangePage = (event, newPage) => {
+	const handleChangePage = (_event, newPage) => {
 		setPage(newPage);
 	};
 	const handleChangeRowsPerPage = (event) => {
@@ -92,6 +97,21 @@ export default function AreaTable () {
 		setOpenUpdate(true);
 	};
 
+	const handleSearch = (event) => {
+		const searchField = new FormData(searchRef.current);
+		setSearchTerm(searchField.get('area'));
+	};
+
+	const handleSearchTerm = (event) => {
+		setSearchData(event.target.value);
+	};
+
+	const handleSearchClear = (event) => {
+		searchRef.current.reset();
+		setSearchTerm('');
+		setSearchData('');
+	};
+
 	const handleImageOpen = () => {
 		setOpenImage(true);
 	};
@@ -120,6 +140,9 @@ export default function AreaTable () {
 		...(page && { page: page + 1 }),
 		...(size && { size })
 	});
+	const { data: [searchArea] = [], isError: isAreaSearchError, isLoading: isAreaSearchLoading } = useGetAreaSearchListQuery({
+		name: [searchTerm]
+	});
 
 	const { data: [locations] = [], isError: isLocationsError, isLoading: isLocationsLoading } = useGetLocationListQuery({});
 
@@ -146,37 +169,63 @@ export default function AreaTable () {
 			});
 	};
 	const count = pages * size;
-	const data = area?.map((el) => {
-		return {
-			id: el.id,
-			name: el.name,
-			floor: el.floor,
-			location: el.location.address,
-			locationId: el.location.id,
-			actions: <div style={{ display: 'flex', flexDirection: 'row' }}>
+	const filteredData = searchTerm.length >= 3 ? searchArea.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : area;
+
+	const data = filteredData?.map(el => ({
+		id: el.id,
+		name: el.name,
+		floor: el.floor,
+		location: el.location.address,
+		locationId: el.location.id,
+		actions: (
+			<div style={{ display: 'flex', flexDirection: 'row' }}>
 				<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
 				<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
-			</div>,
-			image: <CreateButton onClick={async () => {
-				setAreaImage(el.image);
-				<CircularProgress />;
-				handleImageOpen(el.image);
-			}} text={'Image'} />
-		};
-	});
+			</div>
+		),
+		image: (
+			<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<CreateButton
+					onClick={async () => {
+						setAreaImage(el.image);
+						handleImageOpen(el.image);
+					}}
+					text={'Image'}
+				/>
+			</div>
+		)
+	}));
+
 	return (
 		<div>
 			{ role.includes('Administrator')
-				? isAreasLoading || isLocationsLoading
+				? isAreasLoading || isLocationsLoading || isAreaSearchLoading
 					? (
 						<CircularProgress />
 					)
-					: isAreasError || isLocationsError
+					: isAreasError || isLocationsError || isAreaSearchError
 						? (
 							<Typography color="error">Failed to load area.</Typography>
 						)
 						: (<>
-							<CreateButton onClick={handleCreateClick} text={'Create Area'}/>
+							<Box component="form" ref={searchRef}
+								sx={{
+									display: 'flex',
+									alignItem: 'center',
+									paddingBottom: 1
+								}}>
+								<SearchField
+									data={searchArea.map(item => item.name)}
+									name="area"
+									onChange={handleSearchTerm} />
+								<SearchButton onClick={handleSearch}
+									text={'Search'}
+									disabled={(searchData?.length < 3)}/>
+								<DeleteButton onClick={handleSearchClear}
+									text={'Clear'} />
+								<CreateButton onClick={handleCreateClick}
+									text={'Create Area'} />
+							</Box>
 							<DefaultTable columns={columns}
 								rows={data}
 								page={page}

@@ -1,5 +1,5 @@
 import { CircularProgress, Typography, Box, TextField, Checkbox } from '@mui/material';
-import { useGetWorkspaceTypesListQuery, useUpdateWorkspaceTypeMutation, useDeleteWorkspaceTypeMutation } from '../../../api/workspaceTypeApiSlice';
+import { useGetWorkspaceTypesListQuery, useUpdateWorkspaceTypeMutation, useDeleteWorkspaceTypeMutation, useGetWorkspaceTypeSearchListQuery } from '../../../api/workspaceTypeApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
@@ -9,6 +9,8 @@ import { useState, useRef } from 'react';
 import Prompt from '../../../components/Dialogs/dialog';
 import CreateButton from '../../../components/Buttons/createButton';
 import DefaultTable from '../../../components/Backoffice/table';
+import SearchButton from '../../../components/Buttons/searchButton';
+import SearchField from '../../../components/Filters/searchField';
 
 const columns = [
 	{
@@ -54,6 +56,9 @@ export default function WorkspaceTypeTable () {
 	const [formData, setFormData] = useState('');
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
+	const [searchData, setSearchData] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
+	const searchRef = useRef();
 	const divRef = useRef();
 	const [allowPermanentReservation, setAllowPermanentReservation] = useState(false);
 
@@ -69,6 +74,22 @@ export default function WorkspaceTypeTable () {
 		navigate('/backoffice/create-workspace-type');
 	};
 
+	const handleSearch = (event) => {
+		const searchField = new FormData(searchRef.current);
+		setSearchTerm(searchField.get('workspaceType'));
+	};
+
+	const handleSearchTerm = (event) => {
+		event.preventDefault();
+		setSearchData(event.target.value);
+	};
+
+	const handleSearchClear = (event) => {
+		searchRef.current.reset();
+		setSearchTerm('');
+		setSearchData('');
+	};
+
 	const handleClickOpenDelete = (workspaceTypeId) => {
 		setSelectedId(workspaceTypeId);
 		setOpenDelete(true);
@@ -82,14 +103,21 @@ export default function WorkspaceTypeTable () {
 		setSelectedId(workspaceTypeId);
 		setOpenUpdate(true);
 	};
+
 	const handleClose = () => {
 		setOpenUpdate(false);
 		setOpenDelete(false);
 	};
+
 	const { data: [workspaceType, pages] = [], isError: isWorkspaceTypesError, isLoading: isWorkspaceTypesLoading } = useGetWorkspaceTypesListQuery({
 		...(page && { page: page + 1 }),
 		...(size && { size })
 	});
+
+	const { data: searchWorkspaceType = [], isError: isWorkspaceTypeSearchError, isLoading: isWorkspaceTypeSearchLoading } = useGetWorkspaceTypeSearchListQuery({
+		name: [searchTerm]
+	});
+
 	const handleDeleteClick = async (event) => {
 		event.preventDefault();
 		await deleteWorkspaceType(selectedId)
@@ -128,8 +156,12 @@ export default function WorkspaceTypeTable () {
 				errorHandler(error);
 			});
 	};
+
 	const count = pages * size;
-	const data = workspaceType?.map((el) => ({
+
+	const filteredData = searchTerm.length >= 3 ? searchWorkspaceType.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : workspaceType;
+
+	const data = filteredData?.map((el) => ({
 		id: el.id,
 		name: el.name,
 		maxReservationInterval: `${el.maxReservationInterval.hours
@@ -148,17 +180,33 @@ export default function WorkspaceTypeTable () {
 			{role.includes('Administrator')
 				? (
 					<>
-						{isWorkspaceTypesLoading
+						{isWorkspaceTypesLoading || isWorkspaceTypeSearchLoading
 							? (
 								<CircularProgress />
 							)
-							: isWorkspaceTypesError
+							: isWorkspaceTypesError || isWorkspaceTypeSearchError
 								? (
 									<Typography color="error">Failed to load workspace types.</Typography>
 								)
 								: (
 									<>
-										<CreateButton onClick={handleCreateClick} text={'Create new Workspace Type'} />
+										<Box component="form" ref={searchRef}
+											sx={{
+												display: 'flex',
+												alignItem: 'center',
+												paddingBottom: 1
+											}}>
+											<SearchField
+												data={searchWorkspaceType.map(item => item.name)}
+												name="workspaceType"
+												onChange={handleSearchTerm} />
+											<SearchButton onClick={handleSearch}
+												text={'Search'}
+												disabled={(searchData?.length < 3)}/>
+											<DeleteButton onClick={handleSearchClear}
+												text={'Clear'} />
+											<CreateButton onClick={handleCreateClick} text={'Create new Workspace Type'} />
+										</Box>
 										<DefaultTable
 											columns={columns}
 											rows={data}

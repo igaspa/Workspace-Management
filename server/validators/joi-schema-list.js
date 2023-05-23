@@ -111,7 +111,7 @@ exports.workspace = joi.object({
       post: (workspaceTypeSchema) => workspaceTypeSchema.required(),
       put: (workspaceTypeSchema) => workspaceTypeSchema.optional()
     }),
-  participantLimit: joi.number()
+  participantLimit: joi.number().allow(null)
     .min(1)
     .max(100)
     .alter({

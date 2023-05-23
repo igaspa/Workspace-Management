@@ -30,6 +30,8 @@ export default function WorkspaceCreation () {
 	const [multipleWorkspaces, setMultipleWorkspaces] = useState(false);
 	const [numOfWorkspaces, setNumOfWorkspaces] = useState('one');
 
+	const [allowMultiple, setAllowMultiple] = useState(false);
+
 	const [createWorkspace] = useCreateWorkspaceMutation();
 	const [createMultipleWorkspaces] = useCreateMultipleWorkspacesMutation();
 
@@ -93,9 +95,18 @@ export default function WorkspaceCreation () {
 		setEquipment(newEquipmentQuantity);
 	};
 
+	const handleTypeChange = (name, value) => {
+		const selectedType = workspaceTypes.find(el => el.id === value);
+		if (!selectedType.allowMultipleParticipants) delete formData.participantLimit;
+		else formData.participantLimit = null;
+		setAllowMultiple(selectedType.allowMultipleParticipants);
+	};
+
 	const handleChange = (e) => {
-		const value = e.target.value;
 		const name = e.target.name;
+		const value = e.target.value;
+		if (name === 'typeId') handleTypeChange(name, value);
+
 		setFormData((prevState) => ({
 			...prevState,
 			[name]: value
@@ -126,6 +137,7 @@ export default function WorkspaceCreation () {
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
+				navigate('/backoffice/workspaces');
 			})
 			.catch((error) => {
 				const authorizationError = errorHandler(error);
@@ -237,6 +249,24 @@ export default function WorkspaceCreation () {
 										</FormControl>
 									</Grid>
 
+									{allowMultiple &&
+										<Grid item xs={12}>
+											<FormControl fullWidth>
+												<TextField
+													fullWidth
+													id="participantLimit"
+													name="participantLimit"
+													onChange={handleChange}
+													margin="normal"
+													label="Participant limit (leave empty for unlimited)"
+													defaultValue={null}
+													type="number"
+													inputProps={{ min: 1 }}
+												/>
+											</FormControl>
+										</Grid>
+									}
+
 									<Grid item xs={12}>
 										<FormControl fullWidth>
 											<InputLabel id="multiple-chip-label">Accessories</InputLabel>
@@ -261,7 +291,6 @@ export default function WorkspaceCreation () {
 
 												{equipment.map((eq) => (
 													<MenuItem key={eq.id} value={eq.id}>
-														{/* <Checkbox checked={currentEquipment.includes(eq.id)} /> */}
 														{eq.name}
 													</MenuItem>
 												))}

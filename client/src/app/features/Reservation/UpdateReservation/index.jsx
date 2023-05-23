@@ -184,7 +184,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> until: </Typography>
 							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours}/>
 							<br></br>
-							{(reservation?.workspace?.participantLimit > 1) &&
+							{(reservation?.workspace?.participantLimit > 1 || !reservation?.workspace?.participantLimit) &&
 								<FormControl sx={{ m: 1, width: 300 }}>
 									<MultipleUserFilter
 										multiple={true}

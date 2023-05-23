@@ -56,6 +56,7 @@ export default function ReservationTable () {
 		setSelectedId(equipmentId);
 		setOpenDelete(true);
 	};
+
 	const handleClose = () => {
 		setOpenDelete(false);
 	};

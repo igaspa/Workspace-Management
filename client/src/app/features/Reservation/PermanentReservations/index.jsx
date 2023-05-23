@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Box, CircularProgress, Grid } from '@mui/material';
+import { Typography, Box, CircularProgress, Grid, FormControl } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -13,7 +13,7 @@ import { useCreatePermanentReservationMutation, useGetReservationsFromWorkspaceQ
 import { useGetUsersListQuery } from '../../../api/usersApiSlice';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
-import UserFilter from '../../../components/Users/userFilter';
+import UserFilter from '../../../components/Users/userFIlter';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
@@ -22,17 +22,21 @@ import ActiveReservationCard from '../../../components/Reservation/workspaceRese
 
 const theme = createTheme();
 
-const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, startTime }) => {
+const CreatePermanentReservation = ({ workspace, onClose, reservationDate, startTime }) => {
+	const [createPermanentReservation] = useCreatePermanentReservationMutation();
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const currentDay = createDate(0);
 	const [date, setDate] = useState(reservationDate || currentDay);
 	const [startHour, setStartHour] = useState(startTime || '');
 	const [startAt, setStartAt] = useState('');
-	const [createPermanentReservation] = useCreatePermanentReservationMutation();
-	const [selectedUser, setSelectedUser] = useState([]);
-	const navigate = useNavigate();
+
 	const [page, setPage] = useState(1);
 	const divRef = useRef();
+
+	const [selectedUser, setSelectedUser] = useState({});
+	const [participantEmailSlice, setParticipantEmailSlice] = useState('');
 
 	const hours = getHours(date);
 	const dates = getNext7Days();
@@ -56,19 +60,13 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 		setPage(value);
 	};
 
-	const { data: usersData = [], isError: userError, isLoading: userLoading, error: userErrorObject } = useGetUsersListQuery();
-
-	// eslint-disable-next-line no-unused-vars
-	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
-		{
-			from: date,
-			workspaceId,
-			...(page && { page })
-		}
-	);
-
-	const handleSelectedUser = (selectedUser) => {
+	const handleSelectedUser = (event, selectedUser) => {
 		setSelectedUser(selectedUser);
+	};
+
+	const handleEmailInputChange = (e) => {
+		const email = e.target.value;
+		if (e.target.value.length > 2) setParticipantEmailSlice(email.slice(0, 3));
 	};
 
 	const handleSubmit = async (event) => {
@@ -77,7 +75,7 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 		const objectToPost = {
 			id: uuidv4(),
 			userId: selectedUser.id,
-			workspaceId,
+			workspaceId: workspace.id,
 			startAt
 		};
 
@@ -92,15 +90,33 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 				errorHandler(error);
 			});
 	};
+
+	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
+		{
+			from: date,
+			workspaceId: workspace.id,
+			...(page && { page })
+		}
+	);
+
+	const { data: users = [], isError: userFetchError, error: userErrorObject, isLoading: userLoading } = useGetUsersListQuery({
+		email: participantEmailSlice.length ? participantEmailSlice : '/'
+	});
+
 	useEffect(() => {
-		if (userError) {
+		if (userFetchError) {
 			const authorizationError = errorHandler(userErrorObject);
 			if (authorizationError) navigate('/sign-in');
 		}
-	}, [usersData]);
+
+		if (reservationsFetchError) {
+			const authorizationError = errorHandler(reservationErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+	}, [users, reservations]);
 
 	// Render loading state
-	if (userLoading) {
+	if (userLoading || reservationsLoading) {
 		return <CircularProgress />;
 	}
 
@@ -118,7 +134,8 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 							color="text.primary"
 							gutterBottom
 						>
-              Permanently Reserve a Space
+              Permanently Reserve a Space <br></br>
+					- { workspace.name} -
 						</Typography>
 					</Container>
 					<Container>
@@ -130,9 +147,13 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 						</div>
 						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> Select a user: </Typography>
-							<UserFilter users={usersData} onChange={(event, data) => {
-								handleSelectedUser(data);
-							}} />
+							<FormControl sx={{ m: 1, width: 300 }}>
+								<UserFilter
+									users={users}
+									selectedUsers={selectedUser}
+									handleParticipantChange={handleSelectedUser}
+									handleEmailInputChange={handleEmailInputChange} />
+							</FormControl>
 							<SubmitButton onChange={handleSubmit} />
 						</div>
 
@@ -163,7 +184,7 @@ const CreatePermanentReservation = ({ workspaceId, onClose, reservationDate, sta
 export default CreatePermanentReservation;
 
 CreatePermanentReservation.propTypes = {
-	workspaceId: PropTypes.string,
+	workspace: PropTypes.object,
 	startTime: PropTypes.string,
 	reservationDate: PropTypes.string,
 	onClose: PropTypes.func

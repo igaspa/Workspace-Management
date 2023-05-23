@@ -6,22 +6,39 @@ import UpdateReservation from '../UpdateReservation';
 import Drawer from '@mui/material/Drawer';
 import { successToast, errorToast } from '../../../utils/toastifyNotification';
 import { BasicPagination } from '../../../components/Pagination/pagination';
+import { DateTime } from 'luxon';
 
 const Reservations = () => {
-	const { data: [reservationData, pages] = [], isError, isLoading } = useGetUsersReservationListQuery();
 	const [deleteReservation] = useDeleteReservationMutation();
 	const [open, setOpen] = useState(false);
-	const [selectedId, setSelectedId] = useState(' ');
 	const divRef = useRef();
 	const [page, setPage] = useState(1);
+	const [selectedReservation, setSelectedReservation] = useState({});
+
+	const [fromDate, setFromDate] = useState('');
+	const [untilDate, setUntilDate] = useState('');
+
+	const [startHour, setStartHour] = useState('');
+	const [endHour, setEndHour] = useState('');
 
 	const handleDrawerOpen = (_event, reservation) => {
-		setSelectedId(reservation.id);
+		setSelectedReservation(reservation);
+
+		const startDate = DateTime.fromISO(reservation.startAt, { zone: 'local' });
+		const endDate = DateTime.fromISO(reservation.endAt, { zone: 'local' });
+
+		setFromDate(startDate.toISO().slice(0, 10));
+		setUntilDate(endDate.toISO().slice(0, 10));
+
+		setStartHour(startDate.toISO().slice(11, 16));
+		setEndHour(endDate.toISO().slice(11, 16));
+
 		setOpen(true);
 	};
 
 	const handleDrawerClose = () => {
 		setOpen(false);
+		setSelectedReservation({});
 	};
 
 	const handlePageChange = async (event, value) => {
@@ -39,6 +56,8 @@ const Reservations = () => {
 				errorToast(error.data.details);
 			});
 	};
+
+	const { data: [reservationData, pages] = [], isError, isLoading } = useGetUsersReservationListQuery();
 
 	return (
 		<div >
@@ -61,7 +80,7 @@ const Reservations = () => {
 										/>
 									))}
 									<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-										<UpdateReservation reservationId={selectedId} onClose={handleDrawerClose} />
+										<UpdateReservation startDate={fromDate} endDate={untilDate} startHour={startHour} endHour={endHour} reservation={selectedReservation} onClose={handleDrawerClose} />
 									</Drawer>
 								</Grid>
 								{(reservationData.length)

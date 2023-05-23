@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.VIRTUAL,
       get () {
         const startAt = calculateStartDate(this.startAt);
-        const endAt = calculateEndDate(this.endAt);
+        const endAt = this.endAt ? calculateEndDate(this.endAt) : 'PERMANENT';
         return `${startAt} - ${endAt}`;
       }
     },

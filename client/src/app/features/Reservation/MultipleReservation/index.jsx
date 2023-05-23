@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Box, Grid } from '@mui/material';
+import { Typography, Box, Grid, CircularProgress, FormControl } from '@mui/material';
 import { DateFilter } from '../../../components/Filters/dateFilter';
 import { TimeFilter } from '../../../components/Filters/timeFilter';
 import Container from '@mui/material/Container';
@@ -17,20 +17,29 @@ import ActiveReservationCard from '../../../components/Reservation/workspaceRese
 import { BasicPagination } from '../../../components/Pagination/pagination';
 import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
 import { Stack } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
+import { useGetUsersListQuery } from '../../../api/usersApiSlice';
+import MultipleUserFilter from '../../../components/Users/multipleUserFilter';
 
 const theme = createTheme();
 
-const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime, reservationFromDate, reservationUntilDate }) => {
+const CreateMultipleDayReservation = ({ workspace, onClose, endTime, startTime, reservationFromDate, reservationUntilDate }) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const [createReservation] = useCreateReservationMutation();
 
 	const currentDay = createDate(0);
 	const [startDate, setStartDate] = useState(reservationFromDate || currentDay);
 	const [endDate, setEndDate] = useState(reservationUntilDate || startDate);
 	const [startHour, setStartHour] = useState(startTime || '');
-	const [startAt, setStartAt] = useState('');
 	const [endHour, setEndHour] = useState(endTime || '');
+
+	const [startAt, setStartAt] = useState('');
 	const [endAt, setEndAt] = useState('');
-	const [createReservation] = useCreateReservationMutation();
+
+	const [selectedUsers, setSelectedUsers] = useState([]);
+	const [participantEmailSlice, setParticipantEmailSlice] = useState('');
+
 	const [page, setPage] = useState(1);
 	const divRef = useRef();
 
@@ -41,14 +50,17 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 	const startHours = getHours(startDate);
 	const endHours = getHours(endDate || startDate);
 	const dates = getNext7Days();
+
 	// get selected start date
 	const handleStartDateChange = (event) => {
 		setStartDate(event.target.value);
+		if (new Date(event.target.value) > new Date(endDate)) setEndDate(event.target.value);
 	};
 
 	// get selected start date
 	const handleEndDateChange = (event) => {
 		setEndDate(event.target.value);
+		if (new Date(event.target.value) < new Date(startDate)) setStartDate(event.target.value);
 	};
 
 	// get selected start hour
@@ -75,24 +87,33 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 		}
 	}, [endDate, endHour, endAt]);
 
-	// eslint-disable-next-line no-unused-vars
-	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
-		{
-			from: startDate,
-			until: endDate,
-			workspaceId,
-			...(page && { page })
-		}
-	);
+	const handleParticipantChange = (event, value) => {
+		setSelectedUsers(value);
+	};
+
+	const handleEmailInputChange = (e) => {
+		const email = e.target.value;
+		if (e.target.value.length > 2) setParticipantEmailSlice(email.slice(0, 3));
+	};
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
+		const participants = selectedUsers.map(user => {
+			return {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				email: user.email
+			};
+		}
+		);
+
 		const objectToPost = {
 			id: uuidv4(),
-			workspaceId,
+			workspaceId: workspace.id,
 			startAt,
-			endAt
+			endAt,
+			participants
 		};
 
 		await createReservation(objectToPost)
@@ -106,6 +127,36 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 				errorHandler(error);
 			});
 	};
+
+	// eslint-disable-next-line no-unused-vars
+	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
+		{
+			from: startDate,
+			until: endDate,
+			workspaceId: workspace.id,
+			...(page && { page })
+		}
+	);
+
+	const { data: users = [], isError: userFetchError, error: userErrorObject, isLoading: userLoading } = useGetUsersListQuery({
+		email: participantEmailSlice.length ? participantEmailSlice : '/'
+	});
+
+	useEffect(() => {
+		if (reservationsFetchError) {
+			const authorizationError = errorHandler(reservationErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+		if (userFetchError) {
+			const authorizationError = errorHandler(userErrorObject);
+			if (authorizationError) navigate('/sign-in');
+		}
+	}, [reservations, users]);
+
+	// Render loading state
+	if (reservationsLoading || userLoading) {
+		return <CircularProgress />;
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -121,7 +172,8 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 							gutterBottom
 							paddingTop={2}
 						>
-               Reserve a Space
+							Reserve a Space <br></br>
+							- { workspace.name} -
 						</Typography>
 					</Container>
 					<Container>
@@ -136,6 +188,18 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 								<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={startHours} />
 								<Typography color="text.primary" sx={{ fontSize: 15 }}>End time:</Typography>
 								<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours} />
+
+								{(workspace.workspaceType.allowMultipleParticipants) &&
+								<FormControl sx={{ m: 1, width: 300 }}>
+									<MultipleUserFilter
+										users={users}
+										selectedUsers={selectedUsers}
+										handleParticipantChange={handleParticipantChange}
+										handleEmailInputChange={handleEmailInputChange}
+									/>
+								</FormControl>
+								}
+
 								<SubmitButton onChange={handleSubmit} />
 							</Stack>
 
@@ -169,7 +233,7 @@ const CreateMultipleDayReservation = ({ workspaceId, onClose, endTime, startTime
 export default CreateMultipleDayReservation;
 
 CreateMultipleDayReservation.propTypes = {
-	workspaceId: PropTypes.string,
+	workspace: PropTypes.object,
 	startTime: PropTypes.string,
 	endTime: PropTypes.string,
 	reservationFromDate: PropTypes.string,

@@ -29,7 +29,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 				<CreateReservation workspace={workspace} reservationDate={fromDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
 			<Drawer anchor="right" open={openMultiple} onClose={handleDrawerClose}>
-				<CreateMultipleReservation workspaceId={workspace.id} reservationFromDate={fromDate} reservationUntilDate={untilDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
+				<CreateMultipleReservation workspace={workspace} reservationFromDate={fromDate} reservationUntilDate={untilDate} startTime={startHour} endTime={endHour} onClose={handleDrawerClose} />
 			</Drawer>
 
 			{(role.includes('Administrator') && (workspace.workspaceType.allowPermanentReservations))
@@ -37,7 +37,7 @@ const WorkspaceCard = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen,
 					<Button onClick={handlePermanentDrawerOpen}>Permanent Reservation</Button>
 				</CardContent>
 				<Drawer anchor="right" open={openPermanent} onClose={handleDrawerClose}>
-					<CreatePermanentReservation workspaceId={workspace.id} reservationDate={fromDate} startTime={startHour} onClose={handleDrawerClose} />
+					<CreatePermanentReservation workspace={workspace} reservationDate={fromDate} startTime={startHour} onClose={handleDrawerClose} />
 				</Drawer>
 				</div>
 				: null}

@@ -1,5 +1,5 @@
 import { CircularProgress, Typography, Box, TextField } from '@mui/material';
-import { useGetLocationListQuery, useDeleteLocationMutation, useUpdateLocationMutation } from '../../../api/locationApiSlice';
+import { useGetLocationListQuery, useDeleteLocationMutation, useUpdateLocationMutation, useGetLocationSearchListQuery } from '../../../api/locationApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
@@ -9,6 +9,8 @@ import { useState, useRef } from 'react';
 import Prompt from '../../../components/Dialogs/dialog';
 import CreateButton from '../../../components/Buttons/createButton';
 import DefaultTable from '../../../components/Backoffice/table';
+import SearchButton from '../../../components/Buttons/searchButton';
+import SearchField from '../../../components/Filters/searchField';
 
 const columns = [
 	{
@@ -48,7 +50,10 @@ export default function LocationTable () {
 	const [formData, setFormData] = useState('');
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
+	const [searchData, setSearchData] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
 	const divRef = useRef();
+	const searchRef = useRef();
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -60,6 +65,21 @@ export default function LocationTable () {
 
 	const handleCreateClick = () => {
 		navigate('/backoffice/create-location');
+	};
+
+	const handleSearch = (event) => {
+		const searchField = new FormData(searchRef.current);
+		setSearchTerm(searchField.get('location'));
+	};
+
+	const handleSearchTerm = (event) => {
+		setSearchData(event.target.value);
+	};
+
+	const handleSearchClear = (event) => {
+		searchRef.current.reset();
+		setSearchTerm('');
+		setSearchData('');
 	};
 
 	const handleClickOpenDelete = (locationId) => {
@@ -81,6 +101,9 @@ export default function LocationTable () {
 	const { data: [location, pages] = [], isError: isLocationsError, isLoading: isLocationsLoading } = useGetLocationListQuery({
 		...(page && { page: page + 1 }),
 		...(size && { size })
+	});
+	const { data: searchLocation = [], isError: isLocationSearchError, isLoading: isLocationSearchLoading } = useGetLocationSearchListQuery({
+		name: [searchTerm]
 	});
 
 	const handleDeleteClick = async (event) => {
@@ -120,7 +143,9 @@ export default function LocationTable () {
 			});
 	};
 	const count = pages * size;
-	const data = location?.map((el) => ({
+	const filteredData = searchTerm.length >= 3 ? searchLocation.filter(item => item.address.toLowerCase().includes(searchTerm.toLowerCase())) : location;
+
+	const data = filteredData?.map((el) => ({
 		id: el.id,
 		address: el.address,
 		city: el.city,
@@ -130,19 +155,38 @@ export default function LocationTable () {
 			<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
 		</div>
 	}));
+
 	return (
 		<div>
 			{ role.includes('Administrator')
-				? isLocationsLoading
+				? isLocationsLoading || isLocationSearchLoading
 					? (
 						<CircularProgress />
 					)
-					: isLocationsError
+					: isLocationsError || isLocationSearchError
 						? (
 							<Typography color="error">Failed to load location.</Typography>
 						)
 						: (<>
-							<CreateButton onClick={handleCreateClick} text={'Create Location'}/>
+							<Box component="form" ref={searchRef}
+								sx={{
+									display: 'flex',
+									alignItem: 'center',
+									paddingBottom: 1
+								}}>
+								<SearchField
+									data={searchLocation.map(item => item.name)}
+									name="location"
+									onChange={handleSearchTerm} />
+								<SearchButton onClick={handleSearch}
+									text={'Search'}
+									disabled={(searchData?.length < 3)}/>
+								<DeleteButton onClick={handleSearchClear}
+									text={'Clear'} />
+								<CreateButton onClick={handleCreateClick}
+									text={'Create Location'}/>
+
+							</Box>
 							<DefaultTable
 								columns={columns}
 								rows={data}

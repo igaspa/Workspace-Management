@@ -31,6 +31,15 @@ export const workspaceTypesApiSlice = createApi({
 				return [response, pages];
 			}
 		}),
+		getWorkspaceTypeSearchList: builder.query({
+			query: (params = {}) => ({
+				url: '/workspace-type',
+				method: 'GET',
+				params: {
+					name: params.name
+				}
+			})
+		}),
 		// get workspaces in one workspace-type
 		getWorkspacesByType: builder.query({
 			query: (id, params = {}) => ({
@@ -78,6 +87,7 @@ export const workspaceTypesApiSlice = createApi({
 
 export const {
 	useGetWorkspaceTypesListQuery,
+	useGetWorkspaceTypeSearchListQuery,
 	useCreateWorkspaceTypeMutation,
 	useGetWorkspaceTypeQuery,
 	useUpdateWorkspaceTypeMutation,

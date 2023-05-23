@@ -4,6 +4,7 @@ const { workspace, workspaceType, reservation, sequelize } = require('../databas
 const { Op } = require('sequelize');
 const generalController = require('./general');
 const { EXCLUDE_LIST } = require('../utils/constants');
+const { searchByTerm } = require('../utils/filter');
 
 const workspaceCustomWhereOptions = (queryParams) => {
   const options = [];
@@ -107,13 +108,22 @@ exports.createOneWorkspace = async (req, res) => {
 module.exports.getAllWorkspaces = async (req, res) => {
   const customIncludeOptions = workspaceCustomIncludeOptions(req.query);
   const customWhereOptions = workspaceCustomWhereOptions(req.query);
+  const { name } = req.query;
 
   const customOptions = {
     include: customIncludeOptions,
     where: customWhereOptions
   };
 
-  await generalController.findAllModels(workspace, customOptions, req, res);
+  if (name?.length < 3) {
+    res.status(200).json([]);
+  } else if (!name) {
+    await generalController.findAllModels(workspace, customOptions, req, res);
+  } else {
+    const searchedTerm = searchByTerm(name);
+    customOptions.where.push({ name: searchedTerm });
+    await generalController.findAllModels(workspace, customOptions, req, res);
+  }
 };
 
 module.exports.getWorkspace = async (req, res) => {

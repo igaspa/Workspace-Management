@@ -36,7 +36,19 @@ export const equipmentsApiSlice = createApi({
 			},
 			invalidatesTags: ['equipmentsList']
 		}),
+		getEquipmentSearchList: builder.query({
+			query: (params) => {
+				const queryParameters = {
+					name: params.name
+				};
 
+				return {
+					url: '/equipment',
+					method: 'GET',
+					params: queryParameters
+				};
+			}
+		}),
 		// this method creates a new equipment
 		createEquipment: builder.mutation({
 			query: (body) => ({
@@ -73,6 +85,7 @@ export const equipmentsApiSlice = createApi({
 
 export const {
 	useGetEquipmentsListQuery,
+	useGetEquipmentSearchListQuery,
 	useCreateEquipmentMutation,
 	useGetEquipmentQuery,
 	useUpdateEquipmentMutation,

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { CircularProgress, Typography, Box, Dialog, DialogTitle, DialogContent, useMediaQuery } from '@mui/material';
 import { successToast } from '../../../utils/toastifyNotification';
-import { useDeleteWorkspaceMutation, useGetWorkspacesListQuery, useUpdateWorkspaceMutation } from '../../../api/workspaceApiSlice';
+import { useDeleteWorkspaceMutation, useGetWorkspaceSearchListQuery, useGetWorkspacesListQuery, useUpdateWorkspaceMutation } from '../../../api/workspaceApiSlice';
 import { useNavigate } from 'react-router-dom';
 import { errorHandler } from '../../../utils/errors';
 import WorkspaceForm from '../../../components/Workspace/updateWorkspaceForm';
@@ -11,6 +11,8 @@ import Prompt from '../../../components/Dialogs/dialog';
 import CreateButton from '../../../components/Buttons/createButton';
 import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
+import SearchButton from '../../../components/Buttons/searchButton';
+import SearchField from '../../../components/Filters/searchField';
 
 const columns = [
 	{
@@ -66,9 +68,12 @@ const Workspaces = () => {
 	const [selectedWorkspace, setSelectedWorkspace] = useState(null);
 
 	const [showUpdateForm, setShowUpdateForm] = useState(false);
+	const searchRef = useRef();
 
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
+	const [searchData, setSearchData] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
 
 	const handleCreateWorkspaceButton = () => {
 		navigate('/backoffice/create-workspace');
@@ -77,6 +82,21 @@ const Workspaces = () => {
 	const handleDeleteButton = (workspaceId) => {
 		setSelectedId(workspaceId);
 		setOpen(true);
+	};
+
+	const handleSearch = (event) => {
+		const searchField = new FormData(searchRef.current);
+		setSearchTerm(searchField.get('area'));
+	};
+
+	const handleSearchTerm = (event) => {
+		setSearchData(event.target.value);
+	};
+
+	const handleSearchClear = (event) => {
+		searchRef.current.reset();
+		setSearchTerm('');
+		setSearchData('');
 	};
 
 	const handleUpdateButton = (workspace) => {
@@ -132,7 +152,13 @@ const Workspaces = () => {
 		include: ['workspaceType', 'equipment']
 	});
 
-	const data = workspaces?.map((el) => {
+	const { data: searchWorkspace = [], isError: isWorkspaceSearchError, isLoading: isWorkspaceSearchLoading } = useGetWorkspaceSearchListQuery({
+		name: [searchTerm]
+	});
+
+	const filteredData = searchTerm.length >= 3 ? searchWorkspace.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : workspaces;
+
+	const data = filteredData?.map((el) => {
 		return {
 			id: el.id,
 			name: el.name,
@@ -191,11 +217,11 @@ const Workspaces = () => {
 
 	return (
 		<div>
-			{isWorkspacesLoading
+			{isWorkspacesLoading || isWorkspaceSearchLoading
 				? (
 					<CircularProgress />
 				)
-				: isWorkspacesError
+				: isWorkspacesError || isWorkspaceSearchError
 					? (
 						<Typography color="error">Failed to load workspaces.</Typography>
 					)
@@ -208,9 +234,25 @@ const Workspaces = () => {
 								margin={0}
 								padding={0}
 							>
+								<Box component="form" ref={searchRef}
+									sx={{
+										display: 'flex',
+										alignItem: 'center',
+										paddingBottom: 1
+									}}>
+									<SearchField
+										data={searchWorkspace.map(item => item.name)}
+										name="area"
+										onChange={handleSearchTerm} />
+									<SearchButton onClick={handleSearch}
+										text={'Search'}
+										disabled={(searchData?.length < 3)}/>
+									<DeleteButton onClick={handleSearchClear}
+										text={'Clear'} />
+									<CreateButton onClick={handleCreateWorkspaceButton}
+										text={'Create Workspaces'} />
 
-								<CreateButton onClick={handleCreateWorkspaceButton} text={'Create Workspaces'} />
-
+								</Box>
 								<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
 									{workspaces.length
 										? (

@@ -46,6 +46,15 @@ export const workspacesApiSlice = createApi({
 			},
 			invalidatesTags: ['workspacesList']
 		}),
+		getWorkspaceSearchList: builder.query({
+			query: (params = {}) => ({
+				url: '/workspace?include=workspaceType&include=equipment&include=area',
+				method: 'GET',
+				params: {
+					name: params.name
+				}
+			})
+		}),
 
 		// this method creates a new workspace
 		createWorkspace: builder.mutation({
@@ -101,6 +110,7 @@ export const workspacesApiSlice = createApi({
 
 export const {
 	useGetWorkspacesListQuery,
+	useGetWorkspaceSearchListQuery,
 	useCreateWorkspaceMutation,
 	useCreateMultipleWorkspacesMutation,
 	useGetWorkspaceQuery,

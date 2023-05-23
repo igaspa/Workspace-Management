@@ -17,7 +17,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 export default function DefaultTable ({ columns, rows, page, rowsPerPage, rowsPerPageOptions, handleChangePage, handleChangeRowsPerPage, count }) {
 	return (
 		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-			<TableContainer sx={{ maxHeight: 440 }}>
+			<TableContainer sx={{ maxHeight: 440, paddingTop: 1 }}>
 				<Table stickyHeader aria-label="sticky table" color="grey">
 					<TableHead>
 						<TableRow>

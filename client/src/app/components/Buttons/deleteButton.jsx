@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function DeleteButton ({ onClick, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={{ paddingLeft: 2 }}>
+		<Stack spacing={2} direction="row" sx={{ paddingLeft: 0.5, paddingRight: 0.5 }}>
 			<Button
 				variant="contained"
 				size="small"

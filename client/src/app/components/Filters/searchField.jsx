@@ -9,6 +9,7 @@ const SearchField = ({ data, name, onChange }) => {
 			sx={{ paddingRight: 1 }}
 			placeholder="Enter 3 characters"
 			onChange={onChange}
+			onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
 		/>
 	);
 };

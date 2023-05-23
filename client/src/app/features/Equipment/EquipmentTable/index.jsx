@@ -1,5 +1,5 @@
 import { CircularProgress, Typography, Box, TextField } from '@mui/material';
-import { useGetEquipmentsListQuery, useDeleteEquipmentMutation, useUpdateEquipmentMutation } from '../../../api/equipmentApiSlice';
+import { useGetEquipmentsListQuery, useDeleteEquipmentMutation, useUpdateEquipmentMutation, useGetEquipmentSearchListQuery } from '../../../api/equipmentApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DefaultTable from '../../../components/Backoffice/table';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -9,6 +9,8 @@ import { errorHandler } from '../../../utils/errors';
 import { useState, useRef } from 'react';
 import Prompt from '../../../components/Dialogs/dialog';
 import CreateButton from '../../../components/Buttons/createButton';
+import SearchButton from '../../../components/Buttons/searchButton';
+import SearchField from '../../../components/Filters/searchField';
 
 const columns = [
 	{
@@ -36,7 +38,10 @@ export default function EquipmentTable () {
 	const [formData, setFormData] = useState('');
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
+	const [searchData, setSearchData] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
 	const divRef = useRef();
+	const searchRef = useRef();
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -44,6 +49,20 @@ export default function EquipmentTable () {
 	const handleChangeRowsPerPage = (event) => {
 		setSize(+event.target.value);
 		setPage(0);
+	};
+	const handleSearch = (event) => {
+		const searchField = new FormData(searchRef.current);
+		setSearchTerm(searchField.get('equipment'));
+	};
+
+	const handleSearchTerm = (event) => {
+		setSearchData(event.target.value);
+	};
+
+	const handleSearchClear = (event) => {
+		searchRef.current.reset();
+		setSearchTerm('');
+		setSearchData('');
 	};
 
 	const handleCreateClick = () => {
@@ -70,6 +89,10 @@ export default function EquipmentTable () {
 	const { data: [equipment, pages] = [], isError: isEquipmentsError, isLoading: isEquipmentsLoading } = useGetEquipmentsListQuery({
 		...(page && { page: page + 1 }),
 		...(size && { size })
+	});
+
+	const { data: searchEquipment = [], isError: isEquipmentSearchError, isLoading: isEquipmentSearchLoading } = useGetEquipmentSearchListQuery({
+		name: [searchTerm]
 	});
 
 	const handleDeleteClick = async (event) => {
@@ -106,7 +129,9 @@ export default function EquipmentTable () {
 	};
 
 	const count = pages * size;
-	const data = equipment?.map((el) => ({
+	const filteredData = searchTerm.length >= 3 ? searchEquipment.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : equipment;
+
+	const data = filteredData?.map((el) => ({
 		id: el.id,
 		name: el.name,
 		actions: (
@@ -120,16 +145,33 @@ export default function EquipmentTable () {
 	return (
 		<div>
 			{ role.includes('Administrator')
-				? isEquipmentsLoading
+				? isEquipmentsLoading || isEquipmentSearchLoading
 					? (
 						<CircularProgress />
 					)
-					: isEquipmentsError
+					: isEquipmentsError || isEquipmentSearchError
 						? (
 							<Typography color="error">Failed to load equipment.</Typography>
 						)
 						: (<>
-							<CreateButton onClick={handleCreateClick} text={'Create Equipment'}/>
+							<Box component="form" ref={searchRef}
+								sx={{
+									display: 'flex',
+									alignItem: 'center',
+									paddingBottom: 1
+								}}>
+								<SearchField
+									data={searchEquipment.map(item => item.name)}
+									name="equipment"
+									onChange={handleSearchTerm} />
+								<SearchButton onClick={handleSearch}
+									text={'Search'}
+									disabled={(searchData?.length < 3)}/>
+								<DeleteButton onClick={handleSearchClear}
+									text={'Clear'} />
+								<CreateButton onClick={handleCreateClick}
+									text={'Create Equipment'} />
+							</Box>
 							<DefaultTable
 								columns={columns}
 								rows={data}

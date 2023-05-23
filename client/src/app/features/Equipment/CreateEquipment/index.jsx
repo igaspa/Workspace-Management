@@ -63,6 +63,7 @@ export default function CreateEquipment () {
 							id="equipment"
 							label="Equipment Name"
 							name="equipment"
+							onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
 						/>
 						<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
 							<ConfirmButton text={'Confirm'} onClick={handleSubmit}/>

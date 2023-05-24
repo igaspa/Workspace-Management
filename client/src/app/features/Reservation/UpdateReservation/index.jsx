@@ -34,7 +34,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 	const [startAt, setStartAt] = useState('');
 	const [endAt, setEndAt] = useState('');
 
-	const [selectedUsers, setSelectedUsers] = useState(reservation.participants);
+	const [selectedUsers, setSelectedUsers] = useState(reservation.participants || []);
 	const [participantEmailSlice, setParticipantEmailSlice] = useState('');
 
 	const startHours = getHours(startDate);

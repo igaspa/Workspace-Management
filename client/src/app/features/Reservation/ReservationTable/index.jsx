@@ -52,8 +52,8 @@ export default function ReservationTable () {
 		setPage(0);
 	};
 
-	const handleClickOpenDelete = (equipmentId) => {
-		setSelectedId(equipmentId);
+	const handleClickOpenDelete = (event, reservationId) => {
+		setSelectedId(reservationId);
 		setOpenDelete(true);
 	};
 
@@ -72,6 +72,7 @@ export default function ReservationTable () {
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
+				setOpenDelete(false);
 			})
 			.catch((error) => {
 				errorToast(error.data.details);

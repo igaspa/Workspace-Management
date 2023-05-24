@@ -2,7 +2,10 @@ const { reservation, workspace, workspaceType, sequelize } = require('../databas
 const { Op } = require('sequelize');
 const { errors } = require('../utils/errors');
 const responseMessage = require('../utils/response-messages');
-const { validateReservationConstraints, validateReservationTimeIntervals } = require('./helpers/reservation-calculations');
+const {
+  validateReservationConstraints,
+  validateReservationTimeIntervals
+} = require('./helpers/reservation-calculations');
 const { roles } = require('../utils/roles');
 
 const deletePermamentReservationFromDB = async (data) => {
@@ -214,7 +217,10 @@ exports.createReservation = async (req) => {
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
     attributes: ['permanentlyReserved'],
-    include: [{ model: workspaceType, attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants'] }]
+    include: [{
+      model: workspaceType,
+      attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants']
+    }]
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
@@ -278,7 +284,9 @@ exports.updateReservation = async (req) => {
     const reservations = getUserReservationsByWorkspaceType(userId, workspaceTypeId);
 
     // filter all reservations except requested one, since we need to validate new reservation start and end
-    const reservationsExceptRequested = reservations.length ? reservations.filter(reservation => reservation.id !== id) : [];
+    const reservationsExceptRequested = reservations.length
+      ? reservations.filter(reservation => reservation.id !== id)
+      : [];
     const data = { startAt, endAt, maxReservationInterval, maxReservationWindow };
     validateReservationConstraints(reservationsExceptRequested, data);
   }

@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     name: DataTypes.STRING,
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     allowPermanentReservations: {
       type: DataTypes.BOOLEAN,
       defaultValue: false

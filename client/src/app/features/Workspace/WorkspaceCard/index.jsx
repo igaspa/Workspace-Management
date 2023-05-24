@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import WorkspaceCard from '../../../components/Workspace/workspaceCard';
 
-const Workspace = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen, startHour, endHour, handleMultipleDrawerOpen, fromDate, untilDate }) => {
+const Workspace = ({ image, workspace, handleDrawerOpen, handlePermanentDrawerOpen, startHour, endHour, handleMultipleDrawerOpen, fromDate, untilDate }) => {
 	const [open, setOpen] = useState(false);
 	const [openPermanent, setOpenPermanent] = useState(false);
 	const [openMultiple, setOpenMultiple] = useState(false);
@@ -28,7 +28,9 @@ const Workspace = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen, sta
 	};
 
 	return (
-		<WorkspaceCard workspace={workspace}
+		<WorkspaceCard
+			image = {image}
+			workspace={workspace}
 			fromDate={fromDate}
 			untilDate={untilDate}
 			open={open}
@@ -39,7 +41,8 @@ const Workspace = ({ workspace, handleDrawerOpen, handlePermanentDrawerOpen, sta
 			handleDrawerClose={handleDrawerClose}
 			handleDrawerOpen={handleDrawerOpen}
 			handlePermanentDrawerOpen={handlePermanentDrawerOpen}
-			handleMultipleDrawerOpen= {handleMultipleDrawerOpen}/>
+			handleMultipleDrawerOpen= {handleMultipleDrawerOpen}
+		/>
 	);
 };
 
@@ -50,6 +53,7 @@ Workspace.propTypes = {
 	endHour: PropTypes.string,
 	fromDate: PropTypes.string,
 	untilDate: PropTypes.string,
+	image: PropTypes.string,
 	handlePermanentDrawerOpen: PropTypes.func,
 	handleMultipleDrawerOpen: PropTypes.func
 };

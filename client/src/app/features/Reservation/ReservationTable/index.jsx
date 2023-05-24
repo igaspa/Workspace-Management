@@ -97,22 +97,24 @@ export default function ReservationTable () {
 						? (
 							<Typography color="error">Failed to load reservations.</Typography>
 						)
-						: (<>
-							<DefaultTable columns={columns}
-								rows={data}
-								page={page}
-								count={count}
-								rowsPerPage={size}
-								handleChangePage={handleChangePage}
-								handleChangeRowsPerPage={handleChangeRowsPerPage}
-								rowsPerPageOptions={[10, 25, 50, 100]}/>
-							<Prompt open={openDelete}
-								onClose={handleClose}
-								title={'Delete Reservation'}
-								body={'Are you sure you want to delete this reservation?'}
-								handleCancel={handleClose}
-								handleConfirm={handleDeleteClick} />
-						</>)
+						: (data.length
+							? <>
+								<DefaultTable columns={columns}
+									rows={data}
+									page={page}
+									count={count}
+									rowsPerPage={size}
+									handleChangePage={handleChangePage}
+									handleChangeRowsPerPage={handleChangeRowsPerPage}
+									rowsPerPageOptions={[10, 25, 50, 100]}/>
+								<Prompt open={openDelete}
+									onClose={handleClose}
+									title={'Delete Reservation'}
+									body={'Are you sure you want to delete this reservation?'}
+									handleCancel={handleClose}
+									handleConfirm={handleDeleteClick} />
+							</>
+							: 'There are no reservations')
 				: navigate('/')}
 		</div>
 	);

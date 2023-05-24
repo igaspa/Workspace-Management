@@ -1,6 +1,6 @@
 const workspaceService = require('../services/workspace');
 const responseMessage = require('../utils/response-messages');
-const { workspace, workspaceType, reservation, sequelize } = require('../database/models');
+const { workspace, workspaceType, reservation, sequelize, area } = require('../database/models');
 const { Op } = require('sequelize');
 const generalController = require('./general');
 const { EXCLUDE_LIST } = require('../utils/constants');
@@ -47,13 +47,22 @@ const workspaceCustomWhereOptions = (queryParams) => {
 
 const workspaceCustomIncludeOptions = (queryParams) => {
   const options = [];
-  const { workspace_type, status, from, until } = queryParams;
+  const { workspace_type, status, from, until, area_name } = queryParams;
 
   if (workspace_type) {
     const workspaceTypeName = workspace_type.replace(/_/g, ' ');
     const term = {
       model: workspaceType,
       where: { name: { [Op.iLike]: workspaceTypeName } }
+    };
+    options.push(term);
+  }
+
+  if (area_name) {
+    const areaName = area_name.replace(/_/g, ' ');
+    const term = {
+      model: area,
+      where: { name: { [Op.iLike]: areaName } }
     };
     options.push(term);
   }

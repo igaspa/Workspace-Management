@@ -120,6 +120,7 @@ const Dashboard = () => {
 								}} />
 							))}
 						</Stack>
+						<BasicPagination count={pages} page={page} onChange={handlePageChange} />
 						<Container maxWidth="lg" display="grid" gridtemplaterows="1fr 1fr)">
 							<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
 								<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
@@ -153,11 +154,14 @@ const Dashboard = () => {
 							<Grid container sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)' }}>
 								{workspacesData
 									.map((workspace) => {
-										return <WorkspaceCard key={workspace.id} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>;
+										return <WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>;
 									})}
 							</Grid>
 						</Container>
-						<BasicPagination count={pages} page={page} onChange={handlePageChange}/>
+						<Box display="flex" justifyContent="flex-end">
+							<BasicPagination count={pages} page={page} onChange={handlePageChange} />
+						</Box>
+
 					</Box>
 					:				'Something went wrong...'
 				}

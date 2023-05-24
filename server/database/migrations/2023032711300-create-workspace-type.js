@@ -15,6 +15,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      image: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       max_reservation_interval: {
         allowNull: true,
         type: SequelizeType.INTERVAL

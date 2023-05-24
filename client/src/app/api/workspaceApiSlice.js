@@ -24,7 +24,8 @@ export const workspacesApiSlice = createApi({
 					...(params.status && { status: params.status }),
 					...(params.size && { size: params.size }),
 					page: params.page,
-					workspace_type: params.workspace_type
+					workspace_type: params.workspace_type,
+					area_name: params.area_name
 				};
 				let url = '/workspace?include=equipment&include=area';
 				const { include } = params;

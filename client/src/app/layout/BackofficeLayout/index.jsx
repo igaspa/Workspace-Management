@@ -9,15 +9,23 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import LogoutIcon from '@mui/icons-material/Logout';
+import SvgIcon from '@mui/material/SvgIcon';
+import {
+	Menu,
+	ChevronLeft,
+	ChevronRight,
+	Home,
+	Logout,
+	LocationOn,
+	MeetingRoom,
+	Desk,
+	Construction
+} from '@mui/icons-material';
+
 import { Link, Outlet } from 'react-router-dom';
 import BackofficeButton from '../../components/Buttons/backofficeButton';
 
@@ -86,6 +94,15 @@ export default function PersistentDrawerLeft ({ children }) {
 		localStorage.clear();
 	};
 
+	const routes = [
+		{ text: 'Home', route: '/backoffice', icon: Home },
+		{ text: 'Equipment', route: 'equipment', icon: Construction },
+		{ text: 'Workspace', route: 'workspaces', icon: Desk },
+		{ text: 'WorkspaceType', route: 'workspace-type', icon: Desk },
+		{ text: 'Location', route: 'location', icon: LocationOn },
+		{ text: 'Area', route: 'area', icon: MeetingRoom }
+	];
+
 	return (
 
 		<Box sx={{ display: 'flex' }}>
@@ -99,7 +116,7 @@ export default function PersistentDrawerLeft ({ children }) {
 						edge="start"
 						sx={{ mr: 2, ...(open && { display: 'none' }) }}
 					>
-						<MenuIcon />
+						<Menu />
 					</IconButton>
 					<Typography variant="h6" noWrap component="div">
             Workspace Management
@@ -121,19 +138,17 @@ export default function PersistentDrawerLeft ({ children }) {
 			>
 				<DrawerHeader>
 					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+						{theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
 					</IconButton>
 				</DrawerHeader>
 				<Divider />
 				<List>
-					{[{ text: 'Home', route: '/backoffice' }, { text: 'Equipment', route: 'equipment' },
-						{ text: 'WorkspaceType', route: 'workspace-type' }, { text: 'Workspace', route: 'workspaces' },
-						{ text: 'Location', route: 'location' }, { text: 'Area', route: 'area' }].map(({ text, route }) => (
+					{routes.map(({ text, route, icon }) => (
 						<ListItem key={text} disablePadding>
 							<Link to={route} style={{ color: '#202120' }}>
 								<ListItemButton>
 									<ListItemIcon>
-										<InboxIcon />
+										<SvgIcon component={icon} inheritViewBox />
 									</ListItemIcon>
 									<ListItemText primary={text} />
 								</ListItemButton>
@@ -148,7 +163,7 @@ export default function PersistentDrawerLeft ({ children }) {
 							<Link to={route} style={{ color: '#202120' }} onClick={deleteToken}>
 								<ListItemButton>
 									<ListItemIcon>
-										<LogoutIcon />
+										<Logout />
 									</ListItemIcon>
 									<ListItemText primary={text} />
 								</ListItemButton>

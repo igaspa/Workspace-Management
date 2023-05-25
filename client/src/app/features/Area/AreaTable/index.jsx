@@ -140,8 +140,6 @@ export default function AreaTable () {
 		...(page && { page: page + 1 }),
 		...(size && { size })
 	});
-	console.log(size);
-	console.log(area);
 
 	const { data: searchArea = [], isError: isAreaSearchError, isLoading: isAreaSearchLoading } = useGetAreaSearchListQuery({
 		name: [searchTerm]
@@ -198,7 +196,6 @@ export default function AreaTable () {
 			</div>
 		)
 	}));
-	console.log(pages);
 	return (
 		<div>
 			{ role.includes('Administrator')

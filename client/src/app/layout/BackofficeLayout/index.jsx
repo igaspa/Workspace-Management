@@ -176,11 +176,9 @@ export default function PersistentDrawerLeft ({ children }) {
 					{role.includes('Administrator') && (
 						<ListItem disablePadding>
 							<Link to="/" style={{ color: '#202120' }} onClick={handleDrawerClose}>
-								<ListItemButton>
-									<ListItemIcon>
-										<BackofficeButton text={'Go back'}/>
-									</ListItemIcon>
-								</ListItemButton>
+								<ListItemIcon>
+									<BackofficeButton text={'Go back'}/>
+								</ListItemIcon>
 							</Link>
 						</ListItem>
 					)}

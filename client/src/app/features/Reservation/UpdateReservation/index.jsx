@@ -168,23 +168,26 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 						</Typography>
 					</Container>
 					<Container>
-						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
+						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', paddingTop: 20, paddingBottom: 2 }}>
+							<div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+								<Typography color="text.primary" sx={{ paddingRight: 1, fontSize: 15 }}> Start Date: </Typography>
+								<DateFilter onChange={handleStartDateChange} date={startDate} dates={dates} />
 
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, fontSize: 15 }}> Start Date: </Typography>
-							<DateFilter onChange={handleStartDateChange} date={startDate} dates={dates} />
-
-							{ (role.includes('Administrator') || role.includes('Lead')) &&
+								{ (role.includes('Administrator') || role.includes('Lead')) &&
 							<>
-								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> End Date: </Typography>
+								<Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> End Date: </Typography>
 								<DateFilter onChange={handleEndDateChange} date={endDate} dates={dates} />
 							</>
-							}
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> from: </Typography>
-							<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={startHours}/>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> until: </Typography>
-							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours}/>
-							<br></br>
+								}
+								<Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> from: </Typography>
+								<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={startHours}/>
+								<Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> until: </Typography>
+								<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours}/>
+								{(reservation?.workspace?.participantLimit === 1) && <SubmitButton onChange={handleSubmit} />}
+							</div>
+
 							{(reservation?.workspace?.participantLimit > 1 || !reservation?.workspace?.participantLimit) &&
+							<div style={{ display: 'flex', alignItems: 'center' }}>
 								<FormControl sx={{ m: 1, width: 300 }}>
 									<MultipleUserFilter
 										multiple={true}
@@ -194,8 +197,9 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 										handleEmailInputChange={handleEmailInputChange}
 									/>
 								</FormControl>
+								<SubmitButton onChange={handleSubmit} />
+							</div>
 							}
-							<SubmitButton onChange={handleSubmit} />
 						</div>
 
 						{reservations && reservations.length > 0 && (

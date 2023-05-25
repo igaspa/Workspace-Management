@@ -34,14 +34,14 @@ const WorkspaceCard = ({
 					'&::before': {
 						content: '""',
 						position: 'absolute',
-						top: '10%',
-						left: '10%',
-						right: '10%',
-						bottom: '10%',
+						top: '20%',
+						left: '20%',
+						right: '20%',
+						bottom: '20%',
 						backgroundImage: `url(${image})`,
 						backgroundRepeat: 'no-repeat',
 						backgroundPosition: 'center',
-						opacity: 0.05
+						opacity: 0.04
 					}
 
 				}}

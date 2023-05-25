@@ -12,6 +12,7 @@ const UserFilter = ({ users, selectedUsers, handleParticipantChange, handleEmail
 			getOptionLabel={(option) => `${option.email || ''}`}
 			renderInput={(params) => (
 				<TextField
+					required
 					{...params}
 					variant="standard"
 					label="User"

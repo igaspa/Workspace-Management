@@ -48,7 +48,8 @@ const Dashboard = () => {
 	// get Workspace Type table name from change
 	const handleWorkspaceTypeSelect = (workspaceTypeName) => {
 		const newName = deconstructName(workspaceTypeName);
-		setSelectedWorkspaceType(newName);
+		if (newName === selectedWorkspaceType) setSelectedWorkspaceType('');
+		else setSelectedWorkspaceType(newName);
 	};
 
 	const handleAreaSelect = (event) => {
@@ -142,8 +143,9 @@ const Dashboard = () => {
 								}} />
 							))}
 						</Stack>
+						<br></br>
 						{workspacesData.length
-							? <BasicPagination count={pages} page={page} onChange={handlePageChange} />
+							? 							<BasicPagination count={pages} page={page} onChange={handlePageChange} />
 							: null}
 						<div style={{ display: 'flex', paddingTop: 20, justifyContent: 'center' }}>
 							<div style={{ display: 'flex', alignItems: 'center' }}>

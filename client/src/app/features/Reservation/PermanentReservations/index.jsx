@@ -11,7 +11,7 @@ import SubmitButton from '../../../components/Reservation/submitButton';
 import PropTypes from 'prop-types';
 import { useCreatePermanentReservationMutation, useGetReservationsFromWorkspaceQuery } from '../../../api/reservationApiSlice';
 import { useGetUsersListQuery } from '../../../api/usersApiSlice';
-import { successToast } from '../../../utils/toastifyNotification';
+import { errorToast, successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
 import UserFilter from '../../../components/Users/userFIlter';
 import { useNavigate } from 'react-router-dom';
@@ -71,24 +71,26 @@ const CreatePermanentReservation = ({ workspace, onClose, reservationDate, start
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		if (!selectedUser.id) errorToast('You need to select a user!');
+		else {
+			const objectToPost = {
+				id: uuidv4(),
+				userId: selectedUser.id,
+				workspaceId: workspace.id,
+				startAt
+			};
 
-		const objectToPost = {
-			id: uuidv4(),
-			userId: selectedUser.id,
-			workspaceId: workspace.id,
-			startAt
-		};
-
-		await createPermanentReservation(objectToPost)
-			.unwrap()
-			.then((response) => {
-				successToast(response.message);
-				dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
-				onClose();
-			})
-			.catch((error) => {
-				errorHandler(error);
-			});
+			await createPermanentReservation(objectToPost)
+				.unwrap()
+				.then((response) => {
+					successToast(response.message);
+					dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
+					onClose();
+				})
+				.catch((error) => {
+					errorHandler(error);
+				});
+		}
 	};
 
 	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(

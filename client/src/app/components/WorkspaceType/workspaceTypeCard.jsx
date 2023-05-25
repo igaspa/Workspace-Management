@@ -21,20 +21,18 @@ export default function WorkspaceTypeCard ({ workspaceType, handleWorkspaceTypeS
 				<Card
 					sx={{
 						position: 'relative',
-						width: 200,
-						height: 200,
+						maxWidth: 250,
 						'&::before': {
 							content: '""',
 							position: 'absolute',
-							top: 0,
-							left: 0,
-							right: 0,
-							bottom: 0,
+							top: '10%',
+							left: '10%',
+							right: '10%',
+							bottom: '10%',
 							backgroundImage: `url(${workspaceType.image})`,
-							backgroundSize: 'cover',
-							backgroundPosition: 'center center',
-							opacity: 0.22,
-							maxWidth: '100%'
+							backgroundRepeat: 'no-repeat',
+							backgroundPosition: 'center',
+							opacity: 0.1
 						}
 					}}
 				>

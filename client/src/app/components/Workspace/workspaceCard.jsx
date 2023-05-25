@@ -30,20 +30,20 @@ const WorkspaceCard = ({
 				sx={{
 					position: 'relative',
 					maxWidth: '100%',
-					minHeight: 250,
+					minHeight: 200,
 					'&::before': {
 						content: '""',
 						position: 'absolute',
-						top: 0,
-						left: 0,
-						right: 0,
-						bottom: 0,
+						top: '10%',
+						left: '10%',
+						right: '10%',
+						bottom: '10%',
 						backgroundImage: `url(${image})`,
-						backgroundSize: 'cover',
+						backgroundRepeat: 'no-repeat',
 						backgroundPosition: 'center',
-						opacity: 0.12,
-						maxWidth: 'sm'
+						opacity: 0.05
 					}
+
 				}}
 			>
 

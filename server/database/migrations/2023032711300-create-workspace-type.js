@@ -17,7 +17,7 @@ module.exports = {
       },
       image: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING(10000)
       },
       max_reservation_interval: {
         allowNull: true,

@@ -1,57 +1,81 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Box, Grid, CircularProgress, FormControl } from '@mui/material';
-import { DateFilter } from '../../../components/Filters/dateFilter';
-import { TimeFilter } from '../../../components/Filters/timeFilter';
+import { Typography, Box, Grid, CircularProgress } from '@mui/material';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
-import SubmitButton from '../../../components/Reservation/submitButton';
 import PropTypes from 'prop-types';
-import { useCreateReservationMutation, useGetReservationsFromWorkspaceQuery } from '../../../api/reservationApiSlice';
-import { successToast } from '../../../utils/toastifyNotification';
+import { useCreatePermanentReservationMutation, useCreateReservationMutation, useGetReservationsFromWorkspaceQuery } from '../../../api/reservationApiSlice';
+import { errorToast, successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
 import { useDispatch } from 'react-redux';
-import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
 import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
 import { BasicPagination } from '../../../components/Pagination/pagination';
-import { useGetUsersListQuery } from '../../../api/usersApiSlice';
+import { workspacesApiSlice } from '../../../api/workspaceApiSlice';
+import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import MultipleUserFilter from '../../../components/Users/multipleUserFilter';
+import { useGetUsersListQuery } from '../../../api/usersApiSlice';
+import StandardReservation from '../../../components/Reservation/standardReservation';
+import PrivilegeReservation from '../../../components/Reservation/privilegeReservation';
 
 const theme = createTheme();
 
-const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onClose }) => {
-	const navigate = useNavigate();
+const CreateReservation = ({ workspace, onClose, endTime, startTime, reservationFromDate, reservationUntilDate }) => {
 	const dispatch = useDispatch();
-	const [createReservation] = useCreateReservationMutation();
+	const navigate = useNavigate();
+	const [standardReservationApi] = useCreateReservationMutation();
+	const [permanentReservationApi] = useCreatePermanentReservationMutation();
+
+	const role = localStorage.getItem('role');
 
 	const currentDay = createDate(0);
 
-	const [date, setDate] = useState(reservationDate || currentDay);
+	const [startDate, setStartDate] = useState(reservationFromDate || currentDay);
+	const [endDate, setEndDate] = useState(reservationUntilDate || startDate);
+
 	const [startHour, setStartHour] = useState(startTime || '');
 	const [endHour, setEndHour] = useState(endTime || '');
 
 	const [startAt, setStartAt] = useState('');
 	const [endAt, setEndAt] = useState('');
 
-	const divRef = useRef();
-	const [page, setPage] = useState(1);
-
 	const [selectedUsers, setSelectedUsers] = useState([]);
 	const [participantEmailSlice, setParticipantEmailSlice] = useState('');
+
+	const [page, setPage] = useState(1);
+	const divRef = useRef();
+
+	const startHours = getHours(startDate);
+	const endHours = getHours(endDate || startDate);
+	const dates = getNext7Days();
+
+	const [permanentReservation, setPermanentReservation] = useState(false);
+	const [selectedUser, setSelectedUser] = useState({});
+
+	const handleSelectedUser = (event, selectedUser) => {
+		setSelectedUser(selectedUser);
+	};
+
+	const handleReservationTypeChange = (event) => {
+		const type = event.target.value;
+		setPermanentReservation(type);
+	};
 
 	const handlePageChange = async (event, value) => {
 		setPage(value);
 	};
 
-	const hours = getHours(date);
-	const dates = getNext7Days();
+	// get selected start date
+	const handleStartDateChange = (event) => {
+		setStartDate(event.target.value);
+		if (new Date(event.target.value) > new Date(endDate)) setEndDate(event.target.value);
+	};
 
-	// get selected date
-	const handleDateChange = (event) => {
-		setDate(event.target.value);
+	// get selected start date
+	const handleEndDateChange = (event) => {
+		setEndDate(event.target.value);
+		if (new Date(event.target.value) < new Date(startDate)) setStartDate(event.target.value);
 	};
 
 	// get selected start hour
@@ -66,17 +90,17 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 
 	// set startAt value
 	useEffect(() => {
-		if (date && startHour) {
-			setStartAt(`${date}T${startHour}`);
+		if (startDate && startHour) {
+			setStartAt(`${startDate}T${startHour}`);
 		}
-	}, [date, startHour, startAt]);
+	}, [startDate, startHour, startAt]);
 
 	// set endAt value
 	useEffect(() => {
-		if (date && endHour) {
-			setEndAt(`${date}T${endHour}`);
-		}
-	}, [date, endHour, endAt]);
+		if (role.includes('Administrator') || role.includes('Lead')) {
+			if (endDate && endHour) setEndAt(`${endDate}T${endHour}`);
+		} else if (startDate && endHour) setEndAt(`${startDate}T${endHour}`);
+	}, [endDate, endHour, startDate, startHour]);
 
 	const handleParticipantChange = (event, value) => {
 		setSelectedUsers(value);
@@ -87,27 +111,8 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 		if (e.target.value.length > 2) setParticipantEmailSlice(email.slice(0, 3));
 	};
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-
-		const participants = selectedUsers.map(user => {
-			return {
-				firstName: user.firstName,
-				lastName: user.lastName,
-				email: user.email
-			};
-		}
-		);
-
-		const objectToPost = {
-			id: uuidv4(),
-			workspaceId: workspace.id,
-			startAt,
-			endAt,
-			participants
-		};
-
-		await createReservation(objectToPost)
+	const postReservation = async (reservationType, data) => {
+		await reservationType(data)
 			.unwrap()
 			.then((response) => {
 				successToast(response.message);
@@ -119,11 +124,50 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 			});
 	};
 
+	const createPermanentReservation = async (event) => {
+		if (!selectedUser.id) errorToast('You need to select a user!');
+		else {
+			const objectToPost = {
+				id: uuidv4(),
+				userId: selectedUser.id,
+				workspaceId: workspace.id,
+				startAt
+			};
+			await postReservation(permanentReservationApi, objectToPost);
+		}
+	};
+
+	const createStandardReservation = async (event) => {
+		const participants = selectedUsers.map(user => {
+			return {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				email: user.email
+			};
+		});
+
+		const objectToPost = {
+			id: uuidv4(),
+			workspaceId: workspace.id,
+			startAt,
+			endAt,
+			participants
+		};
+
+		await postReservation(standardReservationApi, objectToPost);
+	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		if (permanentReservation) await createPermanentReservation();
+		else await createStandardReservation();
+	};
+
 	// eslint-disable-next-line no-unused-vars
 	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
 		{
-			from: date,
-			until: date,
+			from: startDate,
+			until: endDate,
 			workspaceId: workspace.id,
 			...(page && { page })
 		}
@@ -161,34 +205,64 @@ const CreateReservation = ({ workspace, startTime, endTime, reservationDate, onC
 							align="center"
 							color="text.primary"
 							gutterBottom
-							sx={{ paddingTop: 2 }}
+							paddingTop={2}
 						>
 							Reserve a Space <br></br>
 							- { workspace.name} -
 						</Typography>
 					</Container>
 					<Container>
-						<div style={{ display: 'flex', alignItems: 'center', paddingTop: 20, paddingBottom: 2 }}>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, fontSize: 14 }}> Select a date: </Typography>
-							<DateFilter onChange={handleDateChange} date={date} dates={dates} />
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Start time: </Typography>
-							<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={hours}/>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> End time: </Typography>
-							<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={hours}/>
-							<br></br>
-							{(workspace.workspaceType.allowMultipleParticipants) &&
-								<FormControl sx={{ m: 1, width: 300 }}>
-									<MultipleUserFilter
+
+						{/* Container start */}
+						<Stack spacing={1} justifyContent="space-between">
+
+							{role.includes('Administrator') || role.includes('Lead')
+								? (
+									<PrivilegeReservation
+										permanentReservation={permanentReservation}
+										handleReservationTypeChange={handleReservationTypeChange}
+										handleStartDateChange={handleStartDateChange}
+										handleEndDateChange={handleEndDateChange}
+										handleStartHourChange={handleStartHourChange}
+										handleEndHourChange={handleEndHourChange}
+										startHour={startHour}
+										startHours={startHours}
+										endHour={endHour}
+										endHours={endHours}
+										startDate={startDate}
+										endDate={endDate}
+										dates={dates}
+										users={users}
+										selectedUsers={selectedUsers}
+										selectedUser={selectedUser}
+										handleParticipantChange={handleParticipantChange}
+										handleSelectedUser={handleSelectedUser}
+										handleEmailInputChange={handleEmailInputChange}
+										workspaceType={workspace.workspaceType}
+										handleSubmit={handleSubmit}
+									/>
+								)
+								: (
+									<StandardReservation
+										handleStartDateChange={handleStartDateChange}
+										handleStartHourChange={handleStartHourChange}
+										handleEndHourChange={handleEndHourChange}
+										startHour={startHour}
+										startHours={startHours}
+										startDate={startDate}
+										dates={dates}
+										endHour={endHour}
+										endHours={endHours}
 										users={users}
 										selectedUsers={selectedUsers}
 										handleParticipantChange={handleParticipantChange}
 										handleEmailInputChange={handleEmailInputChange}
+										workspaceType={workspace.workspaceType}
+										handleSubmit={handleSubmit}
 									/>
-								</FormControl>
-							}
+								)}
 
-							<SubmitButton onChange={handleSubmit} />
-						</div>
+						</Stack>
 
 						{reservations && reservations.length > 0 && (
 							(
@@ -220,6 +294,7 @@ CreateReservation.propTypes = {
 	workspace: PropTypes.object,
 	startTime: PropTypes.string,
 	endTime: PropTypes.string,
-	reservationDate: PropTypes.string,
+	reservationFromDate: PropTypes.string,
+	reservationUntilDate: PropTypes.string,
 	onClose: PropTypes.func
 };

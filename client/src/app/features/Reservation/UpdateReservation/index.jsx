@@ -1,21 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
-import { CircularProgress, Container, FormControl, Grid, Typography } from '@mui/material';
+import { CircularProgress, Container, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import { DateFilter } from '../../../components/Filters/dateFilter';
-import { TimeFilter } from '../../../components/Filters/timeFilter';
 import { getNext7Days, getHours } from '../../../utils/helper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import SubmitButton from '../../../components/Reservation/submitButton';
 import { useGetReservationsFromWorkspaceQuery, useUpdateReservationMutation } from '../../../api/reservationApiSlice';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
-import MultipleUserFilter from '../../../components/Users/multipleUserFilter';
 import { useGetUsersListQuery } from '../../../api/usersApiSlice';
 import { useNavigate } from 'react-router-dom';
 import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
 import { BasicPagination } from '../../../components/Pagination/pagination';
+import { Stack } from '@mui/system';
+import StandardReservationForm from '../../../components/Reservation/ReservationForms/standardReservationForm';
+import PrivilegeReservationForm from '../../../components/Reservation/ReservationForms/privilegeReservationForm';
+import ReservationFormFooter from '../../../components/Reservation/ReservationForms/formFooter';
 
 const theme = createTheme();
 
@@ -168,39 +168,49 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 						</Typography>
 					</Container>
 					<Container>
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', paddingTop: 20, paddingBottom: 2 }}>
-							<div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
-								<Typography color="text.primary" sx={{ paddingRight: 1, fontSize: 15 }}> Start Date: </Typography>
-								<DateFilter onChange={handleStartDateChange} date={startDate} dates={dates} />
+						<Stack spacing={1} justifyContent="space-between">
 
-								{ (role.includes('Administrator') || role.includes('Lead')) &&
-							<>
-								<Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> End Date: </Typography>
-								<DateFilter onChange={handleEndDateChange} date={endDate} dates={dates} />
-							</>
-								}
-								<Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> from: </Typography>
-								<TimeFilter onChange={handleStartHourChange} hour={startHour} hours={startHours}/>
-								<Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> until: </Typography>
-								<TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours}/>
-								{(reservation?.workspace?.participantLimit === 1) && <SubmitButton onChange={handleSubmit} />}
-							</div>
+							{ (role.includes('Administrator') || role.includes('Lead'))
+								? 	<PrivilegeReservationForm
+									handleStartDateChange={handleStartDateChange}
+									handleStartHourChange={handleStartHourChange}
+									handleEndDateChange={handleEndDateChange}
+									handleEndHourChange={handleEndHourChange}
+									startDate={startDate}
+									endDate={endDate}
+									dates={dates}
+									startHour={startHour}
+									endHour={endHour}
+									startHours={startHours}
+									endHours={endHours}
+									permanentReservation={false}
+									users={users}
+									handleEmailInputChange={handleEmailInputChange}
+								/>
+								: 	<StandardReservationForm
+									handleStartDateChange={handleStartDateChange}
+									handleStartHourChange={handleStartHourChange}
+									handleEndHourChange={handleEndHourChange}
+									startDate={startDate}
+									dates={dates}
+									startHour={startHour}
+									startHours={startHours}
+									endHour={endHour}
+									endHours={endHours}
+								/>
 
-							{(reservation?.workspace?.participantLimit > 1 || !reservation?.workspace?.participantLimit) &&
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<FormControl sx={{ m: 1, width: 300 }}>
-									<MultipleUserFilter
-										multiple={true}
-										users={users}
-										selectedUsers={selectedUsers}
-										handleParticipantChange={handleParticipantChange}
-										handleEmailInputChange={handleEmailInputChange}
-									/>
-								</FormControl>
-								<SubmitButton onChange={handleSubmit} />
-							</div>
 							}
-						</div>
+
+							<ReservationFormFooter
+								users={users}
+								selectedUsers={selectedUsers}
+								handleParticipantChange={handleParticipantChange}
+								handleEmailInputChange={handleEmailInputChange}
+								handleSubmit={handleSubmit}
+								allowMultipleParticipants={reservation?.workspace?.participantLimit > 1 || !reservation?.workspace?.participantLimit}
+							/>
+
+						</Stack>
 
 						{reservations && reservations.length > 0 && (
 							(

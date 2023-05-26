@@ -1,9 +1,7 @@
-import { FormControl, Stack, Typography } from '@mui/material';
-import { TimeFilter } from '../Filters/timeFilter';
-import SubmitButton from './submitButton';
-import MultipleUserFilter from '../Users/multipleUserFilter';
+import { Stack } from '@mui/material';
 import PropTypes from 'prop-types';
-import DateTimePicker from '../Dates/DateTimePicker';
+import StandardReservationForm from './ReservationForms/standardReservationForm';
+import ReservationFormFooter from './ReservationForms/formFooter';
 
 const StandardReservation = ({
 	handleStartDateChange,
@@ -26,55 +24,27 @@ const StandardReservation = ({
 		<Stack spacing={1} justifyContent="space-between">
 
 			{/* First row */}
-			<Stack
-				direction="row"
-				alignItems="center"
-				justifyContent="flex-end"
-				spacing={1}
-				sx={{ pt: 2.5, pb: 0.25 }}
-			>
-
-				<DateTimePicker
-					dateLabel='Date' timeLabel='Start Time'
-					handleDateChange={handleStartDateChange}
-					handleHourChange={handleStartHourChange}
-					date={startDate}
-					dates={dates}
-					hour={startHour}
-					hours={startHours}
-				/>
-
-				<Typography color="text.primary" sx={{ fontSize: 15 }}>
-          End Time:
-				</Typography>
-				<TimeFilter
-					onChange={handleEndHourChange}
-					hour={endHour}
-					hours={endHours}
-				/>
-
-			</Stack>
+			<StandardReservationForm
+				handleStartDateChange={handleStartDateChange}
+				handleStartHourChange={handleStartHourChange}
+				handleEndHourChange={handleEndHourChange}
+				startDate={startDate}
+				dates={dates}
+				startHour={startHour}
+				startHours={startHours}
+				endHour={endHour}
+				endHours={endHours}
+			/>
 
 			{/* Second row */}
-			<Stack
-				direction="row"
-				alignItems="center"
-				justifyContent="flex-end"
-				spacing={1}
-				sx={{ pt: 2.5, pb: 0.25 }}
-			>
-				{workspaceType.allowMultipleParticipants && (
-					<FormControl sx={{ m: 1, width: 280 }}>
-						<MultipleUserFilter
-							users={users}
-							selectedUsers={selectedUsers}
-							handleParticipantChange={handleParticipantChange}
-							handleEmailInputChange={handleEmailInputChange}
-						/>
-					</FormControl>
-				)}
-				<SubmitButton onChange={handleSubmit} />
-			</Stack>
+			<ReservationFormFooter
+				users={users}
+				selectedUsers={selectedUsers}
+				handleParticipantChange={handleParticipantChange}
+				handleEmailInputChange={handleEmailInputChange}
+				handleSubmit={handleSubmit}
+				allowMultipleParticipants={workspaceType.allowMultipleParticipants}
+			/>
 		</Stack>
 	);
 };

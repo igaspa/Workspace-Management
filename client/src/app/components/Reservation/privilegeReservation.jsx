@@ -1,9 +1,7 @@
-import { FormControl, MenuItem, Select, Stack, Typography } from '@mui/material';
-import SubmitButton from './submitButton';
-import MultipleUserFilter from '../Users/multipleUserFilter';
+import { MenuItem, Select, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import DateTimePicker from '../Dates/DateTimePicker';
-import UserFilter from '../Users/userFIlter';
+import PrivilegeReservationForm from './ReservationForms/privilegeReservationForm';
+import ReservationFormFooter from './ReservationForms/formFooter';
 
 const PrivilegeReservation = ({
 	permanentReservation,
@@ -45,66 +43,34 @@ const PrivilegeReservation = ({
 			)}
 
 			{/* Stack 2 */}
-			<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
-
-				<DateTimePicker
-					dateLabel='Start date' timeLabel='Start Time'
-					handleDateChange={handleStartDateChange}
-					handleHourChange={handleStartHourChange}
-					date={startDate}
-					dates={dates}
-					hour={startHour}
-					hours={startHours}
-				/>
-
-			</Stack>
-
-			{/* Stack 3 */}
-			<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
-
-				{permanentReservation
-					? <>
-						<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}> Select a user: </Typography>
-						<FormControl sx={{ m: 1, width: 300 }}>
-							<UserFilter
-								users={users}
-								selectedUser={selectedUser}
-								handleUserChange={handleSelectedUser}
-								handleEmailInputChange={handleEmailInputChange} />
-						</FormControl>
-					</>
-					: <DateTimePicker
-						dateLabel='End date' timeLabel='End Time'
-						handleDateChange={handleEndDateChange}
-						handleHourChange={handleEndHourChange}
-						date={endDate}
-						dates={dates}
-						hour={endHour}
-						hours={endHours}
-					/>
-				}
-			</Stack>
+			<PrivilegeReservationForm
+				handleStartDateChange={handleStartDateChange}
+				handleStartHourChange={handleStartHourChange}
+				handleEndDateChange={handleEndDateChange}
+				handleEndHourChange={handleEndHourChange}
+				startDate={startDate}
+				endDate={endDate}
+				dates={dates}
+				startHour={startHour}
+				endHour={endHour}
+				startHours={startHours}
+				endHours={endHours}
+				permanentReservation={permanentReservation}
+				users={users}
+				selectedUser={selectedUser}
+				handleSelectedUser={handleSelectedUser}
+				handleEmailInputChange={handleEmailInputChange}
+			/>
 
 			{/* Stack 4 */}
-			<Stack
-				direction="row"
-				alignItems="center"
-				justifyContent="flex-end"
-				spacing={1}
-				sx={{ pt: 2.5, pb: 0.25 }}
-			>
-				{workspaceType.allowMultipleParticipants && (
-					<FormControl sx={{ m: 1, width: 280 }}>
-						<MultipleUserFilter
-							users={users}
-							selectedUsers={selectedUsers}
-							handleParticipantChange={handleParticipantChange}
-							handleEmailInputChange={handleEmailInputChange}
-						/>
-					</FormControl>
-				)}
-				<SubmitButton onChange={handleSubmit} />
-			</Stack>
+			<ReservationFormFooter
+				users={users}
+				selectedUsers={selectedUsers}
+				handleParticipantChange={handleParticipantChange}
+				handleEmailInputChange={handleEmailInputChange}
+				handleSubmit={handleSubmit}
+				allowMultipleParticipants={workspaceType.allowMultipleParticipants}
+			/>
 
 		</Stack>
 	);

@@ -3,6 +3,8 @@ import { Card, CardContent, CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Drawer from '@mui/material/Drawer';
 import CreateReservation from '../../features/Reservation/CreateReservation';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const WorkspaceCard = ({
 	workspace,
@@ -15,6 +17,8 @@ const WorkspaceCard = ({
 	fromDate,
 	untilDate
 }) => {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 	return (
 		<>
 			<Card
@@ -57,7 +61,15 @@ const WorkspaceCard = ({
 
 				</CardActionArea>
 
-				<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
+				<Drawer anchor="right" open={open} onClose={handleDrawerClose}
+					PaperProps={{
+						sx: {
+							maxWidth: isMobile ? '90%' : '70%',
+							display: 'flex',
+							flexDirection: 'column'
+						}
+					}}
+				>
 					<CreateReservation
 						workspace={workspace}
 						reservationFromDate={fromDate}

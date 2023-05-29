@@ -25,7 +25,7 @@ const PrivilegeReservationForm = ({
 		<div>
 			<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
 				<DateTimePicker
-					dateLabel="Start date"
+					dateLabel="Start Date"
 					timeLabel="Start Time"
 					handleDateChange={handleStartDateChange}
 					handleHourChange={handleStartHourChange}
@@ -43,7 +43,7 @@ const PrivilegeReservationForm = ({
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}>
                 Select a user:
 							</Typography>
-							<FormControl sx={{ m: 1, width: 300 }}>
+							<FormControl sx={{ m: 1, width: '100%' }}>
 								<UserFilter
 									users={users}
 									selectedUser={selectedUser}
@@ -55,7 +55,7 @@ const PrivilegeReservationForm = ({
 					)
 					: (
 						<DateTimePicker
-							dateLabel="End date"
+							dateLabel="End Date"
 							timeLabel="End Time"
 							handleDateChange={handleEndDateChange}
 							handleHourChange={handleEndHourChange}

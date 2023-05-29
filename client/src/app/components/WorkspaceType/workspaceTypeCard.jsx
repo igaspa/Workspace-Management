@@ -23,12 +23,21 @@ export default function WorkspaceTypeCard ({ workspaceType, handleWorkspaceTypeS
 					backgroundImage: `url(${workspaceType.image})`,
 					backgroundRepeat: 'no-repeat',
 					backgroundPosition: 'center',
-					opacity: 0.3
+					opacity: 0.5
 				}
 			}}
 		>
 
-			<CardActionArea onClick={handleWorkspaceTypeSelect} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}>
+			<CardActionArea
+				onClick={handleWorkspaceTypeSelect}
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					height: '100%',
+					padding: 0
+				}}
+			>
 				<CardContent>
 					<Typography sx={{ color: '#454545' }}><strong>{workspaceType.name}</strong></Typography>
 				</CardContent>

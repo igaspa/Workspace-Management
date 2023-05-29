@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import { CircularProgress, Typography, Stack, Box } from '@mui/material';
+import { CircularProgress, Typography, Box } from '@mui/material';
 import WorkspaceCard from '../../Workspace/WorkspaceCard';
 import WorkspaceTypeCard from '../../../components/WorkspaceType/workspaceTypeCard';
 import { DateFilter } from '../../../components/Filters/dateFilter';
@@ -8,7 +8,6 @@ import { TimeFilter } from '../../../components/Filters/timeFilter';
 import { useGetWorkspacesListQuery } from '../../../api/workspaceApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../../api/workspaceTypeApiSlice';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { deconstructName, getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { BasicPagination } from '../../../components/Pagination/pagination';
@@ -16,8 +15,6 @@ import { errorHandler } from '../../../utils/errors';
 import { useNavigate } from 'react-router-dom';
 import { useGetAreaListQuery } from '../../../api/areaApiSlice';
 import AreaFilter from '../../../components/Filters/areaFilter';
-
-const theme = createTheme();
 
 const Dashboard = () => {
 	const currentDay = createDate(0);
@@ -33,7 +30,7 @@ const Dashboard = () => {
 	const [startHour, setStartHour] = useState('');
 	const [endHour, setEndHour] = useState('');
 	const [page, setPage] = useState(1);
-	const [selectedArea, setSelectedArea] = useState('');
+	const [selectedArea, setSelectedArea] = useState('All');
 	const [areaParams, setAreaParams] = useState('');
 
 	const dates = getNext7Days();
@@ -126,7 +123,7 @@ const Dashboard = () => {
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<CssBaseline />
 			<main>
 				{workspaceTypesData?.length
@@ -135,24 +132,35 @@ const Dashboard = () => {
 							<Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>Find a Space
 							</Typography>
 						</Container>
-						<Stack sx={{ pt: 1 }} direction="row" spacing={2} justifyContent="center">
+						<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="center">
 							{workspaceTypesData.map((workspaceType) => (
-								<WorkspaceTypeCard key={workspaceType.id} workspaceType={workspaceType} handleWorkspaceTypeSelect={() => {
-									setPage(1);
-									handleWorkspaceTypeSelect(workspaceType.name);
-								}} />
+								<Grid item xs={6} sm={6} md={6} lg={6} xl={2} key={workspaceType.id} sx={{ display: 'flex', flexDirection: 'column' }}>
+									<WorkspaceTypeCard key={workspaceType.id} workspaceType={workspaceType} handleWorkspaceTypeSelect={() => {
+										setPage(1);
+										handleWorkspaceTypeSelect(workspaceType.name);
+									}} />
+								</Grid>
 							))}
-						</Stack>
+						</Grid>
+
 						<br></br>
 
-						<div style={{ display: 'flex', paddingTop: 20, justifyContent: 'center' }}>
+						<div style={{
+							display: 'flex',
+							alignItems: 'center',
+							flexWrap: 'wrap',
+							justifyContent: 'center'
+						}}>
+
 							<div style={{ display: 'flex', alignItems: 'center' }}>
 								<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
 								<DateFilter onChange={(event) => {
 									setPage(1);
 									handleFromDateChange(event);
 								}} date={fromDate} dates={dates} />
+							</div>
 
+							<div style={{ display: 'flex', alignItems: 'center' }}>
 								{ (role.includes('Administrator') || role.includes('Lead')) &&
 							<>
 								<Typography align="center" color="text.primary" sx={{ paddingLeft: 1, paddingRight: 1, fontSize: 14 }}> Until: </Typography>
@@ -162,20 +170,27 @@ const Dashboard = () => {
 								}} date={untilDate} dates={dates} />
 							</>
 								}
+							</div>
+
+							<div style={{ display: 'flex', alignItems: 'center' }}>
 								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time start: </Typography>
 								<TimeFilter onChange={(event) => {
 									setPage(1);
 									handleStartHourChange(event);
 								}} hour={startHour} hours={startHours}/>
+
 								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time end: </Typography>
 								<TimeFilter onChange={(event) => {
 									setPage(1);
 									handleEndHourChange(event);
 								}} hour={endHour} hours={endHours}/>
 							</div>
-							<div>
-								<AreaFilter names={createAreaOptions()} handleAreaSelect={handleAreaSelect} areaName={selectedArea}/>
+
+							<div style={{ display: 'flex', alignItems: 'center' }}>
+								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Area: </Typography>
+								<AreaFilter sx={{ maxWidth: '100%' }} names={createAreaOptions()} handleAreaSelect={handleAreaSelect} areaName={selectedArea}/>
 							</div>
+
 						</div>
 
 						{workspacesData.length
@@ -184,11 +199,13 @@ const Dashboard = () => {
 							</Box>
 							: null}
 						<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
-							<Grid container sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)' }}>
+							<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
 								{workspacesData
-									.map((workspace) => {
-										return <WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>;
-									})}
+									.map((workspace) => (
+										<Grid item xs={6} sm={6} md={4} lg={3} xl={3} key={workspace.id} sx={{ display: 'flex', flexDirection: 'column' }}>
+											<WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>
+										</Grid>
+									))}
 							</Grid>
 						</Container>
 						{workspacesData.length
@@ -198,10 +215,10 @@ const Dashboard = () => {
 							: null}
 
 					</Box>
-					:				'Something went wrong...'
+					: 'Something went wrong...'
 				}
 			</main>
-		</ThemeProvider>
+		</>
 	);
 };
 

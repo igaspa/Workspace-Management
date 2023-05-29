@@ -27,7 +27,7 @@ const PrivilegeReservation = ({
 	handleSubmit
 }) => {
 	return (
-		<Stack spacing={1} justifyContent="space-between">
+		<Stack spacing={1} justifyContent="space-between" style={{ padding: 20 }}>
 
 			{/* Stack 1 */}
 			{workspaceType.allowPermanentReservations && (

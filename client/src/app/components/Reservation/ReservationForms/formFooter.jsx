@@ -7,7 +7,7 @@ const ReservationFormFooter = ({ users, selectedUsers, handleParticipantChange, 
 	return (
 		<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
 			{allowMultipleParticipants && (
-				<FormControl sx={{ m: 1, width: 280 }}>
+				<FormControl sx={{ m: 1, width: '100%' }}>
 					<MultipleUserFilter
 						users={users}
 						selectedUsers={selectedUsers}

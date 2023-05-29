@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { Typography, Box, Grid, CircularProgress } from '@mui/material';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,8 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import { useGetUsersListQuery } from '../../../api/usersApiSlice';
 import StandardReservation from '../../../components/Reservation/standardReservation';
 import PrivilegeReservation from '../../../components/Reservation/privilegeReservation';
-
-const theme = createTheme();
 
 const CreateReservation = ({ workspace, onClose, endTime, startTime, reservationFromDate, reservationUntilDate }) => {
 	const dispatch = useDispatch();
@@ -194,97 +190,96 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<CssBaseline />
 			<main>
-				<Box spacing={2} direction="row" useflexgap={true.toString()} flexWrap="wrap">
-					<Container maxWidth="sm">
-						<Typography
-							component="h1"
-							variant="h4"
-							align="center"
-							color="text.primary"
-							gutterBottom
-							paddingTop={2}
-						>
+				<Box spacing={2} direction="row" flexWrap="wrap">
+
+					<Typography
+						component="h1"
+						variant="h4"
+						align="center"
+						color="text.primary"
+						gutterBottom
+						paddingTop={2}
+					>
 							Reserve a Space <br></br>
 							- { workspace.name} -
-						</Typography>
-					</Container>
-					<Container>
+					</Typography>
 
-						{/* Container start */}
-						<Stack spacing={1} justifyContent="space-between">
+					{/* Container start */}
+					<Stack spacing={1} justifyContent="space-between">
 
-							{role.includes('Administrator') || role.includes('Lead')
-								? (
-									<PrivilegeReservation
-										permanentReservation={permanentReservation}
-										handleReservationTypeChange={handleReservationTypeChange}
-										handleStartDateChange={handleStartDateChange}
-										handleEndDateChange={handleEndDateChange}
-										handleStartHourChange={handleStartHourChange}
-										handleEndHourChange={handleEndHourChange}
-										startHour={startHour}
-										startHours={startHours}
-										endHour={endHour}
-										endHours={endHours}
-										startDate={startDate}
-										endDate={endDate}
-										dates={dates}
-										users={users}
-										selectedUsers={selectedUsers}
-										selectedUser={selectedUser}
-										handleParticipantChange={handleParticipantChange}
-										handleSelectedUser={handleSelectedUser}
-										handleEmailInputChange={handleEmailInputChange}
-										workspaceType={workspace.workspaceType}
-										handleSubmit={handleSubmit}
-									/>
-								)
-								: (
-									<StandardReservation
-										handleStartDateChange={handleStartDateChange}
-										handleStartHourChange={handleStartHourChange}
-										handleEndHourChange={handleEndHourChange}
-										startHour={startHour}
-										startHours={startHours}
-										startDate={startDate}
-										dates={dates}
-										endHour={endHour}
-										endHours={endHours}
-										users={users}
-										selectedUsers={selectedUsers}
-										handleParticipantChange={handleParticipantChange}
-										handleEmailInputChange={handleEmailInputChange}
-										workspaceType={workspace.workspaceType}
-										handleSubmit={handleSubmit}
-									/>
-								)}
+						{role.includes('Administrator') || role.includes('Lead')
+							? (
+								<PrivilegeReservation
+									permanentReservation={permanentReservation}
+									handleReservationTypeChange={handleReservationTypeChange}
+									handleStartDateChange={handleStartDateChange}
+									handleEndDateChange={handleEndDateChange}
+									handleStartHourChange={handleStartHourChange}
+									handleEndHourChange={handleEndHourChange}
+									startHour={startHour}
+									startHours={startHours}
+									endHour={endHour}
+									endHours={endHours}
+									startDate={startDate}
+									endDate={endDate}
+									dates={dates}
+									users={users}
+									selectedUsers={selectedUsers}
+									selectedUser={selectedUser}
+									handleParticipantChange={handleParticipantChange}
+									handleSelectedUser={handleSelectedUser}
+									handleEmailInputChange={handleEmailInputChange}
+									workspaceType={workspace.workspaceType}
+									handleSubmit={handleSubmit}
+								/>
+							)
+							: (
+								<StandardReservation
+									handleStartDateChange={handleStartDateChange}
+									handleStartHourChange={handleStartHourChange}
+									handleEndHourChange={handleEndHourChange}
+									startHour={startHour}
+									startHours={startHours}
+									startDate={startDate}
+									dates={dates}
+									endHour={endHour}
+									endHours={endHours}
+									users={users}
+									selectedUsers={selectedUsers}
+									handleParticipantChange={handleParticipantChange}
+									handleEmailInputChange={handleEmailInputChange}
+									workspaceType={workspace.workspaceType}
+									handleSubmit={handleSubmit}
+								/>
+							)}
 
-						</Stack>
+					</Stack>
 
-						{reservations && reservations.length > 0 && (
-							(
-								<>
-									<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
+					{reservations && reservations.length > 0 && (
+						(
+							<div style={{ padding: 20 }}>
+								<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
 
-									<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
-										<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(1, 1fr)', paddingBottom: 2 }}>
-											{reservations.map((reservation) => (
-												<ActiveReservationCard key={reservation.id} reservation={reservation}/>
-											))}
-										</Grid>
-									</Box>
-								</>)
-						)}
-					</Container>
+								<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
+									<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(1, 1fr)', paddingBottom: 2 }}>
+										{reservations.map((reservation) => (
+											<ActiveReservationCard key={reservation.id} reservation={reservation}/>
+										))}
+									</Grid>
+								</Box>
+							</div>
+						)
+					)}
+
 					{reservations && reservations.length > 0 &&
 						(<BasicPagination count={pages} page={page} onChange={handlePageChange}/>)
 					}
 				</Box>
 			</main>
-		</ThemeProvider>
+		</>
 	);
 };
 

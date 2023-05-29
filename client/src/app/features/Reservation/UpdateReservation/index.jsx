@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import { CircularProgress, Container, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getNext7Days, getHours } from '../../../utils/helper';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useGetReservationsFromWorkspaceQuery, useUpdateReservationMutation } from '../../../api/reservationApiSlice';
 import { successToast } from '../../../utils/toastifyNotification';
@@ -16,8 +15,6 @@ import { Stack } from '@mui/system';
 import StandardReservationForm from '../../../components/Reservation/ReservationForms/standardReservationForm';
 import PrivilegeReservationForm from '../../../components/Reservation/ReservationForms/privilegeReservationForm';
 import ReservationFormFooter from '../../../components/Reservation/ReservationForms/formFooter';
-
-const theme = createTheme();
 
 export default function UpdateReservation ({ startDate, endDate, startHour, endHour, reservation, onClose }) {
 	const navigate = useNavigate();
@@ -150,7 +147,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<CssBaseline />
 			<main>
 				<Box>
@@ -232,7 +229,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 					}
 				</Box>
 			</main>
-		</ThemeProvider>
+		</>
 	);
 };
 UpdateReservation.propTypes = {

@@ -1,7 +1,6 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { TextField, Typography, Container, Box, Checkbox } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCreateWorkspaceTypeMutation } from '../../../api/workspaceTypeApiSlice';
 import { errorHandler } from '../../../utils/errors';
 import ConfirmButton from '../../../components/Buttons/confirmButton';
@@ -9,8 +8,6 @@ import CancelButton from '../../../components/Buttons/cancelButton';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { successToast } from '../../../utils/toastifyNotification';
-
-const theme = createTheme();
 
 export default function CreateWorkspaceType () {
 	const [createWorkspaceType] = useCreateWorkspaceTypeMutation();
@@ -44,7 +41,7 @@ export default function CreateWorkspaceType () {
 	};
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<Box
@@ -102,6 +99,6 @@ export default function CreateWorkspaceType () {
 					</Box>
 				</Box>
 			</Container>
-		</ThemeProvider>
+		</>
 	);
 }

@@ -22,7 +22,7 @@ const StandardReservation = ({
 }) => {
 	return (
 
-		<Stack spacing={1} justifyContent="space-between" style={{ maxWidth: '100%', padding: 20 }}>
+		<Stack spacing={1} justifyContent="space-between" style={{ padding: 20 }}>
 
 			{/* First row */}
 			<StandardReservationForm

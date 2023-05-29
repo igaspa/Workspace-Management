@@ -1,6 +1,13 @@
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import { Table, TableBody, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import {
+	Table,
+	TableBody,
+	TableContainer,
+	TableHead,
+	TablePagination,
+	TableRow
+} from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import PropTypes from 'prop-types';
 

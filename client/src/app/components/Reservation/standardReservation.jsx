@@ -21,7 +21,8 @@ const StandardReservation = ({
 	handleSubmit
 }) => {
 	return (
-		<Stack spacing={1} justifyContent="space-between">
+
+		<Stack spacing={1} justifyContent="space-between" style={{ maxWidth: '100%', padding: 20 }}>
 
 			{/* First row */}
 			<StandardReservationForm

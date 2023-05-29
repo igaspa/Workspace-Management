@@ -15,7 +15,7 @@ module.exports.notificationTemplates = {
 };
 
 module.exports.paginationValues = {
-  DEFAULT_LIMIT: 25,
+  DEFAULT_LIMIT: 24,
   DEFAULT_OFFSET: 0,
   DEFAULT_PAGE: 0
 };

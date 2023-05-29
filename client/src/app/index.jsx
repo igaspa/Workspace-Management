@@ -6,7 +6,6 @@ import { ToastContainer } from 'react-toastify';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const queryClient = new QueryClient();
-
 const theme = createTheme();
 
 function App () {

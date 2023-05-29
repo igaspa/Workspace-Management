@@ -28,7 +28,16 @@ export default function WorkspaceTypeCard ({ workspaceType, handleWorkspaceTypeS
 			}}
 		>
 
-			<CardActionArea onClick={handleWorkspaceTypeSelect} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}>
+			<CardActionArea
+				onClick={handleWorkspaceTypeSelect}
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					height: '100%',
+					padding: 0
+				}}
+			>
 				<CardContent>
 					<Typography sx={{ color: '#454545' }}><strong>{workspaceType.name}</strong></Typography>
 				</CardContent>

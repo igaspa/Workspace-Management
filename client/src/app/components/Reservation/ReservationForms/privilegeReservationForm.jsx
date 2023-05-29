@@ -43,7 +43,7 @@ const PrivilegeReservationForm = ({
 							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}>
                 Select a user:
 							</Typography>
-							<FormControl sx={{ m: 1, width: 300 }}>
+							<FormControl sx={{ m: 1, width: '100%' }}>
 								<UserFilter
 									users={users}
 									selectedUser={selectedUser}

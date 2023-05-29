@@ -1,7 +1,6 @@
 #root {
-  max-width: 80%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 input:-webkit-autofill,
@@ -9,5 +8,6 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active  {
   -webkit-text-fill-color: black;
+  box-shadow: 0 0 0px 1000px white inset;
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }

@@ -1,7 +1,6 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { TextField, Typography, Container, Box } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCreateLocationMutation } from '../../../api/locationApiSlice';
 import { errorHandler } from '../../../utils/errors';
 import ConfirmButton from '../../../components/Buttons/confirmButton';
@@ -9,8 +8,6 @@ import CancelButton from '../../../components/Buttons/cancelButton';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { successToast } from '../../../utils/toastifyNotification';
-
-const theme = createTheme();
 
 export default function CreateLocation () {
 	const [createLocation] = useCreateLocationMutation();
@@ -41,7 +38,7 @@ export default function CreateLocation () {
 	};
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<Box
@@ -87,6 +84,6 @@ export default function CreateLocation () {
 					</Box>
 				</Box>
 			</Container>
-		</ThemeProvider>
+		</>
 	);
 }

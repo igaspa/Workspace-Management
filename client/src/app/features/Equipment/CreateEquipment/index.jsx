@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCreateEquipmentMutation } from '../../../api/equipmentApiSlice';
 import { errorHandler } from '../../../utils/errors';
 import { successToast } from '../../../utils/toastifyNotification';
@@ -12,7 +11,6 @@ import ConfirmButton from '../../../components/Buttons/confirmButton';
 import CancelButton from '../../../components/Buttons/cancelButton';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-const theme = createTheme();
 
 export default function CreateEquipment () {
 	const [createEquipment] = useCreateEquipmentMutation();
@@ -41,7 +39,7 @@ export default function CreateEquipment () {
 	};
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<Box
@@ -72,6 +70,6 @@ export default function CreateEquipment () {
 					</Box>
 				</Box>
 			</Container>
-		</ThemeProvider>
+		</>
 	);
 }

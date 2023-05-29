@@ -25,7 +25,7 @@ const PrivilegeReservationForm = ({
 		<div>
 			<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
 				<DateTimePicker
-					dateLabel="Start date"
+					dateLabel="Start Date"
 					timeLabel="Start Time"
 					handleDateChange={handleStartDateChange}
 					handleHourChange={handleStartHourChange}
@@ -55,7 +55,7 @@ const PrivilegeReservationForm = ({
 					)
 					: (
 						<DateTimePicker
-							dateLabel="End date"
+							dateLabel="End Date"
 							timeLabel="End Time"
 							handleDateChange={handleEndDateChange}
 							handleHourChange={handleEndHourChange}

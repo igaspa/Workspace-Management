@@ -8,7 +8,6 @@ import { TimeFilter } from '../../../components/Filters/timeFilter';
 import { useGetWorkspacesListQuery } from '../../../api/workspaceApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../../api/workspaceTypeApiSlice';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { deconstructName, getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { BasicPagination } from '../../../components/Pagination/pagination';
@@ -16,8 +15,6 @@ import { errorHandler } from '../../../utils/errors';
 import { useNavigate } from 'react-router-dom';
 import { useGetAreaListQuery } from '../../../api/areaApiSlice';
 import AreaFilter from '../../../components/Filters/areaFilter';
-
-const theme = createTheme();
 
 const Dashboard = () => {
 	const currentDay = createDate(0);
@@ -126,7 +123,7 @@ const Dashboard = () => {
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<CssBaseline />
 			<main>
 				{workspaceTypesData?.length
@@ -184,11 +181,13 @@ const Dashboard = () => {
 							</Box>
 							: null}
 						<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
-							<Grid container sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)' }}>
+							<Grid container spacing={2}>
 								{workspacesData
-									.map((workspace) => {
-										return <WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>;
-									})}
+									.map((workspace) => (
+										<Grid item xs={6} sm={6} md={4} lg={3} xl={2} key={workspace.id}>
+											<WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>
+										</Grid>
+									))}
 							</Grid>
 						</Container>
 						{workspacesData.length
@@ -201,7 +200,7 @@ const Dashboard = () => {
 					:				'Something went wrong...'
 				}
 			</main>
-		</ThemeProvider>
+		</>
 	);
 };
 

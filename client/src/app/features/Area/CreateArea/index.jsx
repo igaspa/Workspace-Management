@@ -3,7 +3,6 @@ import { TextField, Box, MenuItem, Select, InputLabel, FormControl, CircularProg
 import { v4 as uuidv4 } from 'uuid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCreateAreaMutation } from '../../../api/areaApiSlice';
 import { errorHandler } from '../../../utils/errors';
 import { successToast } from '../../../utils/toastifyNotification';
@@ -12,7 +11,6 @@ import CancelButton from '../../../components/Buttons/cancelButton';
 import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetLocationListQuery } from '../../../api/locationApiSlice';
-const theme = createTheme();
 
 export default function CreateArea () {
 	const [createArea] = useCreateAreaMutation();
@@ -61,7 +59,7 @@ export default function CreateArea () {
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<Box
@@ -127,6 +125,6 @@ export default function CreateArea () {
 					</Box>
 				</Box>
 			</Container>
-		</ThemeProvider>
+		</>
 	);
 }

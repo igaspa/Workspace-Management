@@ -6,7 +6,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { useGetAreaListQuery } from '../../api/areaApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../api/workspaceTypeApiSlice';
@@ -18,8 +17,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useGetEquipmentsListQuery } from '../../api/equipmentApiSlice';
 import ConfirmButton from '../../components/Buttons/confirmButton';
 import CancelButton from '../../components/Buttons/cancelButton';
-
-const theme = createTheme();
 
 export default function WorkspaceCreation () {
 	const navigate = useNavigate();
@@ -186,7 +183,7 @@ export default function WorkspaceCreation () {
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<Box
@@ -425,6 +422,6 @@ export default function WorkspaceCreation () {
 
 				</Box>
 			</Container>
-		</ThemeProvider>
+		</>
 	);
 }

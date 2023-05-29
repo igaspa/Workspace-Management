@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Typography, Box, Grid, CircularProgress } from '@mui/material';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,8 +17,6 @@ import { useNavigate } from 'react-router-dom';
 import { useGetUsersListQuery } from '../../../api/usersApiSlice';
 import StandardReservation from '../../../components/Reservation/standardReservation';
 import PrivilegeReservation from '../../../components/Reservation/privilegeReservation';
-
-const theme = createTheme();
 
 const CreateReservation = ({ workspace, onClose, endTime, startTime, reservationFromDate, reservationUntilDate }) => {
 	const dispatch = useDispatch();
@@ -194,7 +191,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<CssBaseline />
 			<main>
 				<Box spacing={2} direction="row" useflexgap={true.toString()} flexWrap="wrap">
@@ -284,7 +281,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 					}
 				</Box>
 			</main>
-		</ThemeProvider>
+		</>
 	);
 };
 

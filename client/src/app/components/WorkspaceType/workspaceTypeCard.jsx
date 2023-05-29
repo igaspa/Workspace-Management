@@ -23,7 +23,7 @@ export default function WorkspaceTypeCard ({ workspaceType, handleWorkspaceTypeS
 					backgroundImage: `url(${workspaceType.image})`,
 					backgroundRepeat: 'no-repeat',
 					backgroundPosition: 'center',
-					opacity: 0.3
+					opacity: 0.5
 				}
 			}}
 		>

@@ -25,10 +25,10 @@ const MultipleUserFilter = ({ users, selectedUsers, handleParticipantChange, han
 };
 
 MultipleUserFilter.propTypes = {
-	users: PropTypes.array.isRequired,
-	selectedUsers: PropTypes.array.isRequired,
-	handleParticipantChange: PropTypes.func.isRequired,
-	handleEmailInputChange: PropTypes.func.isRequired
+	users: PropTypes.array,
+	selectedUsers: PropTypes.array,
+	handleParticipantChange: PropTypes.func,
+	handleEmailInputChange: PropTypes.func
 };
 
 export default MultipleUserFilter;

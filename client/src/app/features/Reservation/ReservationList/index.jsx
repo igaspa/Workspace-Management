@@ -71,7 +71,13 @@ const Reservations = () => {
 					)
 					: (
 						<main>
-							<Box spacing={2} direction="row" flexWrap="wrap" margin={0}>
+							<Box spacing={2} marginBottom={2} direction="row" flexWrap="wrap">
+								{(reservationData.length)
+									? <Box display="flex" justifyContent="flex-end">
+										<BasicPagination count={pages} page={page} onChange={handlePageChange} />
+									</Box>
+									: "You don't have any reservations."
+								}
 								<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)', paddingBottom: 2 }}>
 									{reservationData.map((reservation) => (
 										<ReservationCard key={reservation.id} reservation={reservation}
@@ -83,10 +89,7 @@ const Reservations = () => {
 										<UpdateReservation startDate={fromDate} endDate={untilDate} startHour={startHour} endHour={endHour} reservation={selectedReservation} onClose={handleDrawerClose} />
 									</Drawer>
 								</Grid>
-								{(reservationData.length)
-									? <BasicPagination count={pages} page={page} onChange={handlePageChange} />
-									: "You don't have any reservations."
-								}
+
 							</Box>
 						</main>)}
 

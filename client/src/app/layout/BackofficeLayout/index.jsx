@@ -177,7 +177,7 @@ export default function PersistentDrawerLeft ({ children }) {
 						<ListItem disablePadding>
 							<Link to="/" style={{ color: '#202120' }} onClick={handleDrawerClose}>
 								<ListItemIcon>
-									<BackofficeButton text={'Go back'}/>
+									<BackofficeButton text={'Dashboard'}/>
 								</ListItemIcon>
 							</Link>
 						</ListItem>

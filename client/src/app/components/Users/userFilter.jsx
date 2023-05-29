@@ -2,17 +2,16 @@ import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const UserFilter = ({ users, selectedUsers, handleParticipantChange, handleEmailInputChange }) => {
+const UserFilter = ({ users, selectedUser, handleUserChange, handleEmailInputChange }) => {
 	return (
 		<Autocomplete
 			id="tags-standard"
 			options={users}
-			value={selectedUsers}
-			onChange={handleParticipantChange}
+			value={selectedUser}
+			onChange={handleUserChange}
 			getOptionLabel={(option) => `${option.email || ''}`}
 			renderInput={(params) => (
 				<TextField
-					required
 					{...params}
 					variant="standard"
 					label="User"
@@ -25,10 +24,10 @@ const UserFilter = ({ users, selectedUsers, handleParticipantChange, handleEmail
 };
 
 UserFilter.propTypes = {
-	users: PropTypes.array.isRequired,
-	selectedUsers: PropTypes.object,
-	handleParticipantChange: PropTypes.func.isRequired,
-	handleEmailInputChange: PropTypes.func.isRequired
+	users: PropTypes.array,
+	selectedUser: PropTypes.object,
+	handleUserChange: PropTypes.func,
+	handleEmailInputChange: PropTypes.func
 };
 
 export default UserFilter;

@@ -144,9 +144,7 @@ const Dashboard = () => {
 							))}
 						</Stack>
 						<br></br>
-						{workspacesData.length
-							? 							<BasicPagination count={pages} page={page} onChange={handlePageChange} />
-							: null}
+
 						<div style={{ display: 'flex', paddingTop: 20, justifyContent: 'center' }}>
 							<div style={{ display: 'flex', alignItems: 'center' }}>
 								<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
@@ -179,6 +177,12 @@ const Dashboard = () => {
 								<AreaFilter names={createAreaOptions()} handleAreaSelect={handleAreaSelect} areaName={selectedArea}/>
 							</div>
 						</div>
+
+						{workspacesData.length
+							?							<Box display="flex" justifyContent="flex-end" marginTop={2}>
+								<BasicPagination count={pages} page={page} onChange={handlePageChange} />
+							</Box>
+							: null}
 						<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
 							<Grid container sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(5, 1fr)' }}>
 								{workspacesData

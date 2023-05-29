@@ -15,44 +15,55 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 	};
 
 	return (
-		<Card>
-			<CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+		<>
+			<Card
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					height: '100%'
+				}}
+			>
 
-				<CardContent sx={{ height: 50 }}>
+				<CardContent>
 					<Typography variant="h7" gutterBottom>{reservation.workspace.name}</Typography>
 				</CardContent>
 
-				<CardContent >
+				<CardContent>
 					<Typography sx={{ paddingTop: 2 }} fontSize={12} gutterBottom>{reservation.dateTime}</Typography>
 				</CardContent>
 
 				<CardContent spacing={1}>
-					<Button size="small" color="primary" onClick={handleUpdateClick} disabled={
-						(new Date(reservation.startAt) < new Date()) ||
-						!reservation.endAt
-					}>
-							Update
+					<Button
+						size="small"
+						color="primary"
+						onClick={handleUpdateClick}
+						disabled={(new Date(reservation.startAt) < new Date()) || !reservation.endAt}
+					>
+						Update
 					</Button>
+
 					<Button size="small" color="primary" onClick={handleOpen}>
-							Cancel
+						Cancel
 					</Button>
-
-					<Dialog open={open} onClose={handleClose}>
-						<DialogTitle>Cancel Reservation</DialogTitle>
-						<DialogContent>
-							<DialogContentText>
-							Are you sure you want to cancel this reservation?
-							</DialogContentText>
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={handleDeleteClick} autoFocus>Confirm</Button>
-							<Button onClick={handleClose}>Cancel</Button>
-						</DialogActions>
-					</Dialog>
-
 				</CardContent>
-			</CardContent>
-		</Card>
+
+			</Card>
+
+			<Dialog open={open} onClose={handleClose}>
+				<DialogTitle>Cancel Reservation</DialogTitle>
+				<DialogContent>
+					<DialogContentText>
+							Are you sure you want to cancel this reservation?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleDeleteClick} autoFocus>Confirm</Button>
+					<Button onClick={handleClose}>Cancel</Button>
+				</DialogActions>
+			</Dialog>
+		</>
+
 	);
 }
 

@@ -192,7 +192,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 	return (
 		<>
 			<CssBaseline />
-			<main style={{ maxWidth: '100%' }}>
+			<main>
 				<Box spacing={2} direction="row" flexWrap="wrap">
 
 					<Typography
@@ -260,7 +260,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 
 					{reservations && reservations.length > 0 && (
 						(
-							<div style={{ maxWidth: '100%', padding: 20 }}>
+							<div style={{ padding: 20 }}>
 								<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
 
 								<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>

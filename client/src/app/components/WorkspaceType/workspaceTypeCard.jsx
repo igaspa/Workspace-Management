@@ -1,55 +1,43 @@
-import { useState } from 'react';
 import { Card, CardContent, CardActionArea } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { Duration } from 'luxon';
 
 export default function WorkspaceTypeCard ({ workspaceType, handleWorkspaceTypeSelect }) {
-	const [imageLoaded, setImageLoaded] = useState(false);
-
-	const handleImageLoad = () => {
-		setImageLoaded(true);
-	};
-
 	const duration = Duration.fromObject(workspaceType.maxReservationInterval);
 	const intervalString = duration.toFormat('hh:mm');
 
 	return (
-		<>
-			<img src={workspaceType.image} onLoad={handleImageLoad} style={{ display: 'none' }} alt={workspaceType.name} />
-			{imageLoaded && (
-				<Card
-					sx={{
-						position: 'relative',
-						maxWidth: '100%',
-						'&::before': {
-							content: '""',
-							position: 'absolute',
-							top: '30%',
-							left: '30%',
-							right: '30%',
-							bottom: '30%',
-							backgroundImage: `url(${workspaceType.image})`,
-							backgroundRepeat: 'no-repeat',
-							backgroundPosition: 'center',
-							opacity: 0.2
-						}
-					}}
-				>
+		<Card
+			sx={{
+				position: 'relative',
+				maxWidth: '100%',
+				minHeight: 200,
+				'&::before': {
+					content: '""',
+					position: 'absolute',
+					top: '30%',
+					left: '30%',
+					right: '30%',
+					bottom: '30%',
+					backgroundImage: `url(${workspaceType.image})`,
+					backgroundRepeat: 'no-repeat',
+					backgroundPosition: 'center',
+					opacity: 0.3
+				}
+			}}
+		>
 
-					<CardActionArea onClick={handleWorkspaceTypeSelect} sx={{ width: '100%', height: '100%' }}>
-						<CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-							<CardContent style={{ height: '80px' }}>
-								<Typography sx={{ color: '#454545' }}><strong>{workspaceType.name}</strong></Typography>
-							</CardContent>
-							<CardContent spacing={1} sx={{ mt: 3 }}>
-								<Typography sx={{ color: '#454545' }}><strong>Max reservation time: {intervalString}</strong></Typography>
-							</CardContent>
-						</CardContent>
-					</CardActionArea>
-				</Card>
-			)}
-		</>
+			<CardActionArea onClick={handleWorkspaceTypeSelect} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}>
+				<CardContent>
+					<Typography sx={{ color: '#454545' }}><strong>{workspaceType.name}</strong></Typography>
+				</CardContent>
+				<CardContent>
+					<Typography sx={{ color: '#454545' }}><strong>Max reservation time: {intervalString}</strong></Typography>
+				</CardContent>
+			</CardActionArea>
+
+		</Card>
 	);
 }
 

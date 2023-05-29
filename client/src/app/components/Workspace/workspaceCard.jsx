@@ -8,18 +8,13 @@ const WorkspaceCard = ({
 	workspace,
 	image,
 	handleDrawerOpen,
-	handlePermanentDrawerOpen,
-	handleMultipleDrawerOpen,
 	startHour,
 	endHour,
 	handleDrawerClose,
 	open,
-	openPermanent,
-	openMultiple,
 	fromDate,
 	untilDate
 }) => {
-	const equipmentName = workspace.equipment.map((equipment) => equipment.name);
 	return (
 		<>
 			<Card
@@ -43,20 +38,23 @@ const WorkspaceCard = ({
 				}}
 			>
 
-				<CardActionArea onClick={handleDrawerOpen} style={{ height: '100%' }}>
-					<CardContent style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-						<CardContent>
-							<Typography variant="h7">
-								{workspace.name}
-							</Typography>
-						</CardContent>
+				<CardActionArea onClick={handleDrawerOpen} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}>
 
-						<CardContent style={{ display: 'grid', justifyContent: 'center' }}>
-							<Typography fontSize={14}>{`${equipmentName}`}</Typography>
-							<Typography fontSize={14}>Area: {workspace.area.name}</Typography>
-						</CardContent>
-
+					<CardContent>
+						<Typography variant="h7">
+							{workspace.name}
+						</Typography>
 					</CardContent>
+
+					<CardContent style={{ display: 'grid', justifyContent: 'center' }}>
+						{workspace.equipment.map((equipment) => (
+							<Typography fontSize={14} key={equipment.name}>
+								{`${equipment.name} - ${equipment.workspaceEquipment.quantity}`}
+							</Typography>
+						))}
+						<Typography fontSize={14}>Area: {workspace.area.name}</Typography>
+					</CardContent>
+
 				</CardActionArea>
 
 				<Drawer anchor="right" open={open} onClose={handleDrawerClose}>
@@ -84,11 +82,7 @@ WorkspaceCard.propTypes = {
 	fromDate: PropTypes.string,
 	untilDate: PropTypes.string,
 	open: PropTypes.bool,
-	openPermanent: PropTypes.bool,
-	openMultiple: PropTypes.bool,
-	image: PropTypes.string,
-	handlePermanentDrawerOpen: PropTypes.func,
-	handleMultipleDrawerOpen: PropTypes.func
+	image: PropTypes.string
 };
 
 export default WorkspaceCard;

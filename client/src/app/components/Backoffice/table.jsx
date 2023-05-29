@@ -32,7 +32,7 @@ export default function DefaultTable ({
 	count
 }) {
 	return (
-		<Paper sx={{ width: '100%',	overflowX: 'auto' }}>
+		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
 			<TableContainer sx={{ maxHeight: 440 }}>
 				<Table stickyHeader aria-label="sticky table" color="grey">
 					<TableHead>

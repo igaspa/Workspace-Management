@@ -1,10 +1,17 @@
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import { Table, TableBody, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import {
+	Table,
+	TableBody,
+	TableContainer,
+	TableHead,
+	TablePagination,
+	TableRow
+} from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import PropTypes from 'prop-types';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: '#54626F',
 		color: 'white'
@@ -14,7 +21,16 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	}
 }));
 
-export default function DefaultTable ({ columns, rows, page, rowsPerPage, rowsPerPageOptions, handleChangePage, handleChangeRowsPerPage, count }) {
+export default function DefaultTable ({
+	columns,
+	rows,
+	page,
+	rowsPerPage,
+	rowsPerPageOptions,
+	handleChangePage,
+	handleChangeRowsPerPage,
+	count
+}) {
 	return (
 		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
 			<TableContainer sx={{ maxHeight: 440 }}>
@@ -33,23 +49,25 @@ export default function DefaultTable ({ columns, rows, page, rowsPerPage, rowsPe
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows
-							.map((row) => {
-								return (
-									<TableRow hover role="checkbox" key={row.id}>
-										{columns.map((column) => {
-											const value = row[column.id];
-											return (
-												<TableCell key={column.id} align={column.align}>
-													{column.format && typeof value === 'number'
-														? column.format(value)
-														: value}
-												</TableCell>
-											);
-										})}
-									</TableRow>
-								);
-							})}
+						{rows.map((row) => {
+							return (
+								<TableRow hover role="checkbox" key={row.id}>
+									{columns.map((column) => {
+										const value = row[column.id];
+										return (
+											<TableCell
+												key={column.id}
+												align={column.align}>
+												{column.format &&
+												typeof value === 'number'
+													? column.format(value)
+													: value}
+											</TableCell>
+										);
+									})}
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</TableContainer>
@@ -58,9 +76,9 @@ export default function DefaultTable ({ columns, rows, page, rowsPerPage, rowsPe
 				component="div"
 				count={count}
 				rowsPerPage={rowsPerPage}
-				page={ page}
+				page={page}
 				onPageChange={handleChangePage}
-				onRowsPerPageChange ={handleChangeRowsPerPage}
+				onRowsPerPageChange={handleChangeRowsPerPage}
 			/>
 		</Paper>
 	);

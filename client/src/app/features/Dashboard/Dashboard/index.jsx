@@ -8,7 +8,6 @@ import { TimeFilter } from '../../../components/Filters/timeFilter';
 import { useGetWorkspacesListQuery } from '../../../api/workspaceApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../../api/workspaceTypeApiSlice';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import { deconstructName, getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { BasicPagination } from '../../../components/Pagination/pagination';
 import { errorHandler } from '../../../utils/errors';
@@ -123,45 +122,43 @@ const Dashboard = () => {
 	}
 
 	return (
-		<>
-			<CssBaseline />
-			<main>
-				{workspaceTypesData?.length
-					? <Box spacing={2} direction="row" flexWrap="wrap" margin={0}>
-						<Container maxWidth="sm">
-							<Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>Find a Space
-							</Typography>
-						</Container>
-						<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="center">
-							{workspaceTypesData.map((workspaceType) => (
-								<Grid item xs={6} sm={6} md={6} lg={6} xl={2} key={workspaceType.id} sx={{ display: 'flex', flexDirection: 'column' }}>
-									<WorkspaceTypeCard key={workspaceType.id} workspaceType={workspaceType} handleWorkspaceTypeSelect={() => {
-										setPage(1);
-										handleWorkspaceTypeSelect(workspaceType.name);
-									}} />
-								</Grid>
-							))}
-						</Grid>
-
-						<br></br>
-
-						<div style={{
-							display: 'flex',
-							alignItems: 'center',
-							flexWrap: 'wrap',
-							justifyContent: 'center'
-						}}>
-
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
-								<DateFilter onChange={(event) => {
+		<Container maxWidth="lg">
+			{workspaceTypesData?.length
+				? <Box spacing={2} direction="row" flexWrap="wrap" margin={0}>
+					<Container maxWidth="sm">
+						<Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>Find a Space
+						</Typography>
+					</Container>
+					<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="center">
+						{workspaceTypesData.map((workspaceType) => (
+							<Grid item xs={6} sm={6} md={6} lg={6} xl={2} key={workspaceType.id} sx={{ display: 'flex', flexDirection: 'column' }}>
+								<WorkspaceTypeCard key={workspaceType.id} workspaceType={workspaceType} handleWorkspaceTypeSelect={() => {
 									setPage(1);
-									handleFromDateChange(event);
-								}} date={fromDate} dates={dates} />
-							</div>
+									handleWorkspaceTypeSelect(workspaceType.name);
+								}} />
+							</Grid>
+						))}
+					</Grid>
 
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								{ (role.includes('Administrator') || role.includes('Lead')) &&
+					<br></br>
+
+					<div style={{
+						display: 'flex',
+						alignItems: 'center',
+						flexWrap: 'wrap',
+						justifyContent: 'center'
+					}}>
+
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}> From: </Typography>
+							<DateFilter onChange={(event) => {
+								setPage(1);
+								handleFromDateChange(event);
+							}} date={fromDate} dates={dates} />
+						</div>
+
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							{ (role.includes('Administrator') || role.includes('Lead')) &&
 							<>
 								<Typography align="center" color="text.primary" sx={{ paddingLeft: 1, paddingRight: 1, fontSize: 14 }}> Until: </Typography>
 								<DateFilter onChange={(event) => {
@@ -169,56 +166,55 @@ const Dashboard = () => {
 									handleUntilDateChange(event);
 								}} date={untilDate} dates={dates} />
 							</>
-								}
-							</div>
-
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time start: </Typography>
-								<TimeFilter onChange={(event) => {
-									setPage(1);
-									handleStartHourChange(event);
-								}} hour={startHour} hours={startHours}/>
-
-								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time end: </Typography>
-								<TimeFilter onChange={(event) => {
-									setPage(1);
-									handleEndHourChange(event);
-								}} hour={endHour} hours={endHours}/>
-							</div>
-
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Area: </Typography>
-								<AreaFilter sx={{ maxWidth: '100%' }} names={createAreaOptions()} handleAreaSelect={handleAreaSelect} areaName={selectedArea}/>
-							</div>
-
+							}
 						</div>
 
-						{workspacesData.length
-							?	<Box display="flex" justifyContent="flex-end" marginTop={2}>
-								<BasicPagination count={pages} page={page} onChange={handlePageChange} />
-							</Box>
-							: null}
-						<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
-							<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
-								{workspacesData
-									.map((workspace) => (
-										<Grid item xs={6} sm={4} md={4} lg={3} xl={3} key={workspace.id} sx={{ display: 'flex', flexDirection: 'column' }}>
-											<WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>
-										</Grid>
-									))}
-							</Grid>
-						</Container>
-						{workspacesData.length
-							? <Box display="flex" justifyContent="flex-end">
-								<BasicPagination count={pages} page={page} onChange={handlePageChange} />
-							</Box>
-							: null}
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time start: </Typography>
+							<TimeFilter onChange={(event) => {
+								setPage(1);
+								handleStartHourChange(event);
+							}} hour={startHour} hours={startHours}/>
 
-					</Box>
-					: 'Something went wrong...'
-				}
-			</main>
-		</>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Time end: </Typography>
+							<TimeFilter onChange={(event) => {
+								setPage(1);
+								handleEndHourChange(event);
+							}} hour={endHour} hours={endHours}/>
+						</div>
+
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}> Area: </Typography>
+							<AreaFilter sx={{ maxWidth: '100%' }} names={createAreaOptions()} handleAreaSelect={handleAreaSelect} areaName={selectedArea}/>
+						</div>
+
+					</div>
+
+					{workspacesData.length
+						?	<Box display="flex" justifyContent="flex-end" marginTop={2}>
+							<BasicPagination count={pages} page={page} onChange={handlePageChange} />
+						</Box>
+						: null}
+
+					<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
+						{workspacesData
+							.map((workspace) => (
+								<Grid item xs={6} sm={4} md={4} lg={3} xl={3} key={workspace.id} sx={{ display: 'flex', flexDirection: 'column' }}>
+									<WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>
+								</Grid>
+							))}
+					</Grid>
+
+					{workspacesData.length
+						? <Box display="flex" justifyContent="flex-end">
+							<BasicPagination count={pages} page={page} onChange={handlePageChange} />
+						</Box>
+						: null}
+
+				</Box>
+				: 'Something went wrong...'
+			}
+		</Container>
 	);
 };
 

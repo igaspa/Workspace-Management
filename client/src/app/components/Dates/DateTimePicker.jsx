@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { DateFilter } from '../Filters/dateFilter';
 import { TimeFilter } from '../Filters/timeFilter';
 import PropTypes from 'prop-types';
@@ -14,8 +14,7 @@ const DateTimePicker = ({
 	hours
 }) => {
 	return (
-		<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-
+		<>
 			<Typography color="text.primary" sx={{ fontSize: 15 }}>
 				{dateLabel}:
 			</Typography>
@@ -25,8 +24,7 @@ const DateTimePicker = ({
 				{timeLabel}:
 			</Typography>
 			<TimeFilter onChange={handleHourChange} hour={hour} hours={hours} />
-
-		</Stack>
+		</>
 	);
 };
 

@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, Grid, TextField, Checkbox } from '@mui/material';
+import { CircularProgress, Typography, Box, Grid, TextField, Checkbox, Container } from '@mui/material';
 import { useGetWorkspaceTypesListQuery, useUpdateWorkspaceTypeMutation, useDeleteWorkspaceTypeMutation, useGetWorkspaceTypeSearchListQuery } from '../../../api/workspaceTypeApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -176,7 +176,7 @@ export default function WorkspaceTypeTable () {
 	}));
 
 	return (
-		<div style={{ maxWidth: '100%' }}>
+		<Container maxWidth="lg">
 			{role.includes('Administrator')
 				? (
 					<>
@@ -274,6 +274,6 @@ export default function WorkspaceTypeTable () {
 				: (
 					navigate('/')
 				)}
-		</div>
+		</Container>
 	);
 }

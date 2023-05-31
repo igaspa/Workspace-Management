@@ -3,6 +3,8 @@ const { reservation } = require('../database/models');
 const generalController = require('./general');
 const reservationService = require('../services/reservation');
 const responseMessage = require('../utils/response-messages');
+const { workspace, workspaceType, user } = require('../database/models');
+
 const { DateTime } = require('luxon');
 
 const activeReservations = (queryParams) => {
@@ -48,6 +50,26 @@ const activeReservations = (queryParams) => {
   return options;
 };
 
+const reservationCustomIncludeOptions = () => {
+  const options = [];
+
+  const model1 = {
+    model: workspace,
+    include: {
+      model: workspaceType,
+      attributes: ['image']
+    }
+  };
+
+  const model2 = {
+    model: user
+  };
+
+  options.push(model1, model2);
+
+  return options;
+};
+
 module.exports.createReservation = async (req, res) => {
   await reservationService.createReservation(req);
   return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
@@ -73,8 +95,10 @@ module.exports.getAllReservations = async (req, res) => {
 
 module.exports.getUserActiveReservations = async (req, res) => {
   const reservationWhereOptions = activeReservations(req.query);
+  const customIncludeOptions = reservationCustomIncludeOptions();
   reservationWhereOptions.push({ user_id: req.user.id });
   const query = {
+    include: customIncludeOptions,
     where: reservationWhereOptions,
     order: [['startAt', 'ASC']]
   };

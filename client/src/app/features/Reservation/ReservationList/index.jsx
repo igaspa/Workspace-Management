@@ -59,12 +59,11 @@ const Reservations = () => {
 	};
 
 	const { data: [reservationData, pages] = [], isError, isLoading } = useGetUsersReservationListQuery();
-
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 	return (
-		<>
+		<Container maxWidth="lg">
 			<CssBaseline />
 			<main>
 				{isLoading
@@ -76,30 +75,26 @@ const Reservations = () => {
 							<Typography color="error">Failed to load reservations.</Typography>
 						)
 						: (
-							<Box spacing={2} direction="row" margin={0}>
+							<>
 								{(reservationData.length)
 									? <>
 										<h2>Reservation List</h2>
 										<Box display="flex" justifyContent="flex-end">
 											<BasicPagination count={pages} page={page} onChange={handlePageChange} />
 										</Box>
+										<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
+											{reservationData
+												.map((reservation) => (
+													<Grid item xs={6} sm={6} md={6} lg={3} xl={3} key={reservation.id} sx={{ display: 'flex', flexDirection: 'column' }}>
+														<ReservationCard key={reservation.id} reservation={reservation}
+															handleUpdateClick={(event) => handleDrawerOpen(event, reservation)}
+															handleDeleteClick={(event) => handleDeleteClick(event, reservation)}/>
+													</Grid>
+												))}
+										</Grid>
 									</>
 									: "You don't have any reservations."
 								}
-
-								<Container maxWidth="lg" sx={{ paddingTop: 2, paddingBottom: 2 }}>
-									<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
-										{reservationData.map((reservation) => (
-											<Grid item xs={6} sm={4} md={4} lg={3} xl={3} key={reservation.id} sx={{ display: 'flex', flexDirection: 'column' }}>
-												<ReservationCard key={reservation.id} reservation={reservation}
-													handleUpdateClick={(event) => handleDrawerOpen(event, reservation)}
-													handleDeleteClick={(event) => handleDeleteClick(event, reservation)}
-												/>
-											</Grid>
-										))}
-									</Grid>
-								</Container>
-
 								<Drawer
 									anchor="right"
 									open={open}
@@ -114,11 +109,11 @@ const Reservations = () => {
 								>
 									<UpdateReservation startDate={fromDate} endDate={untilDate} startHour={startHour} endHour={endHour} reservation={selectedReservation} onClose={handleDrawerClose} />
 								</Drawer>
-							</Box>
+							</>
 						)
 				}
 			</main>
-		</>
+		</Container>
 	);
 };
 

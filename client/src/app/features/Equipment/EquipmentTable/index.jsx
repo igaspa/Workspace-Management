@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, TextField, Grid } from '@mui/material';
+import { CircularProgress, Typography, Box, TextField, Grid, Container } from '@mui/material';
 import { useGetEquipmentsListQuery, useDeleteEquipmentMutation, useUpdateEquipmentMutation, useGetEquipmentSearchListQuery } from '../../../api/equipmentApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DefaultTable from '../../../components/Backoffice/table';
@@ -143,7 +143,7 @@ export default function EquipmentTable () {
 	}));
 
 	return (
-		<div style={{ maxWidth: '100%' }}>
+		<Container maxWidth="lg">
 			{ role.includes('Administrator')
 				? isEquipmentsLoading || isEquipmentSearchLoading
 					? (
@@ -203,6 +203,6 @@ export default function EquipmentTable () {
 						</div>
 						)
 				: navigate('/')}
-		</div>
+		</Container>
 	);
 }

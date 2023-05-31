@@ -1,4 +1,4 @@
-import { CircularProgress, Typography } from '@mui/material';
+import { CircularProgress, Container, Typography } from '@mui/material';
 import { useGetReservationsListQuery, useDeleteReservationMutation } from '../../../api/reservationApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -87,7 +87,7 @@ export default function ReservationTable () {
 		actions: <DeleteButton onClick={(event) => handleClickOpenDelete(event, el.id)} text={'Delete Reservation'} />
 	}));
 	return (
-		<div style={{ maxWidth: '100%' }}>
+		<Container maxWidth="lg">
 			{ role.includes('Administrator')
 				? isLoading
 					? (
@@ -116,6 +116,6 @@ export default function ReservationTable () {
 							</>
 							: 'There are no reservations')
 				: navigate('/')}
-		</div>
+		</Container>
 	);
 }

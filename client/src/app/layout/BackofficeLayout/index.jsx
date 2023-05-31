@@ -179,7 +179,6 @@ export default function PersistentDrawerLeft ({ window }) {
 				sx={{ width: { lg: drawerWidth }, flexShrink: { lg: 0 } }}
 				aria-label="mailbox folders"
 			>
-				{/* The implementation can be swapped with js to avoid SEO duplication of links. */}
 				<Drawer
 					container={container}
 					variant="temporary"

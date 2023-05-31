@@ -194,7 +194,7 @@ const Dashboard = () => {
 						</div>
 
 						{workspacesData.length
-							?							<Box display="flex" justifyContent="flex-end" marginTop={2}>
+							?	<Box display="flex" justifyContent="flex-end" marginTop={2}>
 								<BasicPagination count={pages} page={page} onChange={handlePageChange} />
 							</Box>
 							: null}
@@ -202,7 +202,7 @@ const Dashboard = () => {
 							<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
 								{workspacesData
 									.map((workspace) => (
-										<Grid item xs={6} sm={6} md={4} lg={3} xl={3} key={workspace.id} sx={{ display: 'flex', flexDirection: 'column' }}>
+										<Grid item xs={6} sm={4} md={4} lg={3} xl={3} key={workspace.id} sx={{ display: 'flex', flexDirection: 'column' }}>
 											<WorkspaceCard key={workspace.id} image={workspace.workspaceType.image} workspace={workspace} fromDate={fromDate} untilDate={untilDate} startHour={startHour} endHour={endHour}/>
 										</Grid>
 									))}

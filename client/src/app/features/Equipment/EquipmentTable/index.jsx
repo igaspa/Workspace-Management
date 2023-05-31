@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, TextField } from '@mui/material';
+import { CircularProgress, Typography, Box, TextField, Grid } from '@mui/material';
 import { useGetEquipmentsListQuery, useDeleteEquipmentMutation, useUpdateEquipmentMutation, useGetEquipmentSearchListQuery } from '../../../api/equipmentApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DefaultTable from '../../../components/Backoffice/table';
@@ -143,7 +143,7 @@ export default function EquipmentTable () {
 	}));
 
 	return (
-		<div>
+		<div style={{ maxWidth: '100%' }}>
 			{ role.includes('Administrator')
 				? isEquipmentsLoading || isEquipmentSearchLoading
 					? (
@@ -153,13 +153,10 @@ export default function EquipmentTable () {
 						? (
 							<Typography color="error">Failed to load equipment.</Typography>
 						)
-						: (<>
-							<Box component="form" ref={searchRef}
-								sx={{
-									display: 'flex',
-									alignItem: 'center',
-									paddingBottom: 1
-								}}>
+						: (<div>
+							<Grid component="form" ref={searchRef}
+								container alignItems='center' paddingBottom={1}
+							>
 								<SearchField
 									data={searchEquipment.map(item => item.name)}
 									name="equipment"
@@ -171,7 +168,7 @@ export default function EquipmentTable () {
 									text={'Clear'} />
 								<CreateButton onClick={handleCreateClick}
 									text={'Create Equipment'} />
-							</Box>
+							</Grid>
 							<DefaultTable
 								columns={columns}
 								rows={data}
@@ -203,7 +200,7 @@ export default function EquipmentTable () {
 									/></Box>}
 								handleCancel={handleClose}
 								handleConfirm={handleUpdateClick} />
-						</>
+						</div>
 						)
 				: navigate('/')}
 		</div>

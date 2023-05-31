@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, TextField } from '@mui/material';
+import { CircularProgress, Typography, Grid, Box, TextField } from '@mui/material';
 import { useGetLocationListQuery, useDeleteLocationMutation, useUpdateLocationMutation, useGetLocationSearchListQuery } from '../../../api/locationApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -157,7 +157,7 @@ export default function LocationTable () {
 	}));
 
 	return (
-		<div>
+		<div style={{ maxWidth: '100%' }}>
 			{ role.includes('Administrator')
 				? isLocationsLoading || isLocationSearchLoading
 					? (
@@ -168,12 +168,9 @@ export default function LocationTable () {
 							<Typography color="error">Failed to load location.</Typography>
 						)
 						: (<>
-							<Box component="form" ref={searchRef}
-								sx={{
-									display: 'flex',
-									alignItem: 'center',
-									paddingBottom: 1
-								}}>
+							<Grid component="form" ref={searchRef}
+								container alignItems='center' paddingBottom={1}
+							>
 								<SearchField
 									data={searchLocation.map(item => item.name)}
 									name="location"
@@ -186,7 +183,7 @@ export default function LocationTable () {
 								<CreateButton onClick={handleCreateClick}
 									text={'Create Location'}/>
 
-							</Box>
+							</Grid>
 							<DefaultTable
 								columns={columns}
 								rows={data}

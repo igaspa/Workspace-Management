@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 export default function SearchButton ({ onClick, text, disabled }) {
 	return (
-		<Stack spacing={2} direction="row">
+		<Stack spacing={2} direction="row" sx={{ paddingRight: 0.5, paddingTop: 0.5 }}>
 			<Button
 				variant="contained"
-				size="small"
+				size="medium"
 				sx={{
 					background: '#9090C0',
 					fontSize: 11,

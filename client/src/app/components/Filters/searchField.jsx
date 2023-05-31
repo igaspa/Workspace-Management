@@ -6,7 +6,8 @@ const SearchField = ({ data, name, onChange }) => {
 		<TextField
 			data={data}
 			name={name}
-			sx={{ paddingRight: 1 }}
+			sx={{ paddingRight: 1, paddingTop: 0.5 }}
+			InputProps={{ sx: { height: 33 } }}
 			placeholder="Enter 3 characters"
 			onChange={onChange}
 			onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}

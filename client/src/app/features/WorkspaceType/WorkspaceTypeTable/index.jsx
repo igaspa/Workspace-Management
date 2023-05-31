@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, TextField, Checkbox } from '@mui/material';
+import { CircularProgress, Typography, Box, Grid, TextField, Checkbox } from '@mui/material';
 import { useGetWorkspaceTypesListQuery, useUpdateWorkspaceTypeMutation, useDeleteWorkspaceTypeMutation, useGetWorkspaceTypeSearchListQuery } from '../../../api/workspaceTypeApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -176,7 +176,7 @@ export default function WorkspaceTypeTable () {
 	}));
 
 	return (
-		<div>
+		<div style={{ width: '100%' }}>
 			{role.includes('Administrator')
 				? (
 					<>
@@ -190,12 +190,9 @@ export default function WorkspaceTypeTable () {
 								)
 								: (
 									<>
-										<Box component="form" ref={searchRef}
-											sx={{
-												display: 'flex',
-												alignItem: 'center',
-												paddingBottom: 1
-											}}>
+										<Grid component="form" ref={searchRef}
+											container alignItems='center' paddingBottom={1}
+										>
 											<SearchField
 												data={searchWorkspaceType.map(item => item.name)}
 												name="workspaceType"
@@ -206,7 +203,7 @@ export default function WorkspaceTypeTable () {
 											<DeleteButton onClick={handleSearchClear}
 												text={'Clear'} />
 											<CreateButton onClick={handleCreateClick} text={'Create new Workspace Type'} />
-										</Box>
+										</Grid>
 										<DefaultTable
 											columns={columns}
 											rows={data}

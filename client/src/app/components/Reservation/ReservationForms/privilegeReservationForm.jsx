@@ -22,8 +22,9 @@ const PrivilegeReservationForm = ({
 	handleEmailInputChange
 }) => {
 	return (
-		<div>
-			<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
+		<div style={{ display: 'flex', flexDirection: 'column' }}>
+
+			<Stack alignItems="center" justifyContent="flex-end" style={{ flex: 1, paddingBottom: 20 }} spacing={1} display="flex" direction="row">
 				<DateTimePicker
 					dateLabel="Start Date"
 					timeLabel="Start Time"
@@ -36,14 +37,14 @@ const PrivilegeReservationForm = ({
 				/>
 			</Stack>
 
-			<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
+			<Stack direction={'row'} alignItems="center" justifyContent="flex-end" spacing={1} >
 				{permanentReservation
 					? (
 						<>
-							<Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 15 }}>
-                Select a user:
+							<Typography align="center" color="text.primary" sx={{ fontSize: 14 }}>
+								Select a user:
 							</Typography>
-							<FormControl sx={{ m: 1, width: '100%' }}>
+							<FormControl sx={{ p: 1, width: '100%' }}>
 								<UserFilter
 									users={users}
 									selectedUser={selectedUser}

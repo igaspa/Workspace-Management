@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
+import { CircularProgress, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem, Grid, Container } from '@mui/material';
 import { useGetAreaListQuery, useDeleteAreaMutation, useUpdateAreaMutation, useGetAreaSearchListQuery } from '../../../api/areaApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -197,7 +197,7 @@ export default function AreaTable () {
 		)
 	}));
 	return (
-		<div style={{ maxWidth: '100%' }}>
+		<Container maxWidth="lg">
 			{ role.includes('Administrator')
 				? isAreasLoading || isLocationsLoading || isAreaSearchLoading
 					? (
@@ -304,6 +304,6 @@ export default function AreaTable () {
 						</>
 						)
 				: navigate('/')}
-		</div>
+		</Container>
 	);
 }

@@ -16,12 +16,24 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 
 	return (
 		<>
+
 			<Card
 				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'space-between',
-					height: '100%'
+					position: 'relative',
+					maxWidth: '100%',
+					'&::before': {
+						content: '""',
+						position: 'absolute',
+						top: '20%',
+						left: '20%',
+						right: '20%',
+						bottom: '20%',
+						backgroundImage: `url(${reservation.workspace.workspaceType.image})`,
+						backgroundRepeat: 'no-repeat',
+						backgroundPosition: 'center',
+						opacity: 0.06
+					}
+
 				}}
 			>
 

@@ -151,7 +151,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 			<CssBaseline />
 			<main>
 				<Box>
-					<Container maxWidth="sm">
+					<Container>
 						<Typography
 							component="h1"
 							variant="h4"

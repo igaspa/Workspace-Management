@@ -27,11 +27,11 @@ const PrivilegeReservation = ({
 	handleSubmit
 }) => {
 	return (
-		<Stack spacing={1} justifyContent="space-between" style={{ padding: 20 }}>
+		<Stack spacing={1} justifyContent="space-between" style={{ padding: 10 }}>
 
 			{/* Stack 1 */}
 			{workspaceType.allowPermanentReservations && (
-				<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25, width: '100%' }}>
+				<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
 					<Typography color="text.primary" sx={{ fontSize: 15 }}>
                   Reservation Type:
 					</Typography>

@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Grid, Box, TextField } from '@mui/material';
+import { CircularProgress, Typography, Grid, Box, TextField, Container } from '@mui/material';
 import { useGetLocationListQuery, useDeleteLocationMutation, useUpdateLocationMutation, useGetLocationSearchListQuery } from '../../../api/locationApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -157,7 +157,7 @@ export default function LocationTable () {
 	}));
 
 	return (
-		<div style={{ maxWidth: '100%' }}>
+		<Container maxWidth="lg">
 			{ role.includes('Administrator')
 				? isLocationsLoading || isLocationSearchLoading
 					? (
@@ -234,6 +234,6 @@ export default function LocationTable () {
 						</>
 						)
 				: navigate('/')}
-		</div>
+		</Container>
 	);
 }

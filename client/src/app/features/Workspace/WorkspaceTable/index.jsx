@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { CircularProgress, Typography, Box, Dialog, DialogTitle, DialogContent, useMediaQuery, Grid } from '@mui/material';
+import { CircularProgress, Typography, Box, Dialog, DialogTitle, DialogContent, useMediaQuery, Grid, Container } from '@mui/material';
 import { successToast } from '../../../utils/toastifyNotification';
 import { useDeleteWorkspaceMutation, useGetWorkspaceSearchListQuery, useGetWorkspacesListQuery, useUpdateWorkspaceMutation } from '../../../api/workspaceApiSlice';
 import { useNavigate } from 'react-router-dom';
@@ -216,7 +216,7 @@ const Workspaces = () => {
 	};
 
 	return (
-		<div style={{ maxWidth: '100%' }}>
+		<Container maxWidth="lg">
 			{isWorkspacesLoading || isWorkspaceSearchLoading
 				? (
 					<CircularProgress />
@@ -305,7 +305,7 @@ const Workspaces = () => {
 						</main>)
 			}
 
-		</div>
+		</Container>
 	);
 };
 

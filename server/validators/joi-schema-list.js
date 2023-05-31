@@ -77,7 +77,7 @@ exports.workspace_collection = joi.object({
     .min(1)
     .required(),
   end: joi.number()
-    .max(200)
+    .min(1)
     .required(),
   addedAccessories: joi.array().items(joi.object().keys({
     id: joi.string().guid(),

@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const { deleteWorkspaces } = require('./helpers/delete-workspace');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
+const { MAX_WORKSPACE_CREATION_LIMIT } = require('../utils/constants');
 
 exports.createWorkspace = async (req) => {
   let transaction;
@@ -39,8 +40,9 @@ exports.createWorkspace = async (req) => {
 exports.createMultipleWorkspaces = async (req) => {
   const { prefix, start, end, areaId, typeId, permanentlyReserved, addedAccessories } = req.body;
 
-  let count = start;
+  if ((end - start + 1) > MAX_WORKSPACE_CREATION_LIMIT) throw errors.BAD_REQUEST(responseMessages.MAX_WORKSPACE_LIMIT);
 
+  let count = start;
   const type = await workspaceType.findOne({
     where: {
       id: typeId

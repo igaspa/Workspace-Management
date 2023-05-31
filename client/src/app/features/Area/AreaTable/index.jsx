@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { CircularProgress, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 import { useGetAreaListQuery, useDeleteAreaMutation, useUpdateAreaMutation, useGetAreaSearchListQuery } from '../../../api/areaApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DeleteButton from '../../../components/Buttons/deleteButton';
@@ -179,13 +179,13 @@ export default function AreaTable () {
 		location: el.location.address,
 		locationId: el.location.id,
 		actions: (
-			<div style={{ display: 'flex', flexDirection: 'row' }}>
+			<div style={{ display: 'flex', flexDirection: 'row', padding: 1 }}>
 				<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
 				<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
 			</div>
 		),
 		image: (
-			<div style={{ display: 'flex', justifyContent: 'center' }}>
+			<div style={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
 				<CreateButton
 					onClick={async () => {
 						setAreaImage(el.image);
@@ -197,7 +197,7 @@ export default function AreaTable () {
 		)
 	}));
 	return (
-		<div>
+		<div style={{ width: '100%' }}>
 			{ role.includes('Administrator')
 				? isAreasLoading || isLocationsLoading || isAreaSearchLoading
 					? (
@@ -208,12 +208,9 @@ export default function AreaTable () {
 							<Typography color="error">Failed to load area.</Typography>
 						)
 						: (<>
-							<Box component="form" ref={searchRef}
-								sx={{
-									display: 'flex',
-									alignItem: 'center',
-									paddingBottom: 1
-								}}>
+							<Grid component="form" ref={searchRef}
+								container alignItems='center' paddingBottom={1}
+							>
 								<SearchField
 									data={searchArea.map(item => item.name)}
 									name="area"
@@ -225,7 +222,7 @@ export default function AreaTable () {
 									text={'Clear'} />
 								<CreateButton onClick={handleCreateClick}
 									text={'Create Area'} />
-							</Box>
+							</Grid>
 							<DefaultTable columns={columns}
 								rows={data}
 								page={page}

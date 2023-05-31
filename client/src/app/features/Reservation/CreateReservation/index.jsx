@@ -190,7 +190,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 	}
 
 	return (
-		<Container maxWidth="lg">
+		<Container maxWidth="lg" style={{ padding: 0 }}>
 			<CssBaseline />
 			<main>
 				<Box spacing={2} direction="row" flexWrap="wrap">

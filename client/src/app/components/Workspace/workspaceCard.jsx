@@ -51,13 +51,13 @@ const WorkspaceCard = ({
 						</Typography>
 					</CardContent>
 
-					<CardContent style={{ display: 'grid', justifyContent: 'center' }}>
+					<CardContent>
 						{workspace.equipment.map((equipment) => (
 							<Typography fontSize={14} key={equipment.name}>
 								{`${equipment.name} - ${equipment.workspaceEquipment.quantity}`}
 							</Typography>
 						))}
-						<Typography fontSize={14}>Area: {workspace.area.name}</Typography>
+						<Typography style={{ paddingTop: 10 }} fontSize={14}>Area: {workspace.area.name}</Typography>
 					</CardContent>
 
 				</CardActionArea>

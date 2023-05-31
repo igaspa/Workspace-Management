@@ -26,6 +26,7 @@ const WorkspaceCard = ({
 					position: 'relative',
 					maxWidth: '100%',
 					minHeight: 200,
+					height: '100%',
 					'&::before': {
 						content: '""',
 						position: 'absolute',

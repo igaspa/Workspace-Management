@@ -87,7 +87,7 @@ export default function ReservationTable () {
 		actions: <DeleteButton onClick={(event) => handleClickOpenDelete(event, el.id)} text={'Delete Reservation'} />
 	}));
 	return (
-		<div style={{ width: '100%' }}>
+		<div style={{ maxWidth: '100%' }}>
 			{ role.includes('Administrator')
 				? isLoading
 					? (

@@ -143,7 +143,7 @@ export default function EquipmentTable () {
 	}));
 
 	return (
-		<div style={{ width: '100%' }}>
+		<div style={{ maxWidth: '100%' }}>
 			{ role.includes('Administrator')
 				? isEquipmentsLoading || isEquipmentSearchLoading
 					? (
@@ -153,7 +153,7 @@ export default function EquipmentTable () {
 						? (
 							<Typography color="error">Failed to load equipment.</Typography>
 						)
-						: (<div style={{ width: '100%' }}>
+						: (<div>
 							<Grid component="form" ref={searchRef}
 								container alignItems='center' paddingBottom={1}
 							>

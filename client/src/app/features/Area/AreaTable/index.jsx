@@ -197,7 +197,7 @@ export default function AreaTable () {
 		)
 	}));
 	return (
-		<div style={{ width: '100%' }}>
+		<div style={{ maxWidth: '100%' }}>
 			{ role.includes('Administrator')
 				? isAreasLoading || isLocationsLoading || isAreaSearchLoading
 					? (

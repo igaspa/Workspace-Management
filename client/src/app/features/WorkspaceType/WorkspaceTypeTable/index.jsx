@@ -176,7 +176,7 @@ export default function WorkspaceTypeTable () {
 	}));
 
 	return (
-		<div style={{ width: '100%' }}>
+		<div style={{ maxWidth: '100%' }}>
 			{role.includes('Administrator')
 				? (
 					<>

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
+import MuiAppBar from '@mui/material/AppBar';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -14,10 +15,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SvgIcon from '@mui/material/SvgIcon';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
-	Menu,
-	ChevronLeft,
-	ChevronRight,
 	Home,
 	Logout,
 	LocationOn,
@@ -25,7 +24,6 @@ import {
 	Desk,
 	Construction
 } from '@mui/icons-material';
-
 import { Link, Outlet } from 'react-router-dom';
 import BackofficeButton from '../../components/Buttons/backofficeButton';
 
@@ -34,12 +32,12 @@ const drawerWidth = 240;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 	({ theme, open }) => ({
 		flexGrow: 1,
+		width: '100%',
 		padding: theme.spacing(3),
 		transition: theme.transitions.create('margin', {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen
 		}),
-		marginLeft: `-${drawerWidth}px`,
 		...(open && {
 			transition: theme.transitions.create('margin', {
 				easing: theme.transitions.easing.easeOut,
@@ -71,23 +69,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 	display: 'flex',
 	alignItems: 'center',
 	padding: theme.spacing(0, 1),
-	// necessary for content to be below app bar
 	...theme.mixins.toolbar,
 	justifyContent: 'flex-end'
 }));
 
-// eslint-disable-next-line react/prop-types
-export default function PersistentDrawerLeft ({ children }) {
-	const theme = useTheme();
-	const [open, setOpen] = useState(false);
+export default function PersistentDrawerLeft ({ window }) {
 	const role = localStorage.getItem('role');
+	const [open, setOpen] = useState(false);
 
-	const handleDrawerOpen = () => {
-		setOpen(true);
-	};
-
-	const handleDrawerClose = () => {
-		setOpen(false);
+	const handleDrawerToggle = () => {
+		setOpen(!open);
 	};
 
 	const deleteToken = () => {
@@ -103,88 +94,119 @@ export default function PersistentDrawerLeft ({ children }) {
 		{ text: 'Area', route: 'area', icon: MeetingRoom }
 	];
 
+	const drawer = (<div>
+		<Divider />
+		<List>
+			{routes.map(({ text, route, icon }) => (
+				<ListItem key={text} disablePadding>
+					<Link to={route} style={{ color: '#202120' }}>
+						<ListItemButton>
+							<ListItemIcon>
+								<SvgIcon component={icon} inheritViewBox />
+							</ListItemIcon>
+							<ListItemText primary={text} />
+						</ListItemButton>
+					</Link>
+				</ListItem>
+			))}
+		</List>
+		<Divider />
+		<List>
+			{[{ text: 'Logout', route: '/sign-in' }].map(({ text, route }) => (
+				<ListItem key={text} disablePadding>
+					<Link to={route}
+						style={{ color: '#202120' }}
+						onClick={deleteToken}>
+						<ListItemButton>
+							<ListItemIcon>
+								<Logout />
+							</ListItemIcon>
+							<ListItemText primary={text} />
+						</ListItemButton>
+					</Link>
+				</ListItem>
+			))}
+		</List>
+		<Divider />
+		<List>
+			{role.includes('Administrator') && (
+				<ListItem disablePadding>
+					<Link to="/"
+						style={{ color: '#202120' }}
+						onClick={handleDrawerToggle}>
+						<ListItemIcon>
+							<BackofficeButton text={'Dashboard'}/>
+						</ListItemIcon>
+					</Link>
+				</ListItem>
+			)}
+		</List>
+
+	</div>);
+
+	const container = window !== undefined
+		? () => window().document.body
+		: undefined;
+
 	return (
 
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
-			<AppBar position="fixed" open={open}>
+			<AppBar
+				position="fixed"
+				sx={{
+					width: { lg: `calc(100% - ${drawerWidth}px)` },
+					ml: { lg: `${drawerWidth}px` }
+				}}
+			>
 				<Toolbar>
 					<IconButton
 						color="inherit"
 						aria-label="open drawer"
-						onClick={handleDrawerOpen}
 						edge="start"
-						sx={{ mr: 2, ...(open && { display: 'none' }) }}
+						onClick={handleDrawerToggle}
+						sx={{ mr: 2, display: { lg: 'none' } }}
 					>
-						<Menu />
+						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" noWrap component="div">
-            Workspace Management
+			Workspace Management
 					</Typography>
 				</Toolbar>
 			</AppBar>
-			<Drawer
-				sx={{
-					width: drawerWidth,
-					flexShrink: 0,
-					'& .MuiDrawer-paper': {
-						width: drawerWidth,
-						boxSizing: 'border-box'
-					}
-				}}
-				variant="persistent"
-				anchor="left"
-				open={open}
+			<Box
+				component="nav"
+				sx={{ width: { lg: drawerWidth }, flexShrink: { lg: 0 } }}
+				aria-label="mailbox folders"
 			>
-				<DrawerHeader>
-					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
-					</IconButton>
-				</DrawerHeader>
-				<Divider />
-				<List>
-					{routes.map(({ text, route, icon }) => (
-						<ListItem key={text} disablePadding>
-							<Link to={route} style={{ color: '#202120' }}>
-								<ListItemButton>
-									<ListItemIcon>
-										<SvgIcon component={icon} inheritViewBox />
-									</ListItemIcon>
-									<ListItemText primary={text} />
-								</ListItemButton>
-							</Link>
-						</ListItem>
-					))}
-				</List>
-				<Divider />
-				<List>
-					{[{ text: 'Logout', route: '/sign-in' }].map(({ text, route }) => (
-						<ListItem key={text} disablePadding>
-							<Link to={route} style={{ color: '#202120' }} onClick={deleteToken}>
-								<ListItemButton>
-									<ListItemIcon>
-										<Logout />
-									</ListItemIcon>
-									<ListItemText primary={text} />
-								</ListItemButton>
-							</Link>
-						</ListItem>
-					))}
-				</List>
-				<Divider />
-				<List>
-					{role.includes('Administrator') && (
-						<ListItem disablePadding>
-							<Link to="/" style={{ color: '#202120' }} onClick={handleDrawerClose}>
-								<ListItemIcon>
-									<BackofficeButton text={'Dashboard'}/>
-								</ListItemIcon>
-							</Link>
-						</ListItem>
-					)}
-				</List>
+				{/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+				<Drawer
+					container={container}
+					variant="temporary"
+					open={open}
+					onClose={handleDrawerToggle}
+					ModalProps={{
+						keepMounted: true // Better open performance on mobile.
+					}}
+					sx={{
+						display: { xs: 'block', lg: 'none' },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+					}}
+				>
+					{drawer}
+				</Drawer>
+				<Drawer
+					variant="permanent"
+					sx={{
+						display: { xs: 'none', lg: 'block' },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+					}}
+					open
+				>
+					{drawer}
+				</Drawer>
+			</Box>
 
-			</Drawer>
 			<Main open={open}>
 				<DrawerHeader />
 				<Outlet />
@@ -192,3 +214,7 @@ export default function PersistentDrawerLeft ({ children }) {
 		</Box>
 	);
 }
+
+PersistentDrawerLeft.propTypes = {
+	window: PropTypes.func
+};

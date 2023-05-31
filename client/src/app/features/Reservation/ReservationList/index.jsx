@@ -85,7 +85,7 @@ const Reservations = () => {
 										<Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
 											{reservationData
 												.map((reservation) => (
-													<Grid item xs={6} sm={6} md={6} lg={3} xl={3} key={reservation.id} sx={{ display: 'flex', flexDirection: 'column' }}>
+													<Grid item xs={6} sm={6} md={4} lg={3} xl={3} key={reservation.id} sx={{ display: 'flex', flexDirection: 'column' }}>
 														<ReservationCard key={reservation.id} reservation={reservation}
 															handleUpdateClick={(event) => handleDrawerOpen(event, reservation)}
 															handleDeleteClick={(event) => handleDeleteClick(event, reservation)}/>

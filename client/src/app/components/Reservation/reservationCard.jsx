@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
+import { Container } from '@mui/system';
 
 export default function ReservationCard ({ reservation, handleDeleteClick, handleUpdateClick }) {
 	const [open, setOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 				sx={{
 					position: 'relative',
 					maxWidth: '100%',
+					height: '100%',
 					'&::before': {
 						content: '""',
 						position: 'absolute',
@@ -37,29 +39,32 @@ export default function ReservationCard ({ reservation, handleDeleteClick, handl
 				}}
 			>
 
-				<CardContent>
-					<Typography variant="h7" gutterBottom>{reservation.workspace.name}</Typography>
-				</CardContent>
+				<Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}>
 
-				<CardContent>
-					<Typography sx={{ paddingTop: 2 }} fontSize={12} gutterBottom>{reservation.dateTime}</Typography>
-				</CardContent>
+					<CardContent>
+						<Typography variant="h7" gutterBottom>{reservation.workspace.name}</Typography>
+					</CardContent>
 
-				<CardContent spacing={1}>
-					<Button
-						size="small"
-						color="primary"
-						onClick={handleUpdateClick}
-						disabled={(new Date(reservation.startAt) < new Date()) || !reservation.endAt}
-					>
+					<CardContent>
+						<Typography sx={{ paddingTop: 2 }} fontSize={12} gutterBottom>{reservation.dateTime}</Typography>
+					</CardContent>
+
+					<CardContent spacing={1}>
+						<Button
+							size="small"
+							color="primary"
+							onClick={handleUpdateClick}
+							disabled={(new Date(reservation.startAt) < new Date()) || !reservation.endAt}
+						>
 						Update
-					</Button>
+						</Button>
 
-					<Button size="small" color="primary" onClick={handleOpen}>
+						<Button size="small" color="primary" onClick={handleOpen}>
 						Cancel
-					</Button>
-				</CardContent>
+						</Button>
+					</CardContent>
 
+				</Container>
 			</Card>
 
 			<Dialog open={open} onClose={handleClose}>

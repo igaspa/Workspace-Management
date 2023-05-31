@@ -28,9 +28,9 @@ const columns = [
 	},
 	{
 		id: 'actions',
-		label: 'Actions',
+		label: 'Action',
 		minWidth: 170,
-		align: 'left'
+		align: 'center'
 	}
 ];
 
@@ -84,7 +84,11 @@ export default function ReservationTable () {
 		user: `${el.user.firstName} ${el.user.lastName}`,
 		workspace: el.workspace.name,
 		dateTime: el.dateTime,
-		actions: <DeleteButton onClick={(event) => handleClickOpenDelete(event, el.id)} text={'Delete Reservation'} />
+		actions: (
+			<div style={{ display: 'flex', flexDirection: 'row', padding: 1, justifyContent: 'center' }}>
+				<DeleteButton onClick={(event) => handleClickOpenDelete(event, el.id)} text={'Delete Reservation'} />
+			</div>
+		)
 	}));
 	return (
 		<Container maxWidth="lg">

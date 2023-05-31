@@ -101,13 +101,20 @@ const Reservations = () => {
 									onClose={handleDrawerClose}
 									PaperProps={{
 										sx: {
-											maxWidth: isMobile ? '90%' : '70%',
+											maxWidth: isMobile ? '90%' : '450px',
 											display: 'flex',
 											flexDirection: 'column'
 										}
 									}}
 								>
-									<UpdateReservation startDate={fromDate} endDate={untilDate} startHour={startHour} endHour={endHour} reservation={selectedReservation} onClose={handleDrawerClose} />
+									<UpdateReservation
+										startDate={fromDate}
+										endDate={untilDate}
+										startHour={startHour}
+										endHour={endHour}
+										reservation={selectedReservation}
+										onClose={handleDrawerClose}
+									/>
 								</Drawer>
 							</>
 						)

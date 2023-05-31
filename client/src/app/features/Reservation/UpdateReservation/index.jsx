@@ -147,7 +147,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 	}
 
 	return (
-		<>
+		<Container maxWidth="sm">
 			<CssBaseline />
 			<main>
 				<Box>
@@ -166,7 +166,6 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 					</Container>
 					<Container>
 						<Stack spacing={1} justifyContent="space-between">
-
 							{ (role.includes('Administrator') || role.includes('Lead'))
 								? 	<PrivilegeReservationForm
 									handleStartDateChange={handleStartDateChange}
@@ -206,7 +205,6 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 								handleSubmit={handleSubmit}
 								allowMultipleParticipants={reservation?.workspace?.participantLimit > 1 || !reservation?.workspace?.participantLimit}
 							/>
-
 						</Stack>
 
 						{reservations && reservations.length > 0 && (
@@ -229,7 +227,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 					}
 				</Box>
 			</main>
-		</>
+		</Container>
 	);
 };
 UpdateReservation.propTypes = {

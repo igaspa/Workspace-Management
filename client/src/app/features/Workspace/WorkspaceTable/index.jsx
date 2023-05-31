@@ -49,7 +49,7 @@ const columns = [
 		id: 'actions',
 		label: 'Actions',
 		minWidth: 170,
-		align: 'left'
+		align: 'center'
 	}
 ];
 
@@ -176,7 +176,7 @@ const Workspaces = () => {
 				: (
 					'/'
 				),
-			actions: <div style={{ display: 'flex', flexDirection: 'row' }}>
+			actions: <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
 				<UpdateButton onClick={() => handleUpdateButton(el)} text={'Update'} />
 				<DeleteButton onClick={() => handleDeleteButton(el.id)} text={'Remove'} />
 			</div>

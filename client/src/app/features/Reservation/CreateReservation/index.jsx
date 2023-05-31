@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Typography, Box, Grid, CircularProgress } from '@mui/material';
+import { Typography, Box, Grid, CircularProgress, Container } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
@@ -190,7 +190,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 	}
 
 	return (
-		<>
+		<Container maxWidth="lg">
 			<CssBaseline />
 			<main>
 				<Box spacing={2} direction="row" flexWrap="wrap">
@@ -279,7 +279,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 					}
 				</Box>
 			</main>
-		</>
+		</Container>
 	);
 };
 

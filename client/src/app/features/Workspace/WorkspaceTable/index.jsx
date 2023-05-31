@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { CircularProgress, Typography, Box, Dialog, DialogTitle, DialogContent, useMediaQuery } from '@mui/material';
+import { CircularProgress, Typography, Box, Dialog, DialogTitle, DialogContent, useMediaQuery, Grid } from '@mui/material';
 import { successToast } from '../../../utils/toastifyNotification';
 import { useDeleteWorkspaceMutation, useGetWorkspaceSearchListQuery, useGetWorkspacesListQuery, useUpdateWorkspaceMutation } from '../../../api/workspaceApiSlice';
 import { useNavigate } from 'react-router-dom';
@@ -24,19 +24,19 @@ const columns = [
 	{
 		id: 'type',
 		label: 'Type',
-		minWidth: 170,
+		minWidth: 150,
 		align: 'left'
 	},
 	{
 		id: 'area',
 		label: 'Area',
-		minWidth: 170,
+		minWidth: 150,
 		align: 'left'
 	},
 	{
 		id: 'permanentlyReserved',
 		label: 'Permanently Reserved',
-		minWidth: 170,
+		minWidth: 100,
 		align: 'left'
 	},
 	{
@@ -216,7 +216,7 @@ const Workspaces = () => {
 	};
 
 	return (
-		<div>
+		<div style={{ width: '100%' }}>
 			{isWorkspacesLoading || isWorkspaceSearchLoading
 				? (
 					<CircularProgress />
@@ -234,12 +234,9 @@ const Workspaces = () => {
 								margin={0}
 								padding={0}
 							>
-								<Box component="form" ref={searchRef}
-									sx={{
-										display: 'flex',
-										alignItem: 'center',
-										paddingBottom: 1
-									}}>
+								<Grid component="form" ref={searchRef}
+									container alignItems='center' paddingBottom={1}
+								>
 									<SearchField
 										data={searchWorkspace.map(item => item.name)}
 										name="area"
@@ -252,7 +249,7 @@ const Workspaces = () => {
 									<CreateButton onClick={handleCreateWorkspaceButton}
 										text={'Create Workspaces'} />
 
-								</Box>
+								</Grid>
 								<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
 									{workspaces.length
 										? (

@@ -22,8 +22,7 @@ const PrivilegeReservationForm = ({
 	handleEmailInputChange
 }) => {
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column' }}>
-
+		<>
 			<Stack alignItems="center" justifyContent="flex-end" style={{ flex: 1, paddingBottom: 20 }} spacing={1} display="flex" direction="row">
 				<DateTimePicker
 					dateLabel="Start Date"
@@ -44,7 +43,7 @@ const PrivilegeReservationForm = ({
 							<Typography align="center" color="text.primary" sx={{ fontSize: 14 }}>
 								Select a user:
 							</Typography>
-							<FormControl sx={{ p: 1, width: '100%' }}>
+							<FormControl sx={{ p: 1, maxWidth: 'sm' }}>
 								<UserFilter
 									users={users}
 									selectedUser={selectedUser}
@@ -68,7 +67,7 @@ const PrivilegeReservationForm = ({
 					)}
 			</Stack>
 
-		</div>
+		</>
 	);
 };
 

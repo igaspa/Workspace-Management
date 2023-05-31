@@ -135,7 +135,7 @@ export default function EquipmentTable () {
 		id: el.id,
 		name: el.name,
 		actions: (
-			<div style={{ display: 'flex', flexDirection: 'row' }}>
+			<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
 				<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
 				<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
 			</div>
@@ -143,7 +143,7 @@ export default function EquipmentTable () {
 	}));
 
 	return (
-		<Container maxWidth="lg">
+		<Container maxWidth="sm">
 			{ role.includes('Administrator')
 				? isEquipmentsLoading || isEquipmentSearchLoading
 					? (

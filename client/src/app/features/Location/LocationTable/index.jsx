@@ -150,7 +150,7 @@ export default function LocationTable () {
 		address: el.address,
 		city: el.city,
 		country: el.country,
-		actions: <div style={{ display: 'flex', flexDirection: 'row' }}>
+		actions: <div style={{ display: 'flex', flexDirection: 'row', padding: 1, justifyContent: 'center' }}>
 			<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
 			<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
 		</div>

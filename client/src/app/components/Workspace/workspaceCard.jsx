@@ -62,10 +62,13 @@ const WorkspaceCard = ({
 
 				</CardActionArea>
 
-				<Drawer anchor="right" open={open} onClose={handleDrawerClose}
+				<Drawer
+					anchor="right"
+					open={open}
+					onClose={handleDrawerClose}
 					PaperProps={{
 						sx: {
-							maxWidth: isMobile ? '90%' : '70%',
+							maxWidth: isMobile ? '90%' : '450px',
 							display: 'flex',
 							flexDirection: 'column'
 						}

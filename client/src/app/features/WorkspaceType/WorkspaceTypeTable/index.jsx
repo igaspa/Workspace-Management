@@ -169,7 +169,7 @@ export default function WorkspaceTypeTable () {
 			: '00'}:${el.maxReservationInterval.minutes ? el.maxReservationInterval.minutes.toString().padStart(2, '0') : '00'}`,
 		maxReservationWindow: `${el.maxReservationWindow.days} days`,
 		allowPermanentReservations: el.allowPermanentReservations.toString(),
-		actions: <div style={{ display: 'flex', flexDirection: 'row' }}>
+		actions: <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
 			<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
 			<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
 		</div>

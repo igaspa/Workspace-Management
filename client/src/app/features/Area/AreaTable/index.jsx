@@ -179,7 +179,7 @@ export default function AreaTable () {
 		location: el.location.address,
 		locationId: el.location.id,
 		actions: (
-			<div style={{ display: 'flex', flexDirection: 'row', padding: 1 }}>
+			<div style={{ display: 'flex', flexDirection: 'row', padding: 1, justifyContent: 'center' }}>
 				<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
 				<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
 			</div>

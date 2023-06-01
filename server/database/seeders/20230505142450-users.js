@@ -4,6 +4,7 @@ const { user, role, userRole } = require('../models');
 const { roles } = require('../../utils/roles');
 const { EMPLOYEES, LEADS, TABLETS } = require('../seed-data/users');
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -35,8 +36,9 @@ module.exports = {
 
 const mapUser = (user) => {
   return {
+    ...user,
     id: uuidv4(),
-    ...user
+    password: bcrypt.hashSync(user.password, 10)
   };
 };
 

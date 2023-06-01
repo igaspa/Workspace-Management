@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-import { buttonPadding, createButtonStyle } from './Button.style';
+import { buttonPadding, createButtonStyle } from '../CSS/Button.style';
 
 export default function CreateButton ({ onClick, text }) {
 	return (

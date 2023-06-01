@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-import { buttonPadding, searchButtonStyle } from './Button.style';
+import { buttonPadding, searchButtonStyle } from '../CSS/Button.style';
 
 export default function SearchButton ({ onClick, text, disabled }) {
 	return (

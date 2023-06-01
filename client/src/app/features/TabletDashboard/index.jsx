@@ -60,7 +60,7 @@ const TabletDashboard = () => {
   };
 
   const handleViewButton = (workspace) => {
-    navigate('/workspace/' + workspace.id);
+    navigate(`/workspace/${workspace.id}/${workspace.name}`);
   };
 
   const handleChangeRowsPerPage = (event) => {

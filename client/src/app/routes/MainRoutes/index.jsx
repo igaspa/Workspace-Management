@@ -30,7 +30,7 @@ const MainRoutes = {
       exact: true
     },
     {
-      path: '/workspace/:workspaceId',
+      path: '/workspace/:workspaceId/:workspaceName',
       element: <WorkspaceReservations />,
       exact: true
     },

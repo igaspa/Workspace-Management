@@ -1,22 +1,16 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import { buttonPadding, deleteButtonStyle } from './Button.style';
 
 export default function DeleteButton ({ onClick, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={{ paddingRight: 0.5, paddingTop: 0.5 }}>
+		<Stack spacing={2} direction="row" sx={buttonPadding}>
 			<Button
 				variant="contained"
 				size="medium"
-				sx={{
-					background: '#4A646C',
-					fontSize: 11,
-					':hover': {
-						background: '#36454F'
-					}
-				}}
-				onClick={onClick}
-			>
+				sx={deleteButtonStyle}
+				onClick={onClick}>
 				{text}
 			</Button>
 		</Stack>

@@ -1,20 +1,16 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import { buttonPadding, searchButtonStyle } from './Button.style';
 
 export default function SearchButton ({ onClick, text, disabled }) {
 	return (
-		<Stack spacing={2} direction="row" sx={{ paddingRight: 0.5, paddingTop: 0.5 }}>
+		<Stack spacing={2} direction="row" sx={buttonPadding}>
 			<Button
 				variant="contained"
 				size="medium"
-				sx={{
-					background: '#9090C0',
-					fontSize: 11,
-					':hover': {
-						background: '#9090C0'
-					}
-				}} onClick={onClick}
+				sx={searchButtonStyle}
+				onClick={onClick}
 				disabled={disabled}>{text}</Button>
 		</Stack>
 	);

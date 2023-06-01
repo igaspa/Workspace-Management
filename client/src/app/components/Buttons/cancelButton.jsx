@@ -1,20 +1,18 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import { buttonPadding, cancelButtonStyle } from '../CSS/Button.style';
 
 export default function CancelButton ({ onClick, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={{ paddingLeft: 0.5, paddingRight: 0.5, paddingTop: 0.5 }}>
+		<Stack spacing={2} direction="row" sx={buttonPadding}>
 			<Button
 				variant="contained"
 				size="medium"
-				sx={{
-					background: '#34495E',
-					fontSize: 11,
-					':hover': {
-						background: '#1978D4'
-					}
-				}} onClick={onClick}>{text}</Button>
+				sx={cancelButtonStyle}
+				onClick={onClick}>
+				{text}
+			</Button>
 		</Stack>
 	);
 }

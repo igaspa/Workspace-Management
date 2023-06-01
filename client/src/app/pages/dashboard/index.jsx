@@ -1,4 +1,4 @@
-import Dashboard from '../../features/Dashboard/Dashboard';
+import Dashboard from '../../features/Dashboard';
 
 export default function MainPage() {
   return <Dashboard />;

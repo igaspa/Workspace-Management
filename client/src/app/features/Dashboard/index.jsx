@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import { CircularProgress, Typography, Box } from '@mui/material';
-import WorkspaceCard from '../../Workspace/WorkspaceCard';
-import WorkspaceTypeCard from '../../../components/WorkspaceType/workspaceTypeCard';
-import { DateFilter } from '../../../components/Filters/dateFilter';
-import { TimeFilter } from '../../../components/Filters/timeFilter';
-import { useGetWorkspacesListQuery } from '../../../api/workspaceApiSlice';
-import { useGetWorkspaceTypesListQuery } from '../../../api/workspaceTypeApiSlice';
+import WorkspaceCard from '../Workspace/WorkspaceCard';
+import WorkspaceTypeCard from '../../components/WorkspaceType/workspaceTypeCard';
+import { DateFilter } from '../../components/Filters/dateFilter';
+import { TimeFilter } from '../../components/Filters/timeFilter';
+import { useGetWorkspacesListQuery } from '../../api/workspaceApiSlice';
+import { useGetWorkspaceTypesListQuery } from '../../api/workspaceTypeApiSlice';
 import Container from '@mui/material/Container';
-import { deconstructName, getNext7Days, getHours, createDate } from '../../../utils/helper';
-import { BasicPagination } from '../../../components/Pagination/pagination';
-import { errorHandler } from '../../../utils/errors';
+import { deconstructName, getNext7Days, getHours, createDate } from '../../utils/helper';
+import { BasicPagination } from '../../components/Pagination/pagination';
+import { errorHandler } from '../../utils/errors';
 import { useNavigate } from 'react-router-dom';
-import { useGetAreaListQuery } from '../../../api/areaApiSlice';
-import AreaFilter from '../../../components/Filters/areaFilter';
+import { useGetAreaListQuery } from '../../api/areaApiSlice';
+import AreaFilter from '../../components/Filters/areaFilter';
 
 const Dashboard = () => {
   const currentDay = createDate(0);

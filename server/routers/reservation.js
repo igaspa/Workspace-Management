@@ -18,7 +18,7 @@ router
     callbackErrorHandler(reservationController.createReservation)
   )
   .get(
-    restrictRoles([roles.administrator, roles.lead, roles.employee, roles.tablet]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
     callbackErrorHandler(reservationController.getUserActiveReservations)
   );
 

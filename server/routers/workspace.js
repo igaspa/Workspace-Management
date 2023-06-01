@@ -65,7 +65,7 @@ router
     callbackErrorHandler(workspaceController.createOneWorkspace)
   )
   .get(
-    restrictRoles([roles.administrator, roles.employee, roles.lead, roles.tablet]),
+    restrictRoles([roles.administrator, roles.employee, roles.lead]),
     callbackErrorHandler(workspaceController.getAllWorkspaces)
   );
 

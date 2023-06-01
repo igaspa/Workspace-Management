@@ -14,7 +14,7 @@ router.use(callbackErrorHandler(authenticateUser));
 router
   .route('/')
   .get(
-    restrictRoles([roles.administrator, roles.lead, roles.employee, roles.tablet]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
     callbackErrorHandler(workspaceTypeController.getAllWorkspaceTypes)
   )
   .post(

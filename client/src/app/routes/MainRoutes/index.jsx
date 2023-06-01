@@ -8,32 +8,31 @@ import ReservationList from '../../pages/Reservations';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const MainRoutes = {
-	path: '/',
-	element: <MainLayout />,
-	children: [
-		{
-			path: '/',
-			element: <DashboardDefault />
-		},
-		{
-			path: '/users',
-			element: <Users />
-		},
-		{
-			path: '/reservations',
-			element: <ReservationList />
-		},
-		{
-			path: '/users/:userId',
-			element: <User />,
-			exact: true
-		},
-		{
-			path: '*',
-			element: <DashboardDefault />
-		}
-
-	]
+  path: '/',
+  element: <MainLayout />,
+  children: [
+    {
+      path: '/',
+      element: <DashboardDefault />
+    },
+    {
+      path: '/users',
+      element: <Users />
+    },
+    {
+      path: '/reservations',
+      element: <ReservationList />
+    },
+    {
+      path: '/users/:userId',
+      element: <User />,
+      exact: true
+    },
+    {
+      path: '*',
+      element: <DashboardDefault />
+    }
+  ]
 };
 
 export default MainRoutes;

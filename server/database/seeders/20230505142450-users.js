@@ -2,51 +2,48 @@
 const { tableName } = require('../../utils/constants');
 const { user, role, userRole } = require('../models');
 const { roles } = require('../../utils/roles');
-const { EMPLOYEES, LEADS } = require('../seed-data/users');
+const { EMPLOYEES, LEADS, TABLETS } = require('../seed-data/users');
+const { v4: uuidv4 } = require('uuid');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
     const { sequelize } = queryInterface;
     return sequelize.transaction(async (transaction) => {
-      const leadRole = await role.findOne({ where: { name: roles.lead } }, { transaction });
       const employeeRole = await role.findOne({ where: { name: roles.employee } }, { transaction });
+      const leadRole = await role.findOne({ where: { name: roles.lead } }, { transaction });
+      const tabletRole = await role.findOne({ where: { name: roles.tablet } }, { transaction });
 
-      const employees = await Promise.all(
-        EMPLOYEES.map(function (employee) {
-          return user.create(employee, { transaction });
-        })
-      );
+      const employees = EMPLOYEES.map(mapUser);
+      const leads = LEADS.map(mapUser);
+      const tablets = TABLETS.map(mapUser);
+      await user.bulkCreate([...employees, ...leads, ...tablets], { transaction });
 
-      const leads = await Promise.all(
-        LEADS.map(function (lead) {
-          return user.create(lead, { transaction });
-        })
-      );
+      const employeeUserRoles = employees.map((employee) => mapUserRole(employee, employeeRole));
+      const leadUserRoles = leads.map((lead) => mapUserRole(lead, leadRole));
+      const tabletUserRoles = tablets.map((tablet) => mapUserRole(tablet, tabletRole));
 
-      const employeeUserRoles = employees.map((employee) => {
-        return {
-          roleId: employeeRole.id,
-          userId: employee.id
-        };
-      });
-
-      const leadUserRoles = leads.map((lead) => {
-        return {
-          roleId: leadRole.id,
-          userId: lead.id
-        };
-      });
-
-      return Promise.all(
-        [...employeeUserRoles, ...leadUserRoles].map(function (userRoleObject) {
-          return userRole.create(userRoleObject, { transaction });
-        })
-      );
+      const userRoles = [...employeeUserRoles, ...leadUserRoles, ...tabletUserRoles];
+      return userRole.bulkCreate(userRoles, { transaction });
     });
   },
 
   async down(queryInterface, _Sequelize) {
     await queryInterface.bulkDelete(tableName.user, null, {});
   }
+};
+
+const mapUser = (user) => {
+  return {
+    id: uuidv4(),
+    ...user
+  };
+};
+
+const mapUserRole = (user, role) => {
+  return {
+    id: uuidv4(),
+    roleId: role.id,
+    userId: user.id
+  };
 };

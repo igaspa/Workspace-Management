@@ -1,7 +1,8 @@
 const roles = {
   administrator: 'Administrator',
   lead: 'Lead',
-  employee: 'Employee'
+  employee: 'Employee',
+  tablet: 'Tablet'
 };
 
 exports.roles = roles;

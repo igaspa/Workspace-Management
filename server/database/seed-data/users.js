@@ -110,8 +110,19 @@ LEADS = [
   }
 ];
 
+const TABLETS = [
+  {
+    firstName: 'Tablet',
+    lastName: 'User',
+    email: 'tablet@example.com',
+    phoneNumber: '+15055555555',
+    password: 'test1234'
+  }
+];
+
 module.exports = {
   ADMIN,
   EMPLOYEES,
-  LEADS
+  LEADS,
+  TABLETS
 };

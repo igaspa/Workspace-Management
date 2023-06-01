@@ -57,12 +57,7 @@ const TabletDashboard = () => {
     setSearchData('');
   };
 
-  const handleUpdateButton = (workspace) => {
-    setSelectedWorkspace(workspace);
-    setSelectedId(workspace.id);
-    // PREVIEW
-    setShowUpdateForm(true);
-  };
+  const handleViewButton = (workspace) => {};
 
   const handleChangeRowsPerPage = (event) => {
     setSize(+event.target.value);
@@ -112,7 +107,7 @@ const TabletDashboard = () => {
         : '/',
       reservations: (
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-          <UpdateButton onClick={() => handleUpdateButton(el)} text={'View'} />
+          <UpdateButton onClick={() => handleViewButton(el)} text={'View'} />
         </div>
       )
     };

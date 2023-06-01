@@ -1,20 +1,15 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import { buttonPadding, createButtonStyle } from '../CSS/Button.style';
 
 export default function CreateButton ({ onClick, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={{ paddingRight: 0.5, paddingTop: 0.5 }}>
+		<Stack spacing={2} direction="row" sx={buttonPadding}>
 			<Button
 				variant="contained"
 				size="medium"
-				sx={{
-					background: '#54626F',
-					fontSize: 11,
-					':hover': {
-						background: '#98AFC7'
-					}
-				}} onClick={onClick}>{text}</Button>
+				sx={createButtonStyle} onClick={onClick}>{text}</Button>
 		</Stack>
 	);
 }

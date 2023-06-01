@@ -9,7 +9,7 @@ module.exports = {
   async up(queryInterface) {
     const { sequelize } = queryInterface;
     return sequelize.transaction(async (transaction) => {
-      const roleNames = Object.values(roles);
+      const roleNames = ['Administrator', 'Lead', 'Employee', 'Tablet'];
 
       return Promise.all(
         roleNames.map(function (roleName) {

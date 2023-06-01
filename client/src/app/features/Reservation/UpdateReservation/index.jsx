@@ -147,7 +147,7 @@ export default function UpdateReservation ({ startDate, endDate, startHour, endH
 	}
 
 	return (
-		<Container maxWidth="sm">
+		<Container maxWidth="sm" style={{ padding: 0 }}>
 			<CssBaseline />
 			<main>
 				<Box>

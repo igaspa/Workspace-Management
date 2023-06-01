@@ -18,7 +18,7 @@ router
     callbackErrorHandler(reservationController.createReservation)
   )
   .get(
-    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    restrictRoles([roles.administrator, roles.lead, roles.employee, roles.tablet]),
     callbackErrorHandler(reservationController.getUserActiveReservations)
   );
 
@@ -46,16 +46,19 @@ router
 router
   .route('/:id')
   .get(
-    restrictRoles([roles.administrator, roles.lead, roles.employee]), paramValidator,
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    paramValidator,
     callbackErrorHandler(reservationController.getReservation)
   )
   .put(
-    restrictRoles([roles.administrator, roles.lead, roles.employee]), paramValidator,
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    paramValidator,
     bodyValidator,
     callbackErrorHandler(reservationController.updateReservation)
   )
   .delete(
-    restrictRoles([roles.administrator, roles.lead, roles.employee]), paramValidator,
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    paramValidator,
     callbackErrorHandler(reservationController.deleteReservation)
   );
 
@@ -70,7 +73,8 @@ router
 router
   .route('/permanent/:id')
   .delete(
-    restrictRoles([roles.administrator, roles.lead]), paramValidator,
+    restrictRoles([roles.administrator, roles.lead]),
+    paramValidator,
     callbackErrorHandler(reservationController.deletePermanentReservation)
   );
 

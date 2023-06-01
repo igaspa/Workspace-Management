@@ -13,14 +13,33 @@ router.use(callbackErrorHandler(authenticateUser));
 
 router
   .route('/')
-  .get(restrictRoles([roles.administrator, roles.lead, roles.employee]), callbackErrorHandler(workspaceTypeController.getAllWorkspaceTypes))
-  .post(restrictRoles([roles.administrator]), bodyValidator, callbackErrorHandler(workspaceTypeController.createWorkspaceType));
+  .get(
+    restrictRoles([roles.administrator, roles.lead, roles.employee, roles.tablet]),
+    callbackErrorHandler(workspaceTypeController.getAllWorkspaceTypes)
+  )
+  .post(
+    restrictRoles([roles.administrator]),
+    bodyValidator,
+    callbackErrorHandler(workspaceTypeController.createWorkspaceType)
+  );
 
 router
   .route('/:id')
-  .get(restrictRoles([roles.administrator, roles.lead, roles.employee]), paramValidator,
-    callbackErrorHandler(workspaceTypeController.getWorkspaceType))
-  .put(restrictRoles([roles.administrator]), paramValidator, bodyValidator, callbackErrorHandler(workspaceTypeController.updateWorkspaceType))
-  .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(workspaceTypeController.deleteWorkspaceType));
+  .get(
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    paramValidator,
+    callbackErrorHandler(workspaceTypeController.getWorkspaceType)
+  )
+  .put(
+    restrictRoles([roles.administrator]),
+    paramValidator,
+    bodyValidator,
+    callbackErrorHandler(workspaceTypeController.updateWorkspaceType)
+  )
+  .delete(
+    restrictRoles([roles.administrator]),
+    paramValidator,
+    callbackErrorHandler(workspaceTypeController.deleteWorkspaceType)
+  );
 
 module.exports = router;

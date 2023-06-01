@@ -5,6 +5,7 @@ import DashboardDefault from '../../pages/dashboard';
 import Users from '../../pages/Users';
 import User from '../../pages/User';
 import ReservationList from '../../pages/Reservations';
+import WorkspaceReservations from '../../pages/Workspace/workspaceReservations';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const MainRoutes = {
@@ -26,6 +27,11 @@ const MainRoutes = {
     {
       path: '/users/:userId',
       element: <User />,
+      exact: true
+    },
+    {
+      path: '/workspace/:workspaceId',
+      element: <WorkspaceReservations />,
       exact: true
     },
     {

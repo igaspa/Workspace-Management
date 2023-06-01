@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { CircularProgress, Typography, Box, Grid, Container } from '@mui/material';
 import { useGetWorkspaceSearchListQuery, useGetWorkspacesListQuery } from '../../api/workspaceApiSlice';
+import { useNavigate } from 'react-router-dom';
 import DefaultTable from '../../components/Backoffice/table';
 import DeleteButton from '../../components/Buttons/deleteButton';
 import UpdateButton from '../../components/Buttons/updateButton';
@@ -36,6 +37,7 @@ const columns = [
 
 const TabletDashboard = () => {
   const searchRef = useRef();
+  const navigate = useNavigate();
 
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
@@ -57,7 +59,9 @@ const TabletDashboard = () => {
     setSearchData('');
   };
 
-  const handleViewButton = (workspace) => {};
+  const handleViewButton = (workspace) => {
+    navigate('/workspace/' + workspace.id);
+  };
 
   const handleChangeRowsPerPage = (event) => {
     setSize(+event.target.value);

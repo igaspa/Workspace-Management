@@ -19,6 +19,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Home, Logout, FactCheck } from '@mui/icons-material';
 import BackofficeButton from '../../components/Buttons/backofficeButton';
 import { Link, Outlet } from 'react-router-dom';
+import { ROLES } from '../../utils/constants';
 
 const drawerWidth = 240;
 
@@ -68,6 +69,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerLeft({ window }) {
   const [open, setOpen] = useState(false);
   const role = localStorage.getItem('role');
+  const isAdministrator = role?.length && role.includes(ROLES.ADMINISTRATOR);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -77,26 +79,39 @@ export default function PersistentDrawerLeft({ window }) {
     localStorage.clear();
   };
 
+  const hasAccess = (roles) => {
+    return role && roles.includes(role);
+  };
+
   const routes = [
-    { text: 'Home', route: '/', icon: Home },
-    { text: 'Reservations', route: 'reservations', icon: FactCheck }
+    { text: 'Home', route: '/', icon: Home, roles: [ROLES.ADMINISTRATOR, ROLES.EMPLOYEE, ROLES.LEAD, ROLES.TABLET] },
+    {
+      text: 'Reservations',
+      route: 'reservations',
+      icon: FactCheck,
+      roles: [ROLES.ADMINISTRATOR, ROLES.EMPLOYEE, ROLES.LEAD]
+    }
   ];
+
   const drawer = (
     <div>
       <Divider />
       <List>
-        {routes.map(({ text, route, icon }) => (
-          <ListItem key={text} disablePadding>
-            <Link to={route} style={{ color: '#202120' }}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <SvgIcon component={icon} inheritViewBox />
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
+        {routes.map(
+          ({ text, route, icon, roles }) =>
+            hasAccess(roles) && (
+              <ListItem key={text} disablePadding>
+                <Link to={route} style={{ color: '#202120' }}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <SvgIcon component={icon} inheritViewBox />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            )
+        )}
       </List>
       <Divider />
       <List>
@@ -115,7 +130,7 @@ export default function PersistentDrawerLeft({ window }) {
       </List>
       <Divider />
       <List>
-        {role?.length && role.includes('Administrator') && (
+        {isAdministrator && (
           <ListItem disablePadding>
             <Link to="/backoffice" style={{ color: '#202120' }} onClick={handleDrawerToggle}>
               <BackofficeButton text={'Backoffice'} />

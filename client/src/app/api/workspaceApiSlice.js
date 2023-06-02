@@ -52,7 +52,9 @@ export const workspacesApiSlice = createApi({
 				url: '/workspace?include=workspaceType&include=equipment&include=area',
 				method: 'GET',
 				params: {
-					name: params.name
+					name: params.name,
+					page: params.page,
+					size: params.size
 				}
 			})
 		}),

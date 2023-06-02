@@ -38,7 +38,9 @@ export const locationApiSlice = createApi({
 				url: '/location',
 				method: 'GET',
 				params: {
-					name: params.name
+					name: params.name,
+					size: params.size,
+					page: params.page
 				}
 			})
 		}),

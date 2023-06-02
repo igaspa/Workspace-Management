@@ -142,7 +142,9 @@ export default function AreaTable () {
 	});
 
 	const { data: searchArea = [], isError: isAreaSearchError, isLoading: isAreaSearchLoading } = useGetAreaSearchListQuery({
-		name: [searchTerm]
+		name: [searchTerm],
+		...(page && { page: page + 1 }),
+		...(size && { size })
 	});
 
 	const { data: [locations] = [], isError: isLocationsError, isLoading: isLocationsLoading } = useGetLocationListQuery({});

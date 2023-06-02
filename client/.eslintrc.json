@@ -4,7 +4,7 @@
     "es2021": true,
     "jest": true
   },
-  "extends": ["plugin:react/recommended", "standard", "plugin:react/jsx-runtime"],
+  "extends": ["plugin:react/recommended", "standard", "plugin:react/jsx-runtime", "plugin:prettier/recommended"],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",

@@ -176,7 +176,9 @@ const Workspaces = () => {
     isError: isWorkspaceSearchError,
     isLoading: isWorkspaceSearchLoading
   } = useGetWorkspaceSearchListQuery({
-    name: [searchTerm]
+    name: [searchTerm],
+    ...(page && { page: page + 1 }),
+    ...(size && { size }),
   });
 
   const filteredData =

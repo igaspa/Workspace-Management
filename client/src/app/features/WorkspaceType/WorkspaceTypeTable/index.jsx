@@ -115,7 +115,9 @@ export default function WorkspaceTypeTable () {
 	});
 
 	const { data: searchWorkspaceType = [], isError: isWorkspaceTypeSearchError, isLoading: isWorkspaceTypeSearchLoading } = useGetWorkspaceTypeSearchListQuery({
-		name: [searchTerm]
+		name: [searchTerm],
+		...(page && { page: page + 1 }),
+		...(size && { size })
 	});
 
 	const handleDeleteClick = async (event) => {

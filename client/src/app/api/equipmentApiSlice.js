@@ -39,7 +39,9 @@ export const equipmentsApiSlice = createApi({
 		getEquipmentSearchList: builder.query({
 			query: (params) => {
 				const queryParameters = {
-					name: params.name
+					name: params.name,
+					size: params.size,
+					page: params.page
 				};
 
 				return {

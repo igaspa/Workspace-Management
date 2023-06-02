@@ -92,7 +92,9 @@ export default function EquipmentTable () {
 	});
 
 	const { data: searchEquipment = [], isError: isEquipmentSearchError, isLoading: isEquipmentSearchLoading } = useGetEquipmentSearchListQuery({
-		name: [searchTerm]
+		name: [searchTerm],
+		...(page && { page: page + 1 }),
+		...(size && { size })
 	});
 
 	const handleDeleteClick = async (event) => {

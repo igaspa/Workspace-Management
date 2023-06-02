@@ -38,7 +38,9 @@ export const areaApiSlice = createApi({
 				url: '/area?include=location',
 				method: 'GET',
 				params: {
-					name: params.name
+					name: params.name,
+					size: params.size,
+					page: params.page
 				}
 			})
 		}),

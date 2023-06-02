@@ -2,7 +2,6 @@
 'use strict';
 const { tableName } = require('../../utils/constants');
 const { role } = require('../models');
-const { roles } = require('../../utils/roles');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

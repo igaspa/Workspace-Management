@@ -1,7 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
+
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class role extends Model {
     /**
@@ -9,20 +9,28 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate (models) {
+    static associate(models) {
       // define association here
     }
   }
-  role.init({
-    id: {
-      primaryKey: true,
-      type: DataTypes.UUID
+  role.init(
+    {
+      id: {
+        primaryKey: true,
+        type: DataTypes.UUID
+      },
+      name: DataTypes.STRING
     },
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'role',
-    timestamps: false
-  });
+    {
+      hooks: {
+        beforeCreate: async (model) => {
+          model.id = uuidv4();
+        }
+      },
+      sequelize,
+      modelName: 'role',
+      timestamps: false
+    }
+  );
   return role;
 };

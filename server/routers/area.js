@@ -11,9 +11,9 @@ router.use(callbackErrorHandler(authenticateUser));
 
 router
   .route('/')
-  .get(restrictRoles(
-    [roles.administrator, roles.lead, roles.employee]),
-  callbackErrorHandler(generalController.getAllAreas)
+  .get(
+    restrictRoles([roles.administrator, roles.lead, roles.employee]),
+    callbackErrorHandler(generalController.getAllAreas)
   )
   .post(restrictRoles([roles.administrator]), bodyValidator, callbackErrorHandler(generalController.createArea));
 
@@ -24,8 +24,11 @@ router
     paramValidator,
     callbackErrorHandler(generalController.getArea)
   )
-  .put(restrictRoles(
-    [roles.administrator]), paramValidator, bodyValidator, callbackErrorHandler(generalController.updateArea)
+  .put(
+    restrictRoles([roles.administrator]),
+    paramValidator,
+    bodyValidator,
+    callbackErrorHandler(generalController.updateArea)
   )
   .delete(restrictRoles([roles.administrator]), paramValidator, callbackErrorHandler(generalController.deleteArea));
 

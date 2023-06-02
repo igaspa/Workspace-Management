@@ -15,54 +15,54 @@ import CreateArea from '../../features/Area/CreateArea';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const BackofficeRoutes = {
-	path: '/backoffice',
-	element: <BackofficeLayout />,
-	children: [
-		{
-			path: '/backoffice',
-			element: <BackofficeDashboard />
-		},
-		{
-			path: '/backoffice/workspaces',
-			element: <WorkspaceList />
-		},
-		{
-			path: '/backoffice/create-workspace',
-			element: <WorkspaceCreation />
-		},
-		{
-			path: '/backoffice/equipment',
-			element: <EquipmentList />
-		},
-		{
-			path: '/backoffice/create-equipment',
-			element: <CreateEquipmentPage />
-		},
-		{
-			path: '/backoffice/workspace-type',
-			element: <WorkspaceTypeList />
-		},
-		{
-			path: '/backoffice/create-workspace-type',
-			element: <CreateWorkspaceTypePage />
-		},
-		{
-			path: '/backoffice/location',
-			element: <LocationList />
-		},
-		{
-			path: '/backoffice/create-location',
-			element: <CreateLocationPage />
-		},
-		{
-			path: '/backoffice/area',
-			element: <AreaTable />
-		},
-		{
-			path: '/backoffice/create-area',
-			element: < CreateArea/>
-		}
-	]
+  path: '/backoffice',
+  element: <BackofficeLayout />,
+  children: [
+    {
+      path: '/backoffice',
+      element: <BackofficeDashboard />
+    },
+    {
+      path: '/backoffice/workspaces',
+      element: <WorkspaceList />
+    },
+    {
+      path: '/backoffice/create-workspace',
+      element: <WorkspaceCreation />
+    },
+    {
+      path: '/backoffice/equipment',
+      element: <EquipmentList />
+    },
+    {
+      path: '/backoffice/create-equipment',
+      element: <CreateEquipmentPage />
+    },
+    {
+      path: '/backoffice/workspace-type',
+      element: <WorkspaceTypeList />
+    },
+    {
+      path: '/backoffice/create-workspace-type',
+      element: <CreateWorkspaceTypePage />
+    },
+    {
+      path: '/backoffice/location',
+      element: <LocationList />
+    },
+    {
+      path: '/backoffice/create-location',
+      element: <CreateLocationPage />
+    },
+    {
+      path: '/backoffice/area',
+      element: <AreaTable />
+    },
+    {
+      path: '/backoffice/create-area',
+      element: <CreateArea />
+    }
+  ]
 };
 
 export default BackofficeRoutes;

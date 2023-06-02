@@ -3,7 +3,6 @@ const { user, role, userRole } = require('../models');
 const { roles } = require('../../utils/roles');
 const { ADMIN } = require('../seed-data/users');
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
     const { sequelize } = queryInterface;

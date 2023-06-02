@@ -4,7 +4,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { getNext7Days, getHours, createDate } from '../../../utils/helper';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
-import { useCreatePermanentReservationMutation, useCreateReservationMutation, useGetReservationsFromWorkspaceQuery } from '../../../api/reservationApiSlice';
+import {
+  useCreatePermanentReservationMutation,
+  useCreateReservationMutation,
+  useGetReservationsFromWorkspaceQuery
+} from '../../../api/reservationApiSlice';
 import { errorToast, successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
 import { useDispatch } from 'react-redux';
@@ -18,278 +22,282 @@ import StandardReservation from '../../../components/Reservation/standardReserva
 import PrivilegeReservation from '../../../components/Reservation/privilegeReservation';
 
 const CreateReservation = ({ workspace, onClose, endTime, startTime, reservationFromDate, reservationUntilDate }) => {
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const [standardReservationApi] = useCreateReservationMutation();
-	const [permanentReservationApi] = useCreatePermanentReservationMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [standardReservationApi] = useCreateReservationMutation();
+  const [permanentReservationApi] = useCreatePermanentReservationMutation();
 
-	const role = localStorage.getItem('role');
+  const role = localStorage.getItem('role');
 
-	const currentDay = createDate(0);
+  const currentDay = createDate(0);
 
-	const [startDate, setStartDate] = useState(reservationFromDate || currentDay);
-	const [endDate, setEndDate] = useState(reservationUntilDate || startDate);
+  const [startDate, setStartDate] = useState(reservationFromDate || currentDay);
+  const [endDate, setEndDate] = useState(reservationUntilDate || startDate);
 
-	const [startHour, setStartHour] = useState(startTime || '');
-	const [endHour, setEndHour] = useState(endTime || '');
+  const [startHour, setStartHour] = useState(startTime || '');
+  const [endHour, setEndHour] = useState(endTime || '');
 
-	const [startAt, setStartAt] = useState('');
-	const [endAt, setEndAt] = useState('');
+  const [startAt, setStartAt] = useState('');
+  const [endAt, setEndAt] = useState('');
 
-	const [selectedUsers, setSelectedUsers] = useState([]);
-	const [participantEmailSlice, setParticipantEmailSlice] = useState('');
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [participantEmailSlice, setParticipantEmailSlice] = useState('');
 
-	const [page, setPage] = useState(1);
-	const divRef = useRef();
+  const [page, setPage] = useState(1);
+  const divRef = useRef();
 
-	const startHours = getHours(startDate);
-	const endHours = getHours(endDate || startDate);
-	const dates = getNext7Days();
+  const startHours = getHours(startDate);
+  const endHours = getHours(endDate || startDate);
+  const dates = getNext7Days();
 
-	const [permanentReservation, setPermanentReservation] = useState(false);
-	const [selectedUser, setSelectedUser] = useState({});
+  const [permanentReservation, setPermanentReservation] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
 
-	const handleSelectedUser = (event, selectedUser) => {
-		setSelectedUser(selectedUser);
-	};
+  const handleSelectedUser = (event, selectedUser) => {
+    setSelectedUser(selectedUser);
+  };
 
-	const handleReservationTypeChange = (event) => {
-		const type = event.target.value;
-		setPermanentReservation(type);
-	};
+  const handleReservationTypeChange = (event) => {
+    const type = event.target.value;
+    setPermanentReservation(type);
+  };
 
-	const handlePageChange = async (event, value) => {
-		setPage(value);
-	};
+  const handlePageChange = async (event, value) => {
+    setPage(value);
+  };
 
-	// get selected start date
-	const handleStartDateChange = (event) => {
-		setStartDate(event.target.value);
-		if (new Date(event.target.value) > new Date(endDate)) setEndDate(event.target.value);
-	};
+  // get selected start date
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+    if (new Date(event.target.value) > new Date(endDate)) setEndDate(event.target.value);
+  };
 
-	// get selected start date
-	const handleEndDateChange = (event) => {
-		setEndDate(event.target.value);
-		if (new Date(event.target.value) < new Date(startDate)) setStartDate(event.target.value);
-	};
+  // get selected start date
+  const handleEndDateChange = (event) => {
+    setEndDate(event.target.value);
+    if (new Date(event.target.value) < new Date(startDate)) setStartDate(event.target.value);
+  };
 
-	// get selected start hour
-	const handleStartHourChange = (event) => {
-		setStartHour(event.target.value);
-	};
+  // get selected start hour
+  const handleStartHourChange = (event) => {
+    setStartHour(event.target.value);
+  };
 
-	// get selected end hour
-	const handleEndHourChange = (event) => {
-		setEndHour(event.target.value);
-	};
+  // get selected end hour
+  const handleEndHourChange = (event) => {
+    setEndHour(event.target.value);
+  };
 
-	// set startAt value
-	useEffect(() => {
-		if (startDate && startHour) {
-			setStartAt(`${startDate}T${startHour}`);
-		}
-	}, [startDate, startHour, startAt]);
+  // set startAt value
+  useEffect(() => {
+    if (startDate && startHour) {
+      setStartAt(`${startDate}T${startHour}`);
+    }
+  }, [startDate, startHour, startAt]);
 
-	// set endAt value
-	useEffect(() => {
-		if (role.includes('Administrator') || role.includes('Lead')) {
-			if (endDate && endHour) setEndAt(`${endDate}T${endHour}`);
-		} else if (startDate && endHour) setEndAt(`${startDate}T${endHour}`);
-	}, [endDate, endHour, startDate, startHour]);
+  // set endAt value
+  useEffect(() => {
+    if (role.includes('Administrator') || role.includes('Lead')) {
+      if (endDate && endHour) setEndAt(`${endDate}T${endHour}`);
+    } else if (startDate && endHour) setEndAt(`${startDate}T${endHour}`);
+  }, [endDate, endHour, startDate, startHour]);
 
-	const handleParticipantChange = (event, value) => {
-		setSelectedUsers(value);
-	};
+  const handleParticipantChange = (event, value) => {
+    setSelectedUsers(value);
+  };
 
-	const handleEmailInputChange = (e) => {
-		const email = e.target.value;
-		if (e.target.value.length > 2) setParticipantEmailSlice(email.slice(0, 3));
-	};
+  const handleEmailInputChange = (e) => {
+    const email = e.target.value;
+    if (e.target.value.length > 2) setParticipantEmailSlice(email.slice(0, 3));
+  };
 
-	const postReservation = async (reservationType, data) => {
-		await reservationType(data)
-			.unwrap()
-			.then((response) => {
-				successToast(response.message);
-				dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
-				onClose();
-			})
-			.catch((error) => {
-				errorHandler(error);
-			});
-	};
+  const postReservation = async (reservationType, data) => {
+    await reservationType(data)
+      .unwrap()
+      .then((response) => {
+        successToast(response.message);
+        dispatch(workspacesApiSlice.util.invalidateTags(['workspacesList']));
+        onClose();
+      })
+      .catch((error) => {
+        errorHandler(error);
+      });
+  };
 
-	const createPermanentReservation = async (event) => {
-		if (!selectedUser.id) errorToast('You need to select a user!');
-		else {
-			const objectToPost = {
-				id: uuidv4(),
-				userId: selectedUser.id,
-				workspaceId: workspace.id,
-				startAt
-			};
-			await postReservation(permanentReservationApi, objectToPost);
-		}
-	};
+  const createPermanentReservation = async (event) => {
+    if (!selectedUser.id) errorToast('You need to select a user!');
+    else {
+      const objectToPost = {
+        id: uuidv4(),
+        userId: selectedUser.id,
+        workspaceId: workspace.id,
+        startAt
+      };
+      await postReservation(permanentReservationApi, objectToPost);
+    }
+  };
 
-	const createStandardReservation = async (event) => {
-		const participants = selectedUsers.map(user => {
-			return {
-				firstName: user.firstName,
-				lastName: user.lastName,
-				email: user.email
-			};
-		});
+  const createStandardReservation = async (event) => {
+    const participants = selectedUsers.map((user) => {
+      return {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      };
+    });
 
-		const objectToPost = {
-			id: uuidv4(),
-			workspaceId: workspace.id,
-			startAt,
-			endAt,
-			participants
-		};
+    const objectToPost = {
+      id: uuidv4(),
+      workspaceId: workspace.id,
+      startAt,
+      endAt,
+      participants
+    };
 
-		await postReservation(standardReservationApi, objectToPost);
-	};
+    await postReservation(standardReservationApi, objectToPost);
+  };
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		if (permanentReservation) await createPermanentReservation();
-		else await createStandardReservation();
-	};
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (permanentReservation) await createPermanentReservation();
+    else await createStandardReservation();
+  };
 
-	// eslint-disable-next-line no-unused-vars
-	const { data: [reservations, pages] = [], isError: reservationsFetchError, error: reservationErrorObject, isLoading: reservationsLoading } = useGetReservationsFromWorkspaceQuery(
-		{
-			from: startDate,
-			until: endDate,
-			workspaceId: workspace.id,
-			...(page && { page })
-		}
-	);
+  // eslint-disable-next-line no-unused-vars
+  const {
+    data: [reservations, pages] = [],
+    isError: reservationsFetchError,
+    error: reservationErrorObject,
+    isLoading: reservationsLoading
+  } = useGetReservationsFromWorkspaceQuery({
+    from: startDate,
+    until: endDate,
+    workspaceId: workspace.id,
+    ...(page && { page })
+  });
 
-	const { data: users = [], isError: userFetchError, error: userErrorObject, isLoading: userLoading } = useGetUsersListQuery({
-		email: participantEmailSlice.length ? participantEmailSlice : '/'
-	});
+  const {
+    data: users = [],
+    isError: userFetchError,
+    error: userErrorObject,
+    isLoading: userLoading
+  } = useGetUsersListQuery({
+    email: participantEmailSlice.length ? participantEmailSlice : '/'
+  });
 
-	useEffect(() => {
-		if (reservationsFetchError) {
-			const authorizationError = errorHandler(reservationErrorObject);
-			if (authorizationError) navigate('/sign-in');
-		}
-		if (userFetchError) {
-			const authorizationError = errorHandler(userErrorObject);
-			if (authorizationError) navigate('/sign-in');
-		}
-	}, [reservations, users]);
+  useEffect(() => {
+    if (reservationsFetchError) {
+      const authorizationError = errorHandler(reservationErrorObject);
+      if (authorizationError) navigate('/sign-in');
+    }
+    if (userFetchError) {
+      const authorizationError = errorHandler(userErrorObject);
+      if (authorizationError) navigate('/sign-in');
+    }
+  }, [reservations, users]);
 
-	// Render loading state
-	if (reservationsLoading || userLoading) {
-		return <CircularProgress />;
-	}
+  // Render loading state
+  if (reservationsLoading || userLoading) {
+    return <CircularProgress />;
+  }
 
-	return (
-		<Container maxWidth="lg" style={{ padding: 0 }}>
-			<CssBaseline />
-			<main>
-				<Box spacing={2} direction="row" flexWrap="wrap">
+  return (
+    <Container maxWidth="lg" style={{ padding: 0 }}>
+      <CssBaseline />
+      <main>
+        <Box spacing={2} direction="row" flexWrap="wrap">
+          <Typography component="h1" variant="h4" align="center" color="text.primary" gutterBottom paddingTop={2}>
+            Reserve a Space <br></br>- {workspace.name} -
+          </Typography>
 
-					<Typography
-						component="h1"
-						variant="h4"
-						align="center"
-						color="text.primary"
-						gutterBottom
-						paddingTop={2}
-					>
-							Reserve a Space <br></br>
-							- { workspace.name} -
-					</Typography>
+          {/* Container start */}
+          <Stack spacing={1} justifyContent="space-between">
+            {role.includes('Administrator') || role.includes('Lead') ? (
+              <PrivilegeReservation
+                permanentReservation={permanentReservation}
+                handleReservationTypeChange={handleReservationTypeChange}
+                handleStartDateChange={handleStartDateChange}
+                handleEndDateChange={handleEndDateChange}
+                handleStartHourChange={handleStartHourChange}
+                handleEndHourChange={handleEndHourChange}
+                startHour={startHour}
+                startHours={startHours}
+                endHour={endHour}
+                endHours={endHours}
+                startDate={startDate}
+                endDate={endDate}
+                dates={dates}
+                users={users}
+                selectedUsers={selectedUsers}
+                selectedUser={selectedUser}
+                handleParticipantChange={handleParticipantChange}
+                handleSelectedUser={handleSelectedUser}
+                handleEmailInputChange={handleEmailInputChange}
+                workspaceType={workspace.workspaceType}
+                handleSubmit={handleSubmit}
+              />
+            ) : (
+              <StandardReservation
+                handleStartDateChange={handleStartDateChange}
+                handleStartHourChange={handleStartHourChange}
+                handleEndHourChange={handleEndHourChange}
+                startHour={startHour}
+                startHours={startHours}
+                startDate={startDate}
+                dates={dates}
+                endHour={endHour}
+                endHours={endHours}
+                users={users}
+                selectedUsers={selectedUsers}
+                handleParticipantChange={handleParticipantChange}
+                handleEmailInputChange={handleEmailInputChange}
+                workspaceType={workspace.workspaceType}
+                handleSubmit={handleSubmit}
+              />
+            )}
+          </Stack>
 
-					{/* Container start */}
-					<Stack spacing={1} justifyContent="space-between">
+          {reservations && reservations.length > 0 && (
+            <div style={{ padding: 20 }}>
+              <Typography variant="h5" gutterBottom sx={{ padding: 2 }}>
+                Active reservations for this workspace
+              </Typography>
 
-						{role.includes('Administrator') || role.includes('Lead')
-							? (
-								<PrivilegeReservation
-									permanentReservation={permanentReservation}
-									handleReservationTypeChange={handleReservationTypeChange}
-									handleStartDateChange={handleStartDateChange}
-									handleEndDateChange={handleEndDateChange}
-									handleStartHourChange={handleStartHourChange}
-									handleEndHourChange={handleEndHourChange}
-									startHour={startHour}
-									startHours={startHours}
-									endHour={endHour}
-									endHours={endHours}
-									startDate={startDate}
-									endDate={endDate}
-									dates={dates}
-									users={users}
-									selectedUsers={selectedUsers}
-									selectedUser={selectedUser}
-									handleParticipantChange={handleParticipantChange}
-									handleSelectedUser={handleSelectedUser}
-									handleEmailInputChange={handleEmailInputChange}
-									workspaceType={workspace.workspaceType}
-									handleSubmit={handleSubmit}
-								/>
-							)
-							: (
-								<StandardReservation
-									handleStartDateChange={handleStartDateChange}
-									handleStartHourChange={handleStartHourChange}
-									handleEndHourChange={handleEndHourChange}
-									startHour={startHour}
-									startHours={startHours}
-									startDate={startDate}
-									dates={dates}
-									endHour={endHour}
-									endHours={endHours}
-									users={users}
-									selectedUsers={selectedUsers}
-									handleParticipantChange={handleParticipantChange}
-									handleEmailInputChange={handleEmailInputChange}
-									workspaceType={workspace.workspaceType}
-									handleSubmit={handleSubmit}
-								/>
-							)}
+              <Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
+                <Grid
+                  ref={divRef}
+                  sx={{
+                    display: 'grid',
+                    rowGap: 1,
+                    columnGap: 1,
+                    gridTemplateColumns: 'repeat(1, 1fr)',
+                    paddingBottom: 2
+                  }}
+                >
+                  {reservations.map((reservation) => (
+                    <ActiveReservationCard key={reservation.id} reservation={reservation} />
+                  ))}
+                </Grid>
+              </Box>
+            </div>
+          )}
 
-					</Stack>
-
-					{reservations && reservations.length > 0 && (
-						(
-							<div style={{ padding: 20 }}>
-								<Typography variant="h5" gutterBottom sx={{ padding: 2 }}>Active reservations for this workspace</Typography>
-
-								<Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
-									<Grid ref={divRef} sx={{ display: 'grid', rowGap: 1, columnGap: 1, gridTemplateColumns: 'repeat(1, 1fr)', paddingBottom: 2 }}>
-										{reservations.map((reservation) => (
-											<ActiveReservationCard key={reservation.id} reservation={reservation}/>
-										))}
-									</Grid>
-								</Box>
-							</div>
-						)
-					)}
-
-					{reservations && reservations.length > 0 &&
-						(<BasicPagination count={pages} page={page} onChange={handlePageChange}/>)
-					}
-				</Box>
-			</main>
-		</Container>
-	);
+          {reservations && reservations.length > 0 && (
+            <BasicPagination count={pages} page={page} onChange={handlePageChange} />
+          )}
+        </Box>
+      </main>
+    </Container>
+  );
 };
 
 export default CreateReservation;
 
 CreateReservation.propTypes = {
-	workspace: PropTypes.object,
-	startTime: PropTypes.string,
-	endTime: PropTypes.string,
-	reservationFromDate: PropTypes.string,
-	reservationUntilDate: PropTypes.string,
-	onClose: PropTypes.func
+  workspace: PropTypes.object,
+  startTime: PropTypes.string,
+  endTime: PropTypes.string,
+  reservationFromDate: PropTypes.string,
+  reservationUntilDate: PropTypes.string,
+  onClose: PropTypes.func
 };

@@ -103,7 +103,9 @@ export default function LocationTable () {
 		...(size && { size })
 	});
 	const { data: searchLocation = [], isError: isLocationSearchError, isLoading: isLocationSearchLoading } = useGetLocationSearchListQuery({
-		name: [searchTerm]
+		name: [searchTerm],
+		...(page && { page: page + 1 }),
+		...(size && { size })
 	});
 
 	const handleDeleteClick = async (event) => {

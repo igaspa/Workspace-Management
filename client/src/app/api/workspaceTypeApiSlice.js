@@ -36,7 +36,9 @@ export const workspaceTypesApiSlice = createApi({
 				url: '/workspace-type',
 				method: 'GET',
 				params: {
-					name: params.name
+					name: params.name,
+					size: params.size,
+					page: params.page
 				}
 			})
 		}),

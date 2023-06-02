@@ -153,7 +153,9 @@ const Workspaces = () => {
 	});
 
 	const { data: searchWorkspace = [], isError: isWorkspaceSearchError, isLoading: isWorkspaceSearchLoading } = useGetWorkspaceSearchListQuery({
-		name: [searchTerm]
+		name: [searchTerm],
+		...(page && { page: page + 1 }),
+		...(size && { size })
 	});
 
 	const filteredData = searchTerm.length >= 3 ? searchWorkspace.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : workspaces;

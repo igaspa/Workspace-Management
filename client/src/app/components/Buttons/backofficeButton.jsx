@@ -1,14 +1,15 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-import { backofficeButtonPadding, backofficeButtonStyle } from '../CSS/Button.style';
+import clsx from 'clsx';
+import styles from '../../CSS/Button.Module.css'
 
 export default function BackofficeButton ({ onChange, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={backofficeButtonPadding}>
+		<Stack spacing={2} direction="row" className={styles.backofficeButtonWrapper}>
 			<Button
 				variant="contained"
-				sx={backofficeButtonStyle}
+				className={clsx(styles.button, styles.backofficeButton)}
 				onClick={onChange}>
 				{text}
 			</Button>

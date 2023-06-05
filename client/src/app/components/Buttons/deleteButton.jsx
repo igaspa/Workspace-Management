@@ -1,15 +1,15 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-import { buttonPadding, deleteButtonStyle } from '../CSS/Button.style';
+import clsx from 'clsx';
+import styles from '../../CSS/Button.Module.css'
 
 export default function DeleteButton ({ onClick, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={buttonPadding}>
+		<Stack spacing={2} direction="row" className={styles.buttonWrapper}>
 			<Button
 				variant="contained"
-				size="medium"
-				sx={deleteButtonStyle}
+				className={clsx(styles.deleteButton, styles.button)}
 				onClick={onClick}>
 				{text}
 			</Button>

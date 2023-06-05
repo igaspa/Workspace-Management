@@ -131,7 +131,7 @@ const TabletDashboard = () => {
             <Grid component="form" ref={searchRef} container alignItems="center" paddingBottom={1}>
               <SearchField data={searchWorkspace.map((item) => item.name)} name="area" onChange={handleSearchTerm} />
               <SearchButton onClick={handleSearch} text={'Search'} disabled={searchData?.length < 3} />
-              <DeleteButton onClick={handleSearchClear} text={'Clear'} />
+              <UpdateButton onClick={handleSearchClear} text={'Clear'} />
             </Grid>
             <Box spacing={1} direction="row" flexWrap="wrap" margin={0}>
               {workspaces.length ? (

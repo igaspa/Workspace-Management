@@ -1,0 +1,15 @@
+.tableContainer{
+    max-height: 440px;
+}
+
+.tablePaper{
+    width: 100%;
+    overflow: hidden;
+}
+.thead{
+    background-color: #54626F;
+	color:  white;
+}
+.tbody{
+    font-size: 14;
+}

@@ -39,13 +39,13 @@ const columns = [
   {
     id: 'type',
     label: 'Type',
-    minWidth: 150,
+    minWidth: 130,
     align: 'left'
   },
   {
     id: 'area',
     label: 'Area',
-    minWidth: 150,
+    minWidth: 140,
     align: 'left'
   },
   {
@@ -253,7 +253,7 @@ const Workspaces = () => {
             <Grid component="form" ref={searchRef} container alignItems="center" paddingBottom={1}>
               <SearchField data={searchWorkspace.map((item) => item.name)} name="area" onChange={handleSearchTerm} />
               <SearchButton onClick={handleSearch} text={'Search'} disabled={searchData?.length < 3} />
-              <DeleteButton onClick={handleSearchClear} text={'Clear'} />
+              <UpdateButton onClick={handleSearchClear} text={'Clear'} />
               <CreateButton onClick={handleCreateWorkspaceButton} text={'Create Workspaces'} />
             </Grid>
             <Box spacing={1} direction="row" flexWrap="wrap" margin={0}>

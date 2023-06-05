@@ -220,7 +220,7 @@ export default function AreaTable () {
 								<SearchButton onClick={handleSearch}
 									text={'Search'}
 									disabled={(searchData?.length < 3)}/>
-								<DeleteButton onClick={handleSearchClear}
+								<UpdateButton onClick={handleSearchClear}
 									text={'Clear'} />
 								<CreateButton onClick={handleCreateClick}
 									text={'Create Area'} />

@@ -10,16 +10,8 @@ import {
 } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import PropTypes from 'prop-types';
-
-const StyledTableCell = styled(TableCell)(() => ({
-	[`&.${tableCellClasses.head}`]: {
-		backgroundColor: '#54626F',
-		color: 'white'
-	},
-	[`&.${tableCellClasses.body}`]: {
-		fontSize: 14
-	}
-}));
+import styles from '../../CSS/Table.Module.css'
+import clsx from 'clsx';
 
 export default function DefaultTable ({
 	columns,
@@ -32,26 +24,27 @@ export default function DefaultTable ({
 	count
 }) {
 	return (
-		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-			<TableContainer sx={{ maxHeight: 440 }}>
-				<Table stickyHeader aria-label="sticky table" color="grey">
+		<Paper className={styles.tablePaper}>
+			<TableContainer className={styles.tableContainer}>
+				<Table stickyHeader>
 					<TableHead>
 						<TableRow>
 							{columns.map((column) => (
-								<StyledTableCell
+								<TableCell
+								className={clsx(styles.thead, styles.tbody)}
 									key={column.id}
 									align={column.align}
 									style={{ minWidth: column.minWidth }}
 								>
 									{column.label}
-								</StyledTableCell>
+								</TableCell>
 							))}
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{rows.map((row) => {
 							return (
-								<TableRow hover role="checkbox" key={row.id}>
+								<TableRow hover key={row.id}>
 									{columns.map((column) => {
 										const value = row[column.id];
 										return (

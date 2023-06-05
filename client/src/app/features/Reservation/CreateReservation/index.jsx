@@ -212,6 +212,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 
           {/* Container start */}
           <Stack spacing={1} justifyContent="space-between">
+          <form onSubmit={handleSubmit} style={{ padding: 10 }}>
             {role.includes('Administrator') || role.includes('Lead') ? (
               <PrivilegeReservation
                 permanentReservation={permanentReservation}
@@ -234,7 +235,6 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
                 handleSelectedUser={handleSelectedUser}
                 handleEmailInputChange={handleEmailInputChange}
                 workspaceType={workspace.workspaceType}
-                handleSubmit={handleSubmit}
               />
             ) : (
               <StandardReservation
@@ -252,13 +252,13 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
                 handleParticipantChange={handleParticipantChange}
                 handleEmailInputChange={handleEmailInputChange}
                 workspaceType={workspace.workspaceType}
-                handleSubmit={handleSubmit}
               />
             )}
+            </form>
           </Stack>
 
           {reservations && reservations.length > 0 && (
-            <div style={{ padding: 20 }}>
+            <div style={{ padding: 10 }}>
               <Typography variant="h5" gutterBottom sx={{ padding: 2 }}>
                 Active reservations for this workspace
               </Typography>

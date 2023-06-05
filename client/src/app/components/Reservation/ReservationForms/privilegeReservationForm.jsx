@@ -36,7 +36,7 @@ const PrivilegeReservationForm = ({
 				/>
 			</Stack>
 
-			<Stack direction={'row'} alignItems="center" justifyContent="flex-end" spacing={1} >
+			<Stack alignItems="center"  justifyContent="flex-end" style={{ flex: 1, paddingBottom: 20 }} spacing={1} display="flex" direction="row" >
 				{permanentReservation
 					? (
 						<>

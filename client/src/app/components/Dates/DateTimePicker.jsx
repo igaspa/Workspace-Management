@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import { DateFilter } from '../Filters/dateFilter';
 import { TimeFilter } from '../Filters/timeFilter';
 import PropTypes from 'prop-types';
+import { Box } from '@mui/system';
 
 const DateTimePicker = ({
 	dateLabel,
@@ -14,17 +15,23 @@ const DateTimePicker = ({
 	hours
 }) => {
 	return (
-		<>
-			<Typography color="text.primary" sx={{ fontSize: 15 }}>
-				{dateLabel}:
-			</Typography>
-			<DateFilter onChange={handleDateChange} date={date} dates={dates} />
+		<Box display="flex" gap={1} alignItems="center" justifyContent="flex-end">
+			<Box display="flex" alignItems="center" justifyContent="flex-end">
+				<Typography color="text.primary" sx={{ fontSize: 15, paddingRight: 1 }}>
+					{dateLabel}: 
+				</Typography>
+				<DateFilter onChange={handleDateChange} date={date} dates={dates} />
+			</Box>
 
-			<Typography color="text.primary" sx={{ fontSize: 15 }}>
-				{timeLabel}:
-			</Typography>
-			<TimeFilter onChange={handleHourChange} hour={hour} hours={hours} />
-		</>
+			<Box display="flex" alignItems="center" justifyContent="flex-end">
+				<Typography color="text.primary" sx={{ fontSize: 15, paddingRight: 1 }}>
+					{timeLabel}: 
+				</Typography>
+				<TimeFilter onChange={handleHourChange} hour={hour} hours={hours} />
+			</Box>
+	  	</Box>
+
+
 	);
 };
 

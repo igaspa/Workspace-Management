@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import PropTypes from 'prop-types';
 import StandardReservationForm from './ReservationForms/standardReservationForm';
 import ReservationFormFooter from './ReservationForms/formFooter';
@@ -18,13 +17,10 @@ const StandardReservation = ({
 	handleParticipantChange,
 	handleEmailInputChange,
 	workspaceType,
-	handleSubmit
 }) => {
 	return (
-
-		<Stack spacing={1} justifyContent="space-between" style={{ padding: 10 }}>
-
-			{/* First row */}
+		<>
+			{/* Reservation form */}
 			<StandardReservationForm
 				handleStartDateChange={handleStartDateChange}
 				handleStartHourChange={handleStartHourChange}
@@ -37,16 +33,16 @@ const StandardReservation = ({
 				endHours={endHours}
 			/>
 
-			{/* Second row */}
+			{/* Reservation footer */}
 			<ReservationFormFooter
 				users={users}
 				selectedUsers={selectedUsers}
 				handleParticipantChange={handleParticipantChange}
 				handleEmailInputChange={handleEmailInputChange}
-				handleSubmit={handleSubmit}
 				allowMultipleParticipants={workspaceType.allowMultipleParticipants}
 			/>
-		</Stack>
+		</>
+
 	);
 };
 
@@ -67,5 +63,4 @@ StandardReservation.propTypes = {
 	handleParticipantChange: PropTypes.func,
 	handleEmailInputChange: PropTypes.func,
 	workspaceType: PropTypes.object,
-	handleSubmit: PropTypes.func
 };

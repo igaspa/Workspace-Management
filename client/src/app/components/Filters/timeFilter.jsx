@@ -7,17 +7,17 @@ import PropTypes from 'prop-types';
 
 export function TimeFilter ({ onChange, hour, hours }) {
 	return (
-		<Box sx={{ minWidth: 90, maxWidth: 90, paddingTop: 1 }}>
+		<Box sx={{ width: 90, paddingTop: 1 }}>
 			<FormControl fullWidth>
-				<InputLabel id="demo-simple-select-label">Hour</InputLabel>
+				<InputLabel id="demo-simple-select-label" required>Hour</InputLabel>
 				<Select
+					required
 					labelId="demo-simple-select-label"
 					id="demo-simple-select"
 					value={hour || ''}
 					label="Hour"
 					onChange={onChange}
 					sx={{ fontSize: 14, padding: 0 }}
-
 				>
 					{hours.map((hour) => (
 						<MenuItem key={hour} value={hour}>

@@ -1,24 +1,28 @@
 import PropTypes from 'prop-types';
-import { Stack, FormControl } from '@mui/material';
+import { Stack, FormControl, Button } from '@mui/material';
 import MultipleUserFilter from '../../Users/multipleUserFilter';
-import SubmitButton from '../submitButton';
 
-const ReservationFormFooter = ({ users, selectedUsers, handleParticipantChange, handleEmailInputChange, handleSubmit, allowMultipleParticipants }) => {
+const ReservationFormFooter = ({ users, selectedUsers, handleParticipantChange, handleEmailInputChange, allowMultipleParticipants }) => {
 	return (
-		<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} sx={{ pt: 2.5, pb: 0.25 }}>
-			{allowMultipleParticipants && (
-				<FormControl sx={{ m: 1, width: '100%' }}>
-					<MultipleUserFilter
-						users={users}
-						selectedUsers={selectedUsers}
-						handleParticipantChange={handleParticipantChange}
-						handleEmailInputChange={handleEmailInputChange}
-					/>
+
+			<Stack direction="row" display="flex" alignItems="center" justifyContent="flex-end" spacing={1}>
+			  {allowMultipleParticipants && (
+				<FormControl sx={{ p: 1, width:'100%',  maxWidth: '320px' }}>
+				  <MultipleUserFilter
+					users={users}
+					selectedUsers={selectedUsers}
+					handleParticipantChange={handleParticipantChange}
+					handleEmailInputChange={handleEmailInputChange}
+				  />
 				</FormControl>
-			)}
-			<SubmitButton onChange={handleSubmit} />
-		</Stack>
-	);
+			  )}
+			  <Button type="submit" variant="contained" size="small">
+				Submit
+			  </Button>
+			</Stack>
+		  );
+		  
+
 };
 
 ReservationFormFooter.propTypes = {
@@ -26,7 +30,6 @@ ReservationFormFooter.propTypes = {
 	selectedUsers: PropTypes.array.isRequired,
 	handleParticipantChange: PropTypes.func.isRequired,
 	handleEmailInputChange: PropTypes.func.isRequired,
-	handleSubmit: PropTypes.func.isRequired,
 	allowMultipleParticipants: PropTypes.bool.isRequired
 };
 

@@ -12,7 +12,7 @@ const DateTimePicker = ({
 	date,
 	dates,
 	hour,
-	hours
+	hours,
 }) => {
 	return (
 		<Box display="flex" gap={1} alignItems="center" justifyContent="flex-end">
@@ -20,14 +20,14 @@ const DateTimePicker = ({
 				<Typography color="text.primary" sx={{ fontSize: 15, paddingRight: 1 }}>
 					{dateLabel}: 
 				</Typography>
-				<DateFilter onChange={handleDateChange} date={date} dates={dates} />
+				<DateFilter onChange={handleDateChange} date={date} dates={dates} required={true} />
 			</Box>
 
 			<Box display="flex" alignItems="center" justifyContent="flex-end">
 				<Typography color="text.primary" sx={{ fontSize: 15, paddingRight: 1 }}>
 					{timeLabel}: 
 				</Typography>
-				<TimeFilter onChange={handleHourChange} hour={hour} hours={hours} />
+				<TimeFilter onChange={handleHourChange} hour={hour} hours={hours} required={true} />
 			</Box>
 	  	</Box>
 

@@ -1,15 +1,15 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-import { buttonPadding, updateButtonStyle } from '../CSS/Button.style';
+import styles from './Button.module.css'
+import clsx from 'clsx';
 
 export default function UpdateButton ({ onClick, text }) {
 	return (
-		<Stack spacing={2} direction="row" sx={buttonPadding}>
+		<Stack spacing={2} direction="row" className={styles.buttonWrapper}>
 			<Button
 				variant="contained"
-				size="medium"
-				sx={updateButtonStyle}
+				className={clsx(styles.button, styles.updateButton)}
 				onClick={onClick}>{text}</Button>
 		</Stack>
 	);

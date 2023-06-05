@@ -39,13 +39,13 @@ const columns = [
   {
     id: 'type',
     label: 'Type',
-    minWidth: 150,
+    minWidth: 130,
     align: 'left'
   },
   {
     id: 'area',
     label: 'Area',
-    minWidth: 150,
+    minWidth: 140,
     align: 'left'
   },
   {

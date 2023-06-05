@@ -1,0 +1,63 @@
+.buttonWrapper{
+	padding: 3px;
+}
+
+.backofficeButtonWrapper{
+    padding-left: 35px
+}
+
+.button{
+	font-size: 10px;
+	}
+
+.updateButton{
+    background-color: #4A646C;
+    }
+
+.updateButton:hover{
+    background-color: #36454F;
+    }
+
+.deleteButton{
+    background-color: #FF6347;
+}
+
+.deleteButton:hover{
+    background-color: #9090C0;
+}
+
+.searchButton{
+    background-color:#9090C0;
+}
+
+.createButton{
+    background-color:#54626F;
+}
+
+.createButton:hover{
+    background-color: #98AFC7;
+}
+
+.confirmButton{
+    background-color:#333;
+}
+
+.confirmButton:hover{
+    background-color: #3787b5;
+}
+
+.cancelButton{
+    background-color:#34495E;
+}
+
+.cancelButton:hover{
+    background-color: #1978D4;
+}
+
+.backofficeButton{
+    background-color:#34495E;
+}
+
+.backofficeButton:hover{
+    background-color: #333;
+}

@@ -2,7 +2,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import styles from './Button.module.css'
+import styles from '../../CSS/Button.Module.css'
 
 export default function CancelButton ({ onClick, text }) {
 	return (

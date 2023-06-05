@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import PropTypes from 'prop-types';
-import styles from './Table.module.css'
+import styles from '../../CSS/Table.Module.css'
 import clsx from 'clsx';
 
 export default function DefaultTable ({

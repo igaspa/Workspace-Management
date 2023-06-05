@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-import styles from './Button.module.css'
+import styles from '../../CSS/Button.Module.css'
 import clsx from 'clsx';
 
 export default function UpdateButton ({ onClick, text }) {

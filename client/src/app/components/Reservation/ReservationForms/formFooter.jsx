@@ -4,23 +4,25 @@ import MultipleUserFilter from '../../Users/multipleUserFilter';
 
 const ReservationFormFooter = ({ users, selectedUsers, handleParticipantChange, handleEmailInputChange, allowMultipleParticipants }) => {
 	return (
-		<Stack direction={'row'} alignItems="center" justifyContent="flex-end" spacing={1}  maxWidth='400px' >
 
-			{allowMultipleParticipants && (
-				<FormControl sx={{ p:1, width: '100%' }}>
-					<MultipleUserFilter
-						users={users}
-						selectedUsers={selectedUsers}
-						handleParticipantChange={handleParticipantChange}
-						handleEmailInputChange={handleEmailInputChange}
-					/>
+			<Stack direction="row" display="flex" alignItems="center" justifyContent="flex-end" spacing={1}>
+			  {allowMultipleParticipants && (
+				<FormControl sx={{ p: 1, width:'100%',  maxWidth: '320px' }}>
+				  <MultipleUserFilter
+					users={users}
+					selectedUsers={selectedUsers}
+					handleParticipantChange={handleParticipantChange}
+					handleEmailInputChange={handleEmailInputChange}
+				  />
 				</FormControl>
-			)}
+			  )}
+			  <Button type="submit" variant="contained" size="small">
+				Submit
+			  </Button>
+			</Stack>
+		  );
+		  
 
-			<Button type="submit" variant="contained" size="small">SUBMIT</Button>
-
-		</Stack>
-	);
 };
 
 ReservationFormFooter.propTypes = {

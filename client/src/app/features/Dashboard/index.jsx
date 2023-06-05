@@ -262,7 +262,7 @@ const Dashboard = () => {
           </div>
 
           {workspacesData.length ? (
-            <Box display="flex" justifyContent="flex-end" marginTop={2}>
+            <Box display="flex" justifyContent="flex-end" paddingBottom={2} paddingTop={2}>
               <BasicPagination count={pages} page={page} onChange={handlePageChange} />
             </Box>
           ) : null}
@@ -293,7 +293,7 @@ const Dashboard = () => {
           </Grid>
 
           {workspacesData.length ? (
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-end" paddingTop={2}>
               <BasicPagination count={pages} page={page} onChange={handlePageChange} />
             </Box>
           ) : null}

@@ -7,10 +7,11 @@ import PropTypes from 'prop-types';
 
 export function DateFilter ({ onChange, date, dates }) {
 	return (
-		<Box sx={{ minWidth: 120, maxWidth: 120, paddingTop: 1 }}>
+		<Box sx={{ maxWidth: 120, paddingTop: 1 }}>
 			<FormControl fullWidth>
-				<InputLabel id="demo-simple-select-label">Date</InputLabel>
+				<InputLabel id="demo-simple-select-label" required>Date</InputLabel>
 				<Select
+					required
 					labelId="demo-simple-select-label"
 					id="demo-simple-select"
 					value={date}

@@ -23,26 +23,24 @@ const PrivilegeReservation = ({
 	handleSelectedUser,
 	handleParticipantChange,
 	handleEmailInputChange,
-	workspaceType,
-	handleSubmit
+	workspaceType
 }) => {
 	return (
-		<Stack spacing={1} justifyContent="space-between" style={{ padding: 10 }}>
-
-			{/* Stack 1 */}
+		<>
+			{/* Reservation info */}
 			{workspaceType.allowPermanentReservations && (
-				<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+				<Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1} paddingBottom={2}>
 					<Typography color="text.primary" sx={{ fontSize: 15 }}>
-                  Reservation Type:
+                  		Reservation Type:
 					</Typography>
-					<Select value={permanentReservation} onChange={handleReservationTypeChange}>
+					<Select value={permanentReservation} onChange={handleReservationTypeChange} required>
 						<MenuItem value={false}>Standard</MenuItem>
 						<MenuItem value={true}>Permanent</MenuItem>
 					</Select>
 				</Stack>
 			)}
 
-			{/* Stack 2 */}
+			{/* Reservation form */}
 			<PrivilegeReservationForm
 				handleStartDateChange={handleStartDateChange}
 				handleStartHourChange={handleStartHourChange}
@@ -62,17 +60,15 @@ const PrivilegeReservation = ({
 				handleEmailInputChange={handleEmailInputChange}
 			/>
 
-			{/* Stack 4 */}
+			{/* Reservation footer */}
 			<ReservationFormFooter
 				users={users}
 				selectedUsers={selectedUsers}
 				handleParticipantChange={handleParticipantChange}
 				handleEmailInputChange={handleEmailInputChange}
-				handleSubmit={handleSubmit}
 				allowMultipleParticipants={workspaceType.allowMultipleParticipants}
 			/>
-
-		</Stack>
+		</>
 	);
 };
 
@@ -99,5 +95,4 @@ PrivilegeReservation.propTypes = {
 	handleSelectedUser: PropTypes.func,
 	handleEmailInputChange: PropTypes.func,
 	workspaceType: PropTypes.object,
-	handleSubmit: PropTypes.func
 };

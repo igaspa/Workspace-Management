@@ -17,6 +17,7 @@ const UserFilter = ({ users, selectedUser, handleUserChange, handleEmailInputCha
 					label="User"
 					placeholder='Enter 3 characters'
 					onChange={handleEmailInputChange}
+					required
 				/>
 			)}
 		/>

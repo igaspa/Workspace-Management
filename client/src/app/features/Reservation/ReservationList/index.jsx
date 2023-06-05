@@ -101,7 +101,7 @@ const Reservations = () => {
 									onClose={handleDrawerClose}
 									PaperProps={{
 										sx: {
-											maxWidth: isMobile ? '90%' : '450px',
+											maxWidth: isMobile ? '90%' : '100%',
 											display: 'flex',
 											flexDirection: 'column'
 										}

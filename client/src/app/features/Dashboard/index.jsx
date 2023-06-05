@@ -155,7 +155,7 @@ const Dashboard = () => {
                 sm={6}
                 md={6}
                 lg={6}
-                xl={2}
+                xl={3}
                 key={workspaceType.id}
                 sx={{ display: 'flex', flexDirection: 'column' }}
               >

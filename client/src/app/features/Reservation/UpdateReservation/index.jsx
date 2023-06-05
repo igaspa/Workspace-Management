@@ -11,7 +11,6 @@ import { useGetUsersListQuery } from '../../../api/usersApiSlice';
 import { useNavigate } from 'react-router-dom';
 import ActiveReservationCard from '../../../components/Reservation/workspaceReservations';
 import { BasicPagination } from '../../../components/Pagination/pagination';
-import { Stack } from '@mui/system';
 import StandardReservationForm from '../../../components/Reservation/ReservationForms/standardReservationForm';
 import PrivilegeReservationForm from '../../../components/Reservation/ReservationForms/privilegeReservationForm';
 import ReservationFormFooter from '../../../components/Reservation/ReservationForms/formFooter';
@@ -165,7 +164,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
             </Typography>
           </Container>
           <Container>
-            <Stack spacing={1} justifyContent="space-between">
+            <form onSubmit={handleSubmit} spacing={1} justifyContent="space-between">
               {role.includes('Administrator') || role.includes('Lead') ? (
                 <PrivilegeReservationForm
                   handleStartDateChange={handleStartDateChange}
@@ -202,12 +201,11 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
                 selectedUsers={selectedUsers}
                 handleParticipantChange={handleParticipantChange}
                 handleEmailInputChange={handleEmailInputChange}
-                handleSubmit={handleSubmit}
                 allowMultipleParticipants={
                   reservation?.workspace?.participantLimit > 1 || !reservation?.workspace?.participantLimit
                 }
               />
-            </Stack>
+            </form>
 
             {reservations && reservations.length > 0 && (
               <>

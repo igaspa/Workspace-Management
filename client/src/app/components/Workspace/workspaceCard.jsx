@@ -20,72 +20,72 @@ const WorkspaceCard = ({
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 	return (
-		<>
-			<Card
-				sx={{
-					position: 'relative',
-					maxWidth: '100%',
-					minHeight: 200,
-					height: '100%',
-					'&::before': {
-						content: '""',
-						position: 'absolute',
-						top: '20%',
-						left: '20%',
-						right: '20%',
-						bottom: '20%',
-						backgroundImage: `url(${image})`,
-						backgroundRepeat: 'no-repeat',
-						backgroundPosition: 'center',
-						opacity: 0.06
-					}
+		<Card
+			sx={{
+				position: 'relative',
+				maxWidth: '100%',
+				minHeight: 200,
+				height: '100%',
+				display: 'flex',
+				'&::before': {
+					content: '""',
+					position: 'absolute',
+					top: '20%',
+					left: '20%',
+					right: '20%',
+					bottom: '20%',
+					backgroundImage: `url(${image})`,
+					backgroundRepeat: 'no-repeat',
+					backgroundPosition: 'center',
+					opacity: 0.06
+				}
 
+			}}
+		>
+
+			<CardActionArea onClick={handleDrawerOpen} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}>
+
+				<CardContent>
+					<Typography variant="h7">
+						{workspace.name}
+					</Typography>
+				</CardContent>
+
+				<CardContent>
+					{workspace.equipment.map((equipment) => (
+						<Typography fontSize={14} key={equipment.name}>
+							{`${equipment.name} - ${equipment.workspaceEquipment.quantity}`}
+						</Typography>
+					))}
+					<Typography style={{ paddingTop: 10 }} fontSize={14}>Area: {workspace.area.name}</Typography>
+				</CardContent>
+
+			</CardActionArea>
+
+			<Drawer
+				anchor="right"
+				open={open}
+				onClose={handleDrawerClose}
+				PaperProps={{
+					sx: {
+						maxWidth: isMobile ? '90%' : '100%',
+						display: 'flex',
+						flexDirection: 'column',
+						padding: 2
+					}
 				}}
 			>
-
-				<CardActionArea onClick={handleDrawerOpen} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}>
-
-					<CardContent>
-						<Typography variant="h7">
-							{workspace.name}
-						</Typography>
-					</CardContent>
-
-					<CardContent>
-						{workspace.equipment.map((equipment) => (
-							<Typography fontSize={14} key={equipment.name}>
-								{`${equipment.name} - ${equipment.workspaceEquipment.quantity}`}
-							</Typography>
-						))}
-						<Typography style={{ paddingTop: 10 }} fontSize={14}>Area: {workspace.area.name}</Typography>
-					</CardContent>
-
-				</CardActionArea>
-
-				<Drawer
-					anchor="right"
-					open={open}
+				<CreateReservation
+					workspace={workspace}
+					reservationFromDate={fromDate}
+					reservationUntilDate={untilDate}
+					startTime={startHour}
+					endTime={endHour}
 					onClose={handleDrawerClose}
-					PaperProps={{
-						sx: {
-							maxWidth: isMobile ? '90%' : '450px',
-							display: 'flex',
-							flexDirection: 'column'
-						}
-					}}
-				>
-					<CreateReservation
-						workspace={workspace}
-						reservationFromDate={fromDate}
-						reservationUntilDate={untilDate}
-						startTime={startHour}
-						endTime={endHour}
-						onClose={handleDrawerClose}
-					/>
-				</Drawer>
+				/>
+			</Drawer>
 
-			</Card>
-		</>
+		</Card>
 	);
 };
 

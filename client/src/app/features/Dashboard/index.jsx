@@ -183,8 +183,7 @@ const Dashboard = () => {
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}>
-                {' '}
-                From:{' '}
+                From:
               </Typography>
               <DateFilter
                 onChange={(event) => {
@@ -193,6 +192,7 @@ const Dashboard = () => {
                 }}
                 date={fromDate}
                 dates={dates}
+                required={false}
               />
             </div>
 
@@ -204,8 +204,7 @@ const Dashboard = () => {
                     color="text.primary"
                     sx={{ paddingLeft: 1, paddingRight: 1, fontSize: 14 }}
                   >
-                    {' '}
-                    Until:{' '}
+                    Until:
                   </Typography>
                   <DateFilter
                     onChange={(event) => {
@@ -214,6 +213,7 @@ const Dashboard = () => {
                     }}
                     date={untilDate}
                     dates={dates}
+                    required={false}
                   />
                 </>
               )}
@@ -221,8 +221,7 @@ const Dashboard = () => {
 
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}>
-                {' '}
-                Time start:{' '}
+                Time start:
               </Typography>
               <TimeFilter
                 onChange={(event) => {
@@ -231,11 +230,11 @@ const Dashboard = () => {
                 }}
                 hour={startHour}
                 hours={startHours}
+                required={false}
               />
 
               <Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}>
-                {' '}
-                Time end:{' '}
+                Time end:
               </Typography>
               <TimeFilter
                 onChange={(event) => {
@@ -244,13 +243,13 @@ const Dashboard = () => {
                 }}
                 hour={endHour}
                 hours={endHours}
+                required={false}
               />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}>
-                {' '}
-                Area:{' '}
+                Area:
               </Typography>
               <AreaFilter
                 sx={{ maxWidth: '100%' }}

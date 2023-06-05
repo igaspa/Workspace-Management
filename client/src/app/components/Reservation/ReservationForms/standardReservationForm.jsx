@@ -40,7 +40,7 @@ const StandardReservationForm = ({
         <Typography color="text.primary" sx={{ fontSize: 15, paddingRight: 1 }}>
           End Time:
         </Typography>
-       <TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours} />
+       <TimeFilter onChange={handleEndHourChange} hour={endHour} hours={endHours} required={true} />
       </Box>
 
     </Box>

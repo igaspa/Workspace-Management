@@ -5,13 +5,13 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import PropTypes from 'prop-types';
 
-export function TimeFilter ({ onChange, hour, hours }) {
+export function TimeFilter ({ onChange, hour, hours, required }) {
 	return (
 		<Box sx={{ width: 90, paddingTop: 1 }}>
 			<FormControl fullWidth>
-				<InputLabel id="demo-simple-select-label" required>Hour</InputLabel>
+				<InputLabel id="demo-simple-select-label" required={required}>Hour</InputLabel>
 				<Select
-					required
+					required={required}
 					labelId="demo-simple-select-label"
 					id="demo-simple-select"
 					value={hour || ''}
@@ -33,5 +33,6 @@ export function TimeFilter ({ onChange, hour, hours }) {
 TimeFilter.propTypes = {
 	onChange: PropTypes.func,
 	hour: PropTypes.string,
-	hours: PropTypes.arrayOf(PropTypes.string)
+	hours: PropTypes.arrayOf(PropTypes.string),
+	required: PropTypes.bool
 };

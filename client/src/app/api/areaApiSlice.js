@@ -42,7 +42,14 @@ export const areaApiSlice = createApi({
 					size: params.size,
 					page: params.page
 				}
-			})
+			}),
+			providesTags: ['areaList'],
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			},
+			invalidatesTags: ['areaList']
 		}),
 		// this method creates a new area
 		createArea: builder.mutation({

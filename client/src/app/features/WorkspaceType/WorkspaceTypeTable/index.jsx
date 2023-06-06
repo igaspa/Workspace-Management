@@ -82,6 +82,7 @@ export default function WorkspaceTypeTable () {
 	const handleSearchTerm = (event) => {
 		event.preventDefault();
 		setSearchData(event.target.value);
+		setPage(0);
 	};
 
 	const handleSearchClear = (event) => {
@@ -114,7 +115,7 @@ export default function WorkspaceTypeTable () {
 		...(size && { size })
 	});
 
-	const { data: searchWorkspaceType = [], isError: isWorkspaceTypeSearchError, isLoading: isWorkspaceTypeSearchLoading } = useGetWorkspaceTypeSearchListQuery({
+	const { data: [searchWorkspaceType, searchWorkspaceTypePages] = [], isError: isWorkspaceTypeSearchError, isLoading: isWorkspaceTypeSearchLoading } = useGetWorkspaceTypeSearchListQuery({
 		name: [searchTerm],
 		...(page && { page: page + 1 }),
 		...(size && { size })
@@ -159,7 +160,7 @@ export default function WorkspaceTypeTable () {
 			});
 	};
 
-	const count = pages * size;
+	const count = searchWorkspaceTypePages ? searchWorkspaceTypePages * size : pages * size;
 
 	const filteredData = searchTerm.length >= 3 ? searchWorkspaceType.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : workspaceType;
 

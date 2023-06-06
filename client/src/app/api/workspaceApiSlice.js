@@ -48,15 +48,23 @@ export const workspacesApiSlice = createApi({
 			invalidatesTags: ['workspacesList']
 		}),
 		getWorkspaceSearchList: builder.query({
+			providesTags: ['workspacesList'],
 			query: (params = {}) => ({
 				url: '/workspace?include=workspaceType&include=equipment&include=area',
 				method: 'GET',
 				params: {
 					name: params.name,
 					page: params.page,
-					size: params.size
+					size: params.size,
+
 				}
-			})
+			}),
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			},
+			invalidatesTags: ['workspacesList']
 		}),
 
 		// this method creates a new workspace

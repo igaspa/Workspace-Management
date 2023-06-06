@@ -53,6 +53,7 @@ export default function EquipmentTable () {
 	const handleSearch = (event) => {
 		const searchField = new FormData(searchRef.current);
 		setSearchTerm(searchField.get('equipment'));
+		setPage(0);
 	};
 
 	const handleSearchTerm = (event) => {
@@ -91,7 +92,7 @@ export default function EquipmentTable () {
 		...(size && { size })
 	});
 
-	const { data: searchEquipment = [], isError: isEquipmentSearchError, isLoading: isEquipmentSearchLoading } = useGetEquipmentSearchListQuery({
+	const { data: [searchEquipment, searchEquipmentPages ] = [], isError: isEquipmentSearchError, isLoading: isEquipmentSearchLoading } = useGetEquipmentSearchListQuery({
 		name: [searchTerm],
 		...(page && { page: page + 1 }),
 		...(size && { size })
@@ -130,7 +131,7 @@ export default function EquipmentTable () {
 			});
 	};
 
-	const count = pages * size;
+	const count = searchEquipmentPages ? searchEquipmentPages*size : pages * size;
 	const filteredData = searchTerm.length >= 3 ? searchEquipment.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : equipment;
 
 	const data = filteredData?.map((el) => ({

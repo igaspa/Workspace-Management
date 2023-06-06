@@ -100,6 +100,7 @@ export default function AreaTable () {
 	const handleSearch = (event) => {
 		const searchField = new FormData(searchRef.current);
 		setSearchTerm(searchField.get('area'));
+		setPage(0);
 	};
 
 	const handleSearchTerm = (event) => {
@@ -141,7 +142,7 @@ export default function AreaTable () {
 		...(size && { size })
 	});
 
-	const { data: searchArea = [], isError: isAreaSearchError, isLoading: isAreaSearchLoading } = useGetAreaSearchListQuery({
+	const { data: [searchArea,searchAreaPages] = [], isError: isAreaSearchError, isLoading: isAreaSearchLoading } = useGetAreaSearchListQuery({
 		name: [searchTerm],
 		...(page && { page: page + 1 }),
 		...(size && { size })
@@ -171,7 +172,7 @@ export default function AreaTable () {
 				errorHandler(error);
 			});
 	};
-	const count = pages * size;
+	const count = searchAreaPages ? searchArea * size : pages * size;
 	const filteredData = searchTerm.length >= 3 ? searchArea.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : area;
 
 	const data = filteredData?.map(el => ({

@@ -22,7 +22,7 @@ module.exports.findAllModels = async (Model, customOptions, req, res) => {
     offset,
     include: []
   };
-
+  
   addIncludeModelAndCustomOptions(include, customOptions, Model, options);
 
   // Find number of pages

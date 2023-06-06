@@ -49,7 +49,14 @@ export const equipmentsApiSlice = createApi({
 					method: 'GET',
 					params: queryParameters
 				};
-			}
+			},
+			providesTags: ['equipmentsList'],
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			},
+			invalidatesTags: ['equipmentsList']
 		}),
 		// this method creates a new equipment
 		createEquipment: builder.mutation({

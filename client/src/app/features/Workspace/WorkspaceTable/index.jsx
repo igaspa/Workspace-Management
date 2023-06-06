@@ -99,16 +99,17 @@ const Workspaces = () => {
     setOpen(true);
   };
 
-  const handleSearch = (event) => {
+  const handleSearch = () => {
     const searchField = new FormData(searchRef.current);
     setSearchTerm(searchField.get('area'));
   };
 
   const handleSearchTerm = (event) => {
     setSearchData(event.target.value);
+    setPage(0)
   };
 
-  const handleSearchClear = (event) => {
+  const handleSearchClear = () => {
     searchRef.current.reset();
     setSearchTerm('');
     setSearchData('');
@@ -168,17 +169,17 @@ const Workspaces = () => {
   } = useGetWorkspacesListQuery({
     ...(page && { page: page + 1 }),
     ...(size && { size }),
-    include: ['workspaceType', 'equipment']
+    include: ['workspaceType']
   });
 
   const {
-    data: searchWorkspace = [],
+    data: [searchWorkspace, searchWorkspacePages] = [],
     isError: isWorkspaceSearchError,
     isLoading: isWorkspaceSearchLoading
   } = useGetWorkspaceSearchListQuery({
     name: [searchTerm],
     ...(page && { page: page + 1 }),
-    ...(size && { size }),
+    ...(size && { size })
   });
 
   const filteredData =
@@ -209,8 +210,8 @@ const Workspaces = () => {
     };
   });
 
-  const count = workspacePages * size - 1;
-
+  const count = searchWorkspacePages ? searchWorkspacePages * size : workspacePages * size;
+  
   const handleDeleteClick = async (event) => {
     event.preventDefault();
     await deleteWorkspace({ id: selectedId })

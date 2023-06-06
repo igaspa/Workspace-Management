@@ -74,6 +74,7 @@ export default function LocationTable () {
 
 	const handleSearchTerm = (event) => {
 		setSearchData(event.target.value);
+		setPage(0);
 	};
 
 	const handleSearchClear = (event) => {
@@ -102,7 +103,7 @@ export default function LocationTable () {
 		...(page && { page: page + 1 }),
 		...(size && { size })
 	});
-	const { data: searchLocation = [], isError: isLocationSearchError, isLoading: isLocationSearchLoading } = useGetLocationSearchListQuery({
+	const { data: [searchLocation, searchLocationPages] = [], isError: isLocationSearchError, isLoading: isLocationSearchLoading } = useGetLocationSearchListQuery({
 		name: [searchTerm],
 		...(page && { page: page + 1 }),
 		...(size && { size })
@@ -144,7 +145,7 @@ export default function LocationTable () {
 				errorHandler(error);
 			});
 	};
-	const count = pages * size;
+	const count =searchLocationPages ? searchLocationPages * size : pages * size;
 	const filteredData = searchTerm.length >= 3 ? searchLocation.filter(item => item.address.toLowerCase().includes(searchTerm.toLowerCase())) : location;
 
 	const data = filteredData?.map((el) => ({

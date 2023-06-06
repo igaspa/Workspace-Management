@@ -42,7 +42,14 @@ export const locationApiSlice = createApi({
 					size: params.size,
 					page: params.page
 				}
-			})
+			}),
+			providesTags: ['locationList'],
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			},
+			invalidatesTags: ['locationList']
 		}),
 		// this method creates a new location
 		createLocation: builder.mutation({

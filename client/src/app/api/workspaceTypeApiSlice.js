@@ -40,7 +40,13 @@ export const workspaceTypesApiSlice = createApi({
 					size: params.size,
 					page: params.page
 				}
-			})
+			}),
+			providesTags: ['workspaceTypesList'],
+			transformResponse: (response, meta, args) => {
+				const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+				return [response, pages];
+			}
 		}),
 		// get workspaces in one workspace-type
 		getWorkspacesByType: builder.query({

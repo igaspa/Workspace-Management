@@ -8,15 +8,15 @@
 
 .button{
 	font-size: 10px;
-	}
+}
 
 .updateButton{
     background-color: #4A646C;
-    }
+}
 
 .updateButton:hover{
     background-color: #36454F;
-    }
+}
 
 .deleteButton{
     background-color: #FF6347;
@@ -61,3 +61,16 @@
 .backofficeButton:hover{
     background-color: #333;
 }
+
+.editIcon{
+    cursor: pointer;
+    fill: #54626F;
+    font-size: 26px;
+}
+   
+.deleteIcon{
+    cursor: pointer;
+    fill: #FF6347;
+    font-size: 26px;
+}
+   

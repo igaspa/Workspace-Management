@@ -1,7 +1,6 @@
 import { CircularProgress, Typography, Grid, Box, TextField, Container } from '@mui/material';
 import { useGetLocationListQuery, useDeleteLocationMutation, useUpdateLocationMutation, useGetLocationSearchListQuery } from '../../../api/locationApiSlice';
 import { useNavigate } from 'react-router-dom';
-import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
@@ -11,6 +10,10 @@ import CreateButton from '../../../components/Buttons/createButton';
 import DefaultTable from '../../../components/Backoffice/table';
 import SearchButton from '../../../components/Buttons/searchButton';
 import SearchField from '../../../components/Filters/searchField';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import styles from '../../../CSS/Button.Module.css'
+
 
 const columns = [
 	{
@@ -153,9 +156,10 @@ export default function LocationTable () {
 		address: el.address,
 		city: el.city,
 		country: el.country,
-		actions: <div style={{ display: 'flex', flexDirection: 'row', padding: 1, justifyContent: 'center' }}>
-			<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
-			<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
+		actions: 
+		<div style={{ display: 'flex', flexDirection: 'row', padding: 1, justifyContent: 'center' }}>
+			<EditIcon className={styles.editIcon} onClick={() => handleClickOpenUpdate(el.id)}></EditIcon>
+			<DeleteIcon className={styles.deleteIcon} onClick={() => handleClickOpenDelete(el.id)} ></DeleteIcon>
 		</div>
 	}));
 

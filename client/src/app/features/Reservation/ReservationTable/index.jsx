@@ -6,6 +6,8 @@ import { successToast, errorToast } from '../../../utils/toastifyNotification';
 import DefaultTable from '../../../components/Backoffice/table';
 import { useState } from 'react';
 import Prompt from '../../../components/Dialogs/dialog';
+import DeleteIcon from '@mui/icons-material/Delete';
+import styles from '../../../CSS/Button.Module.css'
 
 const columns = [
 	{
@@ -86,7 +88,7 @@ export default function ReservationTable () {
 		dateTime: el.dateTime,
 		actions: (
 			<div style={{ display: 'flex', flexDirection: 'row', padding: 1, justifyContent: 'center' }}>
-				<DeleteButton onClick={(event) => handleClickOpenDelete(event, el.id)} text={'Delete Reservation'} />
+				<DeleteIcon className={styles.deleteIcon} onClick={() => handleClickOpenDelete(event, el.id)}></DeleteIcon>
 			</div>
 		)
 	}));

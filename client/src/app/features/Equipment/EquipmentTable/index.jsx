@@ -2,7 +2,6 @@ import { CircularProgress, Typography, Box, TextField, Grid, Container } from '@
 import { useGetEquipmentsListQuery, useDeleteEquipmentMutation, useUpdateEquipmentMutation, useGetEquipmentSearchListQuery } from '../../../api/equipmentApiSlice';
 import { useNavigate } from 'react-router-dom';
 import DefaultTable from '../../../components/Backoffice/table';
-import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
@@ -11,6 +10,10 @@ import Prompt from '../../../components/Dialogs/dialog';
 import CreateButton from '../../../components/Buttons/createButton';
 import SearchButton from '../../../components/Buttons/searchButton';
 import SearchField from '../../../components/Filters/searchField';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import styles from '../../../CSS/Button.Module.css'
+
 
 const columns = [
 	{
@@ -139,8 +142,8 @@ export default function EquipmentTable () {
 		name: el.name,
 		actions: (
 			<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-				<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
-				<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
+				<EditIcon className={styles.editIcon} onClick={() => handleClickOpenUpdate(el.id)} ></EditIcon>
+				<DeleteIcon className={styles.deleteIcon} onClick={() => handleClickOpenDelete(el.id)} ></DeleteIcon>
 			</div>
 		)
 	}));

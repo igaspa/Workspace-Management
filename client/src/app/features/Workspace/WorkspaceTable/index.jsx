@@ -24,10 +24,12 @@ import { useTheme } from '@mui/material/styles';
 import DefaultTable from '../../../components/Backoffice/table';
 import Prompt from '../../../components/Dialogs/dialog';
 import CreateButton from '../../../components/Buttons/createButton';
-import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
 import SearchButton from '../../../components/Buttons/searchButton';
 import SearchField from '../../../components/Filters/searchField';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import styles from '../../../CSS/Button.Module.css'
 
 const columns = [
   {
@@ -203,8 +205,8 @@ const Workspaces = () => {
         : '/',
       actions: (
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-          <UpdateButton onClick={() => handleUpdateButton(el)} text={'Update'} />
-          <DeleteButton onClick={() => handleDeleteButton(el.id)} text={'Remove'} />
+          <EditIcon className={styles.editIcon} onClick={() => handleUpdateButton(el)}></EditIcon>
+			    <DeleteIcon className={styles.deleteIcon} onClick={() => handleDeleteButton(el.id)} ></DeleteIcon>
         </div>
       )
     };

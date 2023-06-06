@@ -1,7 +1,6 @@
 import { CircularProgress, Typography, Box, TextField, FormControl, InputLabel, Select, MenuItem, Grid, Container } from '@mui/material';
 import { useGetAreaListQuery, useDeleteAreaMutation, useUpdateAreaMutation, useGetAreaSearchListQuery } from '../../../api/areaApiSlice';
 import { useNavigate } from 'react-router-dom';
-import DeleteButton from '../../../components/Buttons/deleteButton';
 import UpdateButton from '../../../components/Buttons/updateButton';
 import { successToast } from '../../../utils/toastifyNotification';
 import { errorHandler } from '../../../utils/errors';
@@ -13,6 +12,10 @@ import { useGetLocationListQuery } from '../../../api/locationApiSlice';
 import ImagePrompt from '../../../components/Dialogs/imageDialog';
 import SearchField from '../../../components/Filters/searchField';
 import SearchButton from '../../../components/Buttons/searchButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import styles from '../../../CSS/Button.Module.css'
 
 const columns = [
 	{
@@ -183,19 +186,20 @@ export default function AreaTable () {
 		locationId: el.location.id,
 		actions: (
 			<div style={{ display: 'flex', flexDirection: 'row', padding: 1, justifyContent: 'center' }}>
-				<UpdateButton onClick={() => handleClickOpenUpdate(el.id)} text={'Update'} />
-				<DeleteButton onClick={() => handleClickOpenDelete(el.id)} text={'Remove'} />
+				<EditIcon className={styles.editIcon} onClick={() => handleClickOpenUpdate(el.id)}></EditIcon>
+				<DeleteIcon className={styles.deleteIcon} onClick={() => handleClickOpenDelete(el.id)} ></DeleteIcon>
 			</div>
 		),
 		image: (
 			<div style={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
-				<CreateButton
+				<VisibilityIcon 
+					className={styles.editIcon} 
 					onClick={async () => {
 						setAreaImage(el.image);
 						handleImageOpen(el.image);
 					}}
-					text={'Image'}
-				/>
+				>
+				</VisibilityIcon>
 			</div>
 		)
 	}));

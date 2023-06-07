@@ -3,6 +3,7 @@ const generalController = require('./general');
 const { searchByTerm } = require('../utils/filter');
 const userService = require('../services/user');
 const notification = require('../services/notification');
+const responseMessages = require('../utils/response-messages');
 
 module.exports.getAllUsers = async (req, res) => {
   const { email } = req.query;
@@ -43,5 +44,5 @@ module.exports.deleteUser = async (req, res) => {
 
 module.exports.createPassword = async (req, res) => {
   await userService.createPassword(req);
-  res.json({ message: 'aa' });
+  res.json({ message: responseMessages.PASSWORD_CREATED });
 };

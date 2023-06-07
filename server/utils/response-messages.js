@@ -23,6 +23,7 @@ const responseMessages = {
   UPDATE_UNSUCCESSFUL: (modelName) => `Failed to update${formatModelName(modelName)}!`,
 
   // Constant messages
+  PASSWORD_CREATED: 'Password successfully create!',
   ACTIVATION_TOKEN_EXPIRED: 'Your token has expired, please ask administrator to invite you again...',
   INVALID_VALUE_TYPE: 'Bad request, insert correct value type',
   MAX_WORKSPACE_LIMIT: `You exceeded limit of max workspace creation limit, Limit is: ${MAX_WORKSPACE_CREATION_LIMIT}`,

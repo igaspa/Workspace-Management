@@ -2,17 +2,20 @@
 const { tableName, notificationStatus } = require('../../utils/constants');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable(tableName.notification, {
-      notification_template_id: {
+      id: {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true
       },
-      reservation_id: {
+      notification_template_id: {
         type: Sequelize.UUID,
-        allowNull: false,
-        primaryKey: true
+        allowNull: false
+      },
+      data: {
+        type: Sequelize.JSONB,
+        allowNull: false
       },
       status: {
         type: Sequelize.ENUM,
@@ -33,7 +36,7 @@ module.exports = {
       }
     });
   },
-  async down (queryInterface, _Sequelize) {
+  async down(queryInterface, _Sequelize) {
     await queryInterface.dropTable(tableName.notification);
   }
 };

@@ -1,16 +1,19 @@
 'use strict';
 const { tableName } = require('../../utils/constants');
+const { notificationTemplates, notificationNames } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert(tableName.notificationTemplate, [
-      {
-        id: 'fc06d6a8-15b9-4134-89f9-49e490947f76',
-        name: 'reservation_confirmation_template',
-        template: {
-          title: 'Workspace Management: You reservation has been confirmed!',
-          body: `<body style="background-color:white">
+  async up(queryInterface, Sequelize) {
+    return queryInterface.bulkInsert(
+      tableName.notificationTemplate,
+      [
+        {
+          id: notificationTemplates.createdReservationTemplate,
+          name: notificationNames.reservationConfirmation,
+          template: {
+            title: 'Workspace Management: You reservation has been confirmed!',
+            body: `<body style="background-color:white">
           <table align="center" border="0" cellpadding="0" cellspacing="0" 
                  width="600" bgcolor="AliceBlue">
               <tbody>
@@ -34,16 +37,16 @@ module.exports = {
               </tbody>
           </table>
         </body>`
+          },
+          created_at: new Date(),
+          updated_at: new Date()
         },
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        id: '855798c2-c224-43df-bc9e-b7b761976674',
-        name: 'reservation_updated_template',
-        template: {
-          title: 'Workspace Management: You reservation has been updated!',
-          body: `<body style="background-color:white">
+        {
+          id: notificationTemplates.updatedReservationTemplate,
+          name: notificationNames.reservationUpdate,
+          template: {
+            title: 'Workspace Management: You reservation has been updated!',
+            body: `<body style="background-color:white">
           <table align="center" border="0" cellpadding="0" cellspacing="0" 
                  width="600" bgcolor="AliceBlue">
               <tbody>
@@ -68,14 +71,49 @@ module.exports = {
               </tbody>
           </table>
         </body>`
+          },
+          created_at: new Date(),
+          updated_at: new Date()
         },
-        created_at: new Date(),
-        updated_at: new Date()
-      }
-    ], {}, { template: { type: new Sequelize.JSONB() } });
+        {
+          id: notificationTemplates.userInvitationTemplate,
+          name: notificationNames.userInvitation,
+          template: {
+            title: 'Workspace Management: Invitation',
+            body: `<body style="background-color:white">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" 
+                   width="600" bgcolor="AliceBlue">
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <br />
+                            <table align="center" border="0" cellpadding="50"
+                                   cellspacing="0" class="col-550" width="550">
+                                <tbody>
+                                  <h3>Dear {userName},</h3>
+                                  <p>You have been invited to use Workspace Management application!</p>
+                                  <p>Please open the link below to create your password.</p>
+                                  <p><a href={link}>Create Password</a></p>
+                                  <br>
+                                  <em>Workspace Management</em>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          </body>`
+          },
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      ],
+      {},
+      { template: { type: new Sequelize.JSONB() } }
+    );
   },
 
-  async down (queryInterface, _Sequelize) {
+  async down(queryInterface, _Sequelize) {
     await queryInterface.bulkDelete(tableName.notificationTemplate, null, {});
   }
 };

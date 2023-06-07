@@ -1,11 +1,14 @@
-import { Card, CardContent, CardActionArea } from '@mui/material';
+import { Card, CardContent, CardActionArea, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { Duration } from 'luxon';
+import { useTheme } from '@emotion/react';
 
 export default function WorkspaceTypeCard({ workspaceType, handleWorkspaceTypeSelect }) {
   const duration = Duration.fromObject(workspaceType.maxReservationInterval);
   const intervalString = duration.toFormat('hh:mm');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Card
@@ -42,10 +45,17 @@ export default function WorkspaceTypeCard({ workspaceType, handleWorkspaceTypeSe
             <strong>{workspaceType.name}</strong>
           </Typography>
         </CardContent>
+
         <CardContent>
-          <Typography sx={{ color: '#454545' }}>
-            <strong>Max reservation time: {intervalString}</strong>
-          </Typography>
+          {isMobile ? (
+            <Typography sx={{ color: '#454545', fontSize: 14 }}>
+              <strong>Max reservation time: {intervalString}</strong>
+            </Typography>
+          ) : (
+            <Typography sx={{ color: '#454545' }}>
+              <strong>Max reservation time: {intervalString}</strong>
+            </Typography>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>

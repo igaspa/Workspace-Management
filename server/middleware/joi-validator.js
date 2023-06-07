@@ -15,7 +15,7 @@ exports.paramValidator = (req, _res, next) => {
   if (req.params) {
     for (const param in req.params) {
       const { error } = joiSchemaList.idSchema.validate(req.params[param], VALIDATION_OPTION);
-      if (error) throw errors.VALIDATION(error.details.map(err => err.message));
+      if (error) throw errors.VALIDATION(error.details.map((err) => err.message));
     }
   }
 
@@ -31,7 +31,7 @@ exports.bodyValidator = (req, _res, next) => {
   // Accepted body properties depend on whether it is a PUT or POST Request
   const schema = joiSchemaList[newSchemaName].tailor(req.method.toLowerCase());
   const { error } = schema.validate(req.body, VALIDATION_OPTION);
-  if (error) throw errors.VALIDATION(error.details.map(err => err.message));
+  if (error) throw errors.VALIDATION(error.details.map((err) => err.message));
   next();
 };
 
@@ -41,11 +41,12 @@ exports.bodyValidatorAdditionalAttribute = (req, _res, next) => {
 
   const schemaNameList = req.originalUrl.split('/');
   const schemaName = schemaNameList[3] + '_' + schemaNameList[4];
-  const newSchemaName = schemaName.replace(/-/g, '_');
+  let newSchemaName = schemaName.replace(/-/g, '_');
+  newSchemaName = newSchemaName.split('?')[0];
 
   // Accepted body properties depend on whether it is a PUT or POST Request
   const schema = joiSchemaList[newSchemaName].tailor(req.method.toLowerCase());
   const { error } = schema.validate(req.body, VALIDATION_OPTION);
-  if (error) throw errors.VALIDATION(error.details.map(err => err.message));
+  if (error) throw errors.VALIDATION(error.details.map((err) => err.message));
   next();
 };

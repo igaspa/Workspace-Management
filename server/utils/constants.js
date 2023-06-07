@@ -14,7 +14,14 @@ module.exports.MAX_WORKSPACE_CREATION_LIMIT = 200;
 
 module.exports.notificationTemplates = {
   createdReservationTemplate: 'fc06d6a8-15b9-4134-89f9-49e490947f76',
-  updatedReservationTemplate: '855798c2-c224-43df-bc9e-b7b761976674'
+  updatedReservationTemplate: '855798c2-c224-43df-bc9e-b7b761976674',
+  userInvitationTemplate: '2a4b415d-f93c-487d-8f45-46b61fe56439'
+};
+
+module.exports.notificationNames = {
+  reservationConfirmation: 'reservation_confirmation_template',
+  reservationUpdate: 'reservation_updated_template',
+  userInvitation: 'user_invitation_template'
 };
 
 module.exports.paginationValues = {

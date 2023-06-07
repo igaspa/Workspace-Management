@@ -3,7 +3,7 @@ const { tableName } = require('../../utils/constants');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable(tableName.user, {
       id: {
         allowNull: false,
@@ -25,11 +25,19 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       phone_number: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      token: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      token_expiration_time: {
+        type: Sequelize.DATE,
+        allowNull: true
       },
       deleted_at: {
         allowNull: true,
@@ -45,7 +53,7 @@ module.exports = {
       }
     });
   },
-  async down (queryInterface, _Sequelize) {
+  async down(queryInterface, _Sequelize) {
     await queryInterface.dropTable(tableName.user);
   }
 };

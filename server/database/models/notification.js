@@ -8,7 +8,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {}
+    static associate(models) {
+      models.notificationTemplate.hasMany(notification, {
+        foreignKey: 'notificationTemplateId'
+      });
+      notification.belongsTo(models.notificationTemplate, {
+        foreignKey: 'notificationTemplateId'
+      });
+    }
   }
   notification.init(
     {
@@ -20,10 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false
       },
-      data: {
-        type: DataTypes.JSONB,
-        allowNull: true
-      },
+      data: DataTypes.JSONB,
       status: DataTypes.ENUM(notificationStatus.sent, notificationStatus.failed),
       deletedAt: DataTypes.DATE
     },

@@ -29,7 +29,7 @@ import SearchButton from '../../../components/Buttons/searchButton';
 import SearchField from '../../../components/Filters/searchField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import styles from '../../../CSS/Button.Module.css'
+import styles from '../../../CSS/Button.Module.css';
 
 const columns = [
   {
@@ -108,7 +108,7 @@ const Workspaces = () => {
 
   const handleSearchTerm = (event) => {
     setSearchData(event.target.value);
-    setPage(0)
+    setPage(0);
   };
 
   const handleSearchClear = () => {
@@ -206,14 +206,14 @@ const Workspaces = () => {
       actions: (
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
           <EditIcon className={styles.editIcon} onClick={() => handleUpdateButton(el)}></EditIcon>
-			    <DeleteIcon className={styles.deleteIcon} onClick={() => handleDeleteButton(el.id)} ></DeleteIcon>
+          <DeleteIcon className={styles.deleteIcon} onClick={() => handleDeleteButton(el.id)}></DeleteIcon>
         </div>
       )
     };
   });
 
   const count = searchWorkspacePages ? searchWorkspacePages * size : workspacePages * size;
-  
+
   const handleDeleteClick = async (event) => {
     event.preventDefault();
     await deleteWorkspace({ id: selectedId })

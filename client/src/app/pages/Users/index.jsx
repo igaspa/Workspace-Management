@@ -1,9 +1,7 @@
 import UsersList from '../../features/Users/UserList';
 
 const Users = () => {
-	return (
-		<UsersList />
-	);
+  return <UsersList />;
 };
 
 export default Users;

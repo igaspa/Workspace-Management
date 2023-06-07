@@ -1,9 +1,7 @@
 import UserDetails from '../../features/Users/UserDetails/';
 
 const User = () => {
-	return (
-		<UserDetails />
-	);
+  return <UserDetails />;
 };
 
 export default User;

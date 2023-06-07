@@ -140,21 +140,20 @@ const addNotificationToDB = async (notificationInfo) => {
   });
 };
 
-const createAndSendEmail = async (emailTemplate, userEmail, template) => {
-  const email = createEmail(userEmail, emailTemplate);
+const createAndSendEmail = async (email, data, template) => {
   try {
     await sendEmail(email);
     await addNotificationToDB({
       template: template,
       status: notificationStatus.sent,
-      data: { email: userEmail }
+      data
     });
   } catch (error) {
     console.log(error);
     await addNotificationToDB({
       template: template,
       status: notificationStatus.failed,
-      data: { email: userEmail }
+      data
     });
   }
 };
@@ -166,10 +165,15 @@ const createInvitationEmailTemplateAndSendEmail = async (data, template) => {
     userName: `${data.firstName} ${data.lastName}`,
     link: `${baseURL}/user/password-create?token=${data.token}`
   };
-  console.log(emailData.link);
-  emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
 
-  await createAndSendEmail(emailTemplate, data.email, template);
+  emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
+  const email = createEmail(userEmail, emailTemplate);
+
+  const dataObject = {
+    email: data.email
+  };
+
+  await createAndSendEmail(email, dataObject, template);
 };
 
 exports.invitationEmail = async function (data) {

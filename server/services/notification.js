@@ -21,7 +21,7 @@ exports.setNotificationTemplate = async () => {
 const getNotificationTemplate = async function (notificationTemplateId) {
   const cacheNotificationTemplate = await cache.getCache(NOTIFICATION_KEY);
   let template = null;
-  if (cacheNotificationTemplate === undefined) {
+  if (!cacheNotificationTemplate) {
     template = await notificationTemplate.findOne({
       where: { id: notificationTemplateId }
     });

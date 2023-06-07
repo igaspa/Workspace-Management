@@ -2,22 +2,19 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import styles from '../../CSS/Button.Module.css'
+import styles from '../../CSS/Button.Module.css';
 
-export default function BackofficeButton ({ onChange, text }) {
-	return (
-		<Stack spacing={2} direction="row" className={styles.backofficeButtonWrapper}>
-			<Button
-				variant="contained"
-				className={clsx(styles.button, styles.backofficeButton)}
-				onClick={onChange}>
-				{text}
-			</Button>
-		</Stack>
-	);
+export default function BackofficeButton({ onChange, text }) {
+  return (
+    <Stack spacing={2} direction="row" className={styles.backofficeButtonWrapper}>
+      <Button variant="contained" className={clsx(styles.button, styles.backofficeButton)} onClick={onChange}>
+        {text}
+      </Button>
+    </Stack>
+  );
 }
 
 BackofficeButton.propTypes = {
-	onChange: PropTypes.func,
-	text: PropTypes.string
+  onChange: PropTypes.func,
+  text: PropTypes.string
 };

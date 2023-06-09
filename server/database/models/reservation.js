@@ -70,7 +70,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'reservation'
+    modelName: 'reservation',
+    paranoid: true 
   });
   return reservation;
 };

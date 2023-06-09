@@ -4,6 +4,8 @@ const generalController = require('./general');
 const reservationService = require('../services/reservation');
 const responseMessage = require('../utils/response-messages');
 const { workspace, workspaceType, user } = require('../database/models');
+const {sendReservationCreatedEmail, sendReservationUpdatedEmail, sendReservationCanceledEmail} = require('../services/notification');
+
 
 const { DateTime } = require('luxon');
 
@@ -72,6 +74,7 @@ const reservationCustomIncludeOptions = () => {
 
 module.exports.createReservation = async (req, res) => {
   await reservationService.createReservation(req);
+  await sendReservationCreatedEmail(req);
   return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
 };
 
@@ -116,6 +119,7 @@ module.exports.getReservation = async (req, res) => {
 
 module.exports.updateReservation = async (req, res) => {
   await reservationService.updateReservation(req, res);
+  await sendReservationUpdatedEmail(req);
   return res.status(200).json({
     message: responseMessage.UPDATE_SUCCESS(reservation.name)
   });
@@ -123,6 +127,7 @@ module.exports.updateReservation = async (req, res) => {
 
 module.exports.deleteReservation = async (req, res) => {
   await reservationService.validateUserRightsAndDeleteReservation(req);
+  await sendReservationCanceledEmail(req);
   return res.status(200).json({
     message: responseMessage.DELETE_SUCCESS(reservation.name)
   });

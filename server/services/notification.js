@@ -134,9 +134,35 @@ const createReservationNotification = async (reservation, template) => {
   await createAndSendEmail(email, notificationData, template);
 };
 
+const createReservationParticipantNotification = async (reservation, participant, template) => {
+  let emailTemplate = await getNotificationTemplate(template);
+  const emailData = {
+    userName: `${participant.firstName} ${participant.lastName}`,
+    workspaceName: reservation.workspace.name,
+    dateTime: reservation.dateTime,
+    hostName:  `${reservation.user.firstName} ${reservation.user.lastName}`
+  };
+  const notificationData = {
+  reservationId: reservation.id,
+  participants: reservation.participants,
+  userEmail: participant.email,
+  ...emailData
+  }
+  emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
+
+  const email = createEmail(participant.email, emailTemplate);
+
+  await createAndSendEmail(email, notificationData, template);
+};
+
 exports.sendReservationCreatedEmail = async function (req) {
   const reservationId = req.body.id;
   const reservation = await findReservation(reservationId);
+  if(reservation.participants.length){
+    reservation.participants.forEach(participant =>{
+      createReservationParticipantNotification(reservation, participant, notificationTemplates.createdReservationInvitationTemplate)
+    })
+  }
   await createReservationNotification(reservation, notificationTemplates.createdReservationTemplate);
 };
 
@@ -150,6 +176,11 @@ exports.sendReservationUpdatedEmail = async function (req) {
 exports.sendReservationCanceledEmail = async function(req){
   const reservationId = req.params.id;
   const reservation = await findReservation(reservationId);
+  if(reservation.participants.length){
+    reservation.participants.forEach(participant =>{
+      createReservationParticipantNotification(reservation, participant, notificationTemplates.canceledReservationParticipantTemplate)
+    })
+  }
   await createReservationNotification(reservation, notificationTemplates.canceledReservationTemplate);
 
 }

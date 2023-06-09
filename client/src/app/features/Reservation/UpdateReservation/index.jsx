@@ -31,6 +31,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
   const [endAt, setEndAt] = useState('');
 
   const [selectedUsers, setSelectedUsers] = useState(reservation.participants || []);
+  const [changedParticipants, setChangedParticipants] = useState([]);
   const [participantEmailSlice, setParticipantEmailSlice] = useState('');
 
   const startHours = getHours(startDate);
@@ -89,9 +90,31 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
     } else if (startDate && endHour) setEndAt(`${startDate}T${endHour}`);
   }, [endDate, endHour, startDate, startHour]);
 
+  
+  const sortAddedAndRemovedUsers = (formData) => {
+    const reservationUsers = reservation.participants.map((element)=>{
+    return {
+      email: element.email,
+      firstName: element.firstName,
+      lastName: element.lastName
+    };
+  });
+
+    const addedUsers = selectedUsers.filter(
+      (newUser) => !reservationUsers.some((oldUser) => oldUser.email === newUser.email)
+    );
+
+    const removedUsers = reservationUsers.filter(
+      (deletedUser) => !selectedUsers.some((oldUser) => oldUser.email === deletedUser.email)
+    );
+
+    if(addedUsers.length) formData.addedUsers = addedUsers;
+    if(removedUsers.length) formData.removedUsers = removedUsers;
+  };
+
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const participants = selectedUsers.map((user) => {
       return {
         firstName: user.firstName,
@@ -99,6 +122,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
         email: user.email
       };
     });
+
     const objectToPost = {
       startAt,
       endAt,

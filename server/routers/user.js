@@ -9,7 +9,9 @@ const { callbackErrorHandler } = require('../middleware/error-handler');
 
 router
   .route('/password-create')
-  .put(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.createPassword));
+  .post(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.createPassword));
+
+router.route('/reinvite').put(callbackErrorHandler(generalController.reinviteUser));
 
 router.use(callbackErrorHandler(authenticateUser));
 router

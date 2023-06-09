@@ -72,7 +72,7 @@ const personalizeEmailTemplate = function (mailData, emailTemplate) {
 const findReservation = async (reservationId) => {
   const currentReservation = await reservation.findOne({
     where: {
-      id: reservationId,
+      id: reservationId
     },
     paranoid: false,
     include: [
@@ -120,13 +120,13 @@ const createReservationNotification = async (reservation, template) => {
     workspaceName: reservation.workspace.name,
     dateTime: reservation.dateTime
   };
-  
+
   const notificationData = {
-  reservationId: reservation.id,
-  participants: reservation.participants,
-  userEmail: reservation.user.email,
-  ...emailData
-  }
+    reservationId: reservation.id,
+    participants: reservation.participants,
+    userEmail: reservation.user.email,
+    ...emailData
+  };
   emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
 
   const email = createEmail(reservation.user.email, emailTemplate);
@@ -147,13 +147,11 @@ exports.sendReservationUpdatedEmail = async function (req) {
   await createReservationNotification(reservation, notificationTemplates.updatedReservationTemplate);
 };
 
-exports.sendReservationCanceledEmail = async function(req){
+exports.sendReservationCanceledEmail = async function (req) {
   const reservationId = req.params.id;
   const reservation = await findReservation(reservationId);
   await createReservationNotification(reservation, notificationTemplates.canceledReservationTemplate);
-
-}
-
+};
 
 const createInvitationEmailTemplateAndSendEmail = async (data, template) => {
   let emailTemplate = await getNotificationTemplate(template);
@@ -164,7 +162,7 @@ const createInvitationEmailTemplateAndSendEmail = async (data, template) => {
   };
 
   emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
-  const email = createEmail(userEmail, emailTemplate);
+  const email = createEmail(data.email, emailTemplate);
 
   const dataObject = {
     email: data.email

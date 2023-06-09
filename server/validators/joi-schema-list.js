@@ -359,7 +359,7 @@ exports.user = joi
       .email()
       .alter({
         post: (userSchema) => userSchema.required(),
-        put: (userSchema) => userSchema.forbidden()
+        put: (userSchema) => userSchema.optional()
       }),
     phoneNumber: joi
       .string()

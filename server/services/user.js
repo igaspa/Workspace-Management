@@ -1,37 +1,28 @@
-const { user, sequelize } = require('../database/models');
-const crypto = require('crypto');
-const { DateTime } = require('luxon');
+const { user } = require('../database/models');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 const bcrypt = require('bcrypt');
 
-const createNewUser = async (userData, token, tokenExpirationTime) => {
+exports.createNewUser = async (userData, token) => {
   await user.create({
     ...userData,
-    token,
-    tokenExpirationTime
+    token: token.value,
+    tokenExpirationTime: token.expirationTime
   });
 };
 
-const updateUserToken = async (data, userEmail) => {
-  const [_updatedModel, _updatedData] = await user.update(data, {
-    where: { email: userEmail },
-    returning: true
-  });
-};
-
-exports.userCreation = async (data) => {
-  const token = crypto.randomBytes(20).toString('hex');
-  const tokenExpirationTime = DateTime.now().plus({ minutes: process.env.TOKEN_EXPIRATION_MINUTES });
-  const existingUser = await user.findOne({
-    where: {
-      email: data.email
+exports.updateUserToken = async (email, token) => {
+  const [_updatedModel, updatedData] = await user.update(
+    {
+      token: token.value,
+      tokenExpirationTime: token.expirationTime
+    },
+    {
+      where: { email },
+      returning: true
     }
-  });
-
-  // if user does not exist create new one, otherwise update users token
-  if (!existingUser) await createNewUser(data, token, tokenExpirationTime);
-  else await updateUserToken({ token, tokenExpirationTime }, data.email);
+  );
+  return updatedData[0].dataValues;
 };
 
 const updateUserPassword = async (token, password) => {

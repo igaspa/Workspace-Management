@@ -117,7 +117,7 @@ export default function AreaTable() {
     setOpenUpdate(true);
   };
 
-  const handleSearch = (event) => {
+  const handleSearch = () => {
     const searchField = new FormData(searchRef.current);
     setSearchTerm(searchField.get('area'));
     setPage(0);

@@ -18,6 +18,8 @@ import { useGetAreaListQuery } from '../../api/areaApiSlice';
 import { useGetEquipmentsListQuery } from '../../api/equipmentApiSlice';
 import { useGetWorkspaceTypesListQuery } from '../../api/workspaceTypeApiSlice';
 import { errorHandler } from '../../utils/errors';
+import CancelButton from '../Buttons/cancelButton';
+import ConfirmButton from '../Buttons/confirmButton';
 
 const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
   const navigate = useNavigate();
@@ -271,23 +273,26 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
                   })}
                 </Box>
               )}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: '25vh'
+                  }
+                }
+              }}
             >
               {equipment.map((eq) => (
                 <MenuItem key={eq.id} value={eq.id}>
-                  {/* <Checkbox checked={currentEquipment.includes(eq.id)} /> */}
                   {eq.name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
 
-          <Button fullWidth type="submit" sx={{ marginTop: 2, border: '1px solid #333', fontSize: 11 }}>
-            {' '}
-            <strong>Save</strong>
-          </Button>
-          <Button fullWidth sx={{ marginTop: 2, border: '1px solid #333', fontSize: 11 }} onClick={onCancel}>
-            <strong>Cancel</strong>
-          </Button>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20 }}>
+            <ConfirmButton type={'submit'} text={'Save'} />
+            <CancelButton onClick={onCancel} text={'Cancel'} />
+          </div>
         </Box>
       )}
     </>

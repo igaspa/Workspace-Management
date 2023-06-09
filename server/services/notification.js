@@ -158,10 +158,11 @@ const createReservationParticipantNotification = async (reservation, participant
 exports.sendReservationCreatedEmail = async function (req) {
   const reservationId = req.body.id;
   const reservation = await findReservation(reservationId);
-  if(reservation.participants.length){
-    reservation.participants.forEach(participant =>{
-      createReservationParticipantNotification(reservation, participant, notificationTemplates.createdReservationInvitationTemplate)
-    })
+  if (reservation.participants.length) {
+    const participantPromises = reservation.participants.map(participant => {
+      return createReservationParticipantNotification(reservation, participant, notificationTemplates.createdReservationInvitationTemplate);
+    });
+    await Promise.all(participantPromises);
   }
   await createReservationNotification(reservation, notificationTemplates.createdReservationTemplate);
 };

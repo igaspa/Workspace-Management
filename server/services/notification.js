@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const cache = require('../utils/cache');
+const { v4: uuidv4 } = require('uuid');
 const {
   notificationStatus,
   userNotificationAttributes,
@@ -10,7 +11,6 @@ const {
 const { notificationTemplate, reservation, notification, workspace, user } = require('../database/models');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
-const { v4: uuidv4 } = require('uuid');
 
 exports.setNotificationTemplate = async () => {
   try {
@@ -72,8 +72,9 @@ const personalizeEmailTemplate = function (mailData, emailTemplate) {
 const findReservation = async (reservationId) => {
   const currentReservation = await reservation.findOne({
     where: {
-      id: reservationId
+      id: reservationId,
     },
+    paranoid: false,
     include: [
       { model: workspace, attributes: workspaceNotificationAttributes },
       { model: user, attributes: userNotificationAttributes }
@@ -81,52 +82,6 @@ const findReservation = async (reservationId) => {
   });
   if (!currentReservation) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(reservation.name));
   return currentReservation;
-};
-
-const createReservationNotification = async (reservationId, reservation, template) => {
-  let emailTemplate = await getNotificationTemplate(template);
-  const emailData = {
-    userName: `${reservation.user.firstName} ${reservation.user.lastName}`,
-    workspaceName: reservation.workspace.name,
-    dateTime: reservation.dateTime
-  };
-
-  emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
-
-  const email = createEmail(reservation.user.email, emailTemplate);
-
-  try {
-    await sendEmail(email);
-    await notification.create({
-      notificationTemplateId: template,
-      reservationId,
-      status: notificationStatus.sent,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
-  } catch (error) {
-    console.log(error);
-    await notification.create({
-      notificationTemplateId: template,
-      reservationId,
-      status: notificationStatus.failed,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
-  }
-};
-
-exports.sendReservationCreatedEmail = async function (req) {
-  const reservationId = req.body.id;
-  const reservation = await findReservation(reservationId);
-  await createReservationNotification(reservationId, reservation, notificationTemplates.createdReservationTemplate);
-};
-
-exports.sendReservationUpdatedEmail = async function (req) {
-  const reservationId = req.params.id;
-  const reservation = await findReservation(reservationId);
-
-  await createReservationNotification(reservationId, reservation, notificationTemplates.updatedReservationTemplate);
 };
 
 const addNotificationToDB = async (notificationInfo) => {
@@ -157,6 +112,48 @@ const createAndSendEmail = async (email, data, template) => {
     });
   }
 };
+
+const createReservationNotification = async (reservation, template) => {
+  let emailTemplate = await getNotificationTemplate(template);
+  const emailData = {
+    userName: `${reservation.user.firstName} ${reservation.user.lastName}`,
+    workspaceName: reservation.workspace.name,
+    dateTime: reservation.dateTime
+  };
+  
+  const notificationData = {
+  reservationId: reservation.id,
+  participants: reservation.participants,
+  userEmail: reservation.user.email,
+  ...emailData
+  }
+  emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
+
+  const email = createEmail(reservation.user.email, emailTemplate);
+
+  await createAndSendEmail(email, notificationData, template);
+};
+
+exports.sendReservationCreatedEmail = async function (req) {
+  const reservationId = req.body.id;
+  const reservation = await findReservation(reservationId);
+  await createReservationNotification(reservation, notificationTemplates.createdReservationTemplate);
+};
+
+exports.sendReservationUpdatedEmail = async function (req) {
+  const reservationId = req.params.id;
+  const reservation = await findReservation(reservationId);
+
+  await createReservationNotification(reservation, notificationTemplates.updatedReservationTemplate);
+};
+
+exports.sendReservationCanceledEmail = async function(req){
+  const reservationId = req.params.id;
+  const reservation = await findReservation(reservationId);
+  await createReservationNotification(reservation, notificationTemplates.canceledReservationTemplate);
+
+}
+
 
 const createInvitationEmailTemplateAndSendEmail = async (data, template) => {
   let emailTemplate = await getNotificationTemplate(template);

@@ -4,7 +4,7 @@ const { searchByTerm } = require('../utils/filter');
 const userService = require('../services/user');
 const notification = require('../services/notification');
 const responseMessages = require('../utils/response-messages');
-const { generateToken, findUserByEmail } = require('./helpers/user');
+const { generateToken, findAndValidateUser } = require('./helpers/user');
 
 module.exports.getAllUsers = async (req, res) => {
   const { email } = req.query;
@@ -40,7 +40,7 @@ module.exports.createUser = async (req, res) => {
 
 module.exports.reinviteUser = async (req, res) => {
   const { email } = req.body;
-  await findUserByEmail(email);
+  await findAndValidateUser(email);
 
   // create token
   const token = generateToken();

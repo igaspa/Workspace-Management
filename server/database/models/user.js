@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeCreate: async (model) => {
           model.id = uuidv4();
+
+          if (model.password) {
+            const salt = bcrypt.genSaltSync(10);
+            model.password = bcrypt.hashSync(model.password, salt);
+          }
         }
       },
       sequelize,

@@ -15,12 +15,14 @@ module.exports.MAX_WORKSPACE_CREATION_LIMIT = 200;
 module.exports.notificationTemplates = {
   createdReservationTemplate: 'fc06d6a8-15b9-4134-89f9-49e490947f76',
   updatedReservationTemplate: '855798c2-c224-43df-bc9e-b7b761976674',
+  canceledReservationTemplate: '07dc7676-a383-460e-893b-2b43444d0901',
   userInvitationTemplate: '2a4b415d-f93c-487d-8f45-46b61fe56439'
 };
 
 module.exports.notificationNames = {
   reservationConfirmation: 'reservation_confirmation_template',
   reservationUpdate: 'reservation_updated_template',
+  reservationCancel: 'reservation_canceled_template',
   userInvitation: 'user_invitation_template'
 };
 
@@ -47,7 +49,6 @@ module.exports.tableName = {
 
 module.exports.constraintName = {
   notificationTemplate: 'notification_template',
-  notificationReservation: 'notification_reservation',
   reservationUser: 'reservation_user',
   reservationWorkspace: 'reservation_workspace',
   workspaceType: 'workspace_type',

@@ -20,7 +20,8 @@ module.exports = {
       );
 
       ALTER TABLE reservation ADD CONSTRAINT overlapping_reservation 
-      EXCLUDE USING gist (workspace_id WITH =, tstzrange(start_at, end_at) WITH &&);
+      EXCLUDE USING gist (workspace_id WITH =, tstzrange(start_at, end_at) WITH &&)
+      where (deleted_at is NULL);
 
     `);
   },

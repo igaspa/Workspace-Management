@@ -109,6 +109,111 @@ module.exports = {
           updated_at: new Date()
         },
         {
+          id: notificationTemplates.createdReservationInvitationTemplate,
+          name: notificationNames.reservationInvitation,
+          template: {
+            title: 'Workspace Management: Invitation!',
+            body: `<body style="background-color:white">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" 
+                width="600" bgcolor="AliceBlue">
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <br />
+                            <table align="center" border="0" cellpadding="50"
+                                cellspacing="0" class="col-550" width="550">
+                                <tbody>
+                                    <h3>Dear {userName},</h3>
+        
+                                    <p>You have been invited to join the workspace: <br><b>{workspaceName}</b></p>
+        
+                                    <p>Details:</p>
+                                      Date and Time: <b>{dateTime}</b>
+                                      Host: <b>{hostName}</b>
+                    
+                                    <p>Thank you,<br>
+                                    Workspace Management</p>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </body>`
+        },
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          id: notificationTemplates.updatedReservationParticipantTemplate,
+          name: notificationNames.reservationUpdatedParticipant,
+          template: {
+            title: 'Workspace Management: Reservation Update',
+            body: `<body style="background-color:white">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" 
+                width="600" bgcolor="AliceBlue">
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <br />
+                            <table align="center" border="0" cellpadding="50"
+                                cellspacing="0" class="col-550" width="550">
+                                <tbody>
+                                    <h3>Dear {userName},</h3>
+        
+                                    <p>There has been an update on reservation you have been invited for the workspace: <br><b>{workspaceName}</b></p><br>
+        
+                                    <p>Updated Details:</p>
+                                    New Date and Time: <b>{dateTime}</b>
+                                    Host: <b>{hostName}</b>
+
+                                    <p>Thank you,<br>
+                                    Workspace Management</p>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </body>`
+        },        
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          id: notificationTemplates.canceledReservationParticipantTemplate,
+          name: notificationNames.reservationCanceledParticipant,
+          template: {
+            title: 'Workspace Management: Reservation Cancellation',
+            body: `<body style="background-color:white">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" 
+                width="600" bgcolor="AliceBlue">
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <br />
+                            <table align="center" border="0" cellpadding="50"
+                                cellspacing="0" class="col-550" width="550">
+                                <tbody>
+                                    <h3>Dear {userName},</h3>
+        
+                                <p>We regret to inform you that reservation for <b>{workspaceName}</b> at
+                                <br> <b>{dateTime}</b> <br>
+                                 has been canceled.
+                                <br><br>
+                                <em>Workspace Management</em>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </body>`
+        },        
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
           id: notificationTemplates.userInvitationTemplate,
           name: notificationNames.userInvitation,
           template: {

@@ -178,9 +178,10 @@ exports.sendReservationCanceledEmail = async function (req) {
   const reservationId = req.params.id;
   const reservation = await findReservation(reservationId);
   if(reservation.participants.length){
-    reservation.participants.forEach(participant =>{
+   const participantPromises =  reservation.participants.forEach(participant =>{
       createReservationParticipantNotification(reservation, participant, notificationTemplates.canceledReservationParticipantTemplate)
-    })
+    });
+    await Promise.all(participantPromises);
   }
   await createReservationNotification(reservation, notificationTemplates.canceledReservationTemplate);
 };

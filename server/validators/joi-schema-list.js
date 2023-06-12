@@ -1,4 +1,5 @@
 const joi = require('joi');
+const joiPhoneNumber = joi.extend(require('joi-phone-number'));
 
 const reservationIntervalSchema = joi.string().custom((value, helpers) => {
   const intervalRegex = /^(\d+\s+days?\s*)?(\d{2}:\d{2}(:\d{2})?)?$/;
@@ -328,6 +329,13 @@ exports.user_password_create = joi
   })
   .options({ abortEarly: false });
 
+// User Reinvite Schema
+exports.user_reinvite = joi
+  .object({
+    email: joi.string().email().required()
+  })
+  .options({ abortEarly: false });
+
 // User Entity Schema
 exports.user = joi
   .object({
@@ -361,14 +369,8 @@ exports.user = joi
         post: (userSchema) => userSchema.required(),
         put: (userSchema) => userSchema.optional()
       }),
-    phoneNumber: joi
-      .string()
-      .min(10)
-      .max(15)
-      .alter({
-        post: (userSchema) => userSchema.optional(),
-        put: (userSchema) => userSchema.optional()
-      })
+    phoneNumber: joiPhoneNumber.string().phoneNumber(),
+    roles: joi.array().items(joi.string().guid()).required()
   })
   .options({ abortEarly: false });
 
@@ -402,14 +404,10 @@ exports.login = joi
         post: (loginSchema) => loginSchema.required(),
         put: (loginSchema) => loginSchema.forbidden()
       }),
-    password: joi
-      .string()
-      .min(8)
-      .max(80)
-      .alter({
-        post: (loginSchema) => loginSchema.required(),
-        put: (loginSchema) => loginSchema.optional()
-      })
+    password: joi.string().alter({
+      post: (loginSchema) => loginSchema.required(),
+      put: (loginSchema) => loginSchema.optional()
+    })
   })
   .options({ abortEarly: false });
 

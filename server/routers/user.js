@@ -7,9 +7,11 @@ const { paramValidator, bodyValidator, bodyValidatorAdditionalAttribute } = requ
 const { authenticateUser, restrictRoles } = require('../middleware/authenticate-user');
 const { callbackErrorHandler } = require('../middleware/error-handler');
 
-router.route('/password-create').put(callbackErrorHandler(generalController.createPassword));
+router
+  .route('/password-create')
+  .put(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.createPassword));
 
-router.route('/reinvite').put(callbackErrorHandler(generalController.reinviteUser));
+router.route('/reinvite').put(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.reinviteUser));
 
 router.use(callbackErrorHandler(authenticateUser));
 router

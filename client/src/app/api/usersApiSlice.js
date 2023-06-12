@@ -23,6 +23,12 @@ export const usersApiSlice = createApi({
           page: params.page
         };
         let url = '/user';
+        const { include } = params;
+        if (include && include.length) {
+          include.forEach((el) => {
+            url += `?include=${el}`;
+          });
+        }
         return {
           url,
           method: 'GET',
@@ -38,15 +44,25 @@ export const usersApiSlice = createApi({
     }),
 
     getUsersSearchList: builder.query({
-      query: (params = {}) => ({
-        url: '/user',
-        method: 'GET',
-        params: {
+      query: (params) => {
+        const queryParameters = {
           email: params.email,
           size: params.size,
           page: params.page
+        };
+        let url = '/user';
+        const { include } = params;
+        if (include && include.length) {
+          include.forEach((el) => {
+            url += `?include=${el}`;
+          });
         }
-      }),
+        return {
+          url,
+          method: 'GET',
+          params: queryParameters
+        };
+      },
       providesTags: ['usersList'],
       transformResponse: (response, meta, args) => {
         const pages = Number(meta.response.headers.get('X-Total-Pages'));

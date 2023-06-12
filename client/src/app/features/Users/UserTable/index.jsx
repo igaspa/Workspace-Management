@@ -75,7 +75,7 @@ const Users = () => {
   const [open, setOpen] = useState(false);
 
   const [selectedId, setSelectedId] = useState();
-  const [selectedUser, setSelectedWorkspace] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const searchRef = useRef();
@@ -115,7 +115,7 @@ const Users = () => {
   };
 
   const handleUpdateButton = (user) => {
-    setSelectedWorkspace(user);
+    setSelectedUser(user);
     setSelectedId(user.id);
     setShowUpdateForm(true);
   };
@@ -163,7 +163,8 @@ const Users = () => {
     isLoading: isUsersLoading
   } = useGetUsersListQuery({
     ...(page && { page: page + 1 }),
-    ...(size && { size })
+    ...(size && { size }),
+    include: ['roles']
   });
 
   const {
@@ -173,7 +174,8 @@ const Users = () => {
   } = useGetUsersSearchListQuery({
     email: [searchTerm],
     ...(page && { page: page + 1 }),
-    ...(size && { size })
+    ...(size && { size }),
+    include: ['roles']
   });
 
   const filteredData =

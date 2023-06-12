@@ -51,11 +51,12 @@ module.exports.reinviteUser = async (req, res) => {
   // send invite email to user
   await notification.invitationEmail(updatedUser, token.value);
 
-  res.json({ message: 'Invitation successfully sent!' });
+  res.json({ message: responseMessages.INVITATION_SENT });
 };
 
 module.exports.updateUser = async (req, res) => {
-  await generalController.updateModel(user, req, res);
+  await userService.updateUser(req);
+  res.status(200).json({ message: responseMessages.UPDATE_SUCCESS(user.name) });
 };
 
 module.exports.deleteUser = async (req, res) => {

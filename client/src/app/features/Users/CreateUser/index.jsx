@@ -42,7 +42,7 @@ export default function CreateUser() {
       lastName: data.get('lastName'),
       email: data.get('email'),
       ...(data.get('phoneNumber') && { phoneNumber: data.get('phoneNumber') }),
-      roles: selectedRoles
+      addedRoles: selectedRoles
     })
       .unwrap()
       .then((response) => {

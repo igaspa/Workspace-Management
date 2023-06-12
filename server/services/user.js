@@ -15,9 +15,9 @@ const saveUserToDB = async (data, token, transaction) => {
 };
 
 const saveUserRoleToDB = async (data, transaction) => {
-  const { roles, id } = data;
+  const { addedRoles, id } = data;
 
-  const promises = roles.map((roleId) => {
+  const promises = addedRoles.map((roleId) => {
     return userRole.create(
       {
         roleId,
@@ -37,6 +37,51 @@ exports.createNewUser = async (userData, token) => {
 
     await saveUserRoleToDB(userData, transaction);
 
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+const removeUserRole = async (roleList, transaction, userId) => {
+  const promises = roleList.map((role) => {
+    return userRole.destroy({ where: { userId, roleId: role } }, { transaction }).then((deletedModel) => {
+      if (!deletedModel) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(userRole.name));
+    });
+  });
+
+  await Promise.all(promises);
+};
+
+exports.updateUser = async (req) => {
+  const { body, params } = req;
+  const { addedRoles, removedRoles } = body;
+  console.log(addedRoles, removedRoles);
+
+  try {
+    transaction = await sequelize.transaction();
+
+    if (addedRoles?.length) await saveUserRoleToDB({ addedRoles, id: params.id }, transaction);
+
+    if (removedRoles?.length) await removeUserRole(removedRoles, transaction, params.id);
+
+    // delete body elements that do not belong to user model
+    delete body.addedRoles;
+    delete body.removedRoles;
+
+    // update user with the rest of body data
+    if (Object.keys(body).length) {
+      const [updatedModel, _updatedData] = await user.update(
+        body,
+        {
+          where: { id: params.id },
+          returning: true
+        },
+        { transaction }
+      );
+      if (!updatedModel) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(user.name));
+    }
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();

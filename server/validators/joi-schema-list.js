@@ -369,8 +369,9 @@ exports.user = joi
         post: (userSchema) => userSchema.required(),
         put: (userSchema) => userSchema.optional()
       }),
-    phoneNumber: joiPhoneNumber.string().phoneNumber(),
-    roles: joi.array().items(joi.string().guid()).required()
+    phoneNumber: joiPhoneNumber.string().allow('').phoneNumber().optional(),
+    addedRoles: joi.array().items(joi.string().guid()).optional(),
+    removedRoles: joi.array().items(joi.string().guid()).optional()
   })
   .options({ abortEarly: false });
 

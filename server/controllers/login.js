@@ -32,7 +32,7 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
   const currentUser = await user.findOne({ where: { email } });
   if (!currentUser) {
-    throw errors.NOT_FOUND(currentUser);
+    throw errors.NOT_FOUND(responseMessages.NOT_FOUND(user.name));
   }
   if ((await comparePassword(password, currentUser.password)) === false) {
     throw errors.UNAUTHORIZED(responseMessages.LOGIN_AUTHORIZATION_ERROR);

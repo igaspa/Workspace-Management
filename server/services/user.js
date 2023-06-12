@@ -80,10 +80,10 @@ exports.createPassword = async (req) => {
   const retrievedUser = await user.findOne({
     where: { token }
   });
-  if (!retrievedUser) throw errors.VALIDATION({ message: responseMessages.INVALID_CREATION_TOKEN });
+  if (!retrievedUser) throw errors.VALIDATION(responseMessages.INVALID_CREATION_TOKEN);
 
   if (new Date(retrievedUser.tokenExpirationTime) < new Date()) {
-    throw errors.VALIDATION({ message: responseMessages.ACTIVATION_TOKEN_EXPIRED });
+    throw errors.VALIDATION(responseMessages.ACTIVATION_TOKEN_EXPIRED);
   }
 
   await updateUserPassword(token, password);

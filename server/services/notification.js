@@ -153,12 +153,12 @@ exports.sendReservationCanceledEmail = async function (req) {
   await createReservationNotification(reservation, notificationTemplates.canceledReservationTemplate);
 };
 
-const createInvitationEmailTemplateAndSendEmail = async (data, template) => {
+const createInvitationEmailTemplateAndSendEmail = async (data, token, template) => {
   let emailTemplate = await getNotificationTemplate(template);
   const baseURL = process.env.REACT_APP_BASE_URL;
   const emailData = {
     userName: `${data.firstName} ${data.lastName}`,
-    link: `${baseURL}/user/password-create?token=${data.token}`
+    link: `${baseURL}/user/password-create?token=${token.value}`
   };
 
   emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
@@ -171,6 +171,6 @@ const createInvitationEmailTemplateAndSendEmail = async (data, template) => {
   await createAndSendEmail(email, dataObject, template);
 };
 
-exports.invitationEmail = async function (data) {
-  await createInvitationEmailTemplateAndSendEmail(data, notificationTemplates.userInvitationTemplate);
+exports.invitationEmail = async function (data, token) {
+  await createInvitationEmailTemplateAndSendEmail(data, token, notificationTemplates.userInvitationTemplate);
 };

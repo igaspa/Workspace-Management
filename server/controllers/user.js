@@ -33,7 +33,7 @@ module.exports.createUser = async (req, res) => {
   await userService.createNewUser(req.body, token);
 
   // send invite email to user
-  await notification.invitationEmail(req.body, token.value);
+  await notification.invitationEmail(req.body, token);
 
   res.json({ message: 'Invitation successfully sent!' });
 };

@@ -1,14 +1,47 @@
-const { user } = require('../database/models');
+const { user, sequelize, userRole } = require('../database/models');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 const bcrypt = require('bcrypt');
 
-exports.createNewUser = async (userData, token) => {
-  await user.create({
-    ...userData,
-    token: token.value,
-    tokenExpirationTime: token.expirationTime
+const saveUserToDB = async (data, token, transaction) => {
+  await user.create(
+    {
+      ...data,
+      token: token.value,
+      tokenExpirationTime: token.expirationTime
+    },
+    { transaction }
+  );
+};
+
+const saveUserRoleToDB = async (data, transaction) => {
+  const { roles, id } = data;
+
+  const promises = roles.map((roleId) => {
+    return userRole.create(
+      {
+        roleId,
+        userId: id
+      },
+      { transaction }
+    );
   });
+
+  await Promise.all(promises);
+};
+
+exports.createNewUser = async (userData, token) => {
+  const transaction = await sequelize.transaction();
+  try {
+    await saveUserToDB(userData, token, transaction);
+
+    await saveUserRoleToDB(userData, transaction);
+
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };
 
 exports.updateUserToken = async (email, token) => {

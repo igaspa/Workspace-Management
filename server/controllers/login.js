@@ -5,10 +5,7 @@ const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 
 const signToken = (id, firstName, lastName, email, roles) => {
-  const token = jwt.sign(
-    { id, firstName, lastName, email, roles },
-    process.env.TOKEN
-  );
+  const token = jwt.sign({ id, firstName, lastName, email, roles }, process.env.TOKEN);
   return token;
 };
 
@@ -22,7 +19,7 @@ const createToken = async (user, _req, res) => {
       attributes: ['name']
     }
   });
-  const roles = userRoles.map(el => el.role.name);
+  const roles = userRoles.map((el) => el.role.name);
   const token = signToken(user.id, user.firstName, user.lastName, user.email, roles);
   res.status(200).set('Authorization', token).json({ token, roles });
 };
@@ -37,9 +34,9 @@ exports.login = async (req, res) => {
   if (!currentUser) {
     throw errors.NOT_FOUND(currentUser);
   }
-  if (await comparePassword(password, currentUser.password) === false) {
+  if ((await comparePassword(password, currentUser.password)) === false) {
     throw errors.UNAUTHORIZED(responseMessages.LOGIN_AUTHORIZATION_ERROR);
-  };
+  }
 
   createToken(currentUser, req, res);
 };

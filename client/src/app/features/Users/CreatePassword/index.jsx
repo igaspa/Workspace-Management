@@ -4,7 +4,7 @@ import { errorHandler } from '../../../utils/errors';
 import ConfirmButton from '../../../components/Buttons/confirmButton';
 import { useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { successToast } from '../../../utils/toastifyNotification';
+import { errorToast, successToast } from '../../../utils/toastifyNotification';
 import { useCreateUserPasswordMutation } from '../../../api/usersApiSlice';
 
 export default function CreatePassword() {
@@ -16,6 +16,12 @@ export default function CreatePassword() {
   const handleConfirm = async (event) => {
     event.preventDefault();
     const data = new FormData(divRef.current);
+
+    if (data.get('password') !== data.get('repeatPassword')) {
+      errorToast("Passwords don't match");
+      return;
+    }
+
     const objectToUpdate = {
       password: data.get('password')
     };

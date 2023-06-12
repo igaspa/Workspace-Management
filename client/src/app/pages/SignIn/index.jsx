@@ -27,7 +27,7 @@ export default function SignIn() {
         const token = response.token;
         const role = response.roles;
         localStorage.setItem('token', token);
-        localStorage.setItem('role', role);
+        localStorage.setItem('role', JSON.stringify(role));
         navigate('/');
         navigate(0);
       })

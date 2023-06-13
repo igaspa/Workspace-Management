@@ -10,7 +10,7 @@ module.exports = {
       [
         {
           id: notificationTemplates.createdReservationTemplate,
-          name: notificationNames.reservationConfirmation,
+          name: notificationNames.reservationCreated,
           template: {
             title: 'Workspace Management: You reservation has been confirmed!',
             body: `<body style="background-color:white">
@@ -109,8 +109,8 @@ module.exports = {
           updated_at: new Date()
         },
         {
-          id: notificationTemplates.createdReservationInvitationTemplate,
-          name: notificationNames.reservationInvitation,
+          id: notificationTemplates.createdReservationParticipantTemplate,
+          name: notificationNames.reservationCreatedParticipant,
           template: {
             title: 'Workspace Management: Invitation!',
             body: `<body style="background-color:white">
@@ -140,7 +140,7 @@ module.exports = {
                 </tbody>
             </table>
         </body>`
-        },
+          },
           created_at: new Date(),
           updated_at: new Date()
         },
@@ -176,7 +176,7 @@ module.exports = {
                 </tbody>
             </table>
         </body>`
-        },        
+          },
           created_at: new Date(),
           updated_at: new Date()
         },
@@ -209,7 +209,7 @@ module.exports = {
                 </tbody>
             </table>
         </body>`
-        },        
+          },
           created_at: new Date(),
           updated_at: new Date()
         },

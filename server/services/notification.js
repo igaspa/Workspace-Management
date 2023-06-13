@@ -140,14 +140,14 @@ const createReservationParticipantNotification = async (reservation, participant
     userName: `${participant.firstName} ${participant.lastName}`,
     workspaceName: reservation.workspace.name,
     dateTime: reservation.dateTime,
-    hostName:  `${reservation.user.firstName} ${reservation.user.lastName}`
+    hostName: `${reservation.user.firstName} ${reservation.user.lastName}`
   };
   const notificationData = {
-  reservationId: reservation.id,
-  participants: reservation.participants,
-  userEmail: participant.email,
-  ...emailData
-  }
+    reservationId: reservation.id,
+    participants: reservation.participants,
+    userEmail: participant.email,
+    ...emailData
+  };
   emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
 
   const email = createEmail(participant.email, emailTemplate);
@@ -155,35 +155,47 @@ const createReservationParticipantNotification = async (reservation, participant
   await createAndSendEmail(email, notificationData, template);
 };
 
-exports.sendReservationCreatedEmail = async function (req) {
-  const reservationId = req.body.id;
+exports.sendReservationEmail = async function (req, ownerTemplate, participantsTemplate) {
+  const reservationId = req.params.id || req.body.id;
   const reservation = await findReservation(reservationId);
   if (reservation.participants.length) {
-    const participantPromises = reservation.participants.map(participant => {
-      return createReservationParticipantNotification(reservation, participant, notificationTemplates.createdReservationInvitationTemplate);
+    const participantPromises = reservation.participants.map((participant) => {
+      return createReservationParticipantNotification(reservation, participant, participantsTemplate);
     });
     await Promise.all(participantPromises);
   }
-  await createReservationNotification(reservation, notificationTemplates.createdReservationTemplate);
+  await createReservationNotification(reservation, ownerTemplate);
+};
+
+const notifyParticipants = async (reservation, participants, template) => {
+  if (!participants || participants.length === 0) return;
+
+  const participantPromises = participants.map((participant) => {
+    return createReservationParticipantNotification(reservation, participant, template);
+  });
+
+  await Promise.all(participantPromises);
 };
 
 exports.sendReservationUpdatedEmail = async function (req) {
   const reservationId = req.params.id;
   const reservation = await findReservation(reservationId);
 
-  await createReservationNotification(reservation, notificationTemplates.updatedReservationTemplate);
-};
+  const { addedParticipants, removedParticipants, updatedParticipants } = req.body;
 
-exports.sendReservationCanceledEmail = async function (req) {
-  const reservationId = req.params.id;
-  const reservation = await findReservation(reservationId);
-  if(reservation.participants.length){
-   const participantPromises =  reservation.participants.forEach(participant =>{
-      createReservationParticipantNotification(reservation, participant, notificationTemplates.canceledReservationParticipantTemplate)
-    });
-    await Promise.all(participantPromises);
-  }
-  await createReservationNotification(reservation, notificationTemplates.canceledReservationTemplate);
+  await notifyParticipants(reservation, addedParticipants, notificationTemplates.createdReservationParticipantTemplate);
+  await notifyParticipants(
+    reservation,
+    removedParticipants,
+    notificationTemplates.canceledReservationParticipantTemplate
+  );
+  await notifyParticipants(
+    reservation,
+    updatedParticipants,
+    notificationTemplates.updatedReservationParticipantTemplate
+  );
+
+  await createReservationNotification(reservation, notificationTemplates.updatedReservationTemplate);
 };
 
 const createInvitationEmailTemplateAndSendEmail = async (data, token, template) => {

@@ -131,7 +131,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
         id: uuidv4(),
         userId: selectedUser.id,
         workspaceId: workspace.id,
-        startAt
+        startAt: new Date(startAt).toISOString()
       };
       await postReservation(permanentReservationApi, objectToPost);
     }
@@ -149,9 +149,9 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
     const objectToPost = {
       id: uuidv4(),
       workspaceId: workspace.id,
-      startAt,
-      endAt,
-      participants
+      startAt: new Date(startAt).toISOString(),
+      endAt: new Date(endAt).toISOString(),
+      addedParticipants: participants
     };
 
     await postReservation(standardReservationApi, objectToPost);

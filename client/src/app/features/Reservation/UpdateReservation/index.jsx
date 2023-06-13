@@ -14,6 +14,7 @@ import { BasicPagination } from '../../../components/Pagination/pagination';
 import StandardReservationForm from '../../../components/Reservation/ReservationForms/standardReservationForm';
 import PrivilegeReservationForm from '../../../components/Reservation/ReservationForms/privilegeReservationForm';
 import ReservationFormFooter from '../../../components/Reservation/ReservationForms/formFooter';
+import { DateTime } from 'luxon';
 
 export default function UpdateReservation({ startDate, endDate, startHour, endHour, reservation, onClose }) {
   const navigate = useNavigate();
@@ -90,44 +91,67 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
     } else if (startDate && endHour) setEndAt(`${startDate}T${endHour}`);
   }, [endDate, endHour, startDate, startHour]);
 
-  
-  const sortAddedAndRemovedUsers = (formData) => {
-    const reservationUsers = reservation.participants.map((element)=>{
-    return {
-      email: element.email,
-      firstName: element.firstName,
-      lastName: element.lastName
-    };
-  });
-
-    const addedUsers = selectedUsers.filter(
-      (newUser) => !reservationUsers.some((oldUser) => oldUser.email === newUser.email)
-    );
-
-    const removedUsers = reservationUsers.filter(
-      (deletedUser) => !selectedUsers.some((oldUser) => oldUser.email === deletedUser.email)
-    );
-
-    if(addedUsers.length) formData.addedUsers = addedUsers;
-    if(removedUsers.length) formData.removedUsers = removedUsers;
-  };
-
-  
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const participants = selectedUsers.map((user) => {
+  const mappedParticipants = (list) => {
+    const newList = list.map((element) => {
       return {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
+        email: element.email,
+        firstName: element.firstName,
+        lastName: element.lastName
       };
     });
+    return newList;
+  };
+
+  const retrieveAddedAndRemovedParticipants = (formData) => {
+    const oldParticipantList = mappedParticipants(reservation.participants);
+    const currentParticipantList = mappedParticipants(selectedUsers);
+
+    const addedParticipants = currentParticipantList.filter(
+      (newUser) => !oldParticipantList.some((oldUser) => oldUser.email === newUser.email)
+    );
+
+    const removedParticipants = oldParticipantList.filter(
+      (deletedUser) => !currentParticipantList.some((oldUser) => oldUser.email === deletedUser.email)
+    );
+
+    const updatedParticipants = oldParticipantList.filter((existingUser) =>
+      currentParticipantList.some((oldUser) => oldUser.email === existingUser.email)
+    );
+
+    if (addedParticipants.length) formData.addedParticipants = addedParticipants;
+    if (removedParticipants.length) formData.removedParticipants = removedParticipants;
+    if (updatedParticipants.length) formData.updatedParticipants = updatedParticipants;
+  };
+
+  const changesMade = (objectToPost) => {
+    if (
+      DateTime.fromISO(objectToPost.startAt).toUTC().toMillis() ===
+        DateTime.fromISO(reservation.startAt).toUTC().toMillis() &&
+      DateTime.fromISO(objectToPost.endAt).toUTC().toMillis() ===
+        DateTime.fromISO(reservation.endAt).toUTC().toMillis() &&
+      (!objectToPost.addedParticipants || objectToPost.addedParticipants.length === 0) &&
+      (!objectToPost.removedParticipants || objectToPost.removedParticipants.length === 0)
+    )
+      return false;
+
+    return true;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     const objectToPost = {
-      startAt,
-      endAt,
-      participants
+      startAt: new Date(startAt).toISOString(),
+      endAt: new Date(endAt).toISOString()
     };
+    retrieveAddedAndRemovedParticipants(objectToPost);
+
+    if (!changesMade(objectToPost)) {
+      successToast('No changes made!');
+      onClose();
+      return;
+    }
+
     await updateReservation({ id: reservation.id, body: objectToPost })
       .unwrap()
       .then((response) => {
@@ -188,7 +212,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
             </Typography>
           </Container>
           <Container>
-            <form onSubmit={handleSubmit} spacing={1} justifyContent="space-between">
+            <form onSubmit={handleSubmit} spacing={1}>
               {role.includes('Administrator') || role.includes('Lead') ? (
                 <PrivilegeReservationForm
                   handleStartDateChange={handleStartDateChange}

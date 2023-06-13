@@ -244,6 +244,12 @@ exports.location = joi
   })
   .options({ abortEarly: false });
 
+const participantSchema = joi.object({
+  firstName: joi.string().min(1).max(50).required(),
+  lastName: joi.string().min(1).max(50).required(),
+  email: joi.string().email({ minDomainSegments: 2 }).required()
+});
+
 // Reservation Entity Schema
 exports.reservation = joi
   .object({
@@ -263,14 +269,9 @@ exports.reservation = joi
       }),
     startAt: joi.date().greater(new Date()).required(),
     endAt: joi.date().greater(joi.ref('startAt')).required(),
-    participants: joi
-      .array()
-      .items({
-        firstName: joi.string().min(1).max(50).required(),
-        lastName: joi.string().min(1).max(50).required(),
-        email: joi.string().email({ minDomainSegments: 2 }).required()
-      })
-      .optional()
+    addedParticipants: joi.array().items(participantSchema).optional(),
+    removedParticipants: joi.array().items(participantSchema).optional(),
+    updatedParticipants: joi.array().items(participantSchema).optional()
   })
   .options({ abortEarly: false });
 

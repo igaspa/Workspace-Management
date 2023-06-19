@@ -23,6 +23,8 @@ const responseMessages = {
   UPDATE_UNSUCCESSFUL: (modelName) => `Failed to update${formatModelName(modelName)}!`,
 
   // Constant messages
+  INVITATION_SENT: 'Invitation successfully sent!',
+  ACCOUNT_ALREADY_ACTIVATED: 'This account has already been activated!',
   PASSWORD_CREATED: 'Password successfully create!',
   ACTIVATION_TOKEN_EXPIRED: 'Your token has expired, please ask administrator to invite you again...',
   INVALID_VALUE_TYPE: 'Bad request, insert correct value type',

@@ -116,7 +116,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
   };
 
   const {
-    data: users = [],
+    data: [users, userPages] = [],
     isError: userFetchError,
     error: userErrorObject,
     isLoading: userLoading

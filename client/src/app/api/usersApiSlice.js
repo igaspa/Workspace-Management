@@ -15,18 +15,61 @@ export const usersApiSlice = createApi({
   tagTypes: ['usersList', 'user'],
   endpoints: (builder) => ({
     getUsersList: builder.query({
-      providesTags: ['userList'],
+      providesTags: ['usersList'],
       query: (params) => {
         const queryParameters = {
-          ...(params?.email && { email: params.email })
+          ...(params.size && { size: params.size }),
+          ...(params?.email && { email: params.email }),
+          page: params.page
         };
+        let url = '/user';
+        const { include } = params;
+        if (include && include.length) {
+          include.forEach((el) => {
+            url += `?include=${el}`;
+          });
+        }
         return {
-          url: '/user',
+          url,
           method: 'GET',
           params: queryParameters
         };
       },
-      invalidatesTags: ['userList']
+      transformResponse: (response, meta, args) => {
+        const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+        return [response, pages];
+      },
+      invalidatesTags: ['usersList']
+    }),
+
+    getUsersSearchList: builder.query({
+      query: (params) => {
+        const queryParameters = {
+          email: params.email,
+          size: params.size,
+          page: params.page
+        };
+        let url = '/user';
+        const { include } = params;
+        if (include && include.length) {
+          include.forEach((el) => {
+            url += `?include=${el}`;
+          });
+        }
+        return {
+          url,
+          method: 'GET',
+          params: queryParameters
+        };
+      },
+      providesTags: ['usersList'],
+      transformResponse: (response, meta, args) => {
+        const pages = Number(meta.response.headers.get('X-Total-Pages'));
+
+        return [response, pages];
+      },
+      invalidatesTags: ['usersList']
     }),
     // this method creates a new user
     createUser: builder.mutation({
@@ -37,26 +80,55 @@ export const usersApiSlice = createApi({
       }),
       invalidatesTags: ['usersList']
     }),
+
     // this method gets a user by the id
     getUser: builder.query({
       query: (id) => `/user/${id}`,
       providesTags: ['user']
     }),
+
     // this method updates a user by the id
     updateUser: builder.mutation({
-      query: ({ id, body }) => ({
-        url: `/user/${id}`,
+      query: (params) => {
+        return {
+          url: `/user/${params.id}`,
+          method: 'PUT',
+          body: params.body
+        };
+      },
+      invalidatesTags: ['usersList', 'user']
+    }),
+
+    // this method creates users password
+    createUserPassword: builder.mutation({
+      query: (params) => {
+        return {
+          url: `/user/password-create?token=${params.token}`,
+          method: 'PUT',
+          body: params.body
+        };
+      },
+      invalidatesTags: ['usersList', 'user']
+    }),
+
+    // this method reinvites user to application
+    reinviteUser: builder.mutation({
+      query: ({ body }) => ({
+        url: `/user/reinvite`,
         method: 'PUT',
         body
       }),
       invalidatesTags: ['usersList', 'user']
     }),
+
     // this method deletes a user by the id
     deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `/user/${id}`,
-        method: 'DELETE'
-      }),
+      query: (params) => {
+        return {
+          url: `/user/${params.id}`,
+          method: 'DELETE'
+        };
+      },
       invalidatesTags: ['usersList']
     })
   })
@@ -64,8 +136,11 @@ export const usersApiSlice = createApi({
 
 export const {
   useGetUsersListQuery,
+  useGetUsersSearchListQuery,
   useCreateUserMutation,
+  useCreateUserPasswordMutation,
   useGetUserQuery,
   useUpdateUserMutation,
+  useReinviteUserMutation,
   useDeleteUserMutation
 } = usersApiSlice;

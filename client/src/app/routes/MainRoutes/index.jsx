@@ -6,6 +6,7 @@ import Users from '../../pages/Users';
 import User from '../../pages/User';
 import ReservationList from '../../pages/Reservations';
 import WorkspaceReservations from '../../pages/Workspace/workspaceReservations';
+import CreatePasswordPage from '../../pages/CreatePassword';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const MainRoutes = {
@@ -19,6 +20,10 @@ const MainRoutes = {
     {
       path: '/users',
       element: <Users />
+    },
+    {
+      path: '/user/password-create',
+      element: <CreatePasswordPage />
     },
     {
       path: '/reservations',

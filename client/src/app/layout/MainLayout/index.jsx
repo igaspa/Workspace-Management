@@ -39,6 +39,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
   })
 }));
 
+const jwt = localStorage.getItem('token');
+
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open'
 })(({ theme, open }) => ({
@@ -79,8 +81,8 @@ export default function PersistentDrawerLeft({ window }) {
     localStorage.clear();
   };
 
-  const hasAccess = (roles) => {
-    return role && roles.includes(role);
+  const hasAccess = (allowedRoles) => {
+    return role && allowedRoles.some((allowedRole) => role.includes(allowedRole));
   };
 
   const routes = [
@@ -113,22 +115,26 @@ export default function PersistentDrawerLeft({ window }) {
             )
         )}
       </List>
-      <Divider />
-      <List>
-        {[{ text: 'Logout', route: 'sign-in' }].map(({ text, route }) => (
-          <ListItem key={text} disablePadding>
-            <Link to={route} style={{ color: '#202120' }} onClick={deleteToken}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Logout />
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
+      {jwt && (
+        <>
+          <Divider />
+          <List>
+            {[{ text: 'Logout', route: 'sign-in' }].map(({ text, route }) => (
+              <ListItem key={text} disablePadding>
+                <Link to={route} style={{ color: '#202120' }} onClick={deleteToken}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Logout />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+        </>
+      )}
       <List>
         {isAdministrator && (
           <ListItem disablePadding>

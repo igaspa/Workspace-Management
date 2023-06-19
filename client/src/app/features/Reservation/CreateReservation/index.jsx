@@ -177,7 +177,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
   });
 
   const {
-    data: users = [],
+    data: [users, userPages] = [],
     isError: userFetchError,
     error: userErrorObject,
     isLoading: userLoading
@@ -212,48 +212,48 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 
           {/* Container start */}
           <Stack spacing={1} justifyContent="space-between">
-          <form onSubmit={handleSubmit} style={{ padding: 10 }}>
-            {role.includes('Administrator') || role.includes('Lead') ? (
-              <PrivilegeReservation
-                permanentReservation={permanentReservation}
-                handleReservationTypeChange={handleReservationTypeChange}
-                handleStartDateChange={handleStartDateChange}
-                handleEndDateChange={handleEndDateChange}
-                handleStartHourChange={handleStartHourChange}
-                handleEndHourChange={handleEndHourChange}
-                startHour={startHour}
-                startHours={startHours}
-                endHour={endHour}
-                endHours={endHours}
-                startDate={startDate}
-                endDate={endDate}
-                dates={dates}
-                users={users}
-                selectedUsers={selectedUsers}
-                selectedUser={selectedUser}
-                handleParticipantChange={handleParticipantChange}
-                handleSelectedUser={handleSelectedUser}
-                handleEmailInputChange={handleEmailInputChange}
-                workspaceType={workspace.workspaceType}
-              />
-            ) : (
-              <StandardReservation
-                handleStartDateChange={handleStartDateChange}
-                handleStartHourChange={handleStartHourChange}
-                handleEndHourChange={handleEndHourChange}
-                startHour={startHour}
-                startHours={startHours}
-                startDate={startDate}
-                dates={dates}
-                endHour={endHour}
-                endHours={endHours}
-                users={users}
-                selectedUsers={selectedUsers}
-                handleParticipantChange={handleParticipantChange}
-                handleEmailInputChange={handleEmailInputChange}
-                workspaceType={workspace.workspaceType}
-              />
-            )}
+            <form onSubmit={handleSubmit} style={{ padding: 10 }}>
+              {role.includes('Administrator') || role.includes('Lead') ? (
+                <PrivilegeReservation
+                  permanentReservation={permanentReservation}
+                  handleReservationTypeChange={handleReservationTypeChange}
+                  handleStartDateChange={handleStartDateChange}
+                  handleEndDateChange={handleEndDateChange}
+                  handleStartHourChange={handleStartHourChange}
+                  handleEndHourChange={handleEndHourChange}
+                  startHour={startHour}
+                  startHours={startHours}
+                  endHour={endHour}
+                  endHours={endHours}
+                  startDate={startDate}
+                  endDate={endDate}
+                  dates={dates}
+                  users={users}
+                  selectedUsers={selectedUsers}
+                  selectedUser={selectedUser}
+                  handleParticipantChange={handleParticipantChange}
+                  handleSelectedUser={handleSelectedUser}
+                  handleEmailInputChange={handleEmailInputChange}
+                  workspaceType={workspace.workspaceType}
+                />
+              ) : (
+                <StandardReservation
+                  handleStartDateChange={handleStartDateChange}
+                  handleStartHourChange={handleStartHourChange}
+                  handleEndHourChange={handleEndHourChange}
+                  startHour={startHour}
+                  startHours={startHours}
+                  startDate={startDate}
+                  dates={dates}
+                  endHour={endHour}
+                  endHours={endHours}
+                  users={users}
+                  selectedUsers={selectedUsers}
+                  handleParticipantChange={handleParticipantChange}
+                  handleEmailInputChange={handleEmailInputChange}
+                  workspaceType={workspace.workspaceType}
+                />
+              )}
             </form>
           </Stack>
 

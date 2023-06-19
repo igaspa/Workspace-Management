@@ -4,6 +4,7 @@ import BackofficeLayout from '../../layout/BackofficeLayout';
 import BackofficeDashboard from '../../pages/BackofficeDashboard';
 import WorkspaceCreation from '../../pages/Workspace/createWorkspaces';
 import WorkspaceList from '../../features/Workspace/WorkspaceTable';
+import UserList from '../../features/Users/UserTable';
 import EquipmentList from '../../pages/Equipment';
 import WorkspaceTypeList from '../../pages/WorkspaceType';
 import CreateWorkspaceTypePage from '../../pages/CreateWorkspaceType';
@@ -12,6 +13,8 @@ import LocationList from '../../pages/Location';
 import CreateLocationPage from '../../pages/CreateLocation';
 import AreaTable from '../../features/Area/AreaTable';
 import CreateArea from '../../features/Area/CreateArea';
+import CreateUserPage from '../../pages/CreateUser';
+import ReinviteUserPage from '../../pages/ReinviteUser';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const BackofficeRoutes = {
@@ -25,6 +28,18 @@ const BackofficeRoutes = {
     {
       path: '/backoffice/workspaces',
       element: <WorkspaceList />
+    },
+    {
+      path: '/backoffice/users',
+      element: <UserList />
+    },
+    {
+      path: '/backoffice/user/invite',
+      element: <CreateUserPage />
+    },
+    {
+      path: '/backoffice/user/reinvite',
+      element: <ReinviteUserPage />
     },
     {
       path: '/backoffice/create-workspace',

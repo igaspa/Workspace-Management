@@ -8,28 +8,31 @@ import { workspaceTypesApiSlice } from '../api/workspaceTypeApiSlice';
 import { equipmentsApiSlice } from '../api/equipmentApiSlice';
 import { areaApiSlice } from '../api/areaApiSlice';
 import { locationApiSlice } from '../api/locationApiSlice';
+import { roleApiSlice } from '../api/roleApiSlice';
 
 export default configureStore({
-	reducer: {
-		[apiSlice.reducerPath]: apiSlice.reducer,
-		[usersApiSlice.reducerPath]: usersApiSlice.reducer,
-		[workspacesApiSlice.reducerPath]: workspacesApiSlice.reducer,
-		[workspaceTypesApiSlice.reducerPath]: workspaceTypesApiSlice.reducer,
-		[reservationsApiSlice.reducerPath]: reservationsApiSlice.reducer,
-		[areaApiSlice.reducerPath]: areaApiSlice.reducer,
-		[loginApiSlice.reducerPath]: loginApiSlice.reducer,
-		[equipmentsApiSlice.reducerPath]: equipmentsApiSlice.reducer,
-		[locationApiSlice.reducerPath]: locationApiSlice.reducer
-	},
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware()
-			.concat(apiSlice.middleware)
-			.concat(usersApiSlice.middleware)
-			.concat(workspacesApiSlice.middleware)
-			.concat(workspaceTypesApiSlice.middleware)
-			.concat(reservationsApiSlice.middleware)
-			.concat(areaApiSlice.middleware)
-			.concat(loginApiSlice.middleware)
-			.concat(equipmentsApiSlice.middleware)
-			.concat(locationApiSlice.middleware)
+  reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    [usersApiSlice.reducerPath]: usersApiSlice.reducer,
+    [workspacesApiSlice.reducerPath]: workspacesApiSlice.reducer,
+    [workspaceTypesApiSlice.reducerPath]: workspaceTypesApiSlice.reducer,
+    [reservationsApiSlice.reducerPath]: reservationsApiSlice.reducer,
+    [areaApiSlice.reducerPath]: areaApiSlice.reducer,
+    [loginApiSlice.reducerPath]: loginApiSlice.reducer,
+    [equipmentsApiSlice.reducerPath]: equipmentsApiSlice.reducer,
+    [locationApiSlice.reducerPath]: locationApiSlice.reducer,
+    [roleApiSlice.reducerPath]: roleApiSlice.reducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware()
+      .concat(apiSlice.middleware)
+      .concat(usersApiSlice.middleware)
+      .concat(workspacesApiSlice.middleware)
+      .concat(workspaceTypesApiSlice.middleware)
+      .concat(reservationsApiSlice.middleware)
+      .concat(areaApiSlice.middleware)
+      .concat(loginApiSlice.middleware)
+      .concat(equipmentsApiSlice.middleware)
+      .concat(locationApiSlice.middleware)
+      .concat(roleApiSlice.middleware)
 });

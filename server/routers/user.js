@@ -11,6 +11,8 @@ router
   .route('/password-create')
   .put(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.createPassword));
 
+router.route('/reinvite').put(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.reinviteUser));
+
 router.use(callbackErrorHandler(authenticateUser));
 router
   .route('/')

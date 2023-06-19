@@ -16,10 +16,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SvgIcon from '@mui/material/SvgIcon';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Home, Logout, LocationOn, MeetingRoom, Desk, Construction } from '@mui/icons-material';
+import { Home, Logout, LocationOn, MeetingRoom, Desk, Construction, Groups } from '@mui/icons-material';
 import { Link, Outlet } from 'react-router-dom';
 import BackofficeButton from '../../components/Buttons/backofficeButton';
-
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -78,6 +77,7 @@ export default function PersistentDrawerLeft({ window }) {
 
   const routes = [
     { text: 'Home', route: '/backoffice', icon: Home },
+    { text: 'Users', route: 'users', icon: Groups },
     { text: 'Equipment', route: 'equipment', icon: Construction },
     { text: 'Workspace', route: 'workspaces', icon: Desk },
     { text: 'WorkspaceType', route: 'workspace-type', icon: Desk },

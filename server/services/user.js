@@ -1,37 +1,106 @@
-const { user, sequelize } = require('../database/models');
-const crypto = require('crypto');
-const { DateTime } = require('luxon');
+const { user, sequelize, userRole } = require('../database/models');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 const bcrypt = require('bcrypt');
 
-const createNewUser = async (userData, token, tokenExpirationTime) => {
-  await user.create({
-    ...userData,
-    token,
-    tokenExpirationTime
-  });
+const saveUserToDB = async (data, token, transaction) => {
+  await user.create(
+    {
+      ...data,
+      token: token.value,
+      tokenExpirationTime: token.expirationTime
+    },
+    { transaction }
+  );
 };
 
-const updateUserToken = async (data, userEmail) => {
-  const [_updatedModel, _updatedData] = await user.update(data, {
-    where: { email: userEmail },
-    returning: true
+const saveUserRoleToDB = async (data, transaction) => {
+  const { addedRoles, id } = data;
+
+  const promises = addedRoles.map((roleId) => {
+    return userRole.create(
+      {
+        roleId,
+        userId: id
+      },
+      { transaction }
+    );
   });
+
+  await Promise.all(promises);
 };
 
-exports.userCreation = async (data) => {
-  const token = crypto.randomBytes(20).toString('hex');
-  const tokenExpirationTime = DateTime.now().plus({ minutes: process.env.TOKEN_EXPIRATION_MINUTES });
-  const existingUser = await user.findOne({
-    where: {
-      email: data.email
+exports.createNewUser = async (userData, token) => {
+  const transaction = await sequelize.transaction();
+  try {
+    await saveUserToDB(userData, token, transaction);
+
+    await saveUserRoleToDB(userData, transaction);
+
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+const removeUserRole = async (roleList, transaction, userId) => {
+  const promises = roleList.map((role) => {
+    return userRole.destroy({ where: { userId, roleId: role } }, { transaction }).then((deletedModel) => {
+      if (!deletedModel) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(userRole.name));
+    });
+  });
+
+  await Promise.all(promises);
+};
+
+exports.updateUser = async (req) => {
+  const { body, params } = req;
+  const { addedRoles, removedRoles } = body;
+  console.log(addedRoles, removedRoles);
+
+  try {
+    transaction = await sequelize.transaction();
+
+    if (addedRoles?.length) await saveUserRoleToDB({ addedRoles, id: params.id }, transaction);
+
+    if (removedRoles?.length) await removeUserRole(removedRoles, transaction, params.id);
+
+    // delete body elements that do not belong to user model
+    delete body.addedRoles;
+    delete body.removedRoles;
+
+    // update user with the rest of body data
+    if (Object.keys(body).length) {
+      const [updatedModel, _updatedData] = await user.update(
+        body,
+        {
+          where: { id: params.id },
+          returning: true
+        },
+        { transaction }
+      );
+      if (!updatedModel) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(user.name));
     }
-  });
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
 
-  // if user does not exist create new one, otherwise update users token
-  if (!existingUser) await createNewUser(data, token, tokenExpirationTime);
-  else await updateUserToken({ token, tokenExpirationTime }, data.email);
+exports.updateUserToken = async (email, token) => {
+  const [_updatedModel, updatedData] = await user.update(
+    {
+      token: token.value,
+      tokenExpirationTime: token.expirationTime
+    },
+    {
+      where: { email },
+      returning: true
+    }
+  );
+  return updatedData[0].dataValues;
 };
 
 const updateUserPassword = async (token, password) => {

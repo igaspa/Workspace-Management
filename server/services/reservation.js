@@ -22,17 +22,23 @@ const deletePermamentReservationFromDB = async (data) => {
       });
     } else {
       // if reservation started, set endAt date to current date
-      await reservation.update({ endAt: new Date() }, {
-        where: { id },
-        transaction
-      });
+      await reservation.update(
+        { endAt: new Date() },
+        {
+          where: { id },
+          transaction
+        }
+      );
     }
 
     // Update the workspace without the permanentlyReserved flag
-    await workspace.update({ permanentlyReserved: false }, {
-      where: { id: userReservation.workspaceId },
-      transaction
-    });
+    await workspace.update(
+      { permanentlyReserved: false },
+      {
+        where: { id: userReservation.workspaceId },
+        transaction
+      }
+    );
 
     await transaction.commit();
   } catch (error) {
@@ -68,10 +74,7 @@ const deleteReservation = async (req) => {
   } else if (new Date(userReservation.endAt) < new Date()) {
     throw errors.BAD_REQUEST(responseMessage.DELETE_EXPIRED_RESERVATION_ERROR);
   } else {
-    await reservation.update(
-      { endAt: new Date() },
-      { where: { id } }
-    );
+    await reservation.update({ endAt: new Date() }, { where: { id } });
   }
 };
 exports.deleteReservation = deleteReservation;
@@ -97,17 +100,16 @@ const getUserReservationsByWorkspaceType = async (userId, workspaceTypeId) => {
   const reservations = await reservation.findAll({
     where: {
       userId,
-      [Op.or]: [
-        { endAt: { [Op.gt]: new Date() } },
-        { endAt: null }
-      ]
+      [Op.or]: [{ endAt: { [Op.gt]: new Date() } }, { endAt: null }]
     },
     attributes: ['startAt', 'endAt'],
-    include: [{
-      model: workspace,
-      where: { typeId: workspaceTypeId },
-      attributes: ['permanentlyReserved']
-    }],
+    include: [
+      {
+        model: workspace,
+        where: { typeId: workspaceTypeId },
+        attributes: ['permanentlyReserved']
+      }
+    ],
     order: [['startAt', 'ASC']]
   });
 
@@ -117,13 +119,17 @@ const getUserReservationsByWorkspaceType = async (userId, workspaceTypeId) => {
 const retrieveReservationsThatIsBeingUpdated = async (reservationId, userId) => {
   const currentReservation = await reservation.findOne({
     where: { id: reservationId, userId },
-    include: [{
-      model: workspace,
-      include: [{
-        model: workspaceType,
-        attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants']
-      }]
-    }]
+    include: [
+      {
+        model: workspace,
+        include: [
+          {
+            model: workspaceType,
+            attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants']
+          }
+        ]
+      }
+    ]
   });
   return currentReservation;
 };
@@ -140,10 +146,7 @@ const savePermanentReservationToDB = async (data) => {
     await reservation.create({ id, userId, workspaceId, startAt: start }, { transaction });
 
     // Update the workspace with the permanentlyReserved flag
-    await workspace.update(
-      { permanentlyReserved: true },
-      { where: { id: workspaceId }, transaction }
-    );
+    await workspace.update({ permanentlyReserved: true }, { where: { id: workspaceId }, transaction });
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
@@ -162,7 +165,9 @@ exports.createPermanentReservation = async (req) => {
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
-  const { workspaceType: { id: workspaceTypeId, allowPermanentReservations } } = workspaceInfo;
+  const {
+    workspaceType: { id: workspaceTypeId, allowPermanentReservations }
+  } = workspaceInfo;
 
   if (!allowPermanentReservations) throw errors.BAD_REQUEST(responseMessage.PERMANENT_RESERVATION_NOT_SUPPORTED);
 
@@ -172,17 +177,11 @@ exports.createPermanentReservation = async (req) => {
       [Op.or]: [
         {
           workspaceId,
-          [Op.or]: [
-            { endAt: { [Op.gt]: new Date(startAt) } },
-            { endAt: null }
-          ]
+          [Op.or]: [{ endAt: { [Op.gt]: new Date(startAt) } }, { endAt: null }]
         },
         {
           userId,
-          [Op.or]: [
-            { endAt: { [Op.gt]: new Date(startAt) } },
-            { endAt: null }
-          ]
+          [Op.or]: [{ endAt: { [Op.gt]: new Date(startAt) } }, { endAt: null }]
         }
       ]
     },
@@ -217,16 +216,18 @@ exports.createReservation = async (req) => {
   const workspaceInfo = await workspace.findOne({
     where: { id: workspaceId },
     attributes: ['permanentlyReserved'],
-    include: [{
-      model: workspaceType,
-      attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants']
-    }]
+    include: [
+      {
+        model: workspaceType,
+        attributes: ['id', 'maxReservationInterval', 'maxReservationWindow', 'allowMultipleParticipants']
+      }
+    ]
   });
   if (!workspaceInfo) throw errors.NOT_FOUND(responseMessage.NOT_FOUND(workspace.name));
 
   const {
-    permanentlyReserved, workspaceType:
-    { id: workspaceTypeId, maxReservationInterval, maxReservationWindow, allowMultipleParticipants }
+    permanentlyReserved,
+    workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow, allowMultipleParticipants }
   } = workspaceInfo;
 
   // validate this workspace is not permanently reserved
@@ -238,13 +239,13 @@ exports.createReservation = async (req) => {
 
   // validate reservation time if user is not administrator or lead
   if (!userRoles.includes(roles.administrator || roles.lead)) {
-    const reservations = await getUserReservationsByWorkspaceType(userId, workspaceTypeId) || [];
+    const reservations = (await getUserReservationsByWorkspaceType(userId, workspaceTypeId)) || [];
     validateReservationConstraints(reservations, data);
   }
   validateReservationTimeIntervals(startAt, endAt);
 
   // Create the reservation
-  const participants = allowMultipleParticipants ? req.body.participants : null;
+  const participants = allowMultipleParticipants ? req.body.addedParticipants : null;
 
   await reservation.create({
     id,
@@ -252,7 +253,7 @@ exports.createReservation = async (req) => {
     workspaceId,
     startAt: new Date(startAt),
     endAt: new Date(endAt),
-    participants: participants || null
+    participants
   });
 };
 
@@ -273,8 +274,7 @@ exports.updateReservation = async (req) => {
   // destruct needed attributes for validation
   const {
     workspace: {
-      workspaceType:
-    { id: workspaceTypeId, maxReservationInterval, maxReservationWindow, allowMultipleParticipants }
+      workspaceType: { id: workspaceTypeId, maxReservationInterval, maxReservationWindow, allowMultipleParticipants }
     }
   } = currentReservation;
 
@@ -285,7 +285,7 @@ exports.updateReservation = async (req) => {
 
     // filter all reservations except requested one, since we need to validate new reservation start and end
     const reservationsExceptRequested = reservations.length
-      ? reservations.filter(reservation => reservation.id !== id)
+      ? reservations.filter((reservation) => reservation.id !== id)
       : [];
     const data = { startAt, endAt, maxReservationInterval, maxReservationWindow };
     validateReservationConstraints(reservationsExceptRequested, data);
@@ -295,14 +295,21 @@ exports.updateReservation = async (req) => {
   validateReservationTimeIntervals(startAt, endAt);
 
   // updateReservation
-  const participants = allowMultipleParticipants ? req.body.participants : null;
+  const addedParticipants = req.body.addedParticipants ?? [];
+  const updatedParticipants = req.body.updatedParticipants ?? [];
+
+  const newParticipantList = addedParticipants.concat(updatedParticipants);
+
+  const participants = allowMultipleParticipants ? newParticipantList : null;
   const [updatedModel, _updatedData] = await reservation.update(
-    { startAt: new Date(startAt), endAt: new Date(endAt), participants }, {
+    { startAt: new Date(startAt), endAt: new Date(endAt), participants },
+    {
       where: {
         id,
         userId
       },
       returning: true
-    });
+    }
+  );
   if (!updatedModel) throw errors.CONFLICT(responseMessage.UPDATE_UNSUCCESSFUL(reservation.name));
 };

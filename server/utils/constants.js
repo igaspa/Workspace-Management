@@ -16,19 +16,19 @@ module.exports.notificationTemplates = {
   createdReservationTemplate: 'fc06d6a8-15b9-4134-89f9-49e490947f76',
   updatedReservationTemplate: '855798c2-c224-43df-bc9e-b7b761976674',
   canceledReservationTemplate: '07dc7676-a383-460e-893b-2b43444d0901',
-  createdReservationInvitationTemplate: '82f4ef25-ce5f-41e7-b69c-4fb90a71b91c',
+  createdReservationParticipantTemplate: '82f4ef25-ce5f-41e7-b69c-4fb90a71b91c',
   updatedReservationParticipantTemplate: '07f94f84-1210-463f-ad66-849a9edda46a',
   canceledReservationParticipantTemplate: '4505ef57-ad78-4584-96f4-251a67c2e078',
   userInvitationTemplate: '2a4b415d-f93c-487d-8f45-46b61fe56439'
 };
 
 module.exports.notificationNames = {
-  reservationConfirmation: 'reservation_confirmation_template',
+  reservationCreated: 'reservation_created_template',
   reservationUpdate: 'reservation_updated_template',
   reservationCancel: 'reservation_canceled_template',
-  reservationInvitation: 'reservation_invitation_template',
-  reservationUpdatedParticipant: 'reservation_updated_participant_template', 
-  reservationCanceledParticipant: 'reservation_canceled_participant_template', 
+  reservationCreatedParticipant: 'reservation_created_participant_template',
+  reservationUpdatedParticipant: 'reservation_updated_participant_template',
+  reservationCanceledParticipant: 'reservation_canceled_participant_template',
   userInvitation: 'user_invitation_template'
 };
 

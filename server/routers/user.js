@@ -13,6 +13,10 @@ router
 
 router.route('/reinvite').put(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.reinviteUser));
 
+router
+  .route('/password-reset')
+  .put(bodyValidatorAdditionalAttribute, callbackErrorHandler(generalController.passwordReset));
+
 router.use(callbackErrorHandler(authenticateUser));
 router
   .route('/')

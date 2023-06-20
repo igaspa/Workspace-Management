@@ -337,6 +337,13 @@ exports.user_reinvite = joi
   })
   .options({ abortEarly: false });
 
+// Password Reset Schema
+exports.user_password_reset = joi
+  .object({
+    email: joi.string().email().required()
+  })
+  .options({ abortEarly: false });
+
 // User Entity Schema
 exports.user = joi
   .object({

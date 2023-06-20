@@ -121,6 +121,16 @@ export const usersApiSlice = createApi({
       invalidatesTags: ['usersList', 'user']
     }),
 
+    // this method sends user password reset link
+    resetPassword: builder.mutation({
+      query: ({ body }) => ({
+        url: `/user/password-reset`,
+        method: 'PUT',
+        body
+      }),
+      invalidatesTags: ['usersList', 'user']
+    }),
+
     // this method deletes a user by the id
     deleteUser: builder.mutation({
       query: (params) => {
@@ -142,5 +152,6 @@ export const {
   useGetUserQuery,
   useUpdateUserMutation,
   useReinviteUserMutation,
+  useResetPasswordMutation,
   useDeleteUserMutation
 } = usersApiSlice;

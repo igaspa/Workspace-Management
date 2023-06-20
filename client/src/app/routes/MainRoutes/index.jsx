@@ -7,6 +7,7 @@ import User from '../../pages/User';
 import ReservationList from '../../pages/Reservations';
 import WorkspaceReservations from '../../pages/Workspace/workspaceReservations';
 import CreatePasswordPage from '../../pages/CreatePassword';
+import PasswordResetPage from '../../pages/PasswordReset';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const MainRoutes = {
@@ -24,6 +25,10 @@ const MainRoutes = {
     {
       path: '/user/password-create',
       element: <CreatePasswordPage />
+    },
+    {
+      path: '/users/password-reset',
+      element: <PasswordResetPage />
     },
     {
       path: '/reservations',

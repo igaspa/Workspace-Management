@@ -33,7 +33,7 @@ export default function CreateEquipment() {
         divRef.current.reset();
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

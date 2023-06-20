@@ -146,7 +146,7 @@ export default function WorkspaceTypeTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 
@@ -171,7 +171,7 @@ export default function WorkspaceTypeTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

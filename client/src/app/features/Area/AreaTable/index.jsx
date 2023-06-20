@@ -153,7 +153,7 @@ export default function AreaTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 
@@ -201,7 +201,7 @@ export default function AreaTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
   const count = searchAreaPages ? searchArea * size : pages * size;

@@ -159,7 +159,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
         onClose();
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 
@@ -186,13 +186,11 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
 
   useEffect(() => {
     if (userFetchError) {
-      const authorizationError = errorHandler(userErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(userErrorObject, navigate);
     }
 
     if (reservationsFetchError) {
-      const authorizationError = errorHandler(reservationErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(reservationErrorObject, navigate);
     }
   }, [users, reservations]);
 

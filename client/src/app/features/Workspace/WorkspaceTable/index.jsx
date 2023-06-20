@@ -142,8 +142,7 @@ const Workspaces = () => {
           setSelectedId('');
         })
         .catch((error) => {
-          const authorizationError = errorHandler(error);
-          if (authorizationError) navigate('/sign-in');
+          errorHandler(error, navigate);
         });
     }
   };
@@ -226,7 +225,7 @@ const Workspaces = () => {
         if (error.status === 400) {
           handleClose();
           handleOpenForceDelete();
-        } else errorHandler(error);
+        } else errorHandler(error, navigate);
       });
   };
 
@@ -240,7 +239,7 @@ const Workspaces = () => {
       })
       .catch((error) => {
         handleCloseForceDelete();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

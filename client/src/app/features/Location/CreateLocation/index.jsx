@@ -32,7 +32,7 @@ export default function CreateLocation() {
         divRef.current.reset();
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

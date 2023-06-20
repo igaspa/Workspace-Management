@@ -51,7 +51,7 @@ export default function CreateUser() {
         setSelectedRoles([]);
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

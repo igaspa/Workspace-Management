@@ -32,7 +32,7 @@ export default function SignIn() {
         navigate(0);
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

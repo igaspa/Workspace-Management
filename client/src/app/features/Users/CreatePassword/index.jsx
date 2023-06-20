@@ -36,7 +36,7 @@ export default function CreatePassword() {
         navigate('/sign-in');
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

@@ -134,7 +134,7 @@ export default function LocationTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 
@@ -157,7 +157,7 @@ export default function LocationTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
   const count = searchLocationPages ? searchLocationPages * size : pages * size;

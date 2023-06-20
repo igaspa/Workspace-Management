@@ -34,8 +34,7 @@ const WorkspaceReservations = () => {
 
   useEffect(() => {
     if (isError) {
-      const authorizationError = errorHandler(error);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(error, navigate);
     }
   }, [reservations]);
 

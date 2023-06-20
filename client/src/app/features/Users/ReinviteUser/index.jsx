@@ -35,7 +35,7 @@ export default function ReinviteUser() {
         navigate('/backoffice/users');
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

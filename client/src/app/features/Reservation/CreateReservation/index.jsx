@@ -120,7 +120,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
         onClose();
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 
@@ -187,12 +187,10 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 
   useEffect(() => {
     if (reservationsFetchError) {
-      const authorizationError = errorHandler(reservationErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(reservationErrorObject, navigate);
     }
     if (userFetchError) {
-      const authorizationError = errorHandler(userErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(userErrorObject, navigate);
     }
   }, [reservations, users]);
 

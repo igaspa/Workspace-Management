@@ -8,7 +8,6 @@ import ReservationList from '../../pages/Reservations';
 import WorkspaceReservations from '../../pages/Workspace/workspaceReservations';
 import CreatePasswordPage from '../../pages/CreatePassword';
 import PasswordResetPage from '../../pages/PasswordReset';
-import PasswordResetPage from '../../pages/PasswordReset';
 import NotFound from '../../pages/404';
 import ServerError from '../../pages/ServerError';
 

@@ -8,9 +8,19 @@ const {
   notificationTemplates,
   NOTIFICATION_KEY
 } = require('../utils/constants');
-const { notificationTemplate, reservation, notification, workspace, user } = require('../database/models');
+const {
+  notificationTemplate,
+  reservation,
+  notification,
+  workspace,
+  user,
+  area,
+  location
+} = require('../database/models');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
+
+const { ICalCalendar } = require('ical-generator');
 
 exports.setNotificationTemplate = async () => {
   try {
@@ -51,14 +61,27 @@ const sendEmail = async (email) => {
   });
 };
 
-const createEmail = (emailAddress, emailTemplate) => {
-  const email = {
+const createEmail = (emailAddress, emailTemplate, icalObjectInstance) => {
+  const mailOptions = {
     from: process.env.EMAIL,
     to: emailAddress,
     subject: emailTemplate.title,
     html: emailTemplate.body
   };
-  return email;
+
+  if (icalObjectInstance) {
+    const icalContent = icalObjectInstance.toString();
+
+    mailOptions.attachments = [
+      {
+        filename: 'invitation.ics',
+        content: icalContent,
+        contentType: 'text/calendar'
+      }
+    ];
+  }
+
+  return mailOptions;
 };
 
 const personalizeEmailTemplate = function (mailData, emailTemplate) {
@@ -76,7 +99,16 @@ const findReservation = async (reservationId) => {
     },
     paranoid: false,
     include: [
-      { model: workspace, attributes: workspaceNotificationAttributes },
+      {
+        model: workspace,
+        attributes: workspaceNotificationAttributes,
+        include: [
+          {
+            model: area,
+            include: [{ model: location }]
+          }
+        ]
+      },
       { model: user, attributes: userNotificationAttributes }
     ]
   });
@@ -113,7 +145,7 @@ const createAndSendEmail = async (email, data, template) => {
   }
 };
 
-const createReservationNotification = async (reservation, template) => {
+const createReservationNotification = async (reservation, template, icalObjectInstance) => {
   let emailTemplate = await getNotificationTemplate(template);
   const emailData = {
     userName: `${reservation.user.firstName} ${reservation.user.lastName}`,
@@ -129,7 +161,7 @@ const createReservationNotification = async (reservation, template) => {
   };
   emailTemplate = personalizeEmailTemplate(emailData, emailTemplate);
 
-  const email = createEmail(reservation.user.email, emailTemplate);
+  const email = createEmail(reservation.user.email, emailTemplate, icalObjectInstance);
 
   await createAndSendEmail(email, notificationData, template);
 };
@@ -155,16 +187,41 @@ const createReservationParticipantNotification = async (reservation, participant
   await createAndSendEmail(email, notificationData, template);
 };
 
-exports.sendReservationEmail = async function (req, ownerTemplate, participantsTemplate) {
+const getIcalObjectInstance = (reservation) => {
+  const cal = new ICalCalendar();
+
+  // Create an event
+  cal.createEvent({
+    start: new Date(reservation.startAt),
+    end: new Date(reservation.endAt),
+    summary: `${reservation.workspace.name} reservation`,
+    location: reservation.workspace.area.location.address,
+    organizer: {
+      name: `${reservation.user.firstName} ${reservation.user.lastName}`,
+      email: reservation.user.email
+    },
+    attendees: reservation.participants?.length
+      ? reservation.participants.map((participant) => {
+          return { email: participant.email };
+        })
+      : null
+  });
+
+  return cal;
+};
+
+exports.sendReservationEmail = async function (req, ownerTemplate, participantsTemplate, calendarEvent = false) {
   const reservationId = req.params.id || req.body.id;
   const reservation = await findReservation(reservationId);
-  if (reservation.participants.length) {
+  const icalObjectInstance = calendarEvent ? getIcalObjectInstance(reservation) : null;
+
+  if (reservation.participants?.length) {
     const participantPromises = reservation.participants.map((participant) => {
       return createReservationParticipantNotification(reservation, participant, participantsTemplate);
     });
     await Promise.all(participantPromises);
   }
-  await createReservationNotification(reservation, ownerTemplate);
+  await createReservationNotification(reservation, ownerTemplate, icalObjectInstance);
 };
 
 const notifyParticipants = async (reservation, participants, template) => {
@@ -180,7 +237,7 @@ const notifyParticipants = async (reservation, participants, template) => {
 exports.sendReservationUpdatedEmail = async function (req) {
   const reservationId = req.params.id;
   const reservation = await findReservation(reservationId);
-
+  const icalObjectInstance = getIcalObjectInstance(reservation);
   const { addedParticipants, removedParticipants, updatedParticipants } = req.body;
 
   await notifyParticipants(reservation, addedParticipants, notificationTemplates.createdReservationParticipantTemplate);
@@ -195,7 +252,11 @@ exports.sendReservationUpdatedEmail = async function (req) {
     notificationTemplates.updatedReservationParticipantTemplate
   );
 
-  await createReservationNotification(reservation, notificationTemplates.updatedReservationTemplate);
+  await createReservationNotification(
+    reservation,
+    notificationTemplates.updatedReservationTemplate,
+    icalObjectInstance
+  );
 };
 
 const createInvitationEmailTemplateAndSendEmail = async (data, token, template) => {

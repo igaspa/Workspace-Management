@@ -92,6 +92,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
   }, [endDate, endHour, startDate, startHour]);
 
   const mappedParticipants = (list) => {
+    if (!list || !list.length) return [];
     const newList = list.map((element) => {
       return {
         email: element.email,

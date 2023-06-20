@@ -71,7 +71,8 @@ module.exports.createReservation = async (req, res) => {
   await sendReservationEmail(
     req,
     notificationTemplates.createdReservationTemplate,
-    notificationTemplates.createdReservationParticipantTemplate
+    notificationTemplates.createdReservationParticipantTemplate,
+    true
   );
   return res.status(201).json({ message: responseMessage.CREATE_SUCCESS(reservation.name) });
 };

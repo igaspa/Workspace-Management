@@ -18,14 +18,24 @@ const MenuProps = {
 export default function AreaFilter({ names, handleAreaSelect, areaName }) {
   return (
     <div>
-      <FormControl sx={{ minWidth: '150px', paddingLeft: 1, paddingTop: 1, display: 'flex' }} fullWidth>
-        <InputLabel sx={{ fontSize: 14, padding: 1 }}>Select Area</InputLabel>
+      <FormControl sx={{ minWidth: '100px' }} fullWidth>
+        <InputLabel
+          sx={{
+            height: 45,
+            padding: 0,
+            marginTop: '-3px',
+            fontSize: 14
+          }}
+        >
+          Select Area
+        </InputLabel>
         <Select
           value={areaName}
           MenuProps={MenuProps}
           onChange={handleAreaSelect}
           renderValue={(selected) => selected}
           input={<OutlinedInput label="Select Area" />}
+          sx={{ fontSize: 14, padding: 0, height: 45 }}
         >
           {names.map((name) => {
             return (

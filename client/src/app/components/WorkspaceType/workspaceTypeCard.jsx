@@ -41,20 +41,14 @@ export default function WorkspaceTypeCard({ workspaceType, handleWorkspaceTypeSe
         }}
       >
         <CardContent>
-          <Typography sx={{ color: '#454545' }}>
-            <strong>{workspaceType.name}</strong>
-          </Typography>
+          <Typography sx={{ color: '#454545' }}>{workspaceType.name}</Typography>
         </CardContent>
 
         <CardContent>
           {isMobile ? (
-            <Typography sx={{ color: '#454545', fontSize: 14 }}>
-              <strong>Max reservation time: {intervalString}</strong>
-            </Typography>
+            <Typography sx={{ color: '#454545', fontSize: 14 }}>Max reservation time: {intervalString}</Typography>
           ) : (
-            <Typography sx={{ color: '#454545' }}>
-              <strong>Max reservation time: {intervalString}</strong>
-            </Typography>
+            <Typography sx={{ color: '#454545' }}>Max reservation time: {intervalString}h</Typography>
           )}
         </CardContent>
       </CardActionArea>

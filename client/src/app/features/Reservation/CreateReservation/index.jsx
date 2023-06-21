@@ -211,7 +211,7 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
           </Typography>
 
           {/* Container start */}
-          <Stack spacing={1} justifyContent="space-between">
+          <Stack spacing={1} justifyContent="space-between" marginTop={5}>
             <form onSubmit={handleSubmit} style={{ padding: 10 }}>
               {role.includes('Administrator') || role.includes('Lead') ? (
                 <PrivilegeReservation

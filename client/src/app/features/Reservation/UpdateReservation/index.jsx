@@ -213,7 +213,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
             </Typography>
           </Container>
           <Container>
-            <form onSubmit={handleSubmit} spacing={1}>
+            <form onSubmit={handleSubmit} spacing={1} style={{ marginTop: 50 }}>
               {role.includes('Administrator') || role.includes('Lead') ? (
                 <PrivilegeReservationForm
                   handleStartDateChange={handleStartDateChange}

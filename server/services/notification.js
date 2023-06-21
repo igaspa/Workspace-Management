@@ -127,7 +127,7 @@ const addNotificationToDB = async (notificationInfo) => {
   });
 };
 
-const createAndSendEmail = async (email, data, template) => {
+const sendEmailAndAddNotifToDB = async (email, data, template) => {
   try {
     await sendEmail(email);
     await addNotificationToDB({
@@ -163,7 +163,7 @@ const createReservationNotification = async (reservation, template, icalObjectIn
 
   const email = createEmail(reservation.user.email, emailTemplate, icalObjectInstance);
 
-  await createAndSendEmail(email, notificationData, template);
+  await sendEmailAndAddNotifToDB(email, notificationData, template);
 };
 
 const createReservationParticipantNotification = async (reservation, participant, template) => {
@@ -184,7 +184,7 @@ const createReservationParticipantNotification = async (reservation, participant
 
   const email = createEmail(participant.email, emailTemplate);
 
-  await createAndSendEmail(email, notificationData, template);
+  await sendEmailAndAddNotifToDB(email, notificationData, template);
 };
 
 const getIcalObjectInstance = (reservation) => {
@@ -274,7 +274,7 @@ const createInvitationEmailTemplateAndSendEmail = async (data, token, template) 
     email: data.email
   };
 
-  await createAndSendEmail(email, dataObject, template);
+  await sendEmailAndAddNotifToDB(email, dataObject, template);
 };
 
 exports.invitationEmail = async function (data, token) {

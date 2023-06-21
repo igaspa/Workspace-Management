@@ -43,7 +43,13 @@ const WorkspaceCard = ({
     >
       <CardActionArea
         onClick={handleDrawerOpen}
-        sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: 0 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+          padding: 0
+        }}
       >
         <CardContent>
           <Typography variant="h7">{workspace.name}</Typography>
@@ -51,7 +57,7 @@ const WorkspaceCard = ({
 
         <CardContent>
           {workspace.equipment.map((equipment) => (
-            <Typography fontSize={14} key={equipment.name}>
+            <Typography fontSize={14} key={equipment.name} sx={{ textAlign: 'right' }}>
               {`${equipment.name} - ${equipment.workspaceEquipment.quantity}`}
             </Typography>
           ))}

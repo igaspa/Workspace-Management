@@ -178,11 +178,12 @@ const Dashboard = () => {
               display: 'flex',
               alignItems: 'center',
               flexWrap: 'wrap',
-              justifyContent: 'center'
+              justifyContent: 'flex-start',
+              marginTop: 25
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography align="center" color="text.primary" sx={{ paddingRight: 2, fontSize: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 10 }}>
+              <Typography color="text.primary" sx={{ paddingRight: 1, fontSize: 14 }}>
                 From:
               </Typography>
               <DateFilter
@@ -196,14 +197,10 @@ const Dashboard = () => {
               />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 10 }}>
               {(role.includes('Administrator') || role.includes('Lead')) && (
                 <>
-                  <Typography
-                    align="center"
-                    color="text.primary"
-                    sx={{ paddingLeft: 1, paddingRight: 1, fontSize: 14 }}
-                  >
+                  <Typography color="text.primary" sx={{ paddingLeft: 2, paddingRight: 1, fontSize: 14 }}>
                     Until:
                   </Typography>
                   <DateFilter
@@ -219,8 +216,8 @@ const Dashboard = () => {
               )}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 10 }}>
+              <Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 2, fontSize: 14 }}>
                 Time start:
               </Typography>
               <TimeFilter
@@ -233,7 +230,7 @@ const Dashboard = () => {
                 required={false}
               />
 
-              <Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}>
+              <Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 2, fontSize: 14 }}>
                 Time end:
               </Typography>
               <TimeFilter
@@ -247,8 +244,8 @@ const Dashboard = () => {
               />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography align="center" color="text.primary" sx={{ paddingRight: 1, paddingLeft: 1, fontSize: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingBottom: 10 }}>
+              <Typography color="text.primary" sx={{ paddingRight: 1, paddingLeft: 2, fontSize: 14 }}>
                 Area:
               </Typography>
               <AreaFilter
@@ -261,12 +258,12 @@ const Dashboard = () => {
           </div>
 
           {workspacesData.length ? (
-            <Box display="flex" justifyContent="flex-end" paddingBottom={2} paddingTop={2}>
+            <Box display="flex" justifyContent="flex-end">
               <BasicPagination count={pages} page={page} onChange={handlePageChange} />
             </Box>
           ) : null}
 
-          <Grid container spacing={2} sx={{ pt: 1 }} direction="row" justifyContent="left">
+          <Grid container spacing={2} sx={{ pt: 5 }} direction="row" justifyContent="left">
             {workspacesData.map((workspace) => (
               <Grid
                 item

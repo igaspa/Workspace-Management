@@ -11,14 +11,15 @@ import Container from '@mui/material/Container';
 import { deconstructName, getNext7Days, getHours, createDate } from '../../utils/helper';
 import { BasicPagination } from '../../components/Pagination/pagination';
 import { errorHandler } from '../../utils/errors';
-import { useNavigate } from 'react-router-dom';
 import { useGetAreaListQuery } from '../../api/areaApiSlice';
 import AreaFilter from '../../components/Filters/areaFilter';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const currentDay = createDate(0);
 
   const navigate = useNavigate();
+
   const [selectedWorkspaceType, setSelectedWorkspaceType] = useState(null);
   const [from, setFrom] = useState();
   const [until, setUntil] = useState();
@@ -122,16 +123,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (workspaceTypesError) {
-      const authorizationError = errorHandler(workspaceTypeErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(workspaceTypeErrorObject, navigate);
     } else if (workspacesError) {
-      const authorizationError = errorHandler(workspacesErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(workspacesErrorObject, navigate);
     } else if (areaError) {
-      const authorizationError = errorHandler(areaErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(areaErrorObject, navigate);
     }
-  }, [workspaceTypeErrorObject, workspacesErrorObject, areaErrorObject]);
+  }, [workspaceTypeErrorObject, workspacesErrorObject, areaErrorObject, navigate]);
 
   // Render loading state
   if (workspacesLoading || workspaceTypesLoading || areaLoading) {

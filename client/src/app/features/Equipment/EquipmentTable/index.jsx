@@ -123,7 +123,7 @@ export default function EquipmentTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
   const handleUpdateClick = async (event) => {
@@ -142,7 +142,7 @@ export default function EquipmentTable() {
       })
       .catch((error) => {
         handleClose();
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

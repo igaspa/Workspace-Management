@@ -150,8 +150,7 @@ export default function WorkspaceCreation() {
         navigate('/backoffice/workspaces');
       })
       .catch((error) => {
-        const authorizationError = errorHandler(error);
-        if (authorizationError) navigate('/sign-in');
+        errorHandler(error, navigate);
       });
     setFormData({});
     setEquipment([]);
@@ -186,16 +185,13 @@ export default function WorkspaceCreation() {
 
   useEffect(() => {
     if (isWorkspaceTypesError) {
-      const authorizationError = errorHandler(workspaceTypeErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(workspaceTypeErrorObject, navigate);
     }
     if (isAreaError) {
-      const authorizationError = errorHandler(areaErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(areaErrorObject, navigate);
     }
     if (isEquipmentError) {
-      const authorizationError = errorHandler(equipmentErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(equipmentErrorObject, navigate);
     }
     if (workspaceTypes?.length && areas?.length) {
       setFormData((prevState) => ({

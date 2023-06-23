@@ -28,7 +28,7 @@ export default function PasswordReset() {
         navigate('/sign-in');
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

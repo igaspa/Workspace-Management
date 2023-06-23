@@ -4,3 +4,7 @@ export const ROLES = {
   EMPLOYEE: 'Employee',
   TABLET: 'Tablet'
 };
+
+export const ERRORS = {
+  FETCH_ERROR: 'FETCH_ERROR'
+};

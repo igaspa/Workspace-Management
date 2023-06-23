@@ -37,7 +37,7 @@ export default function CreateArea() {
         navigate('/backoffice/area');
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 
@@ -54,8 +54,7 @@ export default function CreateArea() {
 
   useEffect(() => {
     if (isLocationsError) {
-      const authorizationError = errorHandler(locationsErrorObject);
-      if (authorizationError) navigate('/sign-in');
+      errorHandler(locationsErrorObject, navigate);
     }
   }, [locations]);
   if (isLocationsLoading) {

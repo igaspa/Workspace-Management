@@ -158,8 +158,7 @@ const WorkspaceForm = ({ workspace, onSave, onCancel }) => {
   } = useGetEquipmentsListQuery({});
 
   const validateError = (errorObj) => {
-    const authorizationError = errorHandler(errorObj);
-    if (authorizationError) navigate('/sign-in');
+    errorHandler(errorObj, navigate);
   };
 
   useEffect(() => {

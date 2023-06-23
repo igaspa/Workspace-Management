@@ -35,7 +35,7 @@ export default function CreateWorkspaceType() {
         navigate('/backoffice/workspace-type');
       })
       .catch((error) => {
-        errorHandler(error);
+        errorHandler(error, navigate);
       });
   };
 

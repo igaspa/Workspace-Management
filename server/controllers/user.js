@@ -4,7 +4,7 @@ const { searchByTerm } = require('../utils/filter');
 const userService = require('../services/user');
 const notification = require('../services/notification');
 const responseMessages = require('../utils/response-messages');
-const { generateToken, findAndValidateUser } = require('./helpers/user');
+const { generateToken, findUserByEmail } = require('./helpers/user');
 
 module.exports.getAllUsers = async (req, res) => {
   const { email } = req.query;
@@ -40,7 +40,7 @@ module.exports.createUser = async (req, res) => {
 
 module.exports.reinviteUser = async (req, res) => {
   const { email } = req.body;
-  await findAndValidateUser(email);
+  await findUserByEmail(email, true);
 
   // create token
   const token = generateToken();
@@ -49,9 +49,25 @@ module.exports.reinviteUser = async (req, res) => {
   const updatedUser = await userService.updateUserToken(email, token);
 
   // send invite email to user
-  await notification.invitationEmail(updatedUser, token.value);
+  await notification.invitationEmail(updatedUser, token);
 
   res.json({ message: responseMessages.INVITATION_SENT });
+};
+
+module.exports.passwordReset = async (req, res) => {
+  const { email } = req.body;
+  await findUserByEmail(email);
+
+  // create token
+  const token = generateToken();
+
+  // update user and retrieve new data
+  const updatedUser = await userService.updateUserToken(email, token);
+
+  // send invite email to user
+  await notification.passwordResetEmail(updatedUser, token);
+
+  res.json({ message: responseMessages.PASSWORD_RESET_EMAIL_SENT });
 };
 
 module.exports.updateUser = async (req, res) => {

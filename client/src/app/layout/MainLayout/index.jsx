@@ -16,7 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SvgIcon from '@mui/material/SvgIcon';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Home, Logout, FactCheck } from '@mui/icons-material';
+import { Home, Logout, FactCheck, Login } from '@mui/icons-material';
 import BackofficeButton from '../../components/Buttons/backofficeButton';
 import { Link, Outlet } from 'react-router-dom';
 import { ROLES } from '../../utils/constants';
@@ -97,26 +97,27 @@ export default function PersistentDrawerLeft({ window }) {
 
   const drawer = (
     <div>
-      <Divider />
-      <List>
-        {routes.map(
-          ({ text, route, icon, roles }) =>
-            hasAccess(roles) && (
-              <ListItem key={text} disablePadding>
-                <Link to={route} style={{ color: '#202120' }}>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <SvgIcon component={icon} inheritViewBox />
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            )
-        )}
-      </List>
-      {jwt && (
+      {jwt ? (
         <>
+          <Divider />
+          <List>
+            {routes.map(
+              ({ text, route, icon, roles }) =>
+                hasAccess(roles) && (
+                  <ListItem key={text} disablePadding>
+                    <Link to={route} style={{ color: '#202120' }}>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <SvgIcon component={icon} inheritViewBox />
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                      </ListItemButton>
+                    </Link>
+                  </ListItem>
+                )
+            )}
+          </List>
+
           <Divider />
           <List>
             {[{ text: 'Logout', route: 'sign-in' }].map(({ text, route }) => (
@@ -133,17 +134,35 @@ export default function PersistentDrawerLeft({ window }) {
             ))}
           </List>
           <Divider />
+          <List>
+            {isAdministrator && (
+              <ListItem disablePadding>
+                <Link to="/backoffice" style={{ color: '#202120' }} onClick={handleDrawerToggle}>
+                  <BackofficeButton text={'Backoffice'} />
+                </Link>
+              </ListItem>
+            )}
+          </List>
+        </>
+      ) : (
+        <>
+          <List>
+            {[{ text: 'Sign In', route: 'sign-in' }].map(({ text, route }) => (
+              <ListItem key={text} disablePadding>
+                <Link to={route} style={{ color: '#202120' }} onClick={deleteToken}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Login />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
         </>
       )}
-      <List>
-        {isAdministrator && (
-          <ListItem disablePadding>
-            <Link to="/backoffice" style={{ color: '#202120' }} onClick={handleDrawerToggle}>
-              <BackofficeButton text={'Backoffice'} />
-            </Link>
-          </ListItem>
-        )}
-      </List>
     </div>
   );
 

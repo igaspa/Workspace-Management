@@ -19,7 +19,8 @@ module.exports.notificationTemplates = {
   createdReservationParticipantTemplate: '82f4ef25-ce5f-41e7-b69c-4fb90a71b91c',
   updatedReservationParticipantTemplate: '07f94f84-1210-463f-ad66-849a9edda46a',
   canceledReservationParticipantTemplate: '4505ef57-ad78-4584-96f4-251a67c2e078',
-  userInvitationTemplate: '2a4b415d-f93c-487d-8f45-46b61fe56439'
+  userInvitationTemplate: '2a4b415d-f93c-487d-8f45-46b61fe56439',
+  userPasswordResetTemplate: '8771f0f6-cf9a-43db-9538-af765b5678ec'
 };
 
 module.exports.notificationNames = {
@@ -29,7 +30,8 @@ module.exports.notificationNames = {
   reservationCreatedParticipant: 'reservation_created_participant_template',
   reservationUpdatedParticipant: 'reservation_updated_participant_template',
   reservationCanceledParticipant: 'reservation_canceled_participant_template',
-  userInvitation: 'user_invitation_template'
+  userInvitation: 'user_invitation_template',
+  userPasswordReset: 'user_password_reset_template'
 };
 
 module.exports.paginationValues = {

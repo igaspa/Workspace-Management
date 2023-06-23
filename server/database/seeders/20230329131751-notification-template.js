@@ -244,6 +244,38 @@ module.exports = {
           },
           created_at: new Date(),
           updated_at: new Date()
+        },
+        {
+          id: notificationTemplates.userPasswordResetTemplate,
+          name: notificationNames.userPasswordReset,
+          template: {
+            title: 'Workspace Management: PasswordReset',
+            body: `<body style="background-color:white">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" 
+                   width="600" bgcolor="AliceBlue">
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <br />
+                            <table align="center" border="0" cellpadding="50"
+                                   cellspacing="0" class="col-550" width="550">
+                                <tbody>
+                                  <h3>Dear {userName},</h3>
+                                  <p>Please open the link below to reset your password.</p>
+                                  <p>If you did not request to reset your password, ignore this message.</p>
+                                  <p><a href={link}>Reset Password</a></p>
+                                  <br>
+                                  <em>Workspace Management</em>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          </body>`
+          },
+          created_at: new Date(),
+          updated_at: new Date()
         }
       ],
       {},

@@ -24,6 +24,7 @@ const responseMessages = {
 
   // Constant messages
   INVITATION_SENT: 'Invitation successfully sent!',
+  PASSWORD_RESET_EMAIL_SENT: 'Password reset link has been sent to your email address!',
   ACCOUNT_ALREADY_ACTIVATED: 'This account has already been activated!',
   PASSWORD_CREATED: 'Password successfully create!',
   ACTIVATION_TOKEN_EXPIRED: 'Your token has expired, please ask administrator to invite you again...',

@@ -10,7 +10,7 @@ exports.generateToken = () => {
   return { value, expirationTime };
 };
 
-exports.findAndValidateUser = async (email) => {
+exports.findUserByEmail = async (email, passwordMustNotExist = false) => {
   const existingUser = await user.findOne({
     where: {
       email
@@ -20,6 +20,8 @@ exports.findAndValidateUser = async (email) => {
   // Validate user exists in DB
   if (!existingUser) throw errors.NOT_FOUND(responseMessages.NOT_FOUND(user.name));
 
-  // Account is already activated, if user password is not null
-  if (existingUser.password) throw errors.CONFLICT(responseMessages.ACCOUNT_ALREADY_ACTIVATED);
+  if (passwordMustNotExist && existingUser.password) {
+    // Account is already activated, if user password is not null
+    throw errors.CONFLICT(responseMessages.ACCOUNT_ALREADY_ACTIVATED);
+  }
 };

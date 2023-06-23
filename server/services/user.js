@@ -57,7 +57,6 @@ const removeUserRole = async (roleList, transaction, userId) => {
 exports.updateUser = async (req) => {
   const { body, params } = req;
   const { addedRoles, removedRoles } = body;
-  console.log(addedRoles, removedRoles);
 
   try {
     transaction = await sequelize.transaction();

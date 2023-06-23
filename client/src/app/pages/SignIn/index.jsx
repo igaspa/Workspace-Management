@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../api/loginApiSlice';
 import { errorHandler } from '../../utils/errors';
 
@@ -78,6 +78,8 @@ export default function SignIn() {
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, background: '#5dbea3' }}>
               Sign In
             </Button>
+
+            <Link to={'/users/password-reset'}>Forgot password?</Link>
           </Box>
         </Box>
       </Container>

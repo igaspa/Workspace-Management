@@ -198,7 +198,7 @@ exports.sendReservationUpdatedEmail = async function (req) {
   await createReservationNotification(reservation, notificationTemplates.updatedReservationTemplate);
 };
 
-const createInvitationEmailTemplateAndSendEmail = async (data, token, template) => {
+const createPasswordCreationEmailTemplateAndSendEmail = async (data, token, template) => {
   let emailTemplate = await getNotificationTemplate(template);
   const baseURL = process.env.REACT_APP_BASE_URL;
   const emailData = {
@@ -217,5 +217,9 @@ const createInvitationEmailTemplateAndSendEmail = async (data, token, template) 
 };
 
 exports.invitationEmail = async function (data, token) {
-  await createInvitationEmailTemplateAndSendEmail(data, token, notificationTemplates.userInvitationTemplate);
+  await createPasswordCreationEmailTemplateAndSendEmail(data, token, notificationTemplates.userInvitationTemplate);
+};
+
+exports.passwordResetEmail = async function (data, token) {
+  await createPasswordCreationEmailTemplateAndSendEmail(data, token, notificationTemplates.userPasswordResetTemplate);
 };

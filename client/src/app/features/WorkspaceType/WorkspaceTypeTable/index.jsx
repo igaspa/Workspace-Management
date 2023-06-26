@@ -56,7 +56,6 @@ export default function WorkspaceTypeTable() {
   const [deleteWorkspaceType] = useDeleteWorkspaceTypeMutation();
   const [updateWorkspaceType] = useUpdateWorkspaceTypeMutation();
   const navigate = useNavigate();
-  const role = localStorage.getItem('role');
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [selectedId, setSelectedId] = useState(' ');
@@ -200,8 +199,6 @@ export default function WorkspaceTypeTable() {
 
   return (
     <Container maxWidth="lg">
-      {role.includes('Administrator') ? (
-        <>
           {isWorkspaceTypesLoading || isWorkspaceTypeSearchLoading ? (
             <CircularProgress />
           ) : isWorkspaceTypesError || isWorkspaceTypeSearchError ? (
@@ -283,10 +280,6 @@ export default function WorkspaceTypeTable() {
               />
             </>
           )}
-        </>
-      ) : (
-        navigate('/')
-      )}
     </Container>
   );
 }

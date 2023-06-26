@@ -47,7 +47,6 @@ const columns = [
 ];
 
 export default function LocationTable() {
-  const role = localStorage.getItem('role');
   const navigate = useNavigate();
   const [deleteLocation] = useDeleteLocationMutation();
   const [updateLocation] = useUpdateLocationMutation();
@@ -181,8 +180,7 @@ export default function LocationTable() {
 
   return (
     <Container maxWidth="lg">
-      {role.includes('Administrator') ? (
-        isLocationsLoading || isLocationSearchLoading ? (
+       { isLocationsLoading || isLocationSearchLoading ? (
           <CircularProgress />
         ) : isLocationsError || isLocationSearchError ? (
           <Typography color="error">Failed to load location.</Typography>
@@ -249,10 +247,7 @@ export default function LocationTable() {
               handleConfirm={handleUpdateClick}
             />
           </>
-        )
-      ) : (
-        navigate('/')
-      )}
+        )}
     </Container>
   );
 }

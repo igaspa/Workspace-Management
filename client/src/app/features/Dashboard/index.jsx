@@ -33,7 +33,7 @@ const Dashboard = () => {
   const [selectedArea, setSelectedArea] = useState('All');
   const [areaParams, setAreaParams] = useState('');
 
-  const maxReservationDate = selectedWorkspaceType?.maxReservationWindow.days || 8;
+  const maxReservationDate = selectedWorkspaceType?.maxReservationWindow?.days || 7;
   const dates = getNext7Days(maxReservationDate);
 
   const startHours = getHours(fromDate);
@@ -46,7 +46,7 @@ const Dashboard = () => {
   // get Workspace Type table name from change
   const handleWorkspaceTypeSelect = (workspaceType) => {
     const newName = deconstructName(workspaceType.name);
-    const currentName = deconstructName(selectedWorkspaceType?.name || '')
+    const currentName = deconstructName(selectedWorkspaceType?.name || '');
     if (newName === currentName) setSelectedWorkspaceType('');
     else setSelectedWorkspaceType(workspaceType);
   };

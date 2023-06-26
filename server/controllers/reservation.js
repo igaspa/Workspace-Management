@@ -53,7 +53,7 @@ const reservationCustomIncludeOptions = () => {
     model: workspace,
     include: {
       model: workspaceType,
-      attributes: ['image']
+      attributes: ['image', 'maxReservationWindow']
     }
   };
 

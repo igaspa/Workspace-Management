@@ -16,7 +16,7 @@ import PrivilegeReservationForm from '../../../components/Reservation/Reservatio
 import ReservationFormFooter from '../../../components/Reservation/ReservationForms/formFooter';
 import { DateTime } from 'luxon';
 
-export default function UpdateReservation({ startDate, endDate, startHour, endHour, reservation, onClose }) {
+export default function UpdateReservation({maxReservationWindow, startDate, endDate, startHour, endHour, reservation, onClose }) {
   const navigate = useNavigate();
   const [updateReservation] = useUpdateReservationMutation();
   const divRef = useRef();
@@ -38,7 +38,7 @@ export default function UpdateReservation({ startDate, endDate, startHour, endHo
   const startHours = getHours(startDate);
   const endHours = getHours(endDate || startDate);
 
-  const dates = getNext7Days();
+  const dates = getNext7Days(maxReservationWindow);
 
   const role = localStorage.getItem('role');
 
@@ -293,5 +293,6 @@ UpdateReservation.propTypes = {
   startDate: PropTypes.string,
   endDate: PropTypes.string,
   startHour: PropTypes.string,
-  endHour: PropTypes.string
+  endHour: PropTypes.string,
+  maxReservationWindow: PropTypes.number
 };

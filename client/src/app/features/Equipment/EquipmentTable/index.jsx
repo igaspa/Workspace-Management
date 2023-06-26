@@ -35,7 +35,6 @@ const columns = [
 ];
 
 export default function EquipmentTable() {
-  const role = localStorage.getItem('role');
   const navigate = useNavigate();
   const [deleteEquipment] = useDeleteEquipmentMutation();
   const [updateEquipment] = useUpdateEquipmentMutation();
@@ -165,8 +164,7 @@ export default function EquipmentTable() {
 
   return (
     <Container maxWidth="sm">
-      {role.includes('Administrator') ? (
-        isEquipmentsLoading || isEquipmentSearchLoading ? (
+     {   isEquipmentsLoading || isEquipmentSearchLoading ? (
           <CircularProgress />
         ) : isEquipmentsError || isEquipmentSearchError ? (
           <Typography color="error">Failed to load equipment.</Typography>
@@ -221,10 +219,7 @@ export default function EquipmentTable() {
               handleConfirm={handleUpdateClick}
             />
           </div>
-        )
-      ) : (
-        navigate('/')
-      )}
+        )}
     </Container>
   );
 }

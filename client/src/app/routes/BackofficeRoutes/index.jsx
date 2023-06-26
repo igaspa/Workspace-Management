@@ -1,20 +1,20 @@
 import BackofficeLayout from '../../layout/BackofficeLayout';
-
-// render - dashboard
-import BackofficeDashboard from '../../pages/BackofficeDashboard';
-import WorkspaceCreation from '../../pages/Workspace/createWorkspaces';
-import WorkspaceList from '../../features/Workspace/WorkspaceTable';
-import UserList from '../../features/Users/UserTable';
-import EquipmentList from '../../pages/Equipment';
-import WorkspaceTypeList from '../../pages/WorkspaceType';
-import CreateWorkspaceTypePage from '../../pages/CreateWorkspaceType';
-import CreateEquipmentPage from '../../pages/CreateEquipment';
-import LocationList from '../../pages/Location';
-import CreateLocationPage from '../../pages/CreateLocation';
-import AreaTable from '../../features/Area/AreaTable';
-import CreateArea from '../../features/Area/CreateArea';
-import CreateUserPage from '../../pages/CreateUser';
-import ReinviteUserPage from '../../pages/ReinviteUser';
+import {
+  GuardedBackofficeDashboard,
+  GuardedWorkspaceList,
+  GuardedUserList,
+  GuardedUserCreation,
+  GuardedUserReinvite,
+  GuardedWorkspaceCreation,
+  GuardedEquipmentList,
+  GuardedEquipmentCreation,
+  GuardedWorkspaceTypeList,
+  GuardedWorkspaceTypeCreation,
+  GuardedLocationList,
+  GuardedLocationCreation,
+  GuardedAreaList,
+  GuardedAreaCreation
+} from '../../utils/routeGuard';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const BackofficeRoutes = {
@@ -23,59 +23,59 @@ const BackofficeRoutes = {
   children: [
     {
       path: '/backoffice',
-      element: <BackofficeDashboard />
+      element: <GuardedBackofficeDashboard />
     },
     {
       path: '/backoffice/workspaces',
-      element: <WorkspaceList />
+      element: <GuardedWorkspaceList />
     },
     {
       path: '/backoffice/users',
-      element: <UserList />
+      element: <GuardedUserList />
     },
     {
       path: '/backoffice/user/invite',
-      element: <CreateUserPage />
+      element: <GuardedUserCreation />
     },
     {
       path: '/backoffice/user/reinvite',
-      element: <ReinviteUserPage />
+      element: <GuardedUserReinvite />
     },
     {
       path: '/backoffice/create-workspace',
-      element: <WorkspaceCreation />
+      element: <GuardedWorkspaceCreation />
     },
     {
       path: '/backoffice/equipment',
-      element: <EquipmentList />
+      element: <GuardedEquipmentList />
     },
     {
       path: '/backoffice/create-equipment',
-      element: <CreateEquipmentPage />
+      element: <GuardedEquipmentCreation />
     },
     {
       path: '/backoffice/workspace-type',
-      element: <WorkspaceTypeList />
+      element: <GuardedWorkspaceTypeList />
     },
     {
       path: '/backoffice/create-workspace-type',
-      element: <CreateWorkspaceTypePage />
+      element: <GuardedWorkspaceTypeCreation />
     },
     {
       path: '/backoffice/location',
-      element: <LocationList />
+      element: <GuardedLocationList />
     },
     {
       path: '/backoffice/create-location',
-      element: <CreateLocationPage />
+      element: <GuardedLocationCreation />
     },
     {
       path: '/backoffice/area',
-      element: <AreaTable />
+      element: <GuardedAreaList />
     },
     {
       path: '/backoffice/create-area',
-      element: <CreateArea />
+      element: <GuardedAreaCreation />
     }
   ]
 };

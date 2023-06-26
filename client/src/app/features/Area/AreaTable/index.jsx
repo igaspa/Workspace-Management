@@ -67,7 +67,6 @@ const columns = [
 ];
 
 export default function AreaTable() {
-  const role = localStorage.getItem('role');
   const navigate = useNavigate();
   const [deleteArea] = useDeleteAreaMutation();
   const [updateArea] = useUpdateAreaMutation();
@@ -236,8 +235,7 @@ export default function AreaTable() {
   }));
   return (
     <Container maxWidth="lg">
-      {role.includes('Administrator') ? (
-        isAreasLoading || isLocationsLoading || isAreaSearchLoading ? (
+        {isAreasLoading || isLocationsLoading || isAreaSearchLoading ? (
           <CircularProgress />
         ) : isAreasError || isLocationsError || isAreaSearchError ? (
           <Typography color="error">Failed to load area.</Typography>
@@ -339,10 +337,7 @@ export default function AreaTable() {
               handleConfirm={handleUpdateClick}
             />
           </>
-        )
-      ) : (
-        navigate('/')
-      )}
+        )}
     </Container>
   );
 }

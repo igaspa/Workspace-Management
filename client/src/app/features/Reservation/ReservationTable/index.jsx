@@ -38,7 +38,6 @@ const columns = [
 
 export default function ReservationTable() {
   const [deleteReservation] = useDeleteReservationMutation();
-  const role = localStorage.getItem('role');
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
@@ -98,8 +97,7 @@ export default function ReservationTable() {
   }));
   return (
     <Container maxWidth="lg">
-      {role.includes('Administrator') ? (
-        isLoading ? (
+       { isLoading ? (
           <CircularProgress />
         ) : isError ? (
           <Typography color="error">Failed to load reservations.</Typography>
@@ -126,10 +124,7 @@ export default function ReservationTable() {
           </>
         ) : (
           'There are no reservations'
-        )
-      ) : (
-        navigate('/')
-      )}
+        )}
     </Container>
   );
 }

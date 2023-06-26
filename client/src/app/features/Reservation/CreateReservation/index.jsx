@@ -48,7 +48,8 @@ const CreateReservation = ({ workspace, onClose, endTime, startTime, reservation
 
   const startHours = getHours(startDate);
   const endHours = getHours(endDate || startDate);
-  const dates = getNext7Days();
+  const maxReservationWindow = workspace.workspaceType?.maxReservationWindow.days || 7
+  const dates = getNext7Days(maxReservationWindow);
 
   const [permanentReservation, setPermanentReservation] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});

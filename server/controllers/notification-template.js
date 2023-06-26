@@ -22,4 +22,5 @@ module.exports.updateNotificationTemplate = async (req, res) => {
 
 module.exports.deleteNotificationTemplate = async (req, res) => {
   await generalController.deleteModel(notificationTemplate, req, res);
+  await setNotificationTemplate();
 };

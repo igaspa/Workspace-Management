@@ -26,7 +26,7 @@ const withAuthentication = (Component) => {
   };
 };
 
-export const GuarderBackofficeDashboard = withAuthentication(BackofficeDashboard);
+export const GuardedBackofficeDashboard = withAuthentication(BackofficeDashboard);
 export const GuardedWorkspaceList = withAuthentication(WorkspaceList);
 export const GuardedUserList = withAuthentication(UserList);
 export const GuardedUserCreation = withAuthentication(CreateUserPage);

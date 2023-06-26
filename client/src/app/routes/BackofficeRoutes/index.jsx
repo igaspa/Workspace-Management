@@ -1,6 +1,6 @@
 import BackofficeLayout from '../../layout/BackofficeLayout';
 import {
-  GuarderBackofficeDashboard,
+  GuardedBackofficeDashboard,
   GuardedWorkspaceList,
   GuardedUserList,
   GuardedUserCreation,
@@ -23,7 +23,7 @@ const BackofficeRoutes = {
   children: [
     {
       path: '/backoffice',
-      element: <GuarderBackofficeDashboard />
+      element: <GuardedBackofficeDashboard />
     },
     {
       path: '/backoffice/workspaces',

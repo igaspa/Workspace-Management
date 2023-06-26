@@ -33,7 +33,8 @@ const Dashboard = () => {
   const [selectedArea, setSelectedArea] = useState('All');
   const [areaParams, setAreaParams] = useState('');
 
-  const dates = getNext7Days();
+  const maxReservationDate = selectedWorkspaceType?.maxReservationWindow.days || 8;
+  const dates = getNext7Days(maxReservationDate);
 
   const startHours = getHours(fromDate);
   const endHours = getHours(untilDate || fromDate);
@@ -43,10 +44,11 @@ const Dashboard = () => {
   };
 
   // get Workspace Type table name from change
-  const handleWorkspaceTypeSelect = (workspaceTypeName) => {
-    const newName = deconstructName(workspaceTypeName);
-    if (newName === selectedWorkspaceType) setSelectedWorkspaceType('');
-    else setSelectedWorkspaceType(newName);
+  const handleWorkspaceTypeSelect = (workspaceType) => {
+    const newName = deconstructName(workspaceType.name);
+    const currentName = deconstructName(selectedWorkspaceType?.name || '')
+    if (newName === currentName) setSelectedWorkspaceType('');
+    else setSelectedWorkspaceType(workspaceType);
   };
 
   const handleAreaSelect = (event) => {
@@ -98,7 +100,6 @@ const Dashboard = () => {
     error: areaErrorObject,
     isLoading: areaLoading
   } = useGetAreaListQuery();
-
   // Fetch workspaces data
   const {
     data: [workspacesData, pages] = [],
@@ -106,7 +107,7 @@ const Dashboard = () => {
     error: workspacesErrorObject,
     isLoading: workspacesLoading
   } = useGetWorkspacesListQuery({
-    ...(selectedWorkspaceType && { workspace_type: selectedWorkspaceType }),
+    ...(selectedWorkspaceType && { workspace_type: deconstructName(selectedWorkspaceType.name) }),
     ...(selectedArea && { area_name: areaParams }),
     ...(from && { from }),
     ...(until && { until }),
@@ -162,7 +163,7 @@ const Dashboard = () => {
                   workspaceType={workspaceType}
                   handleWorkspaceTypeSelect={() => {
                     setPage(1);
-                    handleWorkspaceTypeSelect(workspaceType.name);
+                    handleWorkspaceTypeSelect(workspaceType);
                   }}
                 />
               </Grid>

@@ -61,7 +61,6 @@ const Reservations = () => {
   const { data: [reservationData, pages] = [], isError, isLoading } = useGetUsersReservationListQuery();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   return (
     <Container maxWidth="lg">
       <CssBaseline />
@@ -121,6 +120,7 @@ const Reservations = () => {
                 startHour={startHour}
                 endHour={endHour}
                 reservation={selectedReservation}
+                maxReservationWindow={selectedReservation.workspace?.workspaceType.maxReservationWindow.days || 7}
                 onClose={handleDrawerClose}
               />
             </Drawer>

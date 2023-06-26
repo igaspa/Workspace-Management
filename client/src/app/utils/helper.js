@@ -30,9 +30,9 @@ export const createDate = (i) => {
 	return dateString;
 };
 
-export function getNext7Days () {
+export function getNext7Days (maxReservationDate) {
 	const dates = [];
-	for (let i = 0; i < 8; i++) {
+	for (let i = 0; i < maxReservationDate; i++) {
 		const dateString = createDate(i);
 		dates.push(dateString);
 	}

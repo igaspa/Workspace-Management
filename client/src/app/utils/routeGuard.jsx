@@ -16,7 +16,7 @@ import { Navigate } from 'react-router-dom';
 
 const withAuthentication = (Component) => {
   const role = localStorage.getItem('role');
-  const isAuthenticated = role.includes('Administrator') ? true : false;
+  const isAuthenticated = role && role.includes('Administrator') ? true : false;
   return (props) => {
     if (isAuthenticated) {
       return <Component {...props} />;

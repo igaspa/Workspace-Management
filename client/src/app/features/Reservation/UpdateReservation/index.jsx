@@ -16,7 +16,15 @@ import PrivilegeReservationForm from '../../../components/Reservation/Reservatio
 import ReservationFormFooter from '../../../components/Reservation/ReservationForms/formFooter';
 import { DateTime } from 'luxon';
 
-export default function UpdateReservation({maxReservationWindow, startDate, endDate, startHour, endHour, reservation, onClose }) {
+export default function UpdateReservation({
+  maxReservationWindow,
+  startDate,
+  endDate,
+  startHour,
+  endHour,
+  reservation,
+  onClose
+}) {
   const navigate = useNavigate();
   const [updateReservation] = useUpdateReservationMutation();
   const divRef = useRef();
@@ -142,8 +150,8 @@ export default function UpdateReservation({maxReservationWindow, startDate, endD
     event.preventDefault();
 
     const objectToPost = {
-      startAt: new Date(startAt).toISOString(),
-      endAt: new Date(endAt).toISOString()
+      startAt: new Date(startAt),
+      endAt: new Date(endAt)
     };
     retrieveAddedAndRemovedParticipants(objectToPost);
 

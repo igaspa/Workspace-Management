@@ -95,7 +95,9 @@ Workspace Management will be used to reserve workspaces in the office. Included 
     npm run start:{env}
    ```
 
-7. In the client folder run the following command to start the backend:
+7. Duplicate and rename the .vite-env-example file in the client directory to .env
+
+8. In the client folder run the following command to start the backend:
    ```
     npm run dev
    ```

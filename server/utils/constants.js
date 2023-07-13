@@ -1,6 +1,8 @@
 module.exports.schemaName = 'workspace_management';
 module.exports.EXCLUDE_LIST = ['createdAt', 'updatedAt', 'deletedAt', 'password'];
 
+module.exports.TOKEN_EXPIRATION = new Date(Date.now() + 2 * (60 * 60 * 1000) );
+
 module.exports.notificationStatus = {
   failed: 'failed',
   sent: 'sent'

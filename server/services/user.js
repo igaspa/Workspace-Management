@@ -2,13 +2,14 @@ const { user, sequelize, userRole } = require('../database/models');
 const { errors } = require('../utils/errors');
 const responseMessages = require('../utils/response-messages');
 const bcrypt = require('bcrypt');
+const { TOKEN_EXPIRATION } = require('../utils/constants');
 
 const saveUserToDB = async (data, token, transaction) => {
   await user.create(
     {
       ...data,
       token: token.value,
-      tokenExpirationTime: token.expirationTime
+      tokenExpirationTime: TOKEN_EXPIRATION
     },
     { transaction }
   );
